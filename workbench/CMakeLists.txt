@@ -15,11 +15,11 @@ find_package(Qt5Widgets)
 find_package(Qt5Gui)
 find_package(Qt5OpenGL)
 
-#include_directories(${RATIONALCAD_SOURCE_DIR}/logging)
-#include_directories(${RATIONALCAD_SOURCE_DIR}/geometry)
+#include_directories(${Workbench_SOURCE_DIR}/logging)
+#include_directories(${Workbench_SOURCE_DIR}/geometry)
 
-link_directories(${RATIONALCAD_BINARY_DIR}/logging)
-link_directories(${RATIONALCAD_BINARY_DIR}/geometry)
+link_directories(${Workbench_BINARY_DIR}/logging)
+link_directories(${Workbench_BINARY_DIR}/geometry)
 
 qt5_wrap_ui(
     UI_HEADERS

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RationalCAD</string>
+   <string>DDAD Workbench</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/resources.qrc">
@@ -195,7 +195,7 @@
   </widget>
   <action name="action_about">
    <property name="text">
-    <string>About RationalCAD</string>
+    <string>About Workbench</string>
    </property>
   </action>
   <action name="action_preferences">
