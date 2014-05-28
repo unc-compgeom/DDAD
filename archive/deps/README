@@ -1,0 +1,22 @@
+This directory contain archived sources for dependencies of the Degree-Driven
+Algorithm Design Project.
+
+NOTE: I would like to keep the dependencies minimal (hopefully the only
+dependencies are builing and logging and testing frameworks that can be strip
+out for releases).
+
+    * cmake-2.8.7.tgz - a very convienient build system.
+
+    * gtest-1.5.0.tgz - google's c++ unit testing framework.
+
+    * rlog-1.4-dave_patch.tgz - a logging library.  Version 1.4 (availible from
+            google code) does not compile on OS X 10.6.4.  I applied the patch
+            described in DAVE_README to fix this issue.  Also, I modified some
+            output functions (for more readabile logging).
+
+
+By defining PATH_TRIM and implementing a sed script (as below) we can get nicer
+logging output than the default rLog output:
+    sed -e s/__FILE__/\\\&\(\&[PATH_TRIM]\)/g <file_to_change> > <file_to_change>.bak
+    mv <file_to_change>.bak <file_to_change>
+

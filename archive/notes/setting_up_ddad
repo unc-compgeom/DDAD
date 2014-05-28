@@ -1,0 +1,75 @@
+The DDAD library is stored in an svn repository.  You can check out the library
+code with the command:
+
+    svn co https://cvs.cs.unc.edu/svn/deg_driven_algo_design
+
+Personally, I prefer to interact with an svn repository via git-svn.  If you
+want to use git-svn as well use the command:
+
+    git svn clone -s https://cvs.cs.unc.edu/svn/deg_driven_algo_design
+
+Next, you will need to install the dependencies.  Below are the instructions for
+Mac OS X and Linux.
+
+Setting up dependancies on OS X:
+
+Assuming you checked out to the directory deg_driven_algo_design, which we will
+call $DDAD, change to the dependancy directory:
+    
+    cd $DDAD/ddad/deps
+
+In this folder you will see tar and gzipped files for cmake, gtest, and rlog.
+Strictly speaking the library has no dependancies, (but setting up a build will
+be difficult without the dependancies). 
+
+First insall rlog by unzipping rlog
+
+    tar xvzf rlog-1.4-dave_patch.tgz
+
+Read and follow the INSTALL directions.  If you are impatient, most of the time
+insallation will go as follows:
+    
+    cd rlog-1.4-dave_patch
+    ./configure
+    make
+    sudo make install
+
+Next install gtest by steps parallel to installing rlog.  From the director
+$DDAD/ddad/deps the basic steps are: 
+
+    tar xvzf gtest-1.6.0.tgz
+    cd gtest-1.6.0
+    ./configure
+    make
+    sudo make install
+
+Finally install cmake.  On OS X it is easiest to do this directly from Kitware at
+http://www.cmake.org/ on Linux it is probably in your package manager, but if
+not, the basic steps are:
+
+    tar xvzf cmake-2.8.7.tar.gz 
+    cd cmake-2.8.7
+    ./configure
+    make 
+    sudo make insall
+
+Now, you can build the library as follows: 
+    
+    cd $DDAD/ddad/
+    mkdir build
+    cd build
+
+To build using make files:
+
+    cmake ..
+    make
+
+Of if you are on OS X and like Xcode 
+
+    cmake -G Xcode ..
+
+and open the Xcode project.
+
+
+Enjoy!
+

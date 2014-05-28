@@ -1,0 +1,20 @@
+This document contains a quick reminder on how I profile.
+
+First, in the top level CMakeLists.txt file, set the run_type to profile:
+    # run types are profile, time and debug
+    #set(run_type "time")
+    set(run_type "profile")
+    #set(run_type "debug")
+
+Next, recompile, and run the program to profile, <PROG> though valgrind's
+callgrind tool:
+    > valgrind --tool=callgrind <PROG>
+Valgrind will produce a file called callgrind.out.<PID>
+
+Finally, view valgrind's output with kcachegrind:
+    > kcachegrind callgrind.out.<PID>
+
+PROFILE!
+
+
+
