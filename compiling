@@ -1,0 +1,8 @@
+Windows
+
+- Visual Studio 2010 (express or pro through DreamSpark)
+- CMake 2.8.12 (latest)
+- Qt 5.2.1 32 bit OpenGL MSVC2010
+- Clone repo into C:/ or similar (no spaces allowed in path)
+
+Mac
