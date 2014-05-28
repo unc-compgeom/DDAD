@@ -1,4 +1,7 @@
-DDAD
-====
+RationalCAD
+===========
 
-C++ library for implementing degree-driven geometric algorithms
+#### Robust polyhedral modeling ####
+
+The aim of the project is to ____.
+
