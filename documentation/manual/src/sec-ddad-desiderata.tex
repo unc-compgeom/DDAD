@@ -1,0 +1,87 @@
+\FloatBarrier
+\section{DDAD Workbench Desiderata}
+
+Geometric objects on a digital computer are composed of two types of data:
+numerical and combinatorial. Examples of numerical data include the
+Cartesian coordinates of a point in 3-space, the length of a line segment
+connecting two such points, or the angle between two such line segments.
+Examples of combinatorial information include grouping two points as an
+edge, grouping a collection of edges as a face, or grouping a collection of
+faces as a surface.
+
+Geometric algorithms that operate on geometric objects are best thought of as
+two types of operations: predicates and constructions. Predicates determine
+relationships between objects. A predicate might determine if a point is to
+the left, right, or is collinear with a line segment, determine if a point is
+inside, outside, or on a circle, or determine if a line intersects a plane in
+one, none, or infinitely many points. Constructions produce new geometric
+objects from existing geometric objects. A construction might produce the
+rotation of a point around an origin, produce the point of intersection
+between two line segments, or produce an offset of an algebraic curve.
+
+\paragraph{Scope} describes the range of programs the system can take as input
+for visualization. First, the system should visualize geometric algorithms
+implemented with primitives and predicates from the degree-driven algorithm
+design library (DDAD). Second, the system should provide example implementations
+and visualizations of algorithms that solve textbook computational geometry
+problems. Third, the system should be flexible enough to visualize new geometric
+algorithms from the facilities used in example visualizations. Fourth, the
+system should run well given inputs large enough to verify the correctness of a
+particular implementation.
+
+\paragraph{Content} describes what subset of information about the software is
+visualized by the SV system. For algorithm implementers, the system should
+visualize information about the concrete implementation of the algorithm. This
+entails combining traditional debugging facilities with the new ability to
+visualize geometric structures and operations. For algorithm presenters, the
+system should visualize information about the high-level algorithm description.
+This entails mechanisms for displaying visualizations that do not necessarily
+correspond to the underlying implementation details.
+
+\paragraph{Form} describes the characteristics of the output of the system (the
+visualization). First, the output medium should be an interactive computer
+program. This is sufficient for implementers, but presenters may want to produce
+a digital recording of an algorithm animation. Fortunately, screen capture
+programs can facilitate producing this type of output. Second, the output should
+have a rich graphical vocabulary, displaying standard graphics primitives
+(points, lines, polygons), each with a variety of attributes (color,
+transparency, pattern, texture). Presenters in particular desire highly
+expressive output. Third, the output should contain both 2D and 3D elements.
+The third dimension can be used both for visualizing inherently 3D algorithms
+and to effectively display non-dimensional information. Fourth, the output
+should have multiple levels of information granularity, with the ability to
+elide and reveal specific levels as needed. Fifth, users should be able to view
+the same data in multiple ways. This capability is particularly pertinent in
+geometry where insight into a problem may be gained from viewing a dual
+formulation (\emph{e.g.} viewing points as lines).
+
+\paragraph{Method} describes how the visualization is specified. Implementers
+desire highly automated specifications that minimally invade implementation source
+code. Increased automation increases the likelihood a tool will be used for
+debugging assistance. Useful automated visualizations require a high level of
+intelligence in order to correctly recognize and display high level data
+structures. In contrast, presenters are less concerned with automated
+visualization specifications, and accept a higher degree of invasiveness in
+return for customization and increased expressibility. The system should strike
+a balance between automation and customization.
+
+\paragraph{Interaction} describes how the user of the software visualization
+system interacts with and controls it. First, users should be able to control
+the speed of execution. This includes starting, stopping, speeding up, slowing
+down, and single stepping. Second, users should be able to control a camera to
+navigate around the scene and to focus on different objects. This is especially
+important for 3D algorithms and larger data sets. Third, users should be able to
+record and play back particular runs of a visualization. For presenters this
+could aid pedagogy, and implementers might record when an algorithm fails.
+
+\subsection{Current Capabilities}
+
+The workbench currently satisfies the desired functionality as follows. It
+extends the DDAD library with visual types and encapsulates these into a
+geometry kernel. The geometry kernel is paired with a visualizer that is capable
+of animating algorithm execution. The workbench strikes a balance between
+automated visualizations and expressive power by using object
+oriented design to encapsulate visual commands in lower level objects. The user
+is able to control the speed of execution and pause at important moments. They
+control two different views of the scene and can move these views interactively
+as the algorithm executes.

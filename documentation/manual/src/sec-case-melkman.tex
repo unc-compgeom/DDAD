@@ -1,0 +1,35 @@
+%==============================================================================
+% @author Clinton Freeman <freeman@cs.unc.edu>
+% @date 2014-05-23
+%==============================================================================
+
+\FloatBarrier
+\section{Case Study: Melkman's Algorithm}
+
+Melkman's algorithm computes the convex hull of a simple polyline in $O(n)$
+time~\cite{melkman1987line}. It operates by using the 2D orientation predicate.
+
+Animating any algorithm begins with generating the appropriate input. In the
+case of Melkman's algorithm, we begin by creating a simple polyline. This is
+accomplished by the user clicking on points in the 2D top-down orthographic
+view. The user may choose to place integer vertex coordinates or turn off
+snapping so that vertex coords are floating point or rational coords.
+
+\begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
+Melkman}] \begin{algorithmic}[1]    
+    \Require Simple polyline $P = \langle v_1, \ldots, v_m \rangle$.
+    \Ensure $\text{CH}(P)$.
+    \vspace{0.75em}
+    \Procedure{Melkman}{$P$}
+    \EndProcedure
+\end{algorithmic}
+\end{mdframed} 
+
+\begin{lstlisting}
+Polygon_2r Melkman(const PolyChain_2r& P, Visual::IGeometryObserver* ge_obs) {
+    Polygon_2r CH_P;
+
+
+    return CH_P;
+}
+\end{lstlisting}

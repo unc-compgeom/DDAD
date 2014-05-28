@@ -1,0 +1,251 @@
+\section{General Workbench Desiderata}
+
+From their thorough review of geometric workbench systems, Dobkin and Hausner
+extracted a set of design decisions that must be made by new
+systems~\cite{hausner1999animation}.
+However, a geometric workbench is a specific type of \emph{software
+visualization} (SV) system. The SV literature contains several well-developed
+taxonomies that are designed to evaluate SV systems~\cite{diehl2007software}. In
+particular, Price \emph{et al.} outline six major categories in which they judge
+SV systems: scope, content, form, method, interaction, and
+effectiveness~\cite{price1993principled}. We found that this detailed taxonomy
+provided a more structured way of organizing the desiderata of new workbench
+systems.
+
+This section recalls the taxonomy for evaulating SV systems and relates each
+category to the specific case of workbench systems. The taxonomy is a hierarchy
+of categories, each of which may be described in terms of a question about the
+system. This makes the task of describing our specific desiderata quite easy
+because we may simply answer each of these questions in turn. 
+
+
+\subsection{Scope}
+
+What is the range of programs that the SV system may take as input for
+visualization?
+
+\begin{enumerate}
+  \item Generality. Can the system handle a generalized range of programs or
+  does it display a fixed set of examples?
+  \begin{enumerate}
+    \item Hardware. What hardware does it run on?
+    \item Operating System. What operating system is required to run it?
+    \item Language. What programming language must user programs be written
+    in?
+    \begin{enumerate}
+      \item Concurrency. If the programming language is capable of
+      concurrency, can the SV system visualize the concurrent aspects?
+    \end{enumerate}
+    \item Applications. What are the restrictions on the kinds of user
+    programs that can be visualized?
+    \begin{enumerate}
+      \item Specialty. What kinds of programs is it particularly good at
+      visualizing (as opposed to simply capable of visualizing)?
+    \end{enumerate}
+  \end{enumerate}
+  \item Scalability. To what degree does the system scale up to handle large
+  examples?
+  \begin{enumerate}
+    \item Program. What is the largest program it can handle?
+    \item Data Sets. What is the largest input data set it can handle?
+  \end{enumerate}
+\end{enumerate}
+
+
+\begin{enumerate}
+  \item Scope. What is the range of programs that the SV system may take as
+  input for visualization?
+  \begin{enumerate}
+    \item Generality. Can the system handle a generalized range of programs or
+    does it display a fixed set of examples?
+    \begin{enumerate}
+      \item Hardware. What hardware does it run on?
+      \item Operating System. What operating system is required to run it?
+      \item Language. What programming language must user programs be written
+      in?
+      \begin{enumerate}
+        \item Concurrency. If the programming language is capable of
+        concurrency, can the SV system visualize the concurrent aspects?
+      \end{enumerate}
+      \item Applications. What are the restrictions on the kinds of user
+      programs that can be visualized?
+      \begin{enumerate}
+        \item Specialty. What kinds of programs is it particularly good at
+        visualizing (as opposed to simply capable of visualizing)?
+      \end{enumerate}
+    \end{enumerate}
+    \item Scalability. To what degree does the system scale up to handle large
+    examples?
+    \begin{enumerate}
+      \item Program. What is the largest program it can handle?
+      \item Data Sets. What is the largest input data set it can handle?
+    \end{enumerate}
+  \end{enumerate}
+  \item Content. What subset of information about the software is visualized by
+  the SV system?
+  \begin{enumerate}
+    \item Program. To what degree does the system visualize the actual
+    implemented program?
+    \begin{enumerate}
+      \item Code. To what degree does the system visualize the instructions in
+      the program source code?
+      \begin{enumerate}
+        \item Control Flow. To what degree does the system visualize the flow of
+        control in the program source code?
+      \end{enumerate}
+      \item Data. To what degree does the system visualize the data structures
+      in the program source code?
+      \begin{enumerate}
+        \item Data Flow. To what degree does the system visualize the flow of
+        data in the program source code?
+      \end{enumerate}
+    \end{enumerate}
+    \item Algorithm. To what degree does the system visualize the high-level
+    algorithm behind the software?
+    \begin{enumerate}
+      \item Instructions. To what degree does the system visualize the
+      instructions in the algorithm?
+      \begin{enumerate}
+        \item Control Flow. To what degree does the system visualize the flow of
+        control in the algorithm instructions?
+      \end{enumerate}
+      \item Data. To what degree does the system visualize the data structures
+      in the algorithm?
+      \begin{enumerate}
+        \item Data Flow. To what degree does the system visualize the flow of
+        data in the algorithm?
+      \end{enumerate}
+    \end{enumerate}
+    \item Fidelity and Completeness. Do the visual metaphors present the true
+    and complete behavior of the underlying virtual machine?
+    \begin{enumerate}
+      \item Invasiveness. If the system can be used to visual concurrent
+      applications, does its use disrupt the execution sequence of the program?
+    \end{enumerate}
+    \item Data Gathering Time. Is the data on which the visualization depends
+    gathered at compile-time, at run-time, or both?
+    \begin{enumerate}
+      \item Temporal Control Mapping. What is the mapping between 'program time'
+      and 'visualization time'?
+      \item Visualization Generation Time. Is the visualization produced as a
+      batch job (post-mortem) from data recorded during a previous run, or is it
+      produced live as the program executes?
+    \end{enumerate}
+  \end{enumerate}
+  \item Form. What are the characteristics of the output of the system (the
+  visualization)?
+  \begin{enumerate}
+    \item Medium. What is the primary target medium for the visualization
+    system?
+    \item Presentation Style. What is the general appearance of the
+    visualization?
+    \begin{enumerate}
+      \item Graphical Vocabulary. What graphical elements are used in the
+      visualization produced by the system?
+      \begin{enumerate}
+        \item Colour. To what degree does the system make use of colour in its
+        visualizations?
+        \item Dimensions. To what degree are extra dimensions used in the
+        visualization?
+      \end{enumerate}
+      \item Animation. If the system gathers run-time data, to what degree does
+      the resulting visualization use animation?
+      \item Sound. To what degree does the system make use of sound to convey
+      information?
+    \end{enumerate}
+    \item Granularity. To what degree does the system present coarse-granularity
+    details?
+    \begin{enumerate}
+      \item Elision. To what degree does the system provide facilities for
+      eliding information?
+    \end{enumerate}
+    \item Multiple Views. To what degree can the system provide multiple
+    synchronized views of different parts of the software being visualized?
+    \item Program Synchronization. Can the system generate visualizations of
+    multiple programs simultaneously?
+  \end{enumerate}
+  \item Method. How is the visualization specified?
+  \begin{enumerate}
+    \item Visualization Specification Style. What style of specification is
+    used?
+    \begin{enumerate}
+      \item Intelligence. If the visualization is automatic, how advanced is the
+      visualization software from an AI point of view?
+      \item Tailorability. To what degree can the user customize the
+      visualization?
+      \begin{enumerate}
+        \item Customization Language. If the visualization is customizable, how
+        can the visualization be specified?
+      \end{enumerate}
+    \end{enumerate}
+    \item Connection Technique. How is the connection made between the
+    visualization and the actual software being visualized?
+    \begin{enumerate}
+      \item Code Ignorance Allowance. If the visualization system is not
+      completely automatic, how much knowledge of the program code is required
+      for a visualization to be produced for the user?
+      \item System-Code Coupling. How tightly is the visualization system
+      coupled with the code?
+    \end{enumerate}
+  \end{enumerate}
+  \item Interaction. How does the user of the SV system interact with and
+  control it?
+  \begin{enumerate}
+    \item Style. What method does the user employ to give instructions to the
+    system?
+    \item Navigation. To what degree does the system support navigation through
+    a visualization?
+    \begin{enumerate}
+      \item Elision Control. Can the user elide information or suppress detail
+      from the display?
+      \item Temporal Control. To what degree does the system allow the user to
+      control the temporal aspects of the execution of the program?
+      \begin{enumerate}
+        \item Direction. To what degree can the user reverse the temporal
+        direction of the visualization?
+        \item Speed. To what degree can the user control the speed of execution?
+      \end{enumerate}
+    \end{enumerate}
+    \item Scripting Facilities. Does the system provide facilities for managing
+    the recording and playing back of interactions with particular
+    visualizations?
+  \end{enumerate}
+  \item Effectiveness. How well does the system communicate information to the
+  user?
+  \begin{enumerate}
+    \item Purpose. For what purpose is the system suited?
+    \item Appropriateness and Clarity. If the automatic (default) visualizations
+    are provided, how well do they communicate information about the software?
+    \item Empirical Evaluation. To what degree has the system been subjected to
+    a good experimental evaluation?
+    \item Production Use. Has the system been in production use for a
+    significant period of time?
+  \end{enumerate}
+\end{enumerate}
+
+
+% (a) scope. what is the range of programs that the SV system may take as input
+% for visualization? (a.1) generality. can the system handle a generalized range
+% of programs or does it display a fixed set of examples? (a.1.1) hardware. what
+% hardware does it run on? (a.1.2) operating system. what os is required to run
+% it? (a.1.3) language. what programming language must user programs be written
+% in? (a.1.3.1) concurrency. if the programming language is capable of
+% concurrency, can the sv system visualize the concurrent aspects? (a.1.4)
+% applications. what are the restrictions on the kinds of user programs that can
+% be visualized? (a.1.4.1) specialty. what kinds of programs is it particularly
+% good at visualizing (as opposed to simply capable of visualizing)? (a.2)
+% scalability. to what degree does the system scale up to handle large examples?
+% (a.2.1) program. what is the largest program it can handle? (a.2.2) data sets.
+% what is the largest input data set it can handle?
+
+
+% (b) content. what subset of information about the software is visualized by the
+% SV system? (b.1) program. to what degree does the system visualize the actual
+% implemented program? (b.1.1) code. to what degree does the system visualize the
+% instructions in the program source code? (b.1.1.1) control flow. to what degree
+% does the system visualize the flow of control in the program source code?
+% (b.1.2) data. to what degree does the system visualize the data structures in
+% the program source code? (b.1.2.1) data flow. to what degree does the system
+% visualize the flow of data in the program source code? (b.2) algorithm. to what
+% degree does the system visualize the high-level algorithm behind the software?
+  

@@ -1,0 +1,470 @@
+%==============================================================================
+% @author Clinton Freeman <freeman@cs.unc.edu>
+% @date 09/19/2013
+%==============================================================================
+
+\documentclass{article}
+
+\usepackage{fullpage}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[labelfont=bf]{caption}
+\usepackage{url}
+\usepackage[linktocpage=true]{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{esvect}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{float}
+\usepackage{fancybox}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{wrapfig}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{placeins}
+\usepackage{xcolor}
+\usepackage{rotating}
+
+\definecolor{algback}{rgb}{0.95, 0.95, 0.95}
+
+\usetikzlibrary{calc, decorations.pathmorphing, shapes, arrows.new}
+
+\hypersetup {
+    colorlinks = true,
+    linkcolor = {blue},
+    citecolor = {blue},
+    urlcolor = {blue}
+}
+
+\definecolor{keyword}{HTML}{445588}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{invariant}{Invariant}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+ 
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceiling}[1]{\left\lceil #1 \right\rceil}
+
+ 
+\newcommand{\tightoverset}[2]{
+    \mathop{#2}\limits^{\vbox to -.8ex{\kern-0.7ex\hbox{$#1$}\vss}}
+}
+
+\newcommand{\tikzoverset}[2]{%
+  \tikz[baseline=(X.base),inner sep=0pt,outer sep=0pt]{%
+    \node[inner sep=0pt,outer sep=0pt] (X) {$#2$}; 
+    \node[yshift=1pt] at (X.north) {$#1$};
+}}
+ 
+\newlength{\mOLineLength}
+\newcommand{\mOLine}[1]{
+    \overset{
+        \setlength{\mOLineLength}{\widthof{#1}}
+        \begin{tikzpicture}
+            \draw [-to new, arrow head = 1.6pt, line width=0.5pt] (0, 0) --
+            +(0.8\mOLineLength, 0);
+        \end{tikzpicture}
+    }{#1}
+}
+
+\newlength{\mRayLength}
+\newcommand{\mRay}[1]{
+    \tightoverset{
+    \setlength{\mRayLength}{\widthof{#1}}
+    \begin{tikzpicture}
+        \draw [* new-to new, arrow head = 1.6pt, line width=0.5pt]
+        (0, 0) -- +(0.8\mRayLength, 0);
+        %\filldraw (0,0) circle (0.6pt);
+        %\draw [-angle 45 new, arrow head = 2.75pt, line width=0.4pt] (0, 0) --
+        %+(0.8\mOLineLength, 0);
+    \end{tikzpicture}
+    }{\mathrm{#1}}
+}
+
+\newlength{\mSegLength}
+\newcommand{\mSeg}[1]{
+    \tightoverset{
+    \setlength{\mSegLength}{\widthof{#1}}
+    \begin{tikzpicture}
+        \draw [* new-* new, arrow head = 1.6pt] (0, 0) -- +(0.8\mSegLength,
+        0);
+    \end{tikzpicture}
+    }{\mathrm{#1}}
+}
+
+\newcommand{\mR}[1]{\mathbb{R}^{#1}}
+\newcommand{\mZ}[1]{\mathbb{Z}^{#1}}
+\newcommand{\mPoint}[1]{\mathrm{#1}}
+\newcommand{\mPt}[1]{\mPoint{#1}}
+\newcommand{\mVector}[1]{\mathbf{#1}}
+\newcommand{\mVc}[1]{\mVector{#1}}
+\newcommand{\mULine}[1]{\tightoverset{\leftrightarrow}{\mathrm{#1}}}
+\newcommand{\mMatrix}[1]{\mathbf{#1}}
+\newcommand{\mMt}[1]{\mMatrix{#1}}
+\newcommand{\mPlane}[1]{\mathrm{#1}}
+\newcommand{\mPolygon}[1]{\mathrm{#1}}
+\newcommand{\mPolytope}[1]{\mathrm{#1}}
+\newcommand{\mSet}[1]{\mathrm{#1}}
+\newcommand{\mField}[1]{\mathrm{#1}}
+\newcommand{\mCompound}[1]{\mathrm{#1}}
+\newcommand{\mIntHull}[1]{\text{IH}(#1)}
+\newcommand{\mBoundary}[1]{\partial #1}
+\newcommand{\mTernary}[3]{\left( #1 \right) \text{?} #2 \text{:} #3}
+
+\long\def\ignore#1{\relax}
+
+\def\tomath#1{\relax\ifmmode#1\else$#1$\fi}
+
+\def\th{{\rm th}}
+\def\inv{^{-1}}
+\def\degrees{\tomath{{}^\circ}}
+\let\degree=\degrees
+\def\lf{\left}\def\rt{\right}
+
+\def\rangeone#1#2{\rangethree{#1}12{#2}}
+\def\rangetwo#1#2#3{\tomath{{#1}_{#2},\ldots,{#1}_{#3}}}
+\def\rangethree#1#2#3#4{\tomath{{#1}_{#2},{#1}_{#3},\ldots,{#1}_{#4}}}
+\let\range=\rangetwo
+\def\setone#1#2{\setthree{#1}12{#2}}
+\def\settwo#1#2#3{\tomath{\{{#1}_{#2},\ldots,{#1}_{#3}\}}}
+\def\setthree#1#2#3#4{\tomath{\{{#1}_{#2},{#1}_{#3},\ldots,{#1}_{#4}\}}}
+
+\def\oldO{
+\def\Om(##1){{\tomath{\Omega(##1)}}}
+\def\Th(##1){{\tomath{\Theta(##1)}}}
+\def\Ologn{\O(\log n)}
+\def\Onlogn{\O(n\log n)}
+\def\O(##1){{\tomath{O(##1)}}}
+\def\On##1{\O(n^{##1})}
+}
+
+\def\Om#1{{\tomath{\Omega(#1)}}}
+\def\Th#1{{\tomath{\Theta(#1)}}}
+\def\Ologn{\O{\log n}}
+\def\Onlogn{\O{n\log n}}
+\def\O#1{{\tomath{O(#1)}}}
+\def\On#1{\O{n^{#1}}}
+
+
+\def\Case#1{\noindent {\bf Case #1:\/ }}
+\def\NP{{\sl NP}}
+\def\R{\tomath{{\cal R}}}
+
+\def\etal{{et al.{}}}
+\def\fourldots{\mathinner{\ldotp\ldotp\ldotp\ldotp}}
+\def\fourdots{\relax\ifmmode
+    \fourldots\else$\mathsurround=0pt \fourldots\,$\fi
+    \spacefactor=3000}
+
+
+\def\nopar#1\par{}
+\def\slw #1 {{\sl #1 }}
+\def\itw #1 {{\it #1 }}
+\def\ttw #1 {{\tt #1 }}
+\def\scw #1 {{\sc #1 }}
+\def\bfw #1 {{\bf #1 }}
+\let\bw=\bfw
+\def\calw #1 {\tomath{{\cal #1}} }
+\def\calv#1{\tomath{{\cal #1}}}
+
+\def\slug{\vrule height 4pt depth 0pt width 4pt}
+
+\def\joinrel{\mathrel{\mkern-4mu}}% fix longrightarrow et c.
+\def\ray#1{\hbox{\vbox{\offinterlineskip\setbox0\hbox{$#1$}
+    \hbox to \wd0{\hss$\rightharpoonup$\hss}\vskip-1.0pt\box0}}}
+\def\lin#1{\hbox{\vbox{\offinterlineskip\setbox0\hbox{$#1$}
+    \hbox to \wd0{\hss$\leftrightarrow$\hss}\vskip-1.0pt\box0}}}
+\def\seg#1{\tomath{\overline{#1}}}
+
+\def\paper{paper}% for changing papers to thesis chapters
+
+\long\def\comm#1{\ignorespaces}
+\def\comments{\long\def\comm##1{\message{COMMENT: ##1}{\bf(( ##1 ))}}}
+
+%\hyphenation{half-space}
+
+\def\raggedcenter{\advance\leftskip by 0pt plus 40em\rightskip=\leftskip
+   \parfillskip=0pt \spaceskip=.3333em \xspaceskip=.5em
+   \pretolerance=9999 \tolerance=9999
+   \hyphenpenalty=9999 \exhyphenpenalty=9999 }
+
+\long\def\tthdump#1{#1} % Do nothing. The following are not done for TtH.
+\tthdump{%
+%\input Gmacro2.tex
+}
+
+\newcommand\quelle[1]{{%
+      \unskip\nobreak\hfil\penalty50
+      \hskip2em\hbox{}\nobreak\hfil#1%
+      \parfillskip=0pt \finalhyphendemerits=0 \par}}
+
+
+\newcounter{proofc}
+\renewcommand\theproofc{\arabic{proofc}. }
+\DeclareRobustCommand\stepproofc{\refstepcounter{proofc}\theproofc}
+\newenvironment{twoproof}{\noindent \emph{Proof.} \\[0.5em]
+\tabular{@{\stepproofc}p{2.5in}p{3.25in}}}{\endtabular \\
+\quelle{$\square$}\setcounter{proofc}{0}}
+
+\newcounter{sarrow}
+\newcommand\xrsquigarrow[1]{%
+\stepcounter{sarrow}%
+\mathrel{\begin{tikzpicture}[baseline= {( $ (current bounding box.south) + (0,-0.5ex) $ )}]
+\node[inner sep=.5ex] (\thesarrow) {$\scriptstyle #1$};
+\path[draw,<-,decorate,
+  decoration={zigzag,amplitude=0.7pt,segment length=1.2mm,pre=lineto,pre length=4pt}] 
+    (\thesarrow.south east) -- (\thesarrow.south west);
+\end{tikzpicture}}%
+}
+
+
+\definecolor{answerColor}{RGB}{245, 245, 245}
+\definecolor{titleColor}{RGB}{225, 225, 225}
+\mdfdefinestyle{answer} {
+    backgroundcolor = answerColor,
+    linecolor = answerColor,
+    skipabove = 8pt,
+    skipbelow = 8pt,
+    splittopskip = 22pt,
+    splitbottomskip = \baselineskip,
+    innertopmargin = 0.75em,
+    innerbottommargin = 0.75em,
+    innerrightmargin = 0.75em,
+    innerleftmargin = 0.75em,
+    frametitlealignment=\center,
+    frametitlebackgroundcolor=titleColor
+}
+
+\definecolor{cBack}{rgb}{0.95, 0.95, 0.95}
+\usepackage{listings}
+\lstset {
+	basicstyle = \footnotesize\ttfamily,
+	%numbers = left,
+	numberstyle = \tiny,
+	%stepnumber = 2,
+	numbersep = 5pt,
+	tabsize = 2,
+	extendedchars = true,
+	breaklines = true,
+	keywordstyle = \color{red},
+	frame = b,
+	stringstyle = \color{white}\ttfamily,
+	showspaces = false,
+	showtabs = false,
+	xleftmargin = 8pt,
+	framexleftmargin = 8pt,
+	framexrightmargin = 5pt,
+	framexbottommargin = 4pt,
+	showstringspaces = false
+}
+
+\lstloadlanguages {
+	C++
+}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{8pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={sf,bf,footnotesize}}
+
+\def\tomath#1{\relax\ifmmode#1\else$#1$\fi}
+\def\opName#1{\hbox{\tt{\textsc{#1}}}}
+\def\op#1(#2){\tomath{\opName{#1}(#2)}}
+
+\def\deg(#1){\tomath{\mathord{ \large \textcircled{\small \tomath{#1}} \normalsize }}}
+
+\title{A Geometric Workbench for Degree-Driven Algorithm Design}
+\author{
+	Clinton Freeman \\
+	\texttt{freeman@cs.unc.edu}
+	\and
+	Jack Snoeyink \\
+    \texttt{snoeyink@cs.unc.edu}
+}
+
+\begin{document}
+
+\maketitle
+
+%==============================================================================
+
+\begin{abstract}
+Millman built a C++ library (DDAD) to facilitate implementing algorithms with
+low degree predicates. Our workbench extends DDAD with a visual event system and
+provides a standalone GUI that can generate input data and render algorithm
+execution.
+\end{abstract}
+
+\input{sec-introduction}
+
+\input{sec-general-desiderata}
+
+\input{sec-previous-work}
+
+\input{sec-ddad-desiderata}
+
+\input{sec-case-melkman}
+
+\input{sec-architecture}
+
+\input{sec-case-delaunay}
+
+\input{sec-conclusion}
+
+\bibliographystyle{abbrv}
+\bibliography{../../references}
+
+\end{document}
+
+\endinput
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% The workbench is composed of two major systems: the geometry kernel and the
+% visualizer. The geometry kernel houses arithmetic (MPIR bignums, number
+% theoretic functions), linear algebra (vectors and matrices), low-level geometric
+% primitives (points, line segments, and triangles), high-level geometric types
+% (polylines, polygons, subdivisions, etc.), and geometric algorithms (convex
+% hull, integer hull, delaunay triangulation, etc.). 
+% 
+% 
+% The geometry kernel encapsulates geometric algorithm implementations.
+% 
+% The visualizer encapsulates the visual display of geometric algorithms.
+
+
+% Geometric algorithms are typically designed and analyzed using the Real-RAM
+% model of computation \cite{preparata1977convex}. In other words, these
+% algorithms assume that the numerical data in geometric objects are exact
+% values in $\mathbb{R}$ that can be stored and retrieved in constant time, and
+% that arithmetic involving these values is performed in constant time. From a
+% practical point of view, it may seem like an odd or frustrating decision to
+% assume access to infinite precision real arithmetic, given that digital
+% computers are finite objects. From a theoretical point of view, this is a
+% sensible choice given that for subsets of $\mathbb{R}$, such as the rational
+% numbers $\mathbb{Q}$, many fundamental geometric axioms no longer hold.
+
+
+% \subsection{Report Overview}
+% 
+% Lacking a suitable workbench, we decided to build our own. This report details
+% the resulting system and is composed of two major sections. First, we state
+% workbench desiderata, explain current workbench capabilities, and show how these
+% capabilities support the desiderata. Second, we overview our workbench
+% architecture. We discuss at a high level how the two major components -- the
+% geometry kernel and the visualizer -- work together to animate geometric
+% algorithms. Finally, we conclude by reviewing lessons learned from the project
+% and identify avenues for future work.
+
+% \subsubsection{Forrest geometric computing environments}
+% 
+% Forrest suggested the geometry community start building ``geometric computing
+% environments'' in the late 1980's~\cite{forrest1987computational,
+% forrest1988geometric}.
+
+% \subsubsection{LINETool (1988)}
+% 
+% Yap and Ericson discuss the design of LINETool, a geometric editor. They
+% differentiate their tool from automated theorem provers for geometry. Designed
+% in support of exact computation.~\cite{ericson1988design}
+
+% There is a long history of geometric workbench systems. In the late 1980's
+% Forrest identified the need for ``geometric computing environments'' that would
+% provide both a library of geometric algorithms and a supporting user interface
+% for animation and debugging~\cite{forrest1987computational,
+% forrest1988geometric}. 
+% 
+% 
+% 
+% 
+% Concurrently, Yap and Ericson designed LINEtool, a
+% ``geometric editor" that allowed users to exactly specify and render geometric
+% constructions~\cite{ericson1988design}. Soon after, three projects were underway
+% that sought to provide a geometric computing environment: XYZ
+% GeoBench~\cite{schorn1991robust}, Workbench~\cite{epstein1994workbench}, and the
+% Library of Efficient Data Types and Algorithms (LEDA)~\cite{mehlhorn1989leda}.
+% XYZ GeoBench and Workbench most fully fit the definition of a geometric
+% computing environment, while LEDA focused primarily on the development of a
+% library. 
+% 
+% Dobkin and Hausner~\cite{hausner1999animation} review four geometric
+% visualization systems: Workbench \cite{epstein1994workbench}, XYZ
+% GeoBench \cite{schorn1991implementing, schorn1991robust}, Geomview
+% \cite{amenta1995geomview}, and GASP \cite{tal1995visualization}.
+
+% Schorn joined
+% Nievergelt's group at UNC Chapel Hill in 1986 and completed his MSc in
+% Computer Science in 1988. Schorn and Nievergelt returned to ETH Zurich in
+% 1989, with Schorn eventually completing his PhD in 1991. 
+% written in Object Pascal
+
+% \subsection{General algorithm animation}
+% 
+% \paragraph{BALSA} \cite{brown1984system}
+% 
+% \paragraph{BALSA-II}
+% 
+% \paragraph{Zeus}
+% 
+% \paragraph{AnimA}
+% 
+% \paragraph{TANGO} \cite{stasko1990tango}
+% 
+% \paragraph{POLKA} \cite{stasko1995polka}
+% 
+% \paragraph{SAMBA} \cite{stasko1995samba}
