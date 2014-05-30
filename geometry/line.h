@@ -125,6 +125,7 @@ namespace Predicate {
 Orientation OrientationPQR(const Ray_2r& pq, const Point_2r& r);
 bool AIsLeftOfB(const Point_2r& a, const Ray_2r& b);
 bool AIsRightOfB(const Point_2r& a, const Ray_2r& b);
+bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b);
 bool AreParallel(const Ray_2r& a, const Ray_2r& b);
 bool AreParallel(const Line_2r& l, const Ray_2r& r);
 bool AreParallel(const Ray_2r& r, const Line_2r& l);

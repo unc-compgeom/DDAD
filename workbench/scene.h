@@ -55,6 +55,36 @@ struct ISceneObject {
 };
 
 //=============================================================================
+// Interface: ScenePolyLine_2
+//=============================================================================
+
+class ScenePolyLine_2 : public ISceneObject, public Visual::Geometry {
+public:
+    ScenePolyLine_2() {
+        model_polyline_.AddObserver(this);
+    }
+    PolyChain_2r polyline() {
+        return model_polyline_;
+    }
+
+    void Initialize(const QVector2D& start) {
+        model_polyline_.AppendVertex(Point_2r(start.x(), start.y()));
+    }
+
+    void Update(const QVector2D& cur) {
+        //model_polyline_.Update(Point_3f(cur.x(), cur.y(), 64));
+        model_polyline_.AppendVertex(Point_2r(cur.x(), cur.y()));
+    }
+
+    void Select() override {}
+    void Deselect() override {}
+    void UpdateColor(const QColor &color) override {}
+
+private:
+    PolyChain_2r model_polyline_;
+};
+
+//=============================================================================
 // Interface: ScenePolytope_3
 //=============================================================================
 
@@ -161,6 +191,10 @@ public:
     const QString& selected_name() const;
 
 public slots:
+    void onBeginCreatePolyLine(const QVector2D& start);
+    void onUpdateNewPolyLine(const QVector2D& cur);
+    void onEndCreatePolyLine();
+
     void onBeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
     void onUpdateNewPolytope(const QVector2D& cur);
     void onEndCreatePolytope();
@@ -186,6 +220,7 @@ private:
 
     bool ObjectIsSelected() const;
     ISceneObject* SelectedObject();
+    ScenePolyLine_2* SelectedPolyLine_2();
     ScenePolytope_3* SelectedPolytope_3();
     SceneTerrainMesh_3* SelectedTerrainMesh_3();
 

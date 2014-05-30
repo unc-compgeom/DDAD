@@ -14,6 +14,8 @@ namespace DDAD {
 
 enum InputState {
     SELECT,
+    CREATE_POLYLINE,
+    UPDATE_POLYLINE,
     CREATE_POLYTOPE,
     UPDATE_POLYTOPE
 };

@@ -12,6 +12,9 @@
 #include "common.h"
 #include "qt_window_main.h"
 
+// test
+#include "../geometry/polygon.h"
+
 #define _ELPP_THREAD_SAFE
 _INITIALIZE_EASYLOGGINGPP
 
@@ -34,6 +37,18 @@ int main(int argc, char *argv[]) {
     splash.show();
     //splash.showMessage("Initializing...");
     a.processEvents();
+
+//    DDAD::Polygon_2rDq pc;
+//    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
+//    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,10));
+//    pc.PushFront(std::make_shared<DDAD::Point_2r>(10,10));
+//    pc.PushFront(std::make_shared<DDAD::Point_2r>(10,0));
+////    pc.PushFront(std::make_shared<DDAD::Point_2r>(5,-5));
+////    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,-7));
+//    //pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
+//    //pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
+
+//    DDAD::Melkman(pc);
 
     LOG(INFO) << "displaying main window";
     MainWindow w;

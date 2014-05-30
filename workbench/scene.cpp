@@ -286,6 +286,37 @@ void SceneObserver::SlotUpdate() {
 }
 
 //=============================================================================
+// PolyLine_2 management
+//=============================================================================
+
+void SceneObserver::onBeginCreatePolyLine(const QVector2D& start) {
+    qDebug() << "SceneObserver BeginCreatePolyLine " << start;
+
+    onDeselect();
+
+    static int numPolyLines = 0;
+    selected_name_ = QString("polyline2_%1").arg(numPolyLines++);
+    scene_objects_.insert(selected_name_,
+                          QSharedPointer<ISceneObject>(new ScenePolyLine_2()));
+    SelectedPolyLine_2()->AddObserver(this);
+    SelectedPolyLine_2()->Initialize(start);
+
+    ConfigManager::get().set_input_state(UPDATE_POLYLINE);
+}
+
+void SceneObserver::onUpdateNewPolyLine(const QVector2D& cur) {
+    qDebug() << "SceneObserver UpdateNewPolyLine " << cur;
+    SelectedPolyLine_2()->Update(cur);
+}
+
+void SceneObserver::onEndCreatePolyLine() {
+    qDebug() << "SceneObserver EndCreatePolytope";
+    ConfigManager::get().set_input_state(CREATE_POLYLINE);
+    DDAD::Melkman(SelectedPolyLine_2()->polyline(), SelectedPolyLine_2());
+    //SelectedPolytope_3()->Update();
+}
+
+//=============================================================================
 // Polytope_3 management
 //=============================================================================
 
@@ -402,6 +433,10 @@ int SceneObserver::NumObjects() const {
 
 ISceneObject* SceneObserver::SelectedObject() {
     return scene_objects_.value(selected_name_).data();
+}
+
+ScenePolyLine_2* SceneObserver::SelectedPolyLine_2() {
+    return dynamic_cast<ScenePolyLine_2*>(SelectedObject());
 }
 
 ScenePolytope_3* SceneObserver::SelectedPolytope_3() {

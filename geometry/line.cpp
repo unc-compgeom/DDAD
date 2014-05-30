@@ -100,6 +100,13 @@ bool AIsRightOfB(const Point_2r& a, const Line_2r& b) {
     return OrientationPQR(b, a) == ORIENTATION_RIGHT;
 }
 
+bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b){
+    Point_2r orig = b.origin();
+    Vector_2r dir = b.direction();
+    return OrientationPQR(b,a) == ORIENTATION_COLINEAR &&
+            ((a.x()-orig.x())*dir.x() + (a.y()-orig.y())*dir.y() > 0);
+}
+
 bool IsVertical(const Line_2r& l) {
     return (l.slope_type() == SLOPE_PINFINITY ||
             l.slope_type() == SLOPE_NINFINITY);

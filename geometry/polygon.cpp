@@ -16,12 +16,85 @@ namespace DDAD {
 // Melkman's algorithm
 //=============================================================================
 
-Polygon_2r Melkman(const PolyChain_2r& P, Visual::IGeometryObserver* ge_obs) {
-    Polygon_2r CH_P;
+Polygon_2rDq Melkman(const PolyChain_2r P,
+      Visual::IGeometryObserver* observer){
+    LOG(INFO) << "Melkman";
+    Polygon_2rDq D;
+    std::list<PolyChainVertex_2r> vertices = P.vertices();
+    std::list<PolyChainVertex_2r>::iterator it = vertices.begin();
+    SharedPoint_2r v0 = (*it).vertex_sptr();
+    SharedPoint_2r v1 = (*it).vertex_sptr();
+    SharedPoint_2r pi;
+    D.PushFront(v1);
+    D.PushFront(v0);
+    D.PushFront(v1);
+
+    for(std::list<PolyChainVertex_2r>::iterator ii = it; ii != vertices.end(); ii ++){
+        SharedPoint_2r pi = (*ii).vertex_sptr();
+        LOG(INFO) << "test";
+
+        Line_2r topEdge = Line_2r(D[0], D[1]);
+        Ray_2r topRay = Ray_2r(D[1], topEdge.V());
+        Line_2r botEdge = Line_2r(D[D.NumVertices()-2], D[D.NumVertices()-1]);
+        Ray_2r botRay = Ray_2r(D[D.NumVertices()-1], botEdge.V());
 
 
-    return CH_P;
+        if((Predicate::AIsRightOfB(*pi, topEdge) || Predicate::AIsAheadOfB(*pi, topRay)) ||
+        (Predicate::AIsRightOfB(*pi, botEdge) || Predicate::AIsAheadOfB(*pi, botRay))){
+            while(Predicate::AIsRightOfB(*pi, topEdge) || Predicate::AIsAheadOfB(*pi, topRay)){
+                // Pop top
+                topEdge = Line_2r(D.PopFront(), topEdge.p_sptr());
+                topRay = Ray_2r(topEdge.q_sptr(), topEdge.V());
+            }
+            while(Predicate::AIsRightOfB(*pi, botEdge) || Predicate::AIsAheadOfB(*pi, botRay)){
+                // Pop bot
+                botEdge = Line_2r(D.PopBack(), botEdge.p_sptr());
+                botRay = Ray_2r(botEdge.q_sptr(), botEdge.V());
+            }
+            D.PushBack(pi);
+            D.PushFront(pi);
+        }
+    }
+    return D;
 }
+
+
+
+//=============================================================================
+// Polygon_2rDq
+//=============================================================================
+
+Polygon_2rDq::Polygon_2rDq() {}
+
+Polygon_2rDq::~Polygon_2rDq() {}
+
+void Polygon_2rDq::PushFront(SharedPoint_2r v){
+    boundary_.push_front(v);
+}
+
+void Polygon_2rDq::PushBack(SharedPoint_2r v){
+    boundary_.push_back(v);
+}
+
+SharedPoint_2r Polygon_2rDq::PopFront(){
+    SharedPoint_2r v = boundary_.front();
+    boundary_.pop_front();
+    return v;
+}
+
+SharedPoint_2r Polygon_2rDq::PopBack(){
+    SharedPoint_2r v = boundary_.back();
+    boundary_.pop_back();
+    return v;
+}
+const size_t Polygon_2rDq::NumVertices() const {
+    return boundary_.size();
+}
+
+SharedPoint_2r Polygon_2rDq::operator [](int index) {
+    return boundary_[index];
+}
+
 
 //=============================================================================
 // Polygon_2r
@@ -124,6 +197,7 @@ void Polygon_2r::ComputeIntegerHull() {
             std::prev(end(tentative_hull.vertices()))->vertex());
 }
 
+
 void Polygon_2r::CloseBoundary() {
     boundary_.Close();
 }
@@ -160,16 +234,22 @@ void PolyChain_2r::AppendVertex(const Point_2r& v) {
 void PolyChain_2r::AppendVertex(SharedPoint_2r v) {
     PolyChainVertex_2r chain_vertex(v);
     vertices_.push_back(chain_vertex);
-    SigRegisterPoint_2r(*chain_vertex.vertex_sptr());
-    SigPushVisualPoint_2r(chain_vertex.vertex(), Visual::Point());
 
-    if(vertices_.size() > 1) {
+    Visual::Material vMat;
+    //vMat.set_ambient(Visual::Color(0, 151, 255, 255));
+    Visual::Point vPoint(vMat);
+    Visual::Segment vSeg(vMat);
+
+    SigRegisterPoint_2r(*chain_vertex.vertex_sptr());
+    SigPushVisualPoint_2r(chain_vertex.vertex(), vPoint);
+
+    if (vertices_.size() > 1) {
         auto e0 = std::prev(end(vertices_), 2);
         auto e1 = std::prev(end(vertices_), 1);
         Segment_2r edge(e0->vertex_sptr(), e1->vertex_sptr());
         e0->set_edge_next(edge);
         e1->set_edge_prev(edge);
-        SigPushVisualSegment_2r(edge, Visual::Segment());
+        SigPushVisualSegment_2r(edge, vSeg);
     }
 }
 
@@ -202,9 +282,18 @@ PolyChainVertex_2r& PolyChain_2r::back() {
     return vertices_.back();
 }
 
+PolyChainVertex_2r& PolyChain_2r::front() {
+    return vertices_.front();
+}
+
 const std::list<PolyChainVertex_2r>& PolyChain_2r::vertices() const {
     return vertices_;
 }
+
+std::list<PolyChainVertex_2r>& PolyChain_2r::vertices(){
+    return vertices_;
+}
+
 const bool PolyChain_2r::closed() const {
     return closed_;
 }
