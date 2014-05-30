@@ -26,6 +26,7 @@ public:
     explicit PolyChainVertex_2r(SharedPoint_2r vertex);
 
     const Point_2r& vertex() const;
+    Point_2r& vertex();
     const Segment_2r& edge_prev() const;
     const Segment_2r& edge_next() const;
     SharedPoint_2r vertex_sptr();
@@ -117,28 +118,30 @@ public:
     Polygon_2rDq();
     ~Polygon_2rDq();
 
-    void PushFront(SharedPoint_2r v);
-    void PushBack(SharedPoint_2r v);
+    void PushFront(PolyChainVertex_2r v);
+    void PushBack(PolyChainVertex_2r v);
 
-    SharedPoint_2r PopFront();
-    SharedPoint_2r PopBack();
+    PolyChainVertex_2r PopFront();
+    PolyChainVertex_2r PopBack();
+    PolyChainVertex_2r front();
+    PolyChainVertex_2r back();
     const size_t NumVertices() const;
 
-    const std::deque<SharedPoint_2r> boundary() const;
+    const std::deque<PolyChainVertex_2r> boundary() const;
 
-    SharedPoint_2r operator[](int index);
+    PolyChainVertex_2r operator[](int index);
 
     //const Visual::Color& diffuse() const { return diffuse_; }
     //void set_diffuse(const Visual::Color& diffuse) { diffuse_ = diffuse; }
 
 
 private:
-    std::deque<SharedPoint_2r> boundary_;
+    std::deque<PolyChainVertex_2r> boundary_;
 //    std::vector<Triangle_2r> triangulation_;
 //    Visual::Color diffuse_;
 };
 
-Polygon_2rDq Melkman(const PolyChain_2r P,
+Polygon_2rDq Melkman(const PolyChain_2r& P,
                    Visual::IGeometryObserver* observer = nullptr);
 
 //Polygon_2r IntegerHull(const Polygon_2r& P, IGeometryObserver* observer = nullptr);

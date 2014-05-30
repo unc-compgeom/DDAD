@@ -63,7 +63,7 @@ public:
     ScenePolyLine_2() {
         model_polyline_.AddObserver(this);
     }
-    PolyChain_2r polyline() {
+    const PolyChain_2r& polyline() {
         return model_polyline_;
     }
 

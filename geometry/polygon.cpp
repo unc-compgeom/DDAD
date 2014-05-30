@@ -3,7 +3,7 @@
  * @date 2013-07-21
  */
 
-#include "common.h"
+
 #include "arithmetic.h"
 #include "line.h"
 #include "intersection.h"
@@ -16,41 +16,60 @@ namespace DDAD {
 // Melkman's algorithm
 //=============================================================================
 
-Polygon_2rDq Melkman(const PolyChain_2r P,
+Polygon_2rDq Melkman(const PolyChain_2r& P,
       Visual::IGeometryObserver* observer){
-    LOG(INFO) << "Melkman";
+    LOG(INFO) << "Called Melkman";
     Polygon_2rDq D;
+    D.AddObserver(observer);
     std::list<PolyChainVertex_2r> vertices = P.vertices();
     std::list<PolyChainVertex_2r>::iterator it = vertices.begin();
-    SharedPoint_2r v0 = (*it).vertex_sptr();
-    SharedPoint_2r v1 = (*it).vertex_sptr();
-    SharedPoint_2r pi;
+    PolyChainVertex_2r v0 = *it; it++;
+    PolyChainVertex_2r v1 = *it; it++;
     D.PushFront(v1);
     D.PushFront(v0);
     D.PushFront(v1);
+    LOG(INFO) << "First point is  (" << (v0.vertex()).x() << ", " << (v0.vertex()).y() << ")";
+    LOG(INFO) << "Second point is  (" << (v1.vertex()).x() << ", " << (v1.vertex()).y() << ")";
 
     for(std::list<PolyChainVertex_2r>::iterator ii = it; ii != vertices.end(); ii ++){
-        SharedPoint_2r pi = (*ii).vertex_sptr();
-        LOG(INFO) << "test";
+        PolyChainVertex_2r pi = *ii;
+        LOG(INFO) << "Popping point  (" << (pi.vertex()).x() << ", " << (pi.vertex()).y() << ")";
+        Line_2r topEdge = Line_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
+//        Segment_2r topEdge2 = Segment_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
+//       Visual::Material vMat;
+//        vMat.set_ambient(Visual::Color(255, 0, 0, 255));
+//        Visual::Segment vSeg(vMat);
+//        if(ii != it) {D.SigPopVisualSegment_2r(topEdge2,10);}
+//        D.SigPushVisualSegment_2r(topEdge2, vSeg, 100);
+        Ray_2r topRay = Ray_2r(D[1].vertex_sptr(), topEdge.V());
+        Line_2r botEdge = Line_2r(D[D.NumVertices()-2].vertex_sptr(), D[D.NumVertices()-1].vertex_sptr());
+//        Segment_2r botEdge2 = Segment_2r(D[D.NumVertices()-2].vertex_sptr(), D[D.NumVertices()-1].vertex_sptr());
+//        if(ii != it) {D.SigPopVisualSegment_2r(botEdge2,10);}
+//        D.SigPushVisualSegment_2r(botEdge2, vSeg, 100);
+        Ray_2r botRay = Ray_2r(D[D.NumVertices()-1].vertex_sptr(), botEdge.V());
 
-        Line_2r topEdge = Line_2r(D[0], D[1]);
-        Ray_2r topRay = Ray_2r(D[1], topEdge.V());
-        Line_2r botEdge = Line_2r(D[D.NumVertices()-2], D[D.NumVertices()-1]);
-        Ray_2r botRay = Ray_2r(D[D.NumVertices()-1], botEdge.V());
 
-
-        if((Predicate::AIsRightOfB(*pi, topEdge) || Predicate::AIsAheadOfB(*pi, topRay)) ||
-        (Predicate::AIsRightOfB(*pi, botEdge) || Predicate::AIsAheadOfB(*pi, botRay))){
-            while(Predicate::AIsRightOfB(*pi, topEdge) || Predicate::AIsAheadOfB(*pi, topRay)){
+        if((Predicate::AIsRightOfB(pi.vertex(), topEdge) || Predicate::AIsAheadOfB(pi.vertex(), topRay)) ||
+        (Predicate::AIsRightOfB(pi.vertex(), botEdge) || Predicate::AIsAheadOfB(pi.vertex(), botRay))){
+            while(Predicate::AIsRightOfB(pi.vertex(), topEdge) || Predicate::AIsAheadOfB(pi.vertex(), topRay)){
                 // Pop top
-                topEdge = Line_2r(D.PopFront(), topEdge.p_sptr());
-                topRay = Ray_2r(topEdge.q_sptr(), topEdge.V());
+                D.PopFront();
+                topEdge = Line_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
+//                topEdge2 = Segment_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
+//                D.SigPopVisualSegment_2r(topEdge2,10);
+//                D.SigPushVisualSegment_2r(topEdge2, vSeg, 100);
+                topRay = Ray_2r(D[1].vertex_sptr(), topEdge.V());
             }
-            while(Predicate::AIsRightOfB(*pi, botEdge) || Predicate::AIsAheadOfB(*pi, botRay)){
+            while(Predicate::AIsRightOfB(pi.vertex(), botEdge) || Predicate::AIsAheadOfB(pi.vertex(), botRay)){
                 // Pop bot
-                botEdge = Line_2r(D.PopBack(), botEdge.p_sptr());
-                botRay = Ray_2r(botEdge.q_sptr(), botEdge.V());
+                D.PopBack();
+                botEdge = Line_2r(D[D.NumVertices()-2].vertex_sptr(), D[D.NumVertices()-1].vertex_sptr());
+//                botEdge2 = Segment_2r(D[D.NumVertices()-2].vertex_sptr(), D[D.NumVertices()-1].vertex_sptr());
+//                D.SigPopVisualSegment_2r(botEdge2,10);
+//                D.SigPushVisualSegment_2r(botEdge2, vSeg, 100);
+                botRay = Ray_2r(D[D.NumVertices()-1].vertex_sptr(), botEdge.V());
             }
+
             D.PushBack(pi);
             D.PushFront(pi);
         }
@@ -68,30 +87,67 @@ Polygon_2rDq::Polygon_2rDq() {}
 
 Polygon_2rDq::~Polygon_2rDq() {}
 
-void Polygon_2rDq::PushFront(SharedPoint_2r v){
+void Polygon_2rDq::PushFront(PolyChainVertex_2r v){
+    Visual::Material vMat;
+    vMat.set_ambient(Visual::Color(0, 0, 255, 255));
+    Visual::Point vPoint(vMat);
+    Visual::Segment vSeg(vMat);
+    SigRegisterPoint_2r(v.vertex());
+    SigPushVisualPoint_2r(v.vertex(), vPoint, 100);
     boundary_.push_front(v);
+    if(boundary_.size()>1){
+        auto e0 = begin(boundary_);
+        auto e1 = std::next(begin(boundary_), 1);
+        Segment_2r edge((*e0).vertex_sptr(), (*e1).vertex_sptr());
+        e0->set_edge_next(edge);
+        e1->set_edge_prev(edge);
+        SigPushVisualSegment_2r(edge, vSeg, 100);
+    }
+
 }
 
-void Polygon_2rDq::PushBack(SharedPoint_2r v){
+void Polygon_2rDq::PushBack(PolyChainVertex_2r v){
+    Visual::Material vMat;
+    vMat.set_ambient(Visual::Color(0, 0, 255, 255));
+    Visual::Point vPoint(vMat);
+    Visual::Segment vSeg(vMat);
+    SigRegisterPoint_2r(v.vertex());
+    SigPushVisualPoint_2r(v.vertex(), vPoint, 100);
     boundary_.push_back(v);
+    auto e0 = std::prev(end(boundary_), 2);
+    auto e1 = std::prev(end(boundary_), 1);
+    Segment_2r edge((*e0).vertex_sptr(), (*e1).vertex_sptr());
+    e1->set_edge_prev(edge);
+    e0->set_edge_next(edge);
+    SigPushVisualSegment_2r(edge, vSeg, 100);
 }
 
-SharedPoint_2r Polygon_2rDq::PopFront(){
-    SharedPoint_2r v = boundary_.front();
+PolyChainVertex_2r Polygon_2rDq::PopFront(){
+    PolyChainVertex_2r v = boundary_.front();
+    SigPopVisualPoint_2r(v.vertex());
+    SigPopVisualSegment_2r(v.edge_next(), 100);
     boundary_.pop_front();
     return v;
 }
 
-SharedPoint_2r Polygon_2rDq::PopBack(){
-    SharedPoint_2r v = boundary_.back();
+PolyChainVertex_2r Polygon_2rDq::PopBack(){
+    PolyChainVertex_2r v = boundary_.back();
+    SigPopVisualPoint_2r(v.vertex());
+    SigPopVisualSegment_2r(v.edge_prev(), 100);
     boundary_.pop_back();
     return v;
 }
 const size_t Polygon_2rDq::NumVertices() const {
     return boundary_.size();
 }
+PolyChainVertex_2r Polygon_2rDq::front(){
+    return boundary_.front();
+}
+PolyChainVertex_2r Polygon_2rDq::back(){
+    return boundary_.back();
+}
 
-SharedPoint_2r Polygon_2rDq::operator [](int index) {
+PolyChainVertex_2r Polygon_2rDq::operator [](int index) {
     return boundary_[index];
 }
 
@@ -335,6 +391,10 @@ bool AIsLeftOfB(const PolyChainVertex_2r& a, const PolyChainVertex_2r& b) {
 const Point_2r& PolyChainVertex_2r::vertex() const {
     return *vertex_;
 }
+Point_2r& PolyChainVertex_2r::vertex() {
+    return *vertex_;
+}
+
 const Segment_2r& PolyChainVertex_2r::edge_next() const {
     return edge_next_;
 }
