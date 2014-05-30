@@ -312,7 +312,15 @@ void SceneObserver::onUpdateNewPolyLine(const QVector2D& cur) {
 void SceneObserver::onEndCreatePolyLine() {
     qDebug() << "SceneObserver EndCreatePolytope";
     ConfigManager::get().set_input_state(CREATE_POLYLINE);
-    DDAD::Melkman(SelectedPolyLine_2()->polyline(), SelectedPolyLine_2());
+    DDAD::Polygon_2rDq CVH = DDAD::Melkman(SelectedPolyLine_2()->polyline(), SelectedPolyLine_2());
+    qDebug() << "Resulting hull:";
+    Visual::Material vMat;
+    vMat.set_ambient(Visual::Color(0, 255, 0, 255));
+    Visual::Point vPoint(vMat);
+    for(int ii = 0; ii < CVH.NumVertices(); ii++){
+        PolyChainVertex_2r vt = CVH[ii];
+        CVH.SigPushVisualPoint_2r(vt.vertex(), vPoint, 1000);
+    }
     //SelectedPolytope_3()->Update();
 }
 

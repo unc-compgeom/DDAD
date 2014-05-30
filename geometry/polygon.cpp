@@ -69,9 +69,9 @@ Polygon_2rDq Melkman(const PolyChain_2r& P,
 //                D.SigPushVisualSegment_2r(botEdge2, vSeg, 100);
                 botRay = Ray_2r(D[D.NumVertices()-1].vertex_sptr(), botEdge.V());
             }
-
-            D.PushBack(pi);
             D.PushFront(pi);
+            D.PushBack(pi);
+
         }
     }
     return D;
@@ -108,7 +108,7 @@ void Polygon_2rDq::PushFront(PolyChainVertex_2r v){
 
 void Polygon_2rDq::PushBack(PolyChainVertex_2r v){
     Visual::Material vMat;
-    vMat.set_ambient(Visual::Color(0, 0, 255, 255));
+    vMat.set_ambient(Visual::Color(255, 0, 0, 255));
     Visual::Point vPoint(vMat);
     Visual::Segment vSeg(vMat);
     SigRegisterPoint_2r(v.vertex());
