@@ -1,0 +1,457 @@
+Tgeometry
+v6
+r1
+cCheck dependencies
+cCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o /Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o /Users/evan/Dropbox/DDAD/geometry/common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o /Users/evan/Dropbox/DDAD/geometry/intersection.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o /Users/evan/Dropbox/DDAD/geometry/line.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o /Users/evan/Dropbox/DDAD/geometry/matrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/SDKSettings.plist
+c0000000053308B53000000000000044C
+t1395690323
+s1100
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/CoreServices/SystemVersion.plist
+c0000000053308B5300000000000001DE
+t1395690323
+s478
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/point.o
+t2
+s0
+
+N/Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp
+c00000000538C7E6A0000000000000000
+t1401716330
+s0
+
+N/Users/evan/Dropbox/DDAD/geometry/common.cpp
+c00000000538C7E6A0000000000000000
+t1401716330
+s0
+
+N/Users/evan/Dropbox/DDAD/geometry/intersection.cpp
+c00000000538C8D160000000000001A82
+t1401720086
+s6786
+
+N/Users/evan/Dropbox/DDAD/geometry/line.cpp
+c00000000538C8D1600000000000029AF
+t1401720086
+s10671
+
+N/Users/evan/Dropbox/DDAD/geometry/matrix.cpp
+c00000000538C7E6A0000000000000A2A
+t1401716330
+s2602
+
+N/Users/evan/Dropbox/DDAD/geometry/point.cpp
+c00000000538C7E6A0000000000000607
+t1401716330
+s1543
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/common.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/intersection.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/line.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/matrix.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/point.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/polygon.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/polytope.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/quadedge.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/triangle.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/triangulation.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/visual.cpp
+r0
+
+CBuild AST from /Users/evan/Dropbox/DDAD/geometry/wedge.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies2f152b8f073db941^16bd2b8f073db941^---0#1#1#--18"Check dependencies36"27E324B2-DE69-4CEC-8BDE-5C022027EA0E-
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o /Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s423430031.682039
+e423430031.699507
+r1
+xCompileC
+xevanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o
+x/Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+d/Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection56"Compile /Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp178"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o geometry/arithmetic.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler29aeae8f073db941^df32b38f073db941^---0#0#1#-19%DVTDocumentLocation2@55"file:///Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp0000000000000000^2114"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o geometry/arithmetic.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.dia -c /Users/evan/Dropbox/DDAD/geometry/arithmetic.cpp -o /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/arithmetic.o36"A00B7BC8-8A99-4C7D-9D80-B82413C77900-
+bB52D23CC-A501-4181-AA2A-927FAFD3D206
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o /Users/evan/Dropbox/DDAD/geometry/common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s423430031.699858
+e423430031.719734
+r1
+xCompileC
+xevanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o
+x/Users/evan/Dropbox/DDAD/geometry/common.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+d/Users/evan/Dropbox/DDAD/geometry/common.cpp
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection52"Compile /Users/evan/Dropbox/DDAD/geometry/common.cpp170"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o geometry/common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compilerd785b38f073db941^9755b88f073db941^---0#0#1#-19%DVTDocumentLocation2@51"file:///Users/evan/Dropbox/DDAD/geometry/common.cpp0000000000000000^2090"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o geometry/common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.dia -c /Users/evan/Dropbox/DDAD/geometry/common.cpp -o /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/common.o36"8ED7D6C8-750A-429E-9BA9-52D99F1CCDC3-
+bB52D23CC-A501-4181-AA2A-927FAFD3D206
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o /Users/evan/Dropbox/DDAD/geometry/intersection.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s423430031.721057
+e423430034.916624
+r1
+xCompileC
+xevanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o
+x/Users/evan/Dropbox/DDAD/geometry/intersection.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+d/Users/evan/Dropbox/DDAD/geometry/intersection.cpp
+d/Users/evan/Dropbox/DDAD/geometry/common.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpir.h
+d/Users/evan/Dropbox/DDAD/logging/easylogging++.h
+d/Users/evan/Dropbox/DDAD/geometry/intersection.h
+d/Users/evan/Dropbox/DDAD/geometry/vector.h
+d/Users/evan/Dropbox/DDAD/geometry/point.h
+d/Users/evan/Dropbox/DDAD/geometry/arithmetic.h
+d/Users/evan/Dropbox/DDAD/geometry/visual.h
+d/Users/evan/Dropbox/DDAD/geometry/line.h
+d/Users/evan/Dropbox/DDAD/geometry/triangle.h
+o/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:20:5: warning: field 'type_' will be initialized after field 'line_imp_' [-Wreorder]
+o    type_(INTERSECTION_EMPTY),
+o    ^
+o/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:92:5: warning: field 'type_' will be initialized after field 'line_' [-Wreorder]
+o    type_(INTERSECTION_EMPTY),
+o    ^
+o/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:173:5: warning: field 'type_' will be initialized after field 'ray_' [-Wreorder]
+o    type_(INTERSECTION_EMPTY),
+o    ^
+o3 warnings generated.
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection58"Compile /Users/evan/Dropbox/DDAD/geometry/intersection.cpp182"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o geometry/intersection.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler4bacb88f073db941^cbbbea92073db941^-533"/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:20:5: warning: field 'type_' will be initialized after field 'line_imp_' [-Wreorder]    type_(INTERSECTION_EMPTY),    ^/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:92:5: warning: field 'type_' will be initialized after field 'line_' [-Wreorder]    type_(INTERSECTION_EMPTY),    ^/Users/evan/Dropbox/DDAD/geometry/intersection.cpp:173:5: warning: field 'type_' will be initialized after field 'ray_' [-Wreorder]    type_(INTERSECTION_EMPTY),    ^3 warnings generated.3(36%IDEClangDiagnosticActivityLogMessage2@57"Field 'type_' will be initialized after field 'line_imp_'-423430034#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@57"file:///Users/evan/Dropbox/DDAD/geometry/intersection.cpp0000000000000000^19#4#19#4#444#0#14"Semantic Issue--2@53"Field 'type_' will be initialized after field 'line_'-423430034#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@57"file:///Users/evan/Dropbox/DDAD/geometry/intersection.cpp0000000000000000^91#4#91#4#2560#0#14"Semantic Issue--2@52"Field 'type_' will be initialized after field 'ray_'-423430034#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@57"file:///Users/evan/Dropbox/DDAD/geometry/intersection.cpp0000000000000000^172#4#172#4#4900#0#14"Semantic Issue--0#0#1#-19%DVTDocumentLocation4@57"file:///Users/evan/Dropbox/DDAD/geometry/intersection.cpp0000000000000000^2126"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o geometry/intersection.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.dia -c /Users/evan/Dropbox/DDAD/geometry/intersection.cpp -o /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/intersection.o36"42D420F1-1E7E-4FE0-84CD-6D7D59B87EC9-
+bB52D23CC-A501-4181-AA2A-927FAFD3D206
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o /Users/evan/Dropbox/DDAD/geometry/line.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s423430033.009438
+e423430035.597875
+r0
+xCompileC
+xevanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o
+x/Users/evan/Dropbox/DDAD/geometry/line.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+d/Users/evan/Dropbox/DDAD/geometry/line.cpp
+d/Users/evan/Dropbox/DDAD/geometry/common.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpir.h
+d/Users/evan/Dropbox/DDAD/logging/easylogging++.h
+d/Users/evan/Dropbox/DDAD/geometry/line.h
+d/Users/evan/Dropbox/DDAD/geometry/point.h
+d/Users/evan/Dropbox/DDAD/geometry/arithmetic.h
+d/Users/evan/Dropbox/DDAD/geometry/vector.h
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:28:14: error: no matching function for call to 'make_shared'
+o        p_ = std::make_shared<Point_2r>(c, 0);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:29:14: error: no matching function for call to 'make_shared'
+o        q_ = std::make_shared<Point_2r>(c, 1);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:32:14: error: no matching function for call to 'make_shared'
+o        p_ = std::make_shared<Point_2r>(c, 0);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:33:14: error: no matching function for call to 'make_shared'
+o        q_ = std::make_shared<Point_2r>(c, -1);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:36:14: error: no matching function for call to 'make_shared'
+o        p_ = std::make_shared<Point_2r>(0, c);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:37:14: error: no matching function for call to 'make_shared'
+o        q_ = std::make_shared<Point_2r>(1, c);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:40:14: error: no matching function for call to 'make_shared'
+o        p_ = std::make_shared<Point_2r>(0, c);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:41:14: error: no matching function for call to 'make_shared'
+o        q_ = std::make_shared<Point_2r>(-1, c);
+o             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were provided
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:180:22: error: no matching function for call to 'make_shared'
+o    support_(origin, std::make_shared<Point_2r>(*origin+direction)) {}
+o                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = DDAD::Point_2r] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 1 was provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function template not viable: requires 2 arguments, but 1 was provided
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 1 was provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o/Users/evan/Dropbox/DDAD/geometry/line.cpp:360:22: error: no matching function for call to 'make_shared'
+o    support_(origin, std::make_shared<Point_3r>(*origin+direction)) {}
+o                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:
+oIn file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:
+oIn file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:
+oIn file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function [with _Tp = DDAD::Point_3r, _A0 = DDAD::Point_3r] not viable: expects an l-value for 1st argument
+omake_shared(_A0& __a0)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 1 was provided
+omake_shared()
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function template not viable: requires 2 arguments, but 1 was provided
+omake_shared(_A0& __a0, _A1& __a1)
+o^
+o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 1 was provided
+omake_shared(_A0& __a0, _A1& __a1, _A2& __a2)
+o^
+o10 errors generated.
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection50"Compile /Users/evan/Dropbox/DDAD/geometry/line.cpp166"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o geometry/line.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler417e0291073db941^45679993073db941^-17047"/Users/evan/Dropbox/DDAD/geometry/line.cpp:28:14: error: no matching function for call to 'make_shared'        p_ = std::make_shared<Point_2r>(c, 0);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:29:14: error: no matching function for call to 'make_shared'        q_ = std::make_shared<Point_2r>(c, 1);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:32:14: error: no matching function for call to 'make_shared'        p_ = std::make_shared<Point_2r>(c, 0);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:33:14: error: no matching function for call to 'make_shared'        q_ = std::make_shared<Point_2r>(c, -1);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:36:14: error: no matching function for call to 'make_shared'        p_ = std::make_shared<Point_2r>(0, c);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:37:14: error: no matching function for call to 'make_shared'        q_ = std::make_shared<Point_2r>(1, c);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:40:14: error: no matching function for call to 'make_shared'        p_ = std::make_shared<Point_2r>(0, c);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:41:14: error: no matching function for call to 'make_shared'        q_ = std::make_shared<Point_2r>(-1, c);             ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 2 were providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function template not viable: requires single argument '__a0', but 2 arguments were providedmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 2 were providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:180:22: error: no matching function for call to 'make_shared'    support_(origin, std::make_shared<Point_2r>(*origin+direction)) {}                     ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function [with _Tp = DDAD::Point_2r, _A0 = DDAD::Point_2r] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 1 was providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function template not viable: requires 2 arguments, but 1 was providedmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 1 was providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^/Users/evan/Dropbox/DDAD/geometry/line.cpp:360:22: error: no matching function for call to 'make_shared'    support_(origin, std::make_shared<Point_3r>(*origin+direction)) {}                     ^~~~~~~~~~~~~~~~~~~~~~~~~~In file included from /Users/evan/Dropbox/DDAD/geometry/line.cpp:6:In file included from /Users/evan/Dropbox/DDAD/geometry/common.h:14:In file included from /Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h:40:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:439:In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:627:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4658:1: note: candidate function [with _Tp = DDAD::Point_3r, _A0 = DDAD::Point_3r] not viable: expects an l-value for 1st argumentmake_shared(_A0& __a0)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4650:1: note: candidate function template not viable: requires 0 arguments, but 1 was providedmake_shared()^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4666:1: note: candidate function template not viable: requires 2 arguments, but 1 was providedmake_shared(_A0& __a0, _A1& __a1)^/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:4674:1: note: candidate function template not viable: requires 3 arguments, but 1 was providedmake_shared(_A0& __a0, _A1& __a1, _A2& __a2)^10 errors generated.10(36%IDEClangDiagnosticActivityLogMessage2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^27#13#27#13#631#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^27#13#27#39#631#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^28#13#28#13#678#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^28#13#28#39#678#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^31#13#31#13#766#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^31#13#31#39#766#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = const __gmp_expr<mpq_t, mpq_t>, _A1 = int] not viable: expects an l-value for 2nd argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^32#13#32#13#813#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^32#13#32#39#813#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^35#13#35#13#898#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^35#13#35#39#898#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^36#13#36#13#945#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^36#13#36#39#945#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^39#13#39#13#1029#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^39#13#39#39#1029#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@143"Candidate function [with _Tp = DDAD::Point_2r, _A0 = int, _A1 = const __gmp_expr<mpq_t, mpq_t>] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 0 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@102"Candidate function template not viable: requires single argument '__a0', but 2 arguments were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@81"Candidate function template not viable: requires 3 arguments, but 2 were provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^40#13#40#13#1076#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^40#13#40#39#1076#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@116"Candidate function [with _Tp = DDAD::Point_2r, _A0 = DDAD::Point_2r] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 0 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 2 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 3 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^179#21#179#21#4658#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^179#21#179#47#4658#25#-2@46"No matching function for call to 'make_shared'-423430035#18446744073709551615#0#4(2@116"Candidate function [with _Tp = DDAD::Point_3r, _A0 = DDAD::Point_3r] not viable: expects an l-value for 1st argument-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4657#0#4657#0#152852#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 0 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4649#0#4649#0#152710#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 2 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4665#0#4665#0#153018#0#14"Semantic Issue--2@80"Candidate function template not viable: requires 3 arguments, but 1 was provided-423430035#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@107"file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1/memory0000000000000000^4673#0#4673#0#153212#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^359#21#359#21#9017#0#14"Semantic Issue1(3@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^359#21#359#47#9017#25#-0#0#1#-19%DVTDocumentLocation4@49"file:///Users/evan/Dropbox/DDAD/geometry/line.cpp0000000000000000^2078"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o geometry/line.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.dia -c /Users/evan/Dropbox/DDAD/geometry/line.cpp -o /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/line.o36"2653625D-6392-4226-91C2-A922FFD5CAA4-
+bB52D23CC-A501-4181-AA2A-927FAFD3D206
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o /Users/evan/Dropbox/DDAD/geometry/matrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s423430034.917997
+e423430036.906829
+r1
+xCompileC
+xevanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o
+x/Users/evan/Dropbox/DDAD/geometry/matrix.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+d/Users/evan/Dropbox/DDAD/geometry/matrix.cpp
+d/Users/evan/Dropbox/DDAD/geometry/common.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpirxx.h
+d/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac/mpir.h
+d/Users/evan/Dropbox/DDAD/logging/easylogging++.h
+d/Users/evan/Dropbox/DDAD/geometry/matrix.h
+d/Users/evan/Dropbox/DDAD/geometry/point.h
+d/Users/evan/Dropbox/DDAD/geometry/arithmetic.h
+d/Users/evan/Dropbox/DDAD/geometry/vector.h
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection52"Compile /Users/evan/Dropbox/DDAD/geometry/matrix.cpp170"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o geometry/matrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler3c16eb92073db941^d84ae894073db941^---0#0#1#-19%DVTDocumentLocation2@51"file:///Users/evan/Dropbox/DDAD/geometry/matrix.cpp0000000000000000^2090"CompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o geometry/matrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/geometry/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.dia -c /Users/evan/Dropbox/DDAD/geometry/matrix.cpp -o /Users/evan/Dropbox/DDAD/evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/matrix.o36"2850E039-726F-4641-8187-03B9030FE1C7-
+bB52D23CC-A501-4181-AA2A-927FAFD3D206
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/point.o /Users/evan/Dropbox/DDAD/geometry/point.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/polygon.o /Users/evan/Dropbox/DDAD/geometry/polygon.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/polytope.o /Users/evan/Dropbox/DDAD/geometry/polytope.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/quadedge.o /Users/evan/Dropbox/DDAD/geometry/quadedge.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/triangle.o /Users/evan/Dropbox/DDAD/geometry/triangle.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/triangulation.o /Users/evan/Dropbox/DDAD/geometry/triangulation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/visual.o /Users/evan/Dropbox/DDAD/geometry/visual.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC evanbin/geometry/DDAD.build/Debug/geometry.build/Objects-normal/x86_64/wedge.o /Users/evan/Dropbox/DDAD/geometry/wedge.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CLibtool /Users/evan/Dropbox/DDAD/evanbin/geometry/Debug/libgeometry.a normal x86_64
+r0
+

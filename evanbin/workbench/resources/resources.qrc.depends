@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>aboutext.png</file>
+        <file>icons/appicon.png</file>
+        <file>splash2.png</file>
+        <file>splash3.png</file>
+        <file>icons/select_object.png</file>
+        <file>icons/create_polytope.png</file>
+        <file>icons/appicon.ico</file>
+        <file>icons/snap_to_grid.png</file>
+        <file>shaders/mat_unlit_opaque.vsh</file>
+        <file>shaders/mat_unlit_opaque.fsh</file>
+        <file>shaders/mat_flat_opaque.fsh</file>
+        <file>shaders/mat_flat_opaque.vsh</file>
+        <file>shaders/mat_flat_transparent.fsh</file>
+        <file>shaders/mat_flat_transparent.vsh</file>
+        <file>shaders/mat_unlit_transparent.fsh</file>
+        <file>shaders/mat_unlit_transparent.vsh</file>
+        <file>icons/create_terrain.png</file>
+    </qresource>
+</RCC>

@@ -25,20 +25,20 @@ Line_2r::Line_2r(SlopeType slope_type, const rational& c) :
     slope_type_(slope_type) {
     switch(slope_type_) {
     case SLOPE_PINFINITY:
-        p_ = std::make_shared<Point_2r>(c, 0);
-        q_ = std::make_shared<Point_2r>(c, 1);
+        p_ = std::shared_ptr<Point_2r>(new Point_2r(c, 0));
+        q_ = std::shared_ptr<Point_2r>(new Point_2r(c, 1));
         break;
     case SLOPE_NINFINITY:
-        p_ = std::make_shared<Point_2r>(c, 0);
-        q_ = std::make_shared<Point_2r>(c, -1);
+        p_ = std::shared_ptr<Point_2r>(new Point_2r(c, 0));
+        q_ = std::shared_ptr<Point_2r>(new Point_2r(c, -1));
         break;
     case SLOPE_PZERO:
-        p_ = std::make_shared<Point_2r>(0, c);
-        q_ = std::make_shared<Point_2r>(1, c);
+        p_ = std::shared_ptr<Point_2r>(new Point_2r(0, c));
+        q_ = std::shared_ptr<Point_2r>(new Point_2r(1, c));
         break;
     case SLOPE_NZERO:
-        p_ = std::make_shared<Point_2r>(0, c);
-        q_ = std::make_shared<Point_2r>(-1, c);
+        p_ = std::shared_ptr<Point_2r>(new Point_2r(0, c));
+        q_ = std::shared_ptr<Point_2r>(new Point_2r(-1, c));
         break;
     default:
         slope_type_ = SLOPE_DEGENERATE;
@@ -177,7 +177,7 @@ Ray_2r::Ray_2r() {}
 Ray_2r::Ray_2r(SharedPoint_2r origin, const Vector_2r& direction) :
     origin_(origin),
     direction_(direction),
-    support_(origin, std::make_shared<Point_2r>(*origin+direction)) {}
+    support_(origin, std::shared_ptr<Point_2r>(new Point_2r(*origin+direction))) {}
 
 Ray_2r::Ray_2r(SharedPoint_2r origin, SharedPoint_2r to) :
     origin_(origin),
@@ -357,7 +357,7 @@ Ray_3r::Ray_3r() {}
 Ray_3r::Ray_3r(SharedPoint_3r origin, const Vector_3r& direction) :
     origin_(origin),
     direction_(direction),
-    support_(origin, std::make_shared<Point_3r>(*origin+direction)) {}
+    support_(origin, std::shared_ptr<Point_3r>(new Point_3r(*origin+direction))) {}
 
 Ray_3r::Ray_3r(SharedPoint_3r origin, SharedPoint_3r to) :
     origin_(origin),

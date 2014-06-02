@@ -81,7 +81,7 @@ public:
 
 private:
     //std::vector<Wedge_2r> wedge_stack_;
-    std::vector<std::shared_ptr<Wedge_2r>> wedge_stack_;
+    std::vector<std::shared_ptr<Wedge_2r> > wedge_stack_;
     SharedPoint_2r origin_;
 };
 

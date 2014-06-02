@@ -211,12 +211,12 @@ void Polygon_2r::ComputeIntegerHull() {
     WedgeStack_2r wstack;
     wstack.AddObserver(this);
     wstack.AttachToOrigin(tentative_hull.back().vertex_sptr());
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r( 0, 1), Vector_2r(-1, 0)));
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r( 1, 0), Vector_2r( 0, 1)));
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r( 0,-1), Vector_2r( 1, 0)));
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r(-1, 0), Vector_2r( 0,-1)));
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r( 0, 1), Vector_2r(-1, 0)));
-    wstack.Push(std::make_shared<Wedge_2r>(Vector_2r( 1, 0), Vector_2r( 0, 1)));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r( 0, 1), Vector_2r(-1, 0))));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r( 1, 0), Vector_2r( 0, 1))));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r( 0,-1), Vector_2r( 1, 0))));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r(-1, 0), Vector_2r( 0,-1))));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r( 0, 1), Vector_2r(-1, 0))));
+    wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(Vector_2r( 1, 0), Vector_2r( 0, 1))));
 
     auto vert_itr_P = vert_itr_max_x;
     auto L = Line_2r(SLOPE_PINFINITY, vert_itr_P->vertex().x());
@@ -242,8 +242,8 @@ void Polygon_2r::ComputeIntegerHull() {
             tentative_hull.AppendVertex(z);
             wstack.AttachToOrigin(tentative_hull.back().vertex_sptr());
         } else {
-            wstack.Push(std::make_shared<Wedge_2r>(wtop->u()+wtop->v(), wtop->v()));
-            wstack.Push(std::make_shared<Wedge_2r>(wtop->u(), wtop->u()+wtop->v()));
+            wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(wtop->u()+wtop->v(), wtop->v())));
+            wstack.Push(std::shared_ptr<Wedge_2r>(new Wedge_2r(wtop->u(), wtop->u()+wtop->v())));
         }
     }
 

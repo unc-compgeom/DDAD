@@ -1,0 +1,34 @@
+Tworkbench_automoc
+v6
+r1
+cCheck dependencies
+cPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+
+N/Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+c00000000538CD00900000000000000B6
+t1401737225
+s182
+
+CCheck dependencies
+r0
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies4a61fe88073db941^5e480389073db941^---0#1#1#--18"Check dependencies36"2B2037EF-117A-4FC9-ABEE-D1B18C3BD921-
+
+CPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+s423430025.018871
+e423430030.187627
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+oecho "Automoc for target workbench"
+oAutomoc for target workbench
+ocd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ Debug
+oGenerating moc_qt_dialog_about.cpp
+oGenerating moc_qt_dialog_preferences.cpp
+oGenerating moc_qt_widget_orthographic.cpp
+oGenerating moc_qt_widget_perspective.cpp
+oGenerating moc_qt_window_main.cpp
+oGenerating moc_scene.cpp
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'127"PhaseScriptExecution CMake\ Rules evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh8a940689073db941^8d0a308e073db941^-483"echo "Automoc for target workbench"Automoc for target workbenchcd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ DebugGenerating moc_qt_dialog_about.cppGenerating moc_qt_dialog_preferences.cppGenerating moc_qt_widget_orthographic.cppGenerating moc_qt_widget_perspective.cppGenerating moc_qt_window_main.cppGenerating moc_scene.cpp9(21%IDEActivityLogMessage2@36"echo "Automoc for target workbench"-423430025#0#36#-0#-----2@29"Automoc for target workbench-423430025#36#29#-0#-----2@200"cd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ Debug-423430025#65#200#-0#-----2@35"Generating moc_qt_dialog_about.cpp-423430030#265#35#-0#-----2@41"Generating moc_qt_dialog_preferences.cpp-423430030#300#41#-0#-----2@42"Generating moc_qt_widget_orthographic.cpp-423430030#341#42#-0#-----2@41"Generating moc_qt_widget_perspective.cpp-423430030#383#41#-0#-----2@34"Generating moc_qt_window_main.cpp-423430030#424#34#-0#-----2@25"Generating moc_scene.cpp-423430030#458#25#-0#-----0#0#1#--294"PhaseScriptExecution CMake\ Rules evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh    cd /Users/evan/Dropbox/DDAD    /bin/sh -c /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh36"BAFC8A7D-0D40-4400-ADD1-D47999BB9E31-
+b54CC308A-61E0-4F86-8A30-E702A0F45351
+

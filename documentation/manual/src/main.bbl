@@ -1,0 +1,143 @@
+\begin{thebibliography}{10}
+
+\bibitem{amenta1995geomview}
+N.~Amenta, S.~Levy, T.~Munzner, and M.~Phillips.
+\newblock Geomview: A system for geometric visualization.
+\newblock In {\em Proceedings of the eleventh annual symposium on Computational
+  geometry}, pages 412--413. ACM, 1995.
+
+\bibitem{basken2002geowin}
+M.~B{\"a}sken and S.~N{\"a}her.
+\newblock Geowin a generic tool for interactive visualization of geometric
+  algorithms.
+\newblock In {\em Software Visualization}, pages 88--100. Springer, 2002.
+
+\bibitem{brown1984system}
+M.~H. Brown and R.~Sedgewick.
+\newblock A system for algorithm animation.
+\newblock In {\em Proceedings of the 11th annual conference on Computer
+  graphics and interactive techniques}, SIGGRAPH '84, pages 177--186, New York,
+  NY, USA, 1984. ACM.
+
+\bibitem{de1993animation}
+P.~de~Rezende and W.~Jacometti.
+\newblock Animation of geometric algorithms using geolab.
+\newblock In {\em Proceedings of the ninth annual symposium on Computational
+  geometry}, pages 401--402. ACM, 1993.
+
+\bibitem{de1993geolab}
+P.~J. de~Rezende and W.~R. Jacometti.
+\newblock Geolab: An environment for development of algorithms in computational
+  geometry.
+\newblock In {\em CCCG}, pages 175--180, 1993.
+
+\bibitem{diehl2007software}
+S.~Diehl.
+\newblock {\em Software visualization: visualizing the structure, behaviour,
+  and evolution of software}.
+\newblock Springer, 2007.
+
+\bibitem{epstein1994workbench}
+P.~Epstein, J.~Kavanagh, A.~Knight, J.~May, T.~Nguyen, and J.-R. Sack.
+\newblock A workbench for computational geometry.
+\newblock {\em Algorithmica}, 11(4):404--428, 1994.
+
+\bibitem{fabri1996cgal}
+A.~Fabri, G.-J. Giezeman, L.~Kettner, S.~Schirra, and S.~Sch{\"o}nherr.
+\newblock The cgal kernel: A basis for geometric computation.
+\newblock In {\em Applied Computational Geometry Towards Geometric
+  Engineering}, pages 191--202. Springer, 1996.
+
+\bibitem{fabri1998design}
+A.~Fabri, G.-J. Giezeman, L.~Kettner, S.~Schirra, S.~Sch{\"o}nherr, et~al.
+\newblock On the design of cgal, the computational geometry algorithms library.
+\newblock 1998.
+
+\bibitem{hanson1994interactive}
+A.~J. Hanson, T.~Munzner, and G.~Francis.
+\newblock Interactive methods for visualizable geometry.
+\newblock {\em IEEE Computer}, 27(7):73--83, 1994.
+
+\bibitem{hausner1999animation}
+A.~Hausner and D.~P. Dobkin.
+\newblock Animation of geometric algorithms.
+\newblock {\em Handbook of Computational Geometry}, page 389, 1999.
+
+\bibitem{mehlhorn1989leda}
+K.~Mehlhorn and S.~N{\"a}her.
+\newblock Leda a library of efficient data types and algorithms.
+\newblock In {\em Mathematical Foundations of Computer Science 1989}, pages
+  88--106. Springer, 1989.
+
+\bibitem{melkman1987line}
+A.~A. Melkman.
+\newblock On-line construction of the convex hull of a simple polyline.
+\newblock {\em Information Processing Letters}, 25(1):11--12, 1987.
+
+\bibitem{millman2012degree}
+D.~L. Millman.
+\newblock Degree-driven design of geometric algorithms for point location,
+  proximity, and volume calculation.
+\newblock 2012.
+
+\bibitem{overmars1996designing}
+M.~H. Overmars.
+\newblock Designing the computational geometry algorithms library cgal.
+\newblock In {\em Applied computational geometry towards geometric
+  engineering}, pages 53--58. Springer, 1996.
+
+\bibitem{phillips1993geomview}
+M.~Phillips, S.~Levy, and T.~Munzner.
+\newblock Geomview: An interactive geometry viewer.
+\newblock {\em Notices of the American Mathematical Society}, 40(8):985--988,
+  1993.
+
+\bibitem{price1993principled}
+B.~A. Price, R.~M. Baecker, and I.~S. Small.
+\newblock A principled taxonomy of software visualization.
+\newblock {\em Journal of Visual Languages \& Computing}, 4(3):211--266, 1993.
+
+\bibitem{schorn1991robust}
+P.~Schorn.
+\newblock {\em Robust algorithms in a program library for geometric
+  computation}.
+\newblock PhD thesis, Diss. Techn. Wiss. ETH Z{\"u}rich, Nr. 9519, 1991. Ref.:
+  J. Nievergelt; Korref.: G. Gonnet, 1991.
+
+\bibitem{shneerson1997gasp}
+M.~Shneerson and A.~Tal.
+\newblock Gasp-ii: a geometric algorithm animation system for an electronic
+  classroom.
+\newblock In {\em Proceedings of the thirteenth annual symposium on
+  Computational geometry}, pages 379--381. ACM, 1997.
+
+\bibitem{stasko1995polka}
+J.~Stasko.
+\newblock Polka animation designer’s package.
+\newblock {\em Lite Version}, pages 30332--0280, 1995.
+
+\bibitem{stasko1990tango}
+J.~T. Stasko.
+\newblock Tango: A framework and system for algorithm animation.
+\newblock {\em Computer}, 23(9):27--39, 1990.
+
+\bibitem{stasko1995samba}
+J.~T. Stasko.
+\newblock Samba animation designer's package.
+\newblock {\em Graphics, Visualization, and Usability Center, Georgia Institute
+  of Technology, Atlanta, GA}, 1995.
+
+\bibitem{tal1995visualization}
+A.~Tal and D.~Dobkin.
+\newblock Visualization of geometric algorithms.
+\newblock {\em Visualization and Computer Graphics, IEEE Transactions on},
+  1(2):194--204, 1995.
+
+\bibitem{wei2009geobuilder}
+J.-D. Wei, M.-H. Tsai, G.-C. Lee, J.-H. Huang, and D.-T. Lee.
+\newblock Geobuilder: A geometric algorithm visualization and debugging system
+  for 2d and 3d geometric computing.
+\newblock {\em Visualization and Computer Graphics, IEEE Transactions on},
+  15(2):234--248, 2009.
+
+\end{thebibliography}

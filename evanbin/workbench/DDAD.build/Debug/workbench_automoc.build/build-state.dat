@@ -1,0 +1,28 @@
+Tworkbench_automoc
+v6
+r1
+cCheck dependencies
+cPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+
+N/Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+c00000000538CD00900000000000000B6
+t1401737225
+s182
+
+CCheck dependencies
+r0
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies01698f470a3db941^c34996470a3db941^---0#1#1#--18"Check dependencies36"828C1C90-40A6-439F-BEC8-8FD68D1424E2-
+
+CPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+s423430727.561085
+e423430727.722984
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh
+oecho "Automoc for target workbench"
+oAutomoc for target workbench
+ocd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ Debug
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'127"PhaseScriptExecution CMake\ Rules evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh9e0991470a3db941^aad4b8470a3db941^-265"echo "Automoc for target workbench"Automoc for target workbenchcd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ Debug3(21%IDEActivityLogMessage2@36"echo "Automoc for target workbench"-423430727#0#36#-0#-----2@29"Automoc for target workbench-423430727#36#29#-0#-----2@200"cd /Users/evan/Dropbox/DDAD/evanbin/workbench && /Applications/CMake\ 2.8-12.app/Contents/bin/cmake -E cmake_automoc /Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir/ Debug-423430727#65#200#-0#-----0#0#1#--294"PhaseScriptExecution CMake\ Rules evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh    cd /Users/evan/Dropbox/DDAD    /bin/sh -c /Users/evan/Dropbox/DDAD/evanbin/workbench/DDAD.build/Debug/workbench_automoc.build/Script-506E028690B240C9A407CCC7.sh36"000FBE58-9B63-4ADA-B226-C0203FD2CEFC-
+b98573A26-89EA-44A7-ABA2-46EE9F16164F
+
