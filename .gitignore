@@ -1,0 +1,9 @@
+#ignore CMakeFiles
+/CMakeFiles/*
+/CMakeFiles
+/geometry/CMakeFiles/*
+/geometry/CMakeFiles
+/logging/CMakeFiles/*
+/logging/CMakeFiles
+/workbench/CMakeFiles/*
+/workbench/CMakeFiles
