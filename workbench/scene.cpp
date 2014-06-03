@@ -459,7 +459,7 @@ void SceneManager::onUpdateVertexBuffer(const quint32 coverage_idx,
     );
 }
 
-static Point_2f ToPoint_2f(const QVector2D &v, bool snap) {
+Point_2f ToPoint_2f(const QVector2D &v, bool snap) {
     return snap ? Point_2f(qRound(v.x()), qRound(v.y())) :
                   Point_2f(v.x(), v.y());
 }

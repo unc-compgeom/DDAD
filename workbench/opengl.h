@@ -278,9 +278,11 @@ public:
     VertexCache vertex_cache_[Primitive::eMAX];
 };
 
+
 } // namespace GL
 
-Q_DECLARE_METATYPE(QVector<GL::Vertex>)
+
+
 
 //=============================================================================
 // Interface: Renderer
@@ -335,6 +337,8 @@ public:
         case GL::Context::ePERSPECTIVE:
             qDebug() << "Renderer: initializing perspective settings.";
             break;
+        case GL::Context::eMAX:
+            break;
         }
 
         render_groups_[Visual::Coverage::eOPAQUE]
@@ -359,5 +363,6 @@ public:
 };
 
 } // namespace DDAD
+Q_DECLARE_METATYPE(QVector<DDAD::GL::Vertex>)
 
 #endif // RC_OPENGL_H
