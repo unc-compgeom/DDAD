@@ -5,6 +5,7 @@
 
 add_library(geometry
     arithmetic.cpp
+    arrangement.cpp
     common.cpp
     intersection.cpp
     line.cpp
