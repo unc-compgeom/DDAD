@@ -1,0 +1,3 @@
+# Ignore makefiles if building locally
+**/CMakeFiles/*
+**/CMakeFiles
