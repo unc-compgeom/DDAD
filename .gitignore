@@ -1,12 +1,20 @@
 #ignore CMakeFiles
-**/CMakeFiles/*
-**/CMakeFiles
-
-#ignore local setup files
-*.user
+/CMakeFiles/*
+/CMakeFiles
+/geometry/CMakeFiles/*
+/geometry/CMakeFiles
+/logging/CMakeFiles/*
+/logging/CMakeFiles
+/workbench/CMakeFiles/*
+/workbench/CMakeFiles
 
 #ignore Makefiles
-**/Makefile
 /CMakeCache.txt
 /Makefile
-**/cmake_install.cmake
+/cmake_install.cmake
+/geometry/Makefile
+/geometry/cmake_install.cmake
+/logging/Makefile
+/logging/cmake_install.cmake
+/workbench/Makefile
+/workbench/cmake_install.cmake
