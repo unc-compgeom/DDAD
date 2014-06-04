@@ -7,14 +7,3 @@
 /logging/CMakeFiles
 /workbench/CMakeFiles/*
 /workbench/CMakeFiles
-
-#ignore Makefiles
-/CMakeCache.txt
-/Makefile
-/cmake_install.cmake
-/geometry/Makefile
-/geometry/cmake_install.cmake
-/logging/Makefile
-/logging/cmake_install.cmake
-/workbench/Makefile
-/workbench/cmake_install.cmake
