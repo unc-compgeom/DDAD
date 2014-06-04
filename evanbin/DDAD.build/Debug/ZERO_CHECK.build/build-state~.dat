@@ -1,29 +1,0 @@
-TZERO_CHECK
-v6
-r1
-cCheck dependencies
-cPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh
-
-N/Users/evan/Dropbox/DDAD/evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh
-c00000000538CD008000000000000009B
-t1401737224
-s155
-
-CCheck dependencies
-r0
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependenciesde5afe88073db941^d74d0189073db941^---0#1#1#--18"Check dependencies36"E05CD1F7-4016-4233-92FD-A4A5151D60B1-
-
-CPhaseScriptExecution CMake\ Rules /Users/evan/Dropbox/DDAD/evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh
-s423430025.012866
-e423430025.338211
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/evan/Dropbox/DDAD/evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh
-oecho ""
-o
-omake -f /Users/evan/Dropbox/DDAD/evanbin/CMakeScripts/ReRunCMake.make
-omake[1]: `/Users/evan/Dropbox/DDAD/evanbin/CMakeFiles/cmake.check_cache' is up to date.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'110"PhaseScriptExecution CMake\ Rules evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sha5490589073db941^25945689073db941^-167"echo ""make -f /Users/evan/Dropbox/DDAD/evanbin/CMakeScripts/ReRunCMake.makemake[1]: `/Users/evan/Dropbox/DDAD/evanbin/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-423430025#0#8#-0#-----2@70"make -f /Users/evan/Dropbox/DDAD/evanbin/CMakeScripts/ReRunCMake.make-423430025#9#70#-0#-----2@88"make[1]: `/Users/evan/Dropbox/DDAD/evanbin/CMakeFiles/cmake.check_cache' is up to date.-423430025#79#88#-0#-----0#0#1#--260"PhaseScriptExecution CMake\ Rules evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh    cd /Users/evan/Dropbox/DDAD    /bin/sh -c /Users/evan/Dropbox/DDAD/evanbin/DDAD.build/Debug/ZERO_CHECK.build/Script-32DA69D7AD0A4E88842F30EA.sh36"9908631A-EAA6-437D-831B-1AF77CBBE516-
-bF84F80ED-F1D7-4CE9-B925-58A7D4DC933D
-

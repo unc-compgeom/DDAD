@@ -1,473 +1,0 @@
-Tlogging
-v6
-r1
-cCheck dependencies
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o /Users/evan/Dropbox/DDAD/logging/Error.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o /Users/evan/Dropbox/DDAD/logging/rlog.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o /Users/evan/Dropbox/DDAD/logging/rloginit.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/evan/Dropbox/DDAD/evanbin/logging/Debug/liblogging.a normal x86_64
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk
-c000000005348924800000000000000AA
-t1397264968
-s170
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/SDKSettings.plist
-c0000000053308B53000000000000044C
-t1395690323
-s1100
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/CoreServices/SystemVersion.plist
-c0000000053308B5300000000000001DE
-t1395690323
-s478
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o
-t1401737227
-s151384
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o
-t1401737228
-s338704
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o
-t1401737228
-s116632
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o
-t1401737229
-s159724
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o
-t1401737229
-s4972
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o
-t1401737231
-s248416
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/logging.LinkFileList
-c00000000538CD00900000000000003B7
-t1401737225
-s951
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o
-t1401737231
-s144516
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o
-t1401737231
-s63492
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o
-t1401737232
-s275624
-
-N/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/liblogging.a
-t1401737235
-s1525672
-
-N/Users/evan/Dropbox/DDAD/logging/Error.cpp
-c00000000538C7E6A00000000000013A3
-t1401716330
-s5027
-
-N/Users/evan/Dropbox/DDAD/logging/Error.h
-c00000000538C7E6A00000000000009E0
-t1401716330
-s2528
-
-N/Users/evan/Dropbox/DDAD/logging/Lock.h
-c00000000538C7E6A00000000000005A3
-t1401716330
-s1443
-
-N/Users/evan/Dropbox/DDAD/logging/Mutex.h
-c00000000538C7E6A0000000000000816
-t1401716330
-s2070
-
-N/Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp
-c00000000538C7E6A0000000000001A20
-t1401716330
-s6688
-
-N/Users/evan/Dropbox/DDAD/logging/RLogChannel.h
-c00000000538C7E6A00000000000007AF
-t1401716330
-s1967
-
-N/Users/evan/Dropbox/DDAD/logging/RLogNode.cpp
-c00000000538C7E6A0000000000001B47
-t1401716330
-s6983
-
-N/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-c00000000538C7E6A0000000000000BC8
-t1401716330
-s3016
-
-N/Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp
-c00000000538C7E6A0000000000001305
-t1401716330
-s4869
-
-N/Users/evan/Dropbox/DDAD/logging/RLogPublisher.h
-c00000000538C7E6A0000000000000699
-t1401716330
-s1689
-
-N/Users/evan/Dropbox/DDAD/logging/RLogTime.cpp
-c00000000538C7E6A0000000000000BAE
-t1401716330
-s2990
-
-N/Users/evan/Dropbox/DDAD/logging/RLogTime.h
-c00000000538C7E6A0000000000000577
-t1401716330
-s1399
-
-N/Users/evan/Dropbox/DDAD/logging/StdioNode.cpp
-c00000000538C7E6A00000000000015E0
-t1401716330
-s5600
-
-N/Users/evan/Dropbox/DDAD/logging/StdioNode.h
-c00000000538C7E6A0000000000000769
-t1401716330
-s1897
-
-N/Users/evan/Dropbox/DDAD/logging/common.h
-c00000000538C7E6A0000000000000E63
-t1401716330
-s3683
-
-N/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-c00000000538C7E6A00000000000014E1
-t1401716330
-s5345
-
-N/Users/evan/Dropbox/DDAD/logging/rlog.cpp
-c00000000538C7E6A0000000000000C5A
-t1401716330
-s3162
-
-N/Users/evan/Dropbox/DDAD/logging/rlog.h
-c00000000538C7E6A0000000000002159
-t1401716330
-s8537
-
-N/Users/evan/Dropbox/DDAD/logging/rloginit.cpp
-c00000000538C7E6A0000000000000610
-t1401716330
-s1552
-
-N/Users/evan/Dropbox/DDAD/logging/rloginit.h
-c00000000538C7E6A0000000000000828
-t1401716330
-s2088
-
-N/Users/evan/Dropbox/DDAD/logging/rloglocation.cpp
-c00000000538C7E6A0000000000000D95
-t1401716330
-s3477
-
-N/Users/evan/Dropbox/DDAD/logging/rloglocation.h
-c00000000538C7E6A00000000000005B0
-t1401716330
-s1456
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/Error.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/rlog.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/rloginit.cpp
-r0
-
-CBuild AST from /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies19e2c8470a3db941^0073c9470a3db941^---0#1#1#--18"Check dependencies36"E81A2FA6-79A5-497A-8802-4D553A4FE8A2-
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o /Users/evan/Dropbox/DDAD/logging/Error.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430025.342575
-e423430027.230857
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o
-x/Users/evan/Dropbox/DDAD/logging/Error.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/Error.cpp
-d/Users/evan/Dropbox/DDAD/logging/Error.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/Error.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/Error.h:24:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection50"Compile /Users/evan/Dropbox/DDAD/logging/Error.cpp165"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o logging/Error.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler19c85789073db941^af773b8b073db941^-361"In file included from /Users/evan/Dropbox/DDAD/logging/Error.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/Error.h:24:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430027#18446744073709551615#0#2(2@68"In file included from /Users/evan/Dropbox/DDAD/logging/Error.cpp:20:-423430027#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@49"file:///Users/evan/Dropbox/DDAD/logging/Error.cpp0000000000000000^19#9#19#9#890#0#21"Apple LLVM 5.0 Notice--2@66"In file included from /Users/evan/Dropbox/DDAD/logging/Error.h:24:-423430027#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@47"file:///Users/evan/Dropbox/DDAD/logging/Error.h0000000000000000^23#9#23#9#954#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@49"file:///Users/evan/Dropbox/DDAD/logging/Error.cpp0000000000000000^2068"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o logging/Error.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.dia -c /Users/evan/Dropbox/DDAD/logging/Error.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/Error.o36"92D23770-4EED-4ECB-B117-19FB6B60518E-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430027.231213
-e423430028.263441
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o
-x/Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp
-d/Users/evan/Dropbox/DDAD/logging/RLogChannel.h
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/Lock.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp:21:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.h:26:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection56"Compile /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp177"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o logging/RLogChannel.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compilerff423b8b073db941^49b9438c073db941^-439"In file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp:21:In file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.h:26:In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430028#18446744073709551615#0#3(2@74"In file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp:21:-423430028#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@55"file:///Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp0000000000000000^20#9#20#9#803#0#21"Apple LLVM 5.0 Notice--2@72"In file included from /Users/evan/Dropbox/DDAD/logging/RLogChannel.h:26:-423430028#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@53"file:///Users/evan/Dropbox/DDAD/logging/RLogChannel.h0000000000000000^25#9#25#9#979#0#21"Apple LLVM 5.0 Notice--2@65"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:-423430028#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@46"file:///Users/evan/Dropbox/DDAD/logging/rlog.h0000000000000000^26#9#26#9#985#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@55"file:///Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp0000000000000000^2104"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o logging/RLogChannel.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.dia -c /Users/evan/Dropbox/DDAD/logging/RLogChannel.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogChannel.o36"A5001523-ABC7-4ADD-B3B6-AA3F689FA6D6-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430028.263767
-e423430029.005253
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o
-x/Users/evan/Dropbox/DDAD/logging/RLogNode.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.cpp
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/Lock.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.h:28:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection53"Compile /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp171"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o logging/RLogNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compilerd499438c073db941^c7bd018d073db941^-367"In file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.h:28:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430029#18446744073709551615#0#2(2@71"In file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp:20:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@52"file:///Users/evan/Dropbox/DDAD/logging/RLogNode.cpp0000000000000000^19#9#19#9#861#0#21"Apple LLVM 5.0 Notice--2@69"In file included from /Users/evan/Dropbox/DDAD/logging/RLogNode.h:28:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@50"file:///Users/evan/Dropbox/DDAD/logging/RLogNode.h0000000000000000^27#9#27#9#978#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@52"file:///Users/evan/Dropbox/DDAD/logging/RLogNode.cpp0000000000000000^2086"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o logging/RLogNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.dia -c /Users/evan/Dropbox/DDAD/logging/RLogNode.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogNode.o36"D6DF4919-B6A1-4131-88CC-C9916C970053-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430029.005632
-e423430029.683022
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o
-x/Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp
-d/Users/evan/Dropbox/DDAD/logging/RLogPublisher.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/RLogChannel.h
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-d/Users/evan/Dropbox/DDAD/logging/rloglocation.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp:21:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.h:23:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection58"Compile /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp181"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o logging/RLogPublisher.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler1e87018d073db941^3ed0ae8d073db941^-377"In file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp:21:In file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.h:23:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430029#18446744073709551615#0#2(2@76"In file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp:21:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@57"file:///Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp0000000000000000^20#9#20#9#891#0#21"Apple LLVM 5.0 Notice--2@74"In file included from /Users/evan/Dropbox/DDAD/logging/RLogPublisher.h:23:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@55"file:///Users/evan/Dropbox/DDAD/logging/RLogPublisher.h0000000000000000^22#9#22#9#925#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@57"file:///Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp0000000000000000^2116"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o logging/RLogPublisher.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.dia -c /Users/evan/Dropbox/DDAD/logging/RLogPublisher.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogPublisher.o36"9E0107A4-E8CC-430F-A0A9-170752677732-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430029.683332
-e423430029.721859
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o
-x/Users/evan/Dropbox/DDAD/logging/RLogTime.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/RLogTime.cpp
-d/Users/evan/Dropbox/DDAD/logging/RLogTime.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.h:22:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection53"Compile /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp171"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o logging/RLogTime.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler3a03af8d073db941^bc06b98d073db941^-367"In file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.h:22:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430029#18446744073709551615#0#2(2@71"In file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp:20:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@52"file:///Users/evan/Dropbox/DDAD/logging/RLogTime.cpp0000000000000000^19#9#19#9#802#0#21"Apple LLVM 5.0 Notice--2@69"In file included from /Users/evan/Dropbox/DDAD/logging/RLogTime.h:22:-423430029#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@50"file:///Users/evan/Dropbox/DDAD/logging/RLogTime.h0000000000000000^21#9#21#9#829#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@52"file:///Users/evan/Dropbox/DDAD/logging/RLogTime.cpp0000000000000000^2086"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o logging/RLogTime.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.dia -c /Users/evan/Dropbox/DDAD/logging/RLogTime.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/RLogTime.o36"C847DD27-85BE-4433-99FE-07E613CA8FD3-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430029.722220
-e423430031.429950
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o
-x/Users/evan/Dropbox/DDAD/logging/StdioNode.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/StdioNode.cpp
-d/Users/evan/Dropbox/DDAD/logging/StdioNode.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/RLogPublisher.h
-d/Users/evan/Dropbox/DDAD/logging/RLogChannel.h
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.h:23:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o/Users/evan/Dropbox/DDAD/logging/StdioNode.cpp:222:31: warning: format specifies type 'unsigned long' but the argument has type 'pthread_t' (aka '_opaque_pthread_t *') [-Wformat]
-o        snprintf(tid,15,"%lu",pthread_self());
-o                         ~~~  ^~~~~~~~~~~~~~
-o2 warnings generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection54"Compile /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp173"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o logging/StdioNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler7bf6b88d073db941^68e7848f073db941^-641"In file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.h:23:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^/Users/evan/Dropbox/DDAD/logging/StdioNode.cpp:222:31: warning: format specifies type 'unsigned long' but the argument has type 'pthread_t' (aka '_opaque_pthread_t *') [-Wformat]        snprintf(tid,15,"%lu",pthread_self());                         ~~~  ^~~~~~~~~~~~~~2 warnings generated.2(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430031#18446744073709551615#0#2(2@72"In file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp:20:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^19#9#19#9#861#0#21"Apple LLVM 5.0 Notice--2@70"In file included from /Users/evan/Dropbox/DDAD/logging/StdioNode.h:23:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@51"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.h0000000000000000^22#9#22#9#941#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--2@103"Format specifies type 'unsigned long' but the argument has type 'pthread_t' (aka '_opaque_pthread_t *')-423430031#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^221#30#221#30#5347#0#19"Format String Issue3(3@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^221#25#221#28#5342#3#3@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^221#30#221#44#5347#13#3@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^221#25#221#28#5342#3#-0#0#1#-19%DVTDocumentLocation4@53"file:///Users/evan/Dropbox/DDAD/logging/StdioNode.cpp0000000000000000^2092"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o logging/StdioNode.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.dia -c /Users/evan/Dropbox/DDAD/logging/StdioNode.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/StdioNode.o36"61761A5A-AD40-4D95-86C4-E9FF8722C619-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o /Users/evan/Dropbox/DDAD/logging/rlog.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430030.188439
-e423430031.127011
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o
-x/Users/evan/Dropbox/DDAD/logging/rlog.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/rlog.cpp
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-d/Users/evan/Dropbox/DDAD/logging/rloglocation.h
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/RLogPublisher.h
-d/Users/evan/Dropbox/DDAD/logging/RLogChannel.h
-d/Users/evan/Dropbox/DDAD/logging/Error.h
-d/Users/evan/Dropbox/DDAD/logging/Lock.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rlog.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection49"Compile /Users/evan/Dropbox/DDAD/logging/rlog.cpp163"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o logging/rlog.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compilerca51308e073db941^f20c2a8f073db941^-359"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430031#18446744073709551615#0#2(2@67"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.cpp:20:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@48"file:///Users/evan/Dropbox/DDAD/logging/rlog.cpp0000000000000000^19#9#19#9#866#0#21"Apple LLVM 5.0 Notice--2@65"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@46"file:///Users/evan/Dropbox/DDAD/logging/rlog.h0000000000000000^26#9#26#9#985#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@48"file:///Users/evan/Dropbox/DDAD/logging/rlog.cpp0000000000000000^2062"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o logging/rlog.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.dia -c /Users/evan/Dropbox/DDAD/logging/rlog.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rlog.o36"8384A301-4814-4EF2-A5C3-6A9D7A90A0BC-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o /Users/evan/Dropbox/DDAD/logging/rloginit.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430031.127593
-e423430031.681738
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o
-x/Users/evan/Dropbox/DDAD/logging/rloginit.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/rloginit.cpp
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-d/Users/evan/Dropbox/DDAD/logging/rloginit.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rloginit.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection53"Compile /Users/evan/Dropbox/DDAD/logging/rloginit.cpp171"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o logging/rloginit.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler88bd208f073db941^28f0ae8f073db941^-363"In file included from /Users/evan/Dropbox/DDAD/logging/rloginit.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430031#18446744073709551615#0#2(2@71"In file included from /Users/evan/Dropbox/DDAD/logging/rloginit.cpp:20:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@52"file:///Users/evan/Dropbox/DDAD/logging/rloginit.cpp0000000000000000^19#9#19#9#861#0#21"Apple LLVM 5.0 Notice--2@65"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:-423430031#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@46"file:///Users/evan/Dropbox/DDAD/logging/rlog.h0000000000000000^26#9#26#9#985#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@52"file:///Users/evan/Dropbox/DDAD/logging/rloginit.cpp0000000000000000^2086"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o logging/rloginit.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.dia -c /Users/evan/Dropbox/DDAD/logging/rloginit.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloginit.o36"D41F3545-00EF-4609-A03E-0C1817FE9389-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CCompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s423430031.430308
-e423430033.009122
-r1
-xCompileC
-xevanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o
-x/Users/evan/Dropbox/DDAD/logging/rloglocation.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-d/Users/evan/Dropbox/DDAD/logging/rloglocation.cpp
-d/Users/evan/Dropbox/DDAD/logging/rloglocation.h
-d/Users/evan/Dropbox/DDAD/logging/rlog.h
-d/Users/evan/Dropbox/DDAD/logging/common.h
-d/Users/evan/Dropbox/DDAD/logging/rlog-c99.h
-d/Users/evan/Dropbox/DDAD/logging/RLogNode.h
-d/Users/evan/Dropbox/DDAD/logging/Mutex.h
-d/Users/evan/Dropbox/DDAD/logging/Lock.h
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp:20:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.h:25:
-oIn file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:
-o/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]
-o#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")
-o        ^
-o1 warning generated.
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection57"Compile /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp179"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o logging/rloglocation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler103c6e8f073db941^87a80291073db941^-441"In file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp:20:In file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.h:25:In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:/Users/evan/Dropbox/DDAD/logging/common.h:111:9: warning: RLOG_COMPONENT not defined - setting to UNKNOWN [-W#pragma-messages]#pragma message("RLOG_COMPONENT not defined - setting to UNKNOWN")        ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@47"RLOG_COMPONENT not defined - setting to UNKNOWN-423430033#18446744073709551615#0#3(2@75"In file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp:20:-423430033#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@56"file:///Users/evan/Dropbox/DDAD/logging/rloglocation.cpp0000000000000000^19#9#19#9#890#0#21"Apple LLVM 5.0 Notice--2@73"In file included from /Users/evan/Dropbox/DDAD/logging/rloglocation.h:25:-423430033#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@54"file:///Users/evan/Dropbox/DDAD/logging/rloglocation.h0000000000000000^24#9#24#9#937#0#21"Apple LLVM 5.0 Notice--2@65"In file included from /Users/evan/Dropbox/DDAD/logging/rlog.h:27:-423430033#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@46"file:///Users/evan/Dropbox/DDAD/logging/rlog.h0000000000000000^26#9#26#9#985#0#21"Apple LLVM 5.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@48"file:///Users/evan/Dropbox/DDAD/logging/common.h0000000000000000^110#8#110#8#3311#0#25"#pragma message Directive--0#0#1#-19%DVTDocumentLocation4@56"file:///Users/evan/Dropbox/DDAD/logging/rloglocation.cpp0000000000000000^2110"CompileC evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o logging/rloglocation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/evan/Dropbox/DDAD    export LANG=en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -fdiagnostics-show-note-include-stack -fmacro-backtrace-limit=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -DCMAKE_INTDIR=\"Debug\" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.9 -g -Wno-sign-conversion -I/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/include -I/Users/evan/Dropbox/DDAD/dependencies/mpir/Mac -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources/x86_64 -I/Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -MMD -MT dependencies -MF /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.d --serialize-diagnostics /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.dia -c /Users/evan/Dropbox/DDAD/logging/rloglocation.cpp -o /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/rloglocation.o36"26CA6A07-77BD-487B-9A58-C12FF40E2F03-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-
-CLibtool /Users/evan/Dropbox/DDAD/evanbin/logging/Debug/liblogging.a normal x86_64
-s423430035.599331
-e423430035.620179
-r1
-xLibtool
-x/Users/evan/Dropbox/DDAD/evanbin/logging/Debug/liblogging.a
-xnormal
-xx86_64
-lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection56"Libtool evanbin/logging/Debug/liblogging.a normal x86_6456"Libtool evanbin/logging/Debug/liblogging.a normal x86_64027e9993073db941^7f509f93073db941^---0#0#1#--603"Libtool evanbin/logging/Debug/liblogging.a normal x86_64    cd /Users/evan/Dropbox/DDAD    export MACOSX_DEPLOYMENT_TARGET=10.9    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only x86_64 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -L/Users/evan/Dropbox/DDAD/evanbin/logging/Debug -filelist /Users/evan/Dropbox/DDAD/evanbin/logging/DDAD.build/Debug/logging.build/Objects-normal/x86_64/logging.LinkFileList -o /Users/evan/Dropbox/DDAD/evanbin/logging/Debug/liblogging.a36"A38E0C20-AF82-4634-8125-F1E827EA6B19-
-b18BED41C-6C1B-4D4C-BE88-379D24208CC2
-

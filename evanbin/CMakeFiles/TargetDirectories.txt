@@ -1,6 +1,0 @@
-/Users/evan/Dropbox/DDAD/evanbin/CMakeFiles/ALL_BUILD.dir
-/Users/evan/Dropbox/DDAD/evanbin/CMakeFiles/ZERO_CHECK.dir
-/Users/evan/Dropbox/DDAD/evanbin/geometry/CMakeFiles/geometry.dir
-/Users/evan/Dropbox/DDAD/evanbin/logging/CMakeFiles/logging.dir
-/Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench.dir
-/Users/evan/Dropbox/DDAD/evanbin/workbench/CMakeFiles/workbench_automoc.dir
