@@ -150,7 +150,7 @@ public:
     void set_p(SharedPoint_2r p);
     void set_q(SharedPoint_2r q);
 
-private:
+protected:
     SharedPoint_2r p_;
     SharedPoint_2r q_;
     Line_2r support_;
@@ -161,6 +161,9 @@ private:
 //=============================================================================
 class Segment_2r_colored : public Segment_2r {
 public:
+    Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
+    Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
+
     const bool isRed() const {
         return isRed_;
     }

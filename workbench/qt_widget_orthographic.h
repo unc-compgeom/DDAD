@@ -58,6 +58,13 @@ signals:
     void BeginCreatePolyLine(const QVector2D& start);
     void UpdateNewPolyLine(const QVector2D& cur);
     void EndCreatePolyLine();
+    void SwitchInputColor();
+
+    // arrangement
+    void BeginCreateArrangement(const QVector2D& start);
+    void BeginCreateSegment(const QVector2D& start);
+    void EndCreateSegment(const QVector2D& cur);
+    void EndCreateArrangement();
 
     // polytope
     void BeginCreatePolytope(const QVector2D& start, const QVector2D& cur);

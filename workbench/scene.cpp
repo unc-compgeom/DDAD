@@ -325,6 +325,44 @@ void SceneObserver::onEndCreatePolyLine() {
 }
 
 //=============================================================================
+// Arrangement management
+//=============================================================================
+
+void SceneObserver::onBeginCreateArrangement(const QVector2D& start){
+    qDebug() << "SceneObserver BeginCreateArrangement " << start;
+
+    onDeselect();
+
+    static int numArrangements = 0;
+    selected_name_ = QString("Arrangement2_%1").arg(numArrangements++);
+    scene_objects_.insert(selected_name_,
+                          QSharedPointer<ISceneObject>(new SceneArrangement_2()));
+    SelectedArrangement_2()->AddObserver(this);
+    SelectedArrangement_2()->Initialize(start);
+
+    ConfigManager::get().set_input_state(UPDATE_ARRANGEMENT);
+}
+
+void SceneObserver::onBeginCreateSegment(const QVector2D& start){
+    qDebug() << "SceneObserver BeginCreateSegment" << start;
+    SelectedArrangement_2()->InitSceneSegment(start, ConfigManager::get().input_color());
+}
+void SceneObserver::onEndCreateSegment(const QVector2D& start){
+    qDebug() << "SceneObserver EndCreateSegment" << start;
+    SelectedArrangement_2()->AddSceneSegment(start);
+}
+
+void SceneObserver::onEndCreateArrangement(){
+    qDebug() << "SceneObserver EndCreateArrangement";
+    ConfigManager::get().set_input_state(CREATE_ARRANGEMENT);
+}
+
+void SceneObserver::onSwitchInputColor(){
+    qDebug() << "SceneObserver SwitchInputColor";
+    ConfigManager::get().switch_input_color();
+}
+
+//=============================================================================
 // Polytope_3 management
 //=============================================================================
 
@@ -445,6 +483,10 @@ ISceneObject* SceneObserver::SelectedObject() {
 
 ScenePolyLine_2* SceneObserver::SelectedPolyLine_2() {
     return dynamic_cast<ScenePolyLine_2*>(SelectedObject());
+}
+
+SceneArrangement_2* SceneObserver::SelectedArrangement_2() {
+    return dynamic_cast<SceneArrangement_2*>(SelectedObject());
 }
 
 ScenePolytope_3* SceneObserver::SelectedPolytope_3() {

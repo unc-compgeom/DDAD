@@ -20,6 +20,7 @@
 #include "../geometry/line.h"
 #include "../geometry/visual.h"
 #include "../geometry/triangle.h"
+#include "../geometry/arrangement.h"
 
 bool operator<(const QVector<uint32_t>& a, const QVector<uint32_t>& b);
 
@@ -82,6 +83,29 @@ public:
 
 private:
     PolyChain_2r model_polyline_;
+};
+
+//=============================================================================
+// Interface: SceneArrangement_2
+//=============================================================================
+class SceneArrangement_2 : public ISceneObject, public Visual::Geometry {
+public:
+    SceneArrangement_2() {
+        model_arrangement_.AddObserver(this);
+    }
+    void InitSceneSegment(const QVector2D& cur, InputColor color) {
+        model_arrangement_.PushPoint(Point_2r(cur.x(), cur.y()), color==RED);
+    }
+    void AddSceneSegment(const QVector2D& cur) {
+        model_arrangement_.EndSegment(Point_2r(cur.x(), cur.y()));
+    }
+
+    void Select() override {}
+    void Deselect() override {}
+    void UpdateColor(const QColor &color) override {}
+
+private:
+    Arrangement_2r model_arrangement_;
 };
 
 //=============================================================================
@@ -195,6 +219,11 @@ public slots:
     void onUpdateNewPolyLine(const QVector2D& cur);
     void onEndCreatePolyLine();
 
+    void onBeginCreateArrangement(const QVector2D& start);
+    void onBeginCreateSegment(const QVector2D& start);
+    void onEndCreateSegment(const QVector2D& start);
+    void onEndCreateArrangement();
+
     void onBeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
     void onUpdateNewPolytope(const QVector2D& cur);
     void onEndCreatePolytope();
@@ -221,6 +250,7 @@ private:
     bool ObjectIsSelected() const;
     ISceneObject* SelectedObject();
     ScenePolyLine_2* SelectedPolyLine_2();
+    SceneArrangement_2* SelectedArrangement_2();
     ScenePolytope_3* SelectedPolytope_3();
     SceneTerrainMesh_3* SelectedTerrainMesh_3();
 

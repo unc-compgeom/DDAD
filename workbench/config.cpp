@@ -34,6 +34,7 @@ void ConfigManager::Initialize() {
     //rInfo("Setting default GL format.");
 
     input_state_ = CREATE_POLYTOPE;
+    input_color_ = RED;
     snap_to_grid_ = true;
     grid_minor_color_ = QColor(175, 175, 175);
     grid_major_color_ = QColor(75, 75, 75);
@@ -42,8 +43,15 @@ void ConfigManager::Initialize() {
 const InputState& ConfigManager::input_state() const {
     return input_state_;
 }
+const InputColor& ConfigManager::input_color() const {
+    return input_color_;
+}
 void ConfigManager::set_input_state(const InputState& input_state) {
     input_state_ = input_state;
+}
+void ConfigManager::switch_input_color() {
+    if(input_color_ == RED) {input_color_ = BLUE;}
+    if(input_color_ == BLUE){input_color_ = RED;}
 }
 bool ConfigManager::snap_to_grid() const {
     return snap_to_grid_;

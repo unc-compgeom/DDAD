@@ -55,6 +55,18 @@ MainWindow::MainWindow(QWidget *parent) :
             SIGNAL(triggered()),
             SLOT(onCreatePolyLineTriggered()));
 
+    // create arrangement button
+    QAction* create_arrangement = new QAction("Create Arrangment",
+                                           input_state_buttons);
+    //create_arrangment->setIcon(QIcon("://icons/create_arrangement.png"));
+    create_arrangement->setCheckable(true);
+    create_arrangement->setChecked(true);
+
+    connect(create_arrangement,
+            SIGNAL(triggered()),
+            SLOT(onCreateArrangementTriggered()));
+
+
     // create polytope button
     QAction* create_polytope = new QAction("Create Polytope",
                                            input_state_buttons);
@@ -183,6 +195,10 @@ void MainWindow::onSelectObjectsTriggered() {
 
 void MainWindow::onCreatePolyLineTriggered() {
     ConfigManager::get().set_input_state(CREATE_POLYLINE);
+}
+
+void MainWindow::onCreateArrangementTriggered() {
+    ConfigManager::get().set_input_state(CREATE_ARRANGEMENT);
 }
 
 void MainWindow::onCreatePolytopeTriggered() {

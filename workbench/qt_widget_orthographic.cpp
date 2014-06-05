@@ -69,6 +69,28 @@ void OrthographicWidget::initialize(Renderer* renderer,
             &scene_manager_->scene_observer_,
             SLOT(onEndCreatePolyLine()));
 
+    // arrangement
+    connect(this,
+            SIGNAL(BeginCreateArrangement(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreateArrangement(QVector2D)));
+    connect(this,
+            SIGNAL(BeginCreateSegment(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreateSegment(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreateSegment(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateSegment(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreateArrangement()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateArrangement()));
+    connect(this,
+            SIGNAL(SwitchInputColor()),
+            &scene_manager_->scene_observer_,
+            SLOT(onSwitchInputColor()));
+
     // polytope
     connect(this,
             SIGNAL(BeginCreatePolytope(QVector2D, QVector2D)),
@@ -278,6 +300,12 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
         case UPDATE_POLYLINE:
             emit UpdateNewPolyLine(world_coords);
             break;
+        case CREATE_ARRANGEMENT:
+            emit BeginCreateSegment(world_coords);
+            break;
+        case UPDATE_ARRANGEMENT:
+            emit EndCreateSegment(world_coords);
+            break;
         default:
             break;
         }
@@ -411,7 +439,17 @@ void OrthographicWidget::ShowContextMenu(const QPoint &p) {
 
 void OrthographicWidget::keyPressEvent(QKeyEvent *event) {
     key_states_[event->key()] = true;
+    switch (ConfigManager::get().input_state()) {
+    case CREATE_ARRANGEMENT:
+        emit SwitchInputColor();
+        break;
+    case UPDATE_ARRANGEMENT:
+        break;
+    default:
+        break;
+    }
 }
+
 
 void OrthographicWidget::keyReleaseEvent(QKeyEvent *event) {
     key_states_[event->key()] = false;
