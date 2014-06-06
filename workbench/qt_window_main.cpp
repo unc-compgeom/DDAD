@@ -100,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // add buttons to toolbar
     ui->toolBar->addAction(select_objects);
     ui->toolBar->addAction(create_polyline);
+    ui->toolBar->addAction(create_arrangement);
     ui->toolBar->addAction(create_polytope);
     ui->toolBar->addAction(create_terrain);
     ui->toolBar->addSeparator();

@@ -301,6 +301,11 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
             emit UpdateNewPolyLine(world_coords);
             break;
         case CREATE_ARRANGEMENT:
+            qDebug() << "Creating arrangement";
+            emit BeginCreateArrangement(world_coords);
+            break;
+        case CREATE_SEGMENT:
+            qDebug() << "Creating segment";
             emit BeginCreateSegment(world_coords);
             break;
         case UPDATE_ARRANGEMENT:

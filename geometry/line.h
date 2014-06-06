@@ -172,6 +172,7 @@ public:
         isRed_ = isRed;
     }
 
+
 private:
     bool isRed_;
 };

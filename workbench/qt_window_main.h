@@ -55,6 +55,7 @@ private slots:
     void onSelectObjectsTriggered();
     void onCreatePolyLineTriggered();
     void onCreatePolytopeTriggered();
+    void onCreateArrangementTriggered();
     void onCreateTerrainTriggered();
     void onSnapToGridToggled(bool state);
 

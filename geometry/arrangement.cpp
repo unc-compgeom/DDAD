@@ -20,17 +20,27 @@ Arrangement_2r::~Arrangement_2r() {
 }
 
 void Arrangement_2r::AddSegment(Point_2r& v, Point_2r& w, bool color){
+    LOG(INFO) << "in AddSegment";
     segments_.push_front(Segment_2r_colored(v, w, color));
+    LOG(INFO) << "Pushed a segment to the list";
     //Create visual point and segment
     Visual::Material vMat;
+
     vMat.set_ambient(Visual::Color(255*color, 0, 255*(!color), 255));   //if color = 1, set to red, else set to blue
     Visual::Point vPoint(vMat);
     Visual::Segment vSeg(vMat);
 
     //Push the segment
+    SigRegisterPoint_2r(v);
+    LOG(INFO) << "Registered v";
+    SigRegisterPoint_2r(w);
+    LOG(INFO) << "Registered w";
     SigPushVisualPoint_2r(v,vPoint);
+    LOG(INFO) << "Pushed v";
     SigPushVisualPoint_2r(w,vPoint);
-    SigPushVisualSegment_2r(segments_.front(), vSeg);
+    LOG(INFO) << "Pushed w";
+    SigPushVisualSegment_2r(Segment_2r(segments_.front().p_sptr(),segments_.front().q_sptr()), vSeg);
+    LOG(INFO) << "Pushed a segment";
 }
 
 void Arrangement_2r::EndSegment(Point_2r &v){
@@ -42,15 +52,17 @@ void Arrangement_2r::PushPoint(Point_2r &v, bool color){
 }
 
 void Arrangement_2r::PushPoint(SharedPoint_2r v, bool color){
+    LOG(INFO) << "Pushed point";
     floater_ = *v;
     current_color_ = color;
 
     //Create visual point
     Visual::Material vMat;
-    vMat.set_ambient(Visual::Color(255*color, 0, 255*(!color), 255));   //if color = 1, set to red, else set to blue
+//    vMat.set_ambient(Visual::Color(255*color, 0, 255*(!color), 255));   //if color = 1, set to red, else set to blue
     Visual::Point vPoint(vMat);
 
     //Push the point
+    SigRegisterPoint_2r(floater_);
     SigPushVisualPoint_2r(floater_,vPoint);
 }
 

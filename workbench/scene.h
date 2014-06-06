@@ -94,9 +94,11 @@ public:
         model_arrangement_.AddObserver(this);
     }
     void InitSceneSegment(const QVector2D& cur, InputColor color) {
+        qDebug() << "Init scene segment";
         model_arrangement_.PushPoint(Point_2r(cur.x(), cur.y()), color==RED);
     }
     void AddSceneSegment(const QVector2D& cur) {
+        qDebug() << "Add scene segment";
         model_arrangement_.EndSegment(Point_2r(cur.x(), cur.y()));
     }
 
@@ -223,6 +225,7 @@ public slots:
     void onBeginCreateSegment(const QVector2D& start);
     void onEndCreateSegment(const QVector2D& start);
     void onEndCreateArrangement();
+    void onSwitchInputColor();
 
     void onBeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
     void onUpdateNewPolytope(const QVector2D& cur);

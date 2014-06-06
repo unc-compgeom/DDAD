@@ -254,7 +254,6 @@ Segment_2r::Segment_2r(SharedPoint_2r p,
     p_(p),
     q_(q),
     support_(p, q) {}
-
 // Accessors/Mutators =========================================================
 
 const Point_2r& Segment_2r::p() const {

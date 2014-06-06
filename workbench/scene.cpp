@@ -329,7 +329,7 @@ void SceneObserver::onEndCreatePolyLine() {
 //=============================================================================
 
 void SceneObserver::onBeginCreateArrangement(const QVector2D& start){
-    qDebug() << "SceneObserver BeginCreateArrangement " << start;
+    qDebug() << "SceneObserver onBeginCreateArrangement " << start;
 
     onDeselect();
 
@@ -337,8 +337,10 @@ void SceneObserver::onBeginCreateArrangement(const QVector2D& start){
     selected_name_ = QString("Arrangement2_%1").arg(numArrangements++);
     scene_objects_.insert(selected_name_,
                           QSharedPointer<ISceneObject>(new SceneArrangement_2()));
+
+
     SelectedArrangement_2()->AddObserver(this);
-    SelectedArrangement_2()->Initialize(start);
+    SelectedArrangement_2()->InitSceneSegment(start, ConfigManager::get().input_color());
 
     ConfigManager::get().set_input_state(UPDATE_ARRANGEMENT);
 }
@@ -346,10 +348,12 @@ void SceneObserver::onBeginCreateArrangement(const QVector2D& start){
 void SceneObserver::onBeginCreateSegment(const QVector2D& start){
     qDebug() << "SceneObserver BeginCreateSegment" << start;
     SelectedArrangement_2()->InitSceneSegment(start, ConfigManager::get().input_color());
+    ConfigManager::get().set_input_state(UPDATE_ARRANGEMENT);
 }
 void SceneObserver::onEndCreateSegment(const QVector2D& start){
     qDebug() << "SceneObserver EndCreateSegment" << start;
     SelectedArrangement_2()->AddSceneSegment(start);
+    ConfigManager::get().set_input_state(CREATE_SEGMENT);
 }
 
 void SceneObserver::onEndCreateArrangement(){
