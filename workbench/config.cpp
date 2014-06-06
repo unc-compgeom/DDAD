@@ -50,8 +50,8 @@ void ConfigManager::set_input_state(const InputState& input_state) {
     input_state_ = input_state;
 }
 void ConfigManager::switch_input_color() {
-    if(input_color_ == RED) {input_color_ = BLUE;}
-    if(input_color_ == BLUE){input_color_ = RED;}
+    if(input_color_ == RED) {input_color_ = BLUE; qDebug() << "color is now " << input_color_;}
+    else {input_color_ = RED; qDebug() << "color is now " << input_color_;}
 }
 bool ConfigManager::snap_to_grid() const {
     return snap_to_grid_;

@@ -101,6 +101,7 @@ public:
         qDebug() << "Add scene segment";
         model_arrangement_.EndSegment(Point_2r(cur.x(), cur.y()));
     }
+    const Arrangement_2r& arrangement() { return model_arrangement_; }
 
     void Select() override {}
     void Deselect() override {}

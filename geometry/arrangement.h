@@ -15,38 +15,6 @@
 namespace DDAD {
 
 //=============================================================================
-// Interface: ArrangementVertex_2r
-//=============================================================================
-
-class ArrangementVertex_2r {
-public:
-    ArrangementVertex_2r();
-    explicit ArrangementVertex_2r(const Point_2r& vertex);
-    explicit ArrangementVertex_2r(SharedPoint_2r vertex);
-
-    const Point_2r& vertex() const;
-    Point_2r& vertex();
-    const Segment_2r& edge_prev() const;
-    const Segment_2r& edge_next() const;
-    SharedPoint_2r vertex_sptr();
-
-    void set_vertex(const Point_2r& v);
-    void set_edge_prev(const Segment_2r& e);
-    void set_edge_next(const Segment_2r& e);
-    void set_vertex_sptr(SharedPoint_2r v);
-
-private:
-    SharedPoint_2r vertex_;
-    Segment_2r edge_prev_;
-    Segment_2r edge_next_;
-};
-
-namespace Predicate {
-    bool AIsLeftOfB(const ArrangementVertex_2r& a, const ArrangementVertex_2r& b);
-    bool AIsBelowB(const ArrangementVertex_2r& a, const ArrangementVertex_2r& b);
-}
-
-//=============================================================================
 // Interface: Arrangement_2r
 //=============================================================================
 
@@ -64,11 +32,14 @@ public:
     const std::list<Segment_2r_colored>& segments() const;
 
 
+
 private:
     std::list<Segment_2r_colored> segments_;
     Point_2r floater_;
     bool current_color_;
 };
+
+int CountIntersections(const Arrangement_2r& A, Visual::IGeometryObserver* observer = nullptr);
 
 } // namespace DDAD
 

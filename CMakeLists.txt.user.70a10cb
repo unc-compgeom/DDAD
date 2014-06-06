@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.1.1, 2014-06-06T11:28:31. -->
+<!-- Written by QtCreator 3.1.1, 2014-06-05T19:35:56. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -54,15 +54,15 @@
  <data>
   <variable>ProjectExplorer.Project.Target.0</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.3.0 MSVC2010 OpenGL 32bit</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.3.0 MSVC2010 OpenGL 32bit</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.53.win32_msvc2010_opengl_kit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.3.0 with GCC</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.3.0 with GCC</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{3d6d3f18-d5b0-4cce-98cc-3f7cc9f6b887}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
     <value type="bool" key="CMakeProjectManager.CMakeBuildConfiguration.UseNinja">false</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:/Users/Sarah/Documents/GitHub/DDAD-build</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/evan/Dropbox/DDAD-build</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
@@ -177,7 +177,7 @@
  </data>
  <data>
   <variable>ProjectExplorer.Project.Updater.EnvironmentId</variable>
-  <value type="QByteArray">{b0f1fb6a-b0d0-4de8-ad73-5b3f8329e2ab}</value>
+  <value type="QByteArray">{70a10cb2-6a14-4cf4-a8ea-d47231b00d62}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.Updater.FileVersion</variable>

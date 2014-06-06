@@ -317,6 +317,13 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
     }
 
     if (event->buttons() & Qt::MiddleButton) {
+        switch (ConfigManager::get().input_state()) {
+        case CREATE_SEGMENT:
+            qDebug() << "Ending the arrangement";
+            emit EndCreateArrangement();
+            break;
+        }
+
         setCursor(Qt::ClosedHandCursor);
         last_click_pos.setX(event->x());
         last_click_pos.setY(convertedY);
@@ -326,6 +333,14 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
         switch (ConfigManager::get().input_state()) {
         case UPDATE_POLYLINE:
             emit EndCreatePolyLine();
+            break;
+        case CREATE_ARRANGEMENT:
+            qDebug() << "Switching input color!";
+            emit SwitchInputColor();
+            break;
+        case CREATE_SEGMENT:
+            qDebug() << "Switching input color!";
+            emit SwitchInputColor();
             break;
         default:
             break;
@@ -443,22 +458,19 @@ void OrthographicWidget::ShowContextMenu(const QPoint &p) {
 }
 
 void OrthographicWidget::keyPressEvent(QKeyEvent *event) {
+
     key_states_[event->key()] = true;
-    switch (ConfigManager::get().input_state()) {
-    case CREATE_ARRANGEMENT:
-        emit SwitchInputColor();
-        break;
-    case UPDATE_ARRANGEMENT:
-        break;
-    default:
-        break;
-    }
 }
+
+
 
 
 void OrthographicWidget::keyReleaseEvent(QKeyEvent *event) {
     key_states_[event->key()] = false;
+
 }
+
+
 
 //=============================================================================
 // Misc overrides / OpenGL support routines

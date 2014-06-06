@@ -6,6 +6,50 @@
 
 namespace DDAD {
 
+int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *observer){
+    // Do this on A
+//# Invariants for the algorithm:
+//#
+//#	- All intersections whose witnesses are left of the sweepline have been reported
+//#	- The order of segments along the sweepline is consistent with pushing all intersections as far right as possible
+//#
+//# Events:
+//#	- Sweep line reaches an endpoint
+//#
+//# Preconditions:
+//#	- red/red and blue/blue intersections do not exist (such a coloring does exist)
+//#
+//# Output:
+//#	- The number of intersections that occur
+//#
+//# Input:
+//#	- set of segments, each colored red or blue
+//#
+//#
+
+//L = sort list of endpoints
+//for each event p in L do:
+//	split(p, brundletree, red)
+//	split(p, brundlelist, blue)
+//	if brundles r and b in wrong positions:
+//		countIntersections(rxb)
+//		swap(r,b)
+//		repair brundletree by merge
+//		repair brundlelist
+
+
+//def split(p, struct, color):
+//	switch(locate p in struct):
+//		case (p between two (color) bundles):
+//			continue
+//		case (p inside (color) bundle):
+//			split bundle at p
+//		case (p inside two (color) bundles):
+//			split bundles at p
+
+    return 0;
+}
+
 
 //=============================================================================
 // Implementation: Arrangement_2r
@@ -25,21 +69,21 @@ void Arrangement_2r::AddSegment(Point_2r& v, Point_2r& w, bool color){
     LOG(INFO) << "Pushed a segment to the list";
     //Create visual point and segment
     Visual::Material vMat;
-
-    vMat.set_ambient(Visual::Color(255*color, 0, 255*(!color), 255));   //if color = 1, set to red, else set to blue
+    if(color) {
+        vMat.set_ambient(Visual::Color(255, 0, 0, 255));
+    }
+    else {
+        vMat.set_ambient(Visual::Color(0, 0, 255, 255));
+    }
     Visual::Point vPoint(vMat);
     Visual::Segment vSeg(vMat);
 
-    //Push the segment
     SigRegisterPoint_2r(v);
-    LOG(INFO) << "Registered v";
     SigRegisterPoint_2r(w);
-    LOG(INFO) << "Registered w";
     SigPushVisualPoint_2r(v,vPoint);
-    LOG(INFO) << "Pushed v";
     SigPushVisualPoint_2r(w,vPoint);
-    LOG(INFO) << "Pushed w";
-    SigPushVisualSegment_2r(Segment_2r(segments_.front().p_sptr(),segments_.front().q_sptr()), vSeg);
+    Segment_2r edge(std::make_shared<Point_2r>(v), std::make_shared<Point_2r>(w));
+    SigPushVisualSegment_2r(edge, vSeg, 10);
     LOG(INFO) << "Pushed a segment";
 }
 
@@ -58,7 +102,12 @@ void Arrangement_2r::PushPoint(SharedPoint_2r v, bool color){
 
     //Create visual point
     Visual::Material vMat;
-//    vMat.set_ambient(Visual::Color(255*color, 0, 255*(!color), 255));   //if color = 1, set to red, else set to blue
+    if(color) {
+        vMat.set_ambient(Visual::Color(255, 0, 0, 255));
+    }
+    else {
+        vMat.set_ambient(Visual::Color(0, 0, 255, 255));
+    }
     Visual::Point vPoint(vMat);
 
     //Push the point
@@ -74,95 +123,4 @@ const std::list<Segment_2r_colored>& Arrangement_2r::segments() const{
     return segments_;
 }
 
-} // namespace DDAD
-
-
-//PolyChain_2r::PolyChain_2r() :
-//    closed_(false) {}
-
-//PolyChain_2r::~PolyChain_2r() {
-//    for(auto i = begin(vertices_); i != end(vertices_); ++i) {
-//        SigPopVisualPoint_2r(i->vertex());
-
-//        if(i != std::prev(end(vertices_))) {
-//            SigPopVisualSegment_2r(i->edge_next());
-//        }
-//    }
-//}
-
-//void PolyChain_2r::AppendVertex(const Point_2r& v) {
-//    AppendVertex(std::make_shared<Point_2r>(v));
-//}
-
-//void PolyChain_2r::AppendVertex(SharedPoint_2r v) {
-//    PolyChainVertex_2r chain_vertex(v);
-//    vertices_.push_back(chain_vertex);
-
-//    Visual::Material vMat;
-//    //vMat.set_ambient(Visual::Color(0, 151, 255, 255));
-//    Visual::Point vPoint(vMat);
-//    Visual::Segment vSeg(vMat);
-
-//    SigRegisterPoint_2r(*chain_vertex.vertex_sptr());
-//    SigPushVisualPoint_2r(chain_vertex.vertex(), vPoint);
-
-//    if (vertices_.size() > 1) {
-//        auto e0 = std::prev(end(vertices_), 2);
-//        auto e1 = std::prev(end(vertices_), 1);
-//        Segment_2r edge(e0->vertex_sptr(), e1->vertex_sptr());
-//        e0->set_edge_next(edge);
-//        e1->set_edge_prev(edge);
-//        SigPushVisualSegment_2r(edge, vSeg);
-//    }
-//}
-
-//void PolyChain_2r::RemoveFront() {
-//    SigPopVisualPoint_2r(vertices_.front().vertex());
-//    SigPopVisualSegment_2r(vertices_.front().edge_next(), 2000);
-//    vertices_.pop_front();
-//    begin(vertices_)->set_edge_prev(Segment_2r());
-//}
-
-//void PolyChain_2r::Close() {
-//    auto e0 = std::prev(end(vertices_), 1);
-//    auto e1 = begin(vertices_);
-//    Segment_2r edge(e0->vertex_sptr(), e1->vertex_sptr());
-//    e0->set_edge_next(edge);
-//    e1->set_edge_prev(edge);
-//    SigPushVisualSegment_2r(edge, Visual::Segment());
-//    set_closed(true);
-//}
-
-//void PolyChain_2r::RotateToMaxX() {
-//    bool (*compare)(const PolyChainVertex_2r&,
-//                    const PolyChainVertex_2r&) = Predicate::AIsLeftOfB;
-//    auto vmax_x = std::max_element(vertices_.begin(), vertices_.end(),
-//                                   compare);
-//    std::rotate(vertices_.begin(), vmax_x, vertices_.end());
-//}
-
-//PolyChainVertex_2r& PolyChain_2r::back() {
-//    return vertices_.back();
-//}
-
-//PolyChainVertex_2r& PolyChain_2r::front() {
-//    return vertices_.front();
-//}
-
-//const std::list<PolyChainVertex_2r>& PolyChain_2r::vertices() const {
-//    return vertices_;
-//}
-
-//std::list<PolyChainVertex_2r>& PolyChain_2r::vertices(){
-//    return vertices_;
-//}
-
-//const bool PolyChain_2r::closed() const {
-//    return closed_;
-//}
-//void PolyChain_2r::set_vertices(const std::list<PolyChainVertex_2r>& vertices) {
-//    vertices_ = vertices;
-//}
-//void PolyChain_2r::set_closed(const bool closed) {
-//    closed_ = closed;
-//}
+} // Namespace DDAD
