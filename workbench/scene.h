@@ -21,6 +21,7 @@
 #include "../geometry/visual.h"
 #include "../geometry/triangle.h"
 #include "../geometry/arrangement.h"
+#include "../geometry/datastructures.h"
 
 bool operator<(const QVector<uint32_t>& a, const QVector<uint32_t>& b);
 

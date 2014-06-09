@@ -23,6 +23,7 @@
 #include <vector>
 #include <stack>
 #include <list>
+#include <queue>
 #include <limits>
 #include <array>
 #include <memory>

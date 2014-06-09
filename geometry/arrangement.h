@@ -11,8 +11,76 @@
 #include "visual.h"
 #include "point.h"
 #include "line.h"
+#include "datastructures.h"
 
 namespace DDAD {
+
+
+
+
+//=============================================================================
+// Interface: Arrangement_Vertex_2r
+//=============================================================================
+
+class Arrangement_Vertex_2r : public Point_2r {
+public:
+    Arrangement_Vertex_2r();
+//    ~Arrangement_Vertex_2r();
+    Arrangement_Vertex_2r(Point_2r& pt, SharedPoint_2r otherPt, bool color);
+
+    const Point_2r location();
+    const bool getColor();
+    SharedPoint_2r getOtherPoint();
+    const rational& getX() { return location_.x(); }
+    const rational& getY() { return location_.y(); }
+
+
+private:
+    bool color_;
+    SharedPoint_2r otherPoint_;
+    Point_2r location_;
+};
+
+//=============================================================================
+// Interface: Arrangement_Bundle
+//=============================================================================
+
+class Arrangement_Bundle {
+public:
+    Arrangement_Bundle();
+
+    void insert_vertex(Arrangement_Vertex_2r in);
+    void delete_vertex(Arrangement_Vertex_2r in);
+    bool has_vertex(Arrangement_Vertex_2r in);
+
+
+private:
+    Binary_ST<Segment_2r> thetree_;
+};
+
+//=============================================================================
+// Interface: Bundle_Tree
+//=============================================================================
+
+class Bundle_Tree {
+public:
+    Bundle_Tree();
+
+
+};
+
+//=============================================================================
+// Interface: Bundle_List
+//=============================================================================
+
+class Bundle_List {
+public:
+    Bundle_List();
+
+
+private:
+    std::list<Arrangement_Bundle> blist_;
+};
 
 //=============================================================================
 // Interface: Arrangement_2r
@@ -29,17 +97,21 @@ public:
     void PushPoint(SharedPoint_2r v, bool color);
     void PopPoint();
 
+    const std::list<Arrangement_Vertex_2r>& vertices() const;
     const std::list<Segment_2r_colored>& segments() const;
 
 
 
 private:
+    std::list<Arrangement_Vertex_2r> vertices_;
     std::list<Segment_2r_colored> segments_;
     Point_2r floater_;
     bool current_color_;
 };
 
-int CountIntersections(const Arrangement_2r& A, Visual::IGeometryObserver* observer = nullptr);
+int CountIntersections(const Arrangement_2r& A,
+                       Visual::IGeometryObserver* observer = nullptr);
+
 
 } // namespace DDAD
 

@@ -26,30 +26,67 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
 //#	- set of segments, each colored red or blue
 //#
 //#
+    int crossings = 0;
+    std::list<Arrangement_Vertex_2r> L = A.vertices();
+    //vertex comparator
+    struct compare{
+                    bool operator()(Arrangement_Vertex_2r a, Arrangement_Vertex_2r b){
+                        if(a.getX() < b.getX()){return true;}
+                        if(a.getX() > b.getX()){return false;}
+                        return a.getY() < b.getY();
+                    }
+                };
+    //sort vertices lexicographically
+    //L = sort list of endpoints
+    L.sort(compare());
+    //for each event p in L do:
+    for(std::list<Arrangement_Vertex_2r>::iterator ii = L.begin(); ii != L.end(); ii ++){
+        //	split(p, brundletree, red)
+        //	split(p, brundlelist, blue)
+        //	if brundles r and b in wrong positions:
+        //		countIntersections(rxb)
+        //		swap(r,b)
+        //		repair brundletree by merge
+        //		repair brundlelist
 
-//L = sort list of endpoints
-//for each event p in L do:
-//	split(p, brundletree, red)
-//	split(p, brundlelist, blue)
-//	if brundles r and b in wrong positions:
-//		countIntersections(rxb)
-//		swap(r,b)
-//		repair brundletree by merge
-//		repair brundlelist
+
+        //def split(p, struct, color):
+        //	switch(locate p in struct):
+        //		case (p between two (color) bundles):
+        //			continue
+        //		case (p inside (color) bundle):
+        //			split bundle at p
+        //		case (p inside two (color) bundles):
+        //			split bundles at p
+        crossings++;
+    }
 
 
-//def split(p, struct, color):
-//	switch(locate p in struct):
-//		case (p between two (color) bundles):
-//			continue
-//		case (p inside (color) bundle):
-//			split bundle at p
-//		case (p inside two (color) bundles):
-//			split bundles at p
-
-    return 0;
+    return crossings;
 }
 
+
+//=============================================================================
+// Implementation: Arrangement_Vertex_2r
+//=============================================================================
+
+Arrangement_Vertex_2r::Arrangement_Vertex_2r(Point_2r &pt, SharedPoint_2r otherPt, bool color){
+    location_ = pt;
+    otherPoint_ = otherPt;
+    color_ = color;
+}
+
+const Point_2r Arrangement_Vertex_2r::location(){
+    return location_;
+}
+
+const bool Arrangement_Vertex_2r::getColor(){
+    return color_;
+}
+
+SharedPoint_2r Arrangement_Vertex_2r::getOtherPoint(){
+    return otherPoint_;
+}
 
 //=============================================================================
 // Implementation: Arrangement_2r
@@ -57,15 +94,18 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
 
 Arrangement_2r::~Arrangement_2r() {
     for(auto i = begin(segments_); i != end(segments_); ++i) {
-        SigPopVisualPoint_2r(i->p());
-        SigPopVisualPoint_2r(i->q());
         SigPopVisualSegment_2r(*i);
+    }
+    for(auto i = begin(vertices_); i != end(vertices_); ++i) {
+        SigPopVisualPoint_2r(i->location());
     }
 }
 
 void Arrangement_2r::AddSegment(Point_2r& v, Point_2r& w, bool color){
     LOG(INFO) << "in AddSegment";
     segments_.push_front(Segment_2r_colored(v, w, color));
+    vertices_.push_front(Arrangement_Vertex_2r(v, std::make_shared<Point_2r>(w), color));
+    vertices_.push_front(Arrangement_Vertex_2r(w, std::make_shared<Point_2r>(v), color));
     LOG(INFO) << "Pushed a segment to the list";
     //Create visual point and segment
     Visual::Material vMat;
@@ -121,6 +161,10 @@ void Arrangement_2r::PopPoint(){
 
 const std::list<Segment_2r_colored>& Arrangement_2r::segments() const{
     return segments_;
+}
+
+const std::list<Arrangement_Vertex_2r>& Arrangement_2r::vertices() const{
+    return vertices_;
 }
 
 } // Namespace DDAD

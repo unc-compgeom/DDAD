@@ -357,8 +357,8 @@ void SceneObserver::onEndCreateSegment(const QVector2D& start){
 }
 
 void SceneObserver::onEndCreateArrangement(){
-    qDebug() << "SceneObserver EndCreateArrangement. finding intersections.";
     int foundIntersections = DDAD::CountIntersections(SelectedArrangement_2()->arrangement(), SelectedArrangement_2());
+    qDebug() << "SceneObserver EndCreateArrangement. found" << foundIntersections << "intersections.";
     ConfigManager::get().set_input_state(CREATE_ARRANGEMENT);
 }
 

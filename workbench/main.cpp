@@ -37,6 +37,21 @@ int main(int argc, char *argv[]) {
     splash.show();
     //splash.showMessage("Initializing...");
     a.processEvents();
+    DDAD::Binary_ST<int> bst;
+    DDAD::TreeNode<int>* tobegone = new DDAD::TreeNode<int>(5);
+    bst.Insert(tobegone);
+    DDAD::TreeNode<int>* torotate = new DDAD::TreeNode<int>(3);
+    bst.Insert(torotate);
+    bst.Insert(new DDAD::TreeNode<int>(2));
+    bst.Insert(new DDAD::TreeNode<int>(4));
+    bst.Insert(new DDAD::TreeNode<int>(7));
+
+    bst.PrintTree();
+    std::cout << "\nReversing rotation...\n";
+    bst.Rotate(torotate);
+    bst.Rotate(tobegone);
+    bst.PrintTree();
+
 
 //    DDAD::Polygon_2rDq pc;
 //    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
