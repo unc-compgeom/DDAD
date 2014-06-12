@@ -37,7 +37,6 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
                     }
                 };
     //sort vertices lexicographically
-    //L = sort list of endpoints
     L.sort(compare());
     //for each event p in L do:
     for(std::list<Arrangement_Vertex_2r>::iterator ii = L.begin(); ii != L.end(); ii ++){
@@ -67,6 +66,26 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
 
 
 //=============================================================================
+// Implementation: Arrangement_Bundle
+//=============================================================================
+
+void Arrangement_Bundle::insert(const Segment_2r_colored &x){
+    if(x.q() < x.p()){
+        Point_2r newp = x.q();
+        Point_2r newq = x.p();
+        bool newcolor = x.isRed();
+        SplayTree<Segment_2r_colored>::insert(Segment_2r_colored(newp, newq, newcolor));
+    }
+    else SplayTree<Segment_2r_colored>::insert(x);
+}
+
+bool Arrangement_Bundle::contains(const Arrangement_Vertex_2r &vert){
+    Segment_2r_colored topseg = findMax();
+    Segment_2r_colored botseg = findMin();
+    return (Predicate::AIsLeftOfB(vert.location(), botseg.support()) && Predicate::AIsRightOfB(vert.location(), topseg.support()));
+}
+
+//=============================================================================
 // Implementation: Arrangement_Vertex_2r
 //=============================================================================
 
@@ -76,7 +95,7 @@ Arrangement_Vertex_2r::Arrangement_Vertex_2r(Point_2r &pt, SharedPoint_2r otherP
     color_ = color;
 }
 
-const Point_2r Arrangement_Vertex_2r::location(){
+const Point_2r Arrangement_Vertex_2r::location() const{
     return location_;
 }
 

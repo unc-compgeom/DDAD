@@ -146,6 +146,8 @@ public:
 
     SharedPoint_2r p_sptr();
     SharedPoint_2r q_sptr();
+    const SharedPoint_2r p_sptr() const;
+    const SharedPoint_2r q_sptr() const;
 
     void set_p(SharedPoint_2r p);
     void set_q(SharedPoint_2r q);
@@ -161,6 +163,8 @@ protected:
 //=============================================================================
 class Segment_2r_colored : public Segment_2r {
 public:
+    Segment_2r_colored();
+    Segment_2r_colored(const Segment_2r_colored &rhs);
     Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
     Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
 
@@ -171,11 +175,14 @@ public:
     void set_color(bool isRed){
         isRed_ = isRed;
     }
-
+    friend bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 
 private:
     bool isRed_;
 };
+
+bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 
 
 //=============================================================================

@@ -28,7 +28,7 @@ public:
 //    ~Arrangement_Vertex_2r();
     Arrangement_Vertex_2r(Point_2r& pt, SharedPoint_2r otherPt, bool color);
 
-    const Point_2r location();
+    const Point_2r location() const;
     const bool getColor();
     SharedPoint_2r getOtherPoint();
     const rational& getX() { return location_.x(); }
@@ -45,17 +45,14 @@ private:
 // Interface: Arrangement_Bundle
 //=============================================================================
 
-class Arrangement_Bundle {
+class Arrangement_Bundle : public SplayTree<Segment_2r_colored>{
 public:
     Arrangement_Bundle();
+    // Checks whether an input segment is both below the top segment and above the bottom segment in the bundle
+    bool contains(const Arrangement_Vertex_2r& vert);
+    // Make sure that segments are inserted with correct orientation
+    void insert(const Segment_2r_colored &x);
 
-    void insert_vertex(Arrangement_Vertex_2r in);
-    void delete_vertex(Arrangement_Vertex_2r in);
-    bool has_vertex(Arrangement_Vertex_2r in);
-
-
-private:
-    Binary_ST<Segment_2r> thetree_;
 };
 
 //=============================================================================

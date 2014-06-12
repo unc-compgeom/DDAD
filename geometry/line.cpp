@@ -271,6 +271,12 @@ SharedPoint_2r Segment_2r::p_sptr() {
 SharedPoint_2r Segment_2r::q_sptr() {
     return q_;
 }
+const SharedPoint_2r Segment_2r::p_sptr() const {
+    return p_;
+}
+const SharedPoint_2r Segment_2r::q_sptr() const {
+    return q_;
+}
 void Segment_2r::set_p(SharedPoint_2r p) {
     p_ = p;
 }
@@ -278,9 +284,24 @@ void Segment_2r::set_q(SharedPoint_2r q) {
     q_ = q;
 }
 
+inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
+}
+inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
+}
+
 //=============================================================================
 // Segment_2r_colored Implementation
 //=============================================================================
+Segment_2r_colored::Segment_2r_colored() {}
+Segment_2r_colored::Segment_2r_colored(const Segment_2r_colored &rhs){
+    p_ = rhs.p_sptr();
+    q_ = rhs.q_sptr();
+    isRed_ = rhs.isRed();
+    support_ = rhs.support();
+}
+
 Segment_2r_colored::Segment_2r_colored(Point_2r &p, Point_2r &q, bool color){
     p_ = std::make_shared<Point_2r>(p);
     q_ = std::make_shared<Point_2r>(q);
@@ -293,6 +314,9 @@ Segment_2r_colored::Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool 
     isRed_ = color;
     support_ = Line_2r(p,q);
 }
+//Segment_2r_colored Segment_2r_colored::operator=(const Segment_2r_colored &rhs){
+//    return Segment_2r_colored(rhs);
+//}
 
 //=============================================================================
 // Line_3r Implementation

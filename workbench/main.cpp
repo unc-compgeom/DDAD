@@ -46,15 +46,19 @@ int main(int argc, char *argv[]) {
     }
 
     std::cout << "\n Printing splay tree \n";
-    spt.printBreadthFirst();
+    spt.print();
 
     std::cout << "\n Splitting the tree at 23\n";
     DDAD::SplayTree<int> lhs(0);
     lhs = spt.splitTree(23);
     std::cout << "\n Left-hand tree is \n";
-    lhs.printBreadthFirst();
+    lhs.print();
     std::cout << "\nRight-hand tree is\n";
-    spt.printBreadthFirst();
+    spt.print();
+
+    std::cout << "\n Merging lhs with spt\n";
+    lhs.mergeTree(&spt);
+    lhs.print();
 
 
 //    DDAD::Melkman(pc);
