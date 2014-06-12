@@ -35,33 +35,27 @@ int main(int argc, char *argv[]) {
     QPixmap splash_image(":/splash3.png");
     QSplashScreen splash(splash_image);
     splash.show();
-    //splash.showMessage("Initializing...");
+    splash.showMessage("Initializing...");
     a.processEvents();
-    DDAD::Binary_ST<int> bst;
-    DDAD::TreeNode<int>* tobegone = new DDAD::TreeNode<int>(5);
-    bst.Insert(tobegone);
-    DDAD::TreeNode<int>* torotate = new DDAD::TreeNode<int>(3);
-    bst.Insert(torotate);
-    bst.Insert(new DDAD::TreeNode<int>(2));
-    bst.Insert(new DDAD::TreeNode<int>(4));
-    bst.Insert(new DDAD::TreeNode<int>(7));
 
-    bst.PrintTree();
-    std::cout << "\nReversing rotation...\n";
-    bst.Rotate(torotate);
-    bst.Rotate(tobegone);
-    bst.PrintTree();
+    std::cout << "Testing splay tree" << std::endl;
+    DDAD::SplayTree<int> spt(0);
+    int toinsert[] = {19, 52, 26, 23,7, 3, 884, 35, 62, 12, 18};
+    for(int ii = 0; ii < 11; ii++){
+        spt.insert(toinsert[ii]);
+    }
 
+    std::cout << "\n Printing splay tree \n";
+    spt.printBreadthFirst();
 
-//    DDAD::Polygon_2rDq pc;
-//    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
-//    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,10));
-//    pc.PushFront(std::make_shared<DDAD::Point_2r>(10,10));
-//    pc.PushFront(std::make_shared<DDAD::Point_2r>(10,0));
-////    pc.PushFront(std::make_shared<DDAD::Point_2r>(5,-5));
-////    pc.PushFront(std::make_shared<DDAD::Point_2r>(0,-7));
-//    //pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
-//    //pc.PushFront(std::make_shared<DDAD::Point_2r>(0,0));
+    std::cout << "\n Splitting the tree at 23\n";
+    DDAD::SplayTree<int> lhs(0);
+    lhs = spt.splitTree(23);
+    std::cout << "\n Left-hand tree is \n";
+    lhs.printBreadthFirst();
+    std::cout << "\nRight-hand tree is\n";
+    spt.printBreadthFirst();
+
 
 //    DDAD::Melkman(pc);
 
