@@ -15,30 +15,34 @@
 
 namespace DDAD {
 
-
+enum RelativePosition{
+    ABOVE = 3,
+    ENDING = 2,
+    BELOW = 1
+};
 
 
 //=============================================================================
 // Interface: Arrangement_Vertex_2r
 //=============================================================================
 
-class Arrangement_Vertex_2r : public Point_2r {
+class Arrangement_Vertex_2r {
 public:
     Arrangement_Vertex_2r();
-//    ~Arrangement_Vertex_2r();
-    Arrangement_Vertex_2r(Point_2r& pt, SharedPoint_2r otherPt, bool color);
+    Arrangement_Vertex_2r(SharedPoint_2r &pt, SharedPoint_2r otherPt, bool color);
 
-    const Point_2r location() const;
-    const bool getColor();
-    SharedPoint_2r getOtherPoint();
-    const rational& getX() { return location_.x(); }
-    const rational& getY() { return location_.y(); }
+    const Point_2r position() const { return *pt_; }
+    const bool getColor() { return color_; }
+    SharedPoint_2r getOtherPoint() const {return otherPoint_; }
+    SharedPoint_2r getPoint() const {return pt_; }
+    const rational& getX() { return pt_->x(); }
+    const rational& getY() { return pt_->y(); }
 
 
 private:
     bool color_;
     SharedPoint_2r otherPoint_;
-    Point_2r location_;
+    SharedPoint_2r pt_;
 };
 
 //=============================================================================
@@ -47,22 +51,37 @@ private:
 
 class Arrangement_Bundle : public SplayTree<Segment_2r_colored>{
 public:
-    Arrangement_Bundle();
+    //Arrangement_Bundle();
     // Checks whether an input segment is both below the top segment and above the bottom segment in the bundle
     bool contains(const Arrangement_Vertex_2r& vert);
     // Make sure that segments are inserted with correct orientation
     void insert(const Segment_2r_colored &x);
+    // Bundles need to be able to tell whether they are "above", "ending at", or "below" a given point
+    RelativePosition relPosition(const Arrangement_Vertex_2r &p);
+    Segment_2r_colored* getBot() const { return botSegment_; }
+    Segment_2r_colored* getTop() const { return topSegment_; }
+private:
+    Segment_2r_colored* topSegment_;
+    Segment_2r_colored* botSegment_;
 
 };
+bool operator<(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
+bool operator>(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
+bool operator==(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
+bool operator!=(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
 
 //=============================================================================
 // Interface: Bundle_Tree
 //=============================================================================
 
-class Bundle_Tree {
+class Bundle_Tree : public SplayTree<Arrangement_Bundle>{
 public:
-    Bundle_Tree();
+    //Bundle_Tree();
+    void locatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
+    void splitBundles(Arrangement_Vertex_2r &p);
 
+private:
+    SplayTree<Arrangement_Bundle> btree_;
 
 };
 
@@ -72,7 +91,7 @@ public:
 
 class Bundle_List {
 public:
-    Bundle_List();
+    //Bundle_List();
 
 
 private:
@@ -109,6 +128,20 @@ private:
 int CountIntersections(const Arrangement_2r& A,
                        Visual::IGeometryObserver* observer = nullptr);
 
+inline bool operator<(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
+    // Only works for same-colored bundles!
+    return lhs.getTop() < rhs.getBot();
+}
+inline bool operator>(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
+    // Only works for same-colored bundles!
+    return lhs.getBot() > rhs.getTop();
+}
+inline bool operator==(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
+    return lhs.getRoot() == rhs.getRoot(); // If weird things happen, it might be because this method doesn't check for an element-by-element equivalence between two bundles.
+}
+inline bool operator!=(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
+    return !(lhs == rhs);
+}
 
 } // namespace DDAD
 

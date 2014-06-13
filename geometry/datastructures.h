@@ -5,6 +5,7 @@
 #include <iostream>
 #include <queue>
 
+
 namespace DDAD{
 
 // SplayTree class
@@ -31,6 +32,9 @@ class SplayTree;
 template <class Comparable>
 class BinaryNode
 {
+public:
+    Comparable getElement() {return element;}
+
     Comparable  element;
     BinaryNode *left;
     BinaryNode *right;
@@ -47,15 +51,15 @@ template <class Comparable>
 class SplayTree
 {
   public:
-    explicit SplayTree( const Comparable & notFound );
-    SplayTree(const Comparable & notFound, BinaryNode<Comparable>* newroot);
+    explicit SplayTree();
+    SplayTree(BinaryNode<Comparable>* newroot);
     SplayTree( const SplayTree & rhs );
 
     ~SplayTree( );
 
-    const Comparable & findMin( );
-    const Comparable & findMax( );
-    const Comparable & find( const Comparable & x );
+    void findMin( );
+    void findMax( );
+    void find( const Comparable & x );
     bool isEmpty( ) const;
     SplayTree<Comparable> splitTree( const Comparable & x);
     void SplayTree<Comparable>::mergeTree(SplayTree<Comparable> * R);
@@ -69,11 +73,11 @@ class SplayTree
     void print(BinaryNode<Comparable>* node, std::string space);
 
     BinaryNode<Comparable>* getRoot() {return root;}
+    const BinaryNode<Comparable>* getRoot() const {return root;}
     const SplayTree & operator=( const SplayTree & rhs );
 
-  private:
+  protected:
     BinaryNode<Comparable> *root;
-    const Comparable ITEM_NOT_FOUND;
 
     const Comparable & elementAt( BinaryNode<Comparable> *t ) const;
     BinaryNode<Comparable> * clone( BinaryNode<Comparable> *t ) const;
@@ -84,13 +88,12 @@ class SplayTree
  * Construct the tree.
  */
 template <class Comparable>
-SplayTree<Comparable>::SplayTree( const Comparable & notFound )
-  : ITEM_NOT_FOUND( notFound )
+SplayTree<Comparable>::SplayTree()
 {
     root = nullptr;
 }
 template <class Comparable>
-SplayTree<Comparable>::SplayTree(const Comparable & notFound, BinaryNode<Comparable> *newroot) : ITEM_NOT_FOUND(notFound) {
+SplayTree<Comparable>::SplayTree(BinaryNode<Comparable> *newroot) {
     root = newroot;
 }
 
@@ -99,7 +102,6 @@ SplayTree<Comparable>::SplayTree(const Comparable & notFound, BinaryNode<Compara
  */
 template <class Comparable>
 SplayTree<Comparable>::SplayTree( const SplayTree<Comparable> & rhs )
-  : ITEM_NOT_FOUND( rhs.ITEM_NOT_FOUND )
 {
     root = nullptr;
     *this = rhs;
@@ -194,10 +196,10 @@ void SplayTree<Comparable>::remove( const Comparable & x )
  * Return the smallest item or ITEM_NOT_FOUND if empty.
  */
 template <class Comparable>
-const Comparable & SplayTree<Comparable>::findMin( )
+void SplayTree<Comparable>::findMin( )
 {
     if( isEmpty( ) )
-        return ITEM_NOT_FOUND;
+        return;
 
     BinaryNode<Comparable> *ptr = root;
 
@@ -205,7 +207,7 @@ const Comparable & SplayTree<Comparable>::findMin( )
         ptr = ptr->left;
 
     splay( ptr->element, root );
-    return ptr->element;
+    return;
 }
 
 /**
@@ -217,10 +219,10 @@ const Comparable & SplayTree<Comparable>::findMin( )
  * Return the largest item or ITEM_NOT_FOUND if empty.
  */
 template <class Comparable>
-const Comparable & SplayTree<Comparable>::findMax( )
+void SplayTree<Comparable>::findMax( )
 {
     if( isEmpty( ) )
-        return ITEM_NOT_FOUND;
+        return;
 
     BinaryNode<Comparable> *ptr = root;
 
@@ -228,7 +230,7 @@ const Comparable & SplayTree<Comparable>::findMax( )
         ptr = ptr->right;
 
     splay( ptr->element, root );
-    return ptr->element;
+    return;
 }
 
 /**
@@ -236,15 +238,15 @@ const Comparable & SplayTree<Comparable>::findMax( )
  * Return the matching item or ITEM_NOT_FOUND if not found.
  */
 template <class Comparable>
-const Comparable & SplayTree<Comparable>::find( const Comparable & x )
+void SplayTree<Comparable>::find( const Comparable & x )
 {
     if( isEmpty( ) )
-        return ITEM_NOT_FOUND;
+        return;
     splay( x, root );
     if( root->element != x )
-        return ITEM_NOT_FOUND;
+        return;
 
-    return root->element;
+    return;
 }
 
 /**
@@ -282,7 +284,7 @@ bool SplayTree<Comparable>::isEmpty( ) const
 template <class Comparable>
 SplayTree<Comparable> SplayTree<Comparable>::splitTree(const Comparable &x){
     find(x);  // Indexed elements are splayed to the top of the tree
-    SplayTree<Comparable>* R = new SplayTree(ITEM_NOT_FOUND, root->right);
+    SplayTree<Comparable>* R = new SplayTree(root->right);
     root->right = nullptr;
     return *R;
 }

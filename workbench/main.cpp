@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     a.processEvents();
 
     std::cout << "Testing splay tree" << std::endl;
-    DDAD::SplayTree<int> spt(0);
+    DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
     int toinsert[] = {19, 52, 26, 23,7, 3, 884, 35, 62, 12, 18};
     for(int ii = 0; ii < 11; ii++){
         spt.insert(toinsert[ii]);
@@ -48,8 +48,12 @@ int main(int argc, char *argv[]) {
     std::cout << "\n Printing splay tree \n";
     spt.print();
 
+    std::cout << "\nFinding element 50\n";
+    spt.find(50);
+    spt.print();
+
     std::cout << "\n Splitting the tree at 23\n";
-    DDAD::SplayTree<int> lhs(0);
+    DDAD::SplayTree<int> lhs = DDAD::SplayTree<int>();
     lhs = spt.splitTree(23);
     std::cout << "\n Left-hand tree is \n";
     lhs.print();
@@ -59,6 +63,7 @@ int main(int argc, char *argv[]) {
     std::cout << "\n Merging lhs with spt\n";
     lhs.mergeTree(&spt);
     lhs.print();
+
 
 
 //    DDAD::Melkman(pc);

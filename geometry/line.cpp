@@ -284,12 +284,6 @@ void Segment_2r::set_q(SharedPoint_2r q) {
     q_ = q;
 }
 
-inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
-    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
-}
-inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
-    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
-}
 
 //=============================================================================
 // Segment_2r_colored Implementation

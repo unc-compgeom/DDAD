@@ -183,6 +183,8 @@ private:
 
 bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 
 
 //=============================================================================
@@ -273,6 +275,22 @@ private:
     Line_3r support_;
 };
 
+inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    // Only works for non-intersecting segments!
+    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
+}
+inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    // Only works for non-intersecting segments!
+    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
+}
+inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    // Only works for non-intersecting segments!
+    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.isRed() == rhs.isRed());
+}
+inline bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+    // Only works for non-intersecting segments!
+    return !(lhs == rhs);
+}
 } // namespace DDAD
 
 #endif // GE_LINE_H
