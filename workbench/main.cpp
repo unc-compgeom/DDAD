@@ -3,40 +3,41 @@
  * @date 2012-05-23
  */
 
-// Qt
-#include <QApplication>
-#include <QSplashScreen>
-#include <QtDebug>
+//// Qt
+//#include <QApplication>
+//#include <QSplashScreen>
+//#include <QtDebug>
 
-// Workbench
-#include "common.h"
-#include "qt_window_main.h"
+//// Workbench
+//#include "common.h"
+//#include "qt_window_main.h"
 
 // test
-#include "../geometry/polygon.h"
+//#include "../geometry/polygon.h"
+#include "../geometry/arrangement.h"
 
-#define _ELPP_THREAD_SAFE
-_INITIALIZE_EASYLOGGINGPP
+//#define _ELPP_THREAD_SAFE
+//_INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-    LOG(INFO) << "===========================================================";
+//    LOG(INFO) << "===========================================================";
 
-    QApplication a(argc, argv);
+//    QApplication a(argc, argv);
 
-    // Qt5 provides a nice default GUI stylesheet called Fusion
-    //QApplication::setStyle(QStyleFactory::create("Fusion"));
+//    // Qt5 provides a nice default GUI stylesheet called Fusion
+//    //QApplication::setStyle(QStyleFactory::create("Fusion"));
 
-    // register any types that will pass through Qt's signal/slot mechanism
-    LOG(INFO) << "registering qt meta types";
-    qRegisterMetaType<QVector<DDAD::GL::Vertex>>("QVector<DDAD::GL::Vertex>");
-    qRegisterMetaType<QVector<QVector3D>>("QVector<QVector3D>");
+//    // register any types that will pass through Qt's signal/slot mechanism
+//    LOG(INFO) << "registering qt meta types";
+//    qRegisterMetaType<QVector<DDAD::GL::Vertex>>("QVector<DDAD::GL::Vertex>");
+//    qRegisterMetaType<QVector<QVector3D>>("QVector<QVector3D>");
 
-    LOG(INFO) << "displaying splash screen";
-    QPixmap splash_image(":/splash3.png");
-    QSplashScreen splash(splash_image);
-    splash.show();
-    splash.showMessage("Initializing...");
-    a.processEvents();
+//    LOG(INFO) << "displaying splash screen";
+//    QPixmap splash_image(":/splash3.png");
+//    QSplashScreen splash(splash_image);
+//    splash.show();
+//    splash.showMessage("Initializing...");
+//    a.processEvents();
 
     std::cout << "Testing splay tree" << std::endl;
     DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
@@ -48,8 +49,8 @@ int main(int argc, char *argv[]) {
     std::cout << "\n Printing splay tree \n";
     spt.print();
 
-    std::cout << "\nFinding element 50\n";
-    spt.find(50);
+    std::cout << "\nFinding element 2\n";
+    spt.find(2);
     spt.print();
 
     std::cout << "\n Splitting the tree at 23\n";
@@ -66,13 +67,13 @@ int main(int argc, char *argv[]) {
 
 
 
-//    DDAD::Melkman(pc);
+////    DDAD::Melkman(pc);
 
-    LOG(INFO) << "displaying main window";
-    MainWindow w;
-    w.showMaximized();
-    splash.finish(&w);
+//    LOG(INFO) << "displaying main window";
+//    MainWindow w;
+//    w.showMaximized();
+//    splash.finish(&w);
 
-    LOG(INFO) << "beginning main event loop";
-    return a.exec();
+//    LOG(INFO) << "beginning main event loop";
+//    return a.exec();
 }

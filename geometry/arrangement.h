@@ -7,7 +7,7 @@
 #ifndef GE_ARRANGEMENT_H
 #define GE_ARRANGEMENT_H
 
-#include "common.h"
+//#include "common.h"
 #include "visual.h"
 #include "point.h"
 #include "line.h"
@@ -18,7 +18,8 @@ namespace DDAD {
 enum RelativePosition{
     ABOVE = 3,
     ENDING = 2,
-    BELOW = 1
+    BELOW = 1,
+    INDETERMINATE = 0
 };
 
 
@@ -79,7 +80,7 @@ bool operator!=(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
 class Bundle_Tree : public SplayTree<Arrangement_Bundle>{
 public:
     //Bundle_Tree();
-    void locatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
+    void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
     void splitBundles(Arrangement_Vertex_2r &p);
 
 private:
@@ -94,6 +95,8 @@ private:
 class Bundle_List {
 public:
     //Bundle_List();
+    void Remove(std::list<Arrangement_Bundle>::iterator where);
+    void Insert(std::list<Arrangement_Bundle>::iterator where, Arrangement_Bundle& to_insert);
     void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
     void SplitBundles(Arrangement_Vertex_2r &p);
     std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment) ;

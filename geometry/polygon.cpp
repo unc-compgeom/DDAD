@@ -18,7 +18,7 @@ namespace DDAD {
 
 Polygon_2rDq Melkman(const PolyChain_2r& P,
       Visual::IGeometryObserver* observer){
-    LOG(INFO) << "Called Melkman";
+//    LOG(INFO) << "Called Melkman";
     Polygon_2rDq D;
     D.AddObserver(observer);
     std::list<PolyChainVertex_2r> vertices = P.vertices();
@@ -28,12 +28,12 @@ Polygon_2rDq Melkman(const PolyChain_2r& P,
     D.PushFront(v1);
     D.PushFront(v0);
     D.PushFront(v1);
-    LOG(INFO) << "First point is  (" << (v0.vertex()).x() << ", " << (v0.vertex()).y() << ")";
-    LOG(INFO) << "Second point is  (" << (v1.vertex()).x() << ", " << (v1.vertex()).y() << ")";
+//    LOG(INFO) << "First point is  (" << (v0.vertex()).x() << ", " << (v0.vertex()).y() << ")";
+//    LOG(INFO) << "Second point is  (" << (v1.vertex()).x() << ", " << (v1.vertex()).y() << ")";
 
     for(std::list<PolyChainVertex_2r>::iterator ii = it; ii != vertices.end(); ii ++){
         PolyChainVertex_2r pi = *ii;
-        LOG(INFO) << "Popping point  (" << (pi.vertex()).x() << ", " << (pi.vertex()).y() << ")";
+//        LOG(INFO) << "Popping point  (" << (pi.vertex()).x() << ", " << (pi.vertex()).y() << ")";
         Line_2r topEdge = Line_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
 //        Segment_2r topEdge2 = Segment_2r(D[0].vertex_sptr(), D[1].vertex_sptr());
 //       Visual::Material vMat;
