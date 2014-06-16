@@ -62,7 +62,7 @@ class SplayTree
     void find( const Comparable & x );
     bool isEmpty( ) const;
     SplayTree<Comparable> splitTree( const Comparable & x);
-    void SplayTree<Comparable>::mergeTree(SplayTree<Comparable> * R);
+    void mergeTree(SplayTree<Comparable> * R);
 
     void makeEmpty( );
     void insert( const Comparable & x );
@@ -278,8 +278,8 @@ bool SplayTree<Comparable>::isEmpty( ) const
 }
 
 /**
-  * Split the tree at elt into two subtrees such that subtree L is < elt
-  * and all remaining nodes in the tree are >= elt
+  * Split the tree at elt into two subtrees such that subtree L is <= elt
+  * and all remaining nodes in the tree are > elt
   */
 template <class Comparable>
 SplayTree<Comparable> SplayTree<Comparable>::splitTree(const Comparable &x){

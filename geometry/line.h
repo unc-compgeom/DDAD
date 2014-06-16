@@ -284,11 +284,9 @@ inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &r
     return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
 }
 inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
-    // Only works for non-intersecting segments!
     return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.isRed() == rhs.isRed());
 }
 inline bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
-    // Only works for non-intersecting segments!
     return !(lhs == rhs);
 }
 } // namespace DDAD

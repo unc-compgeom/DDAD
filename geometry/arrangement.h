@@ -51,7 +51,8 @@ private:
 
 class Arrangement_Bundle : public SplayTree<Segment_2r_colored>{
 public:
-    //Arrangement_Bundle();
+    Arrangement_Bundle();
+    Arrangement_Bundle(SplayTree<Segment_2r_colored> &rhs);
     // Checks whether an input segment is both below the top segment and above the bottom segment in the bundle
     bool contains(const Arrangement_Vertex_2r& vert);
     // Make sure that segments are inserted with correct orientation
@@ -60,6 +61,7 @@ public:
     RelativePosition relPosition(const Arrangement_Vertex_2r &p);
     Segment_2r_colored* getBot() const { return botSegment_; }
     Segment_2r_colored* getTop() const { return topSegment_; }
+    void SplitBundleAtSegment(Segment_2r_colored &pivot_segment);
 private:
     Segment_2r_colored* topSegment_;
     Segment_2r_colored* botSegment_;
@@ -92,6 +94,9 @@ private:
 class Bundle_List {
 public:
     //Bundle_List();
+    void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
+    void SplitBundles(Arrangement_Vertex_2r &p);
+    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment) ;
 
 
 private:
