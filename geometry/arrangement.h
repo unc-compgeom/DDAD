@@ -50,22 +50,22 @@ private:
 // Interface: Arrangement_Bundle
 //=============================================================================
 
-class Arrangement_Bundle : public SplayTree<Segment_2r_colored>{
+class Arrangement_Bundle : public SplayTree<Segment_2r_Colored>{
 public:
     Arrangement_Bundle();
-    Arrangement_Bundle(SplayTree<Segment_2r_colored> &rhs);
+    Arrangement_Bundle(SplayTree<Segment_2r_Colored> &rhs);
     // Checks whether an input segment is both below the top segment and above the bottom segment in the bundle
     bool contains(const Arrangement_Vertex_2r& vert);
     // Make sure that segments are inserted with correct orientation
-    void insert(const Segment_2r_colored &x);
+    void insert(const Segment_2r_Colored &x);
     // Bundles need to be able to tell whether they are "above", "ending at", or "below" a given point
     RelativePosition relPosition(const Arrangement_Vertex_2r &p);
-    Segment_2r_colored* getBot() const { return botSegment_; }
-    Segment_2r_colored* getTop() const { return topSegment_; }
-    void SplitBundleAtSegment(Segment_2r_colored &pivot_segment);
+    Segment_2r_Colored* getBot() const { return botSegment_; }
+    Segment_2r_Colored* getTop() const { return topSegment_; }
+    void SplitBundleAtSegment(Segment_2r_Colored &pivot_segment);
 private:
-    Segment_2r_colored* topSegment_;
-    Segment_2r_colored* botSegment_;
+    Segment_2r_Colored* topSegment_;
+    Segment_2r_Colored* botSegment_;
 
 };
 bool operator<(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
@@ -99,7 +99,7 @@ public:
     void Insert(std::list<Arrangement_Bundle>::iterator where, Arrangement_Bundle& to_insert);
     void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
     void SplitBundles(Arrangement_Vertex_2r &p);
-    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment);
+    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_Colored& target_segment);
     std::list<Arrangement_Bundle>::iterator FindIndex(Arrangement_Vertex_2r &p);
 
 
@@ -123,13 +123,13 @@ public:
     void PopPoint();
 
     const std::list<Arrangement_Vertex_2r>& vertices() const;
-    const std::list<Segment_2r_colored>& segments() const;
+    const std::list<Segment_2r_Colored>& segments() const;
 
 
 
 private:
     std::list<Arrangement_Vertex_2r> vertices_;
-    std::list<Segment_2r_colored> segments_;
+    std::list<Segment_2r_Colored> segments_;
     Point_2r floater_;
     bool current_color_;
 };

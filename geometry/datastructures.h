@@ -2,433 +2,88 @@
 #define DATASTRUCTURES_H
 
 #include "common.h"
+#include "line.h"
 #include <iostream>
 #include <queue>
 
 
 namespace DDAD{
 
-// SplayTree class
-//
-// CONSTRUCTION: with ITEM_NOT_FOUND object used to signal failed finds
-//
-// ******************PUBLIC OPERATIONS*********************
-// void insert( x )       --> Insert x
-// void remove( x )       --> Remove x
-// Comparable find( x )   --> Return item that matches x
-// Comparable findMin( )  --> Return smallest item
-// Comparable findMax( )  --> Return largest item
-// boolean isEmpty( )     --> Return true if empty; else false
-// void makeEmpty( )      --> Remove all items
-// void print( )          --> Print ascii tree
+class SplayNode;
 
+typedef std::shared_ptr<Segment_2r_Colored> SharedSegment;
+typedef std::shared_ptr<SplayNode> SharedNode;
 
-  // Node and forward declaration because g++ does
-  // not understand nested classes.
-
-template <class Comparable>
-class SplayTree;
-
-template <class Comparable>
-class BinaryNode
+class SplayNode
 {
 public:
-    Comparable getElement() {return element;}
 
-    Comparable  element;
-    BinaryNode *left;
-    BinaryNode *right;
+    //Constructors
 
-    BinaryNode( ) : left( nullptr ), right( nullptr ) { }
-    BinaryNode( const Comparable & theElement, BinaryNode *lt, BinaryNode *rt )
-      : element( theElement ), left( lt ), right( rt ) { }
+    SplayNode( ) : segment( nullptr ), left( nullptr ), right( nullptr ),
+        left_root( nullptr ), right_root( nullptr ), top_seg( nullptr ),
+        bot_seg( nullptr ) { }
 
-    friend class SplayTree<Comparable>;
+    SplayNode(SharedSegment the_segment) : segment( the_segment ),
+        left( nullptr ), right( nullptr ), left_root( nullptr ),
+        right_root( nullptr ), top_seg( nullptr ), bot_seg( nullptr ) { }
+
+    SplayNode(SharedSegment the_segment,
+                SharedNode left,
+                SharedNode right ) :
+        segment( the_segment ), left( left ), right( right ),
+        left_root( nullptr ), right_root( nullptr ), top_seg( nullptr ),
+        bot_seg( nullptr ) { }
+
+    //Destructor
+    ~SplayNode(){MakeEmpty( );}
+
+
+    //Accessors
+    SharedNode get_root() {return root;}
+    SharedSegment get_segment() {return segment;}
+    SharedNode get_left() {return left;}
+    SharedNode get_right() {return right;}
+    SharedNode get_left_root() {return left_root;}
+    SharedNode get_right_root() {return right_root;}
+    SharedSegment get_top_seg() {return top_seg;}
+    SharedSegment get_bot_seg() {return bot_seg;}
+
+
+    //Tree methods
+    void InsertSegment( SharedSegment x );
+    void InsertBundle( SharedNode new_bundle );
+    void Remove( SharedSegment x );
+    void FindMin( );
+    void FindMax( );
+    void Find( SharedSegment x );
+    bool is_empty( ) const;
+    void MakeEmpty( );
+    SharedNode SplitTree(SharedSegment x);
+    void MergeTree(SharedNode R);
+    const SplayNode & operator=( const SplayNode & rhs );
+    void PrintBreadthFirst() const;
+    void Print();
+    void Print(SharedNode node, std::string space );
+
+
+protected:
+    static SharedNode tree_root = nullptr; //the top of the bundle tree
+    SharedNode root;            //the top of the current bundle
+    SharedSegment segment;      //pointer to the segment that the node contains
+    SharedNode left;            //left and right nodes in bundle
+    SharedNode right;
+    SharedNode left_root;       //left and right nodes in bundle tree
+    SharedNode right_root;
+    SharedSegment top_seg;      //top and bottom segments in bundle
+    SharedSegment bot_seg;
+
+    SharedNode clone( SharedNode t ) const;
+
+    void SplaySegment( SharedSegment pivot, SharedNode t );
+    void SplayBundle( SharedSegment pivot, SharedNode t );
 };
 
-
-template <class Comparable>
-class SplayTree
-{
-  public:
-    explicit SplayTree();
-    SplayTree(BinaryNode<Comparable>* newroot);
-    SplayTree( const SplayTree & rhs );
-
-    ~SplayTree( );
-
-    void findMin( );
-    void findMax( );
-    void find( const Comparable & x );
-    bool isEmpty( ) const;
-    SplayTree<Comparable> splitTree( const Comparable & x);
-    void mergeTree(SplayTree<Comparable> * R);
-
-    void makeEmpty( );
-    void insert( const Comparable & x );
-    void remove( const Comparable & x );
-
-    void printBreadthFirst() const;
-    void print();
-    void print(BinaryNode<Comparable>* node, std::string space);
-
-    BinaryNode<Comparable>* getRoot() {return root;}
-    const BinaryNode<Comparable>* getRoot() const {return root;}
-    const SplayTree & operator=( const SplayTree & rhs );
-
-  protected:
-    BinaryNode<Comparable> *root;
-
-    const Comparable & elementAt( BinaryNode<Comparable> *t ) const;
-    BinaryNode<Comparable> * clone( BinaryNode<Comparable> *t ) const;
-
-    void splay( const Comparable & x, BinaryNode<Comparable> * & t ) const;
-};
-/**
- * Construct the tree.
- */
-template <class Comparable>
-SplayTree<Comparable>::SplayTree()
-{
-    root = nullptr;
-}
-template <class Comparable>
-SplayTree<Comparable>::SplayTree(BinaryNode<Comparable> *newroot) {
-    root = newroot;
-}
-
-/**
- * Copy constructor.
- */
-template <class Comparable>
-SplayTree<Comparable>::SplayTree( const SplayTree<Comparable> & rhs )
-{
-    root = nullptr;
-    *this = rhs;
-}
-
-
-/**
- * Destructor.
- */
-template <class Comparable>
-SplayTree<Comparable>::~SplayTree( )
-{
-    makeEmpty( );
-}
-
-/**
- * Insert x into the tree.
- */
-template <class Comparable>
-void SplayTree<Comparable>::insert( const Comparable & x )
-{
-    BinaryNode<Comparable> *newNode = new BinaryNode<Comparable>;
-    newNode->element = x;
-
-    if( root == nullptr )
-    {
-        newNode->left = newNode->right = nullptr;
-        root = newNode;
-    }
-    else
-    {
-        splay( x, root );
-        if( x < root->element )
-        {
-            newNode->left = root->left;
-            newNode->right = root;
-            root->left = nullptr;
-            root = newNode;
-        }
-        else
-        if( root->element < x )
-        {
-            newNode->right = root->right;
-            newNode->left = root;
-            root->right = nullptr;
-            root = newNode;
-        }
-        else
-            return;
-    }
-}
-
-/**
- * Remove x from the tree.
- */
-template <class Comparable>
-void SplayTree<Comparable>::remove( const Comparable & x )
-{
-    if(root == nullptr) return; // Can't remove from an empty tree
-    BinaryNode<Comparable> *newTree;
-
-        // If x is found, it will be at the root
-    splay( x, root );
-    if( root->element != x )
-        return;   // Item not found; do nothing
-
-    if( root->left == nullptr )
-        newTree = root->right;
-    else
-    {
-        // Find the maximum in the left subtree
-        // Splay it to the root; and then attach right child
-        newTree = root->left;
-        splay( x, newTree );
-        newTree->right = root->right;
-    }
-
-//    delete root;
-    root = newTree;
-}
-
-/**
- * Find the smallest item in the tree.
- * Not the most efficient implementation (uses two passes), but has correct
- *     amortized behavior.
- * A good alternative is to first call Find with parameter
- *     smaller than any item in the tree, then call findMin.
- * Return the smallest item or ITEM_NOT_FOUND if empty.
- */
-template <class Comparable>
-void SplayTree<Comparable>::findMin( )
-{
-    if( isEmpty( ) )
-        return;
-
-    BinaryNode<Comparable> *ptr = root;
-
-    while( ptr->left != nullptr )
-        ptr = ptr->left;
-
-    splay( ptr->element, root );
-    return;
-}
-
-/**
- * Find the largest item in the tree.
- * Not the most efficient implementation (uses two passes), but has correct
- *     amortized behavior.
- * A good alternative is to first call Find with parameter
- *     larger than any item in the tree, then call findMax.
- * Return the largest item or ITEM_NOT_FOUND if empty.
- */
-template <class Comparable>
-void SplayTree<Comparable>::findMax( )
-{
-    if( isEmpty( ) )
-        return;
-
-    BinaryNode<Comparable> *ptr = root;
-
-    while( ptr->right != nullptr )
-        ptr = ptr->right;
-
-    splay( ptr->element, root );
-    return;
-}
-
-/**
- * Find item x in the tree.
- * Return the matching item or ITEM_NOT_FOUND if not found.
- */
-template <class Comparable>
-void SplayTree<Comparable>::find( const Comparable & x )
-{
-    if( isEmpty( ) )
-        return;
-    splay( x, root );
-    if( root->element != x )
-        return;
-
-    return;
-}
-
-/**
- * Make the tree logically empty.
- */
-template <class Comparable>
-void SplayTree<Comparable>::makeEmpty( )
-{
-/******************************
- * Comment this out, because it is prone to excessive
- * recursion on degenerate trees. Use alternate algorithm.
-
-    reclaimMemory( root );
-    root = nullptr;
- *******************************/
-    findMax( );        // Splay max item to root
-    while( !isEmpty( ) )
-        remove( root->element );
-}
-
-/**
- * Test if the tree is logically empty.
- * @return true if empty, false otherwise.
- */
-template <class Comparable>
-bool SplayTree<Comparable>::isEmpty( ) const
-{
-    return root == nullptr;
-}
-
-/**
-  * Split the tree at elt into two subtrees such that subtree L is <= elt
-  * and all remaining nodes in the tree are > elt
-  */
-template <class Comparable>
-SplayTree<Comparable> SplayTree<Comparable>::splitTree(const Comparable &x){
-    find(x);  // Indexed elements are splayed to the top of the tree
-    SplayTree<Comparable>* R = new SplayTree(root->right);
-    root->right = nullptr;
-    return *R;
-}
-
-
-/**
-  * Merge tree R into tree L (current tree). L must be < R.
-  */
-template <class Comparable>
-void SplayTree<Comparable>::mergeTree(SplayTree<Comparable>* R){
-    findMax();  // Splay max(L) to top
-    root->right = R->getRoot();
-}
-
-
-/**
- * Deep copy.
- */
-template <class Comparable>
-const SplayTree<Comparable> &
-SplayTree<Comparable>::operator=( const SplayTree<Comparable> & rhs )
-{
-    if( this != &rhs )
-    {
-        makeEmpty( );
-        root = clone( rhs.root );
-    }
-
-    return *this;
-}
-
-/**
- * Internal method to perform a top-down splay.
- * The last accessed node becomes the new root.
- * This method may be overridden to use a different
- * splaying algorithm, however, the splay tree code
- * depends on the accessed item going to the root.
- * x is the target item to splay around.
- * t is the root of the subtree to splay.
- */
-template <class Comparable>
-void SplayTree<Comparable>::splay( const Comparable & x,
-                                   BinaryNode<Comparable> * & t ) const
-{
-    BinaryNode<Comparable> N, *L, *R, *y;
-    if(t == nullptr) return;
-    N.left = N.right = nullptr;
-    L = R = &N;
-
-    while(true){
-        if(x < t->element){
-            if(t->left == nullptr) break;
-            if(x < t->left->element){
-                y = t->left;
-                t->left = y->right;
-                y->right = t;
-                t = y;
-                if(t->left == nullptr) break;
-            }
-            R->left = t;
-            R = t;
-            t = t->left;
-        }
-        else if(x > t->element){
-            if(t->right == nullptr) break;
-            if(x > t->right->element){
-                y = t->right;
-                t->right = y->left;
-                y->left = t;
-                t = y;
-                if(t->right == nullptr) break;
-            }
-            L->right = t;
-            L = t;
-            t = t->right;
-        }
-        else break;
-    }
-
-    L->right = t->left;
-    R->left = t->right;
-    t->left = N.right;
-    t->right = N.left;
-}
-
-/*
- * Display Tree Elements
- */
-template <class Comparable>
-void SplayTree<Comparable>::printBreadthFirst() const{
-    int depth = 0;
-    std::queue<BinaryNode<Comparable>*> q;
-    if (root != nullptr) {
-        q.push(root);
-        std::cout << "\n" << root->element << " ";
-    }
-    while (!q.empty()){
-        depth++;
-        const BinaryNode<Comparable>* const temp_node = q.front();
-        q.pop();
-
-        if(temp_node->left != nullptr){
-            q.push(temp_node->left);
-            std::cout << "\n" << (temp_node->left)->element << " ";
-        } else {
-            std::cout << "\n" << "NULL";
-        }
-        if (temp_node->right != nullptr){
-            q.push(temp_node->right);
-            std::cout << "\n" << (temp_node->right)->element << " ";
-        } else {
-            std::cout << "\n" << "NULL";
-        }
-    }
-    std::cout << "\n";
-}
-
-template <class Comparable>
-void SplayTree<Comparable>::print(){
-    print(root, std::string(""));
-}
-
-template <class Comparable>
-void SplayTree<Comparable>::print(BinaryNode<Comparable>* node, std::string space){
-    if(node != nullptr){
-        space.append("    ");
-        print(node->right, space);
-        std::cout << space <<node->element << "\n";
-        print(node->left, space);
-    }
-
-}
-
-
-/**
- * Internal method to clone subtree.
- * WARNING: This is prone to running out of stack space.
- */
-template <class Comparable>
-BinaryNode<Comparable> *
-SplayTree<Comparable>::clone( BinaryNode<Comparable> * t ) const
-{
-//    if( t == t->left )  // Cannot test against nullptr!!!
-    if(t == nullptr)
-        return nullptr;
-    else
-        return new BinaryNode<Comparable>( t->element, clone( t->left ), clone( t->right ) );
-}
 
 
 } //namespace DDAD

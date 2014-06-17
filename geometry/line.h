@@ -159,14 +159,14 @@ protected:
 };
 
 //=============================================================================
-// Interface: Segment_2r_colored
+// Interface: Segment_2r_Colored
 //=============================================================================
-class Segment_2r_colored : public Segment_2r {
+class Segment_2r_Colored : public Segment_2r {
 public:
-    Segment_2r_colored();
-    Segment_2r_colored(const Segment_2r_colored &rhs);
-    Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
-    Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
+    Segment_2r_Colored();
+    Segment_2r_Colored(const Segment_2r_Colored &rhs);
+    Segment_2r_Colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
+    Segment_2r_Colored(Point_2r& p, Point_2r& q, bool color);
 
     const bool get_color() const {
         return isRed_;
@@ -175,16 +175,16 @@ public:
     void set_color(bool isRed){
         isRed_ = isRed;
     }
-    friend bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+    friend bool operator<(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs);
 
 private:
     bool isRed_;
 };
 
-bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator<(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs);
+bool operator>(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs);
+bool operator==(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs);
+bool operator!=(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs);
 
 
 //=============================================================================
@@ -275,18 +275,18 @@ private:
     Line_3r support_;
 };
 
-inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator<(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs){
     // Only works for non-intersecting segments!
     return Predicate::AIsRightOfB(lhs.p(), rhs.support());
 }
-inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator>(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs){
     // Only works for non-intersecting segments!
     return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
 }
-inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator==(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs){
     return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());
 }
-inline bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator!=(const Segment_2r_Colored &lhs, const Segment_2r_Colored &rhs){
     return !(lhs == rhs);
 }
 } // namespace DDAD

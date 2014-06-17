@@ -286,30 +286,30 @@ void Segment_2r::set_q(SharedPoint_2r q) {
 
 
 //=============================================================================
-// Segment_2r_colored Implementation
+// Segment_2r_Colored Implementation
 //=============================================================================
-Segment_2r_colored::Segment_2r_colored() {}
-Segment_2r_colored::Segment_2r_colored(const Segment_2r_colored &rhs){
+Segment_2r_Colored::Segment_2r_Colored() {}
+Segment_2r_Colored::Segment_2r_Colored(const Segment_2r_Colored &rhs){
     p_ = rhs.p_sptr();
     q_ = rhs.q_sptr();
     isRed_ = rhs.get_color();
     support_ = rhs.support();
 }
 
-Segment_2r_colored::Segment_2r_colored(Point_2r &p, Point_2r &q, bool color){
+Segment_2r_Colored::Segment_2r_Colored(Point_2r &p, Point_2r &q, bool color){
     p_ = std::make_shared<Point_2r>(p);
     q_ = std::make_shared<Point_2r>(q);
     isRed_ = color;
     support_ = Line_2r(p_,q_);
 }
-Segment_2r_colored::Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color){
+Segment_2r_Colored::Segment_2r_Colored(SharedPoint_2r p, SharedPoint_2r q, bool color){
     p_ = p;
     q_ = q;
     isRed_ = color;
     support_ = Line_2r(p,q);
 }
-//Segment_2r_colored Segment_2r_colored::operator=(const Segment_2r_colored &rhs){
-//    return Segment_2r_colored(rhs);
+//Segment_2r_Colored Segment_2r_Colored::operator=(const Segment_2r_Colored &rhs){
+//    return Segment_2r_Colored(rhs);
 //}
 
 //=============================================================================
