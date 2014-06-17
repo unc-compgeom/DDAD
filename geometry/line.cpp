@@ -292,7 +292,7 @@ Segment_2r_colored::Segment_2r_colored() {}
 Segment_2r_colored::Segment_2r_colored(const Segment_2r_colored &rhs){
     p_ = rhs.p_sptr();
     q_ = rhs.q_sptr();
-    isRed_ = rhs.isRed();
+    isRed_ = rhs.get_color();
     support_ = rhs.support();
 }
 

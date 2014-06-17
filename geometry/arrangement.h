@@ -33,7 +33,7 @@ public:
     Arrangement_Vertex_2r(SharedPoint_2r &pt, SharedPoint_2r otherPt, bool color);
 
     const Point_2r position() const { return *pt_; }
-    const bool getColor() { return color_; }
+    const bool get_color() { return color_; }
     SharedPoint_2r getOtherPoint() const {return otherPoint_; }
     SharedPoint_2r getPoint() const {return pt_; }
     const rational& getX() { return pt_->x(); }
@@ -99,7 +99,8 @@ public:
     void Insert(std::list<Arrangement_Bundle>::iterator where, Arrangement_Bundle& to_insert);
     void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
     void SplitBundles(Arrangement_Vertex_2r &p);
-    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment) ;
+    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment);
+    std::list<Arrangement_Bundle>::iterator FindIndex(Arrangement_Vertex_2r &p);
 
 
 private:

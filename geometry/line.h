@@ -168,7 +168,7 @@ public:
     Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
     Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
 
-    const bool isRed() const {
+    const bool get_color() const {
         return isRed_;
     }
 
@@ -284,7 +284,7 @@ inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &r
     return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
 }
 inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
-    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.isRed() == rhs.isRed());
+    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());
 }
 inline bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
     return !(lhs == rhs);

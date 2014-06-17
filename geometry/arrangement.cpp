@@ -62,20 +62,22 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         bot_blue_position = bot_blue.relPosition(*ii);
         //	split(p, brundletree, red)
         //	split(p, brundlelist, blue)
-        Segment_2r_colored current_segment = Segment_2r_colored(ii->getPoint(), ii->getOtherPoint(), ii->getColor());
+        Segment_2r_colored current_segment = Segment_2r_colored(ii->getPoint(), ii->getOtherPoint(), ii->get_color());
+        // Check on the order of the bundles around the current point
 
-        //	if brundles r and b in wrong positions:
+        //	if bundles r and b in wrong positions:
         //		countIntersections(rxb)
         //		swap(r,b)
         // repair brundletree by merge
         // repair brundlelist
         // Insert any new bundles
-        if(ii->getPoint() < ii->getOtherPoint()){ // Current point is a left-endpoint
+        if(*(ii->getPoint()) < *(ii->getOtherPoint())){ // Current point is a left-endpoint
             // Search for the point in the linked list
             Arrangement_Bundle new_bundle = Arrangement_Bundle();
             new_bundle.insert(current_segment);
             std::list<Arrangement_Bundle>::iterator pos_in_list = bdl.FindIndex(current_segment);
             bdl.Insert(pos_in_list, new_bundle);
+            bdt.insert(new_bundle);
         }
         else{ // Current point is a right-endpoint, pop the segment
             // First from the bundle tree
@@ -90,15 +92,6 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
             if(bundle_it->isEmpty()) bdl.Remove(bundle_it);
         }
 
-
-        //def split(p, struct, color):
-        //	switch(locate p in struct):
-        //		case (p between two (color) bundles):
-        //			continue
-        //		case (p inside (color) bundle):
-        //			split bundle at p
-        //		case (p inside two (color) bundles):
-        //			split bundles at p
         crossings++;
     }
 
@@ -120,6 +113,11 @@ Arrangement_Bundle::Arrangement_Bundle(SplayTree<Segment_2r_colored> &rhs) :
     SplayTree<Segment_2r_colored>(){
 //    *this = SplayTree<Segment_2r_colored>(rhs);
     rhs.findMax();
+    if(rhs.getRoot() == nullptr){
+        topSegment_ = nullptr;
+        botSegment_ = nullptr;
+        return;
+    }
     topSegment_ = &(rhs.getRoot()->getElement());
     rhs.findMin();
     botSegment_ = &(rhs.getRoot()->getElement());
@@ -130,10 +128,21 @@ void Arrangement_Bundle::insert(const Segment_2r_colored &x){
     if(x.q() < x.p()){
         Point_2r newp = x.q();
         Point_2r newq = x.p();
-        bool newcolor = x.isRed();
+        bool newcolor = x.get_color();
         SplayTree<Segment_2r_colored>::insert(Segment_2r_colored(newp, newq, newcolor));
     }
     else SplayTree<Segment_2r_colored>::insert(x);
+    // Check whether topSegment_ and bottomSegment_ have been set yet
+    if(root->left == nullptr && root->right == nullptr){
+        botSegment_ = new Segment_2r_colored(x);
+        topSegment_ = botSegment_;
+    }
+    else if(root->right == nullptr){
+        topSegment_ = &root->getElement();
+    }
+    else if(root->left == nullptr){
+        botSegment_  = &root->getElement();
+    }
 }
 
 bool Arrangement_Bundle::contains(const Arrangement_Vertex_2r &vert){
@@ -148,6 +157,8 @@ RelativePosition Arrangement_Bundle::relPosition(const Arrangement_Vertex_2r& p)
     // Return ABOVE if the bundle is above p,
     // return BELOW if the bundle is below p,
     // return ENDING if the bundle is ending at p
+    if(topSegment_ == nullptr || botSegment_ == nullptr) return INDETERMINATE;
+
     if(topSegment_->q() == p.position() || botSegment_->q() == p.position() ||
             topSegment_->p() == p.position() || botSegment_->p() == p.position()){
         return ENDING;
@@ -163,41 +174,50 @@ RelativePosition Arrangement_Bundle::relPosition(const Arrangement_Vertex_2r& p)
 //=============================================================================
 
 
-void Bundle_Tree::LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom){
+void Bundle_Tree::LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bot){
     // Splits bundles in the bundle tree at current vertex, then locates the current vertex among the red bundles in the bundle tree.
     // top = lowest bundle above or ending at p
     // bot = highest bundle below or ending at p
-
+    if(root == nullptr) return;
     splitBundles(p);
     Arrangement_Bundle tmpBundle = Arrangement_Bundle();
-    tmpBundle.insert(Segment_2r_colored(p.getPoint(), p.getPoint(), p.getColor()));
+    tmpBundle.insert(Segment_2r_colored(p.getPoint(), p.getPoint(), p.get_color()));
     find(tmpBundle);  // Splay to p
-
-    // FindMax(left subtree of root)
-        // go to root.left, traverse right until you hit a nullptr
-        // bot = current
-    // FindMin(right subtree of root)
-        // go to root.right, traverse left until you hit a nullptr
-        // top = current
-    // Remove P from the tree
+    if(Predicate::AIsRightOfB(p.position(), root->getElement().getBot()->support())){
+        // p is below the entire tree
+        top = root->getElement();
+        bot = Arrangement_Bundle();
+        return;
+    }
+    else{
+        bot = root->getElement();
+        if(root->right == nullptr){
+            top = Arrangement_Bundle();
+            return;
+        }
+        BinaryNode<Arrangement_Bundle>* temp_node = root->right;
+        while(temp_node->left != nullptr) temp_node = temp_node->left;
+        top = temp_node->getElement();
+    }
 
 }
 
 void Bundle_Tree::splitBundles(Arrangement_Vertex_2r &p){
-    if(root == nullptr) return;
+
     Arrangement_Bundle tmpBundle = Arrangement_Bundle();
-    tmpBundle.insert(Segment_2r_colored(p.getPoint(), p.getPoint(), p.getColor()));
+    tmpBundle.insert(Segment_2r_colored(p.getPoint(), p.getPoint(), p.get_color()));
     find(tmpBundle);
     Segment_2r_colored topSeg = *(root->getElement().getTop());    //top segment of bundle below or containing p
     Segment_2r_colored botSeg;   //bottom segment of bundle above or containing p
 
     if(Predicate::AIsRightOfB(p.position(),topSeg.support())){
         //p is in the bottom bundle
-        Arrangement_Bundle R = Arrangement_Bundle(root->getElement().splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.getColor())));
+        Arrangement_Bundle R = Arrangement_Bundle(root->getElement().splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.get_color())));
         BinaryNode<Arrangement_Bundle>* new_node = new BinaryNode<Arrangement_Bundle>(R, nullptr, root->right);
         root->right = new_node;
         return;
     }
+    if(root->right == nullptr) return; // Nothing to split here
 
     BinaryNode<Arrangement_Bundle>* t = root->right;
     while (t->left != nullptr){
@@ -207,7 +227,7 @@ void Bundle_Tree::splitBundles(Arrangement_Vertex_2r &p){
 
     if(Predicate::AIsLeftOfB(p.position(),botSeg.support())){
         //p is in the top bundle
-        Arrangement_Bundle R = t->getElement().splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.getColor()));
+        Arrangement_Bundle R = t->getElement().splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.get_color()));
         BinaryNode<Arrangement_Bundle>* new_node = new BinaryNode<Arrangement_Bundle>(R, nullptr, root->right);
         t->right = new_node;
         return;
@@ -238,6 +258,31 @@ void Bundle_List::Insert(std::list<Arrangement_Bundle>::iterator where, Arrangem
 }
 
 void Bundle_List::LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom){
+    // Splits bundles in the bundle list at current vertex, then locates the current vertex among the blue bundles in the bundle tree.
+    // top = lowest blue bundle above or ending at p
+    // bot = highest blue bundle below or ending at p
+    SplitBundles(p);
+    std::list<Arrangement_Bundle>::iterator index = FindIndex(p);
+    // Check for the bundle below p
+    if(index == blist_.begin()) bottom = Arrangement_Bundle();
+    else if(index->getTop()->get_color() == p.get_color()){
+        bottom = *index;
+    }
+    else if(std::prev(index) != blist_.begin()) bottom = *(std::prev(index));
+    else bottom = Arrangement_Bundle();
+    // Now check for the bundle above p
+    if(index == blist_.end()){
+        top = Arrangement_Bundle();
+    }
+    else if(std::next(index) == blist_.end()){
+        top = Arrangement_Bundle();
+    }
+    else if(std::next(index)->getTop()->get_color() == p.get_color()){
+        top = *index;
+    }
+    else if(std::next(index) != blist_.end()){
+        top = *(std::next(index));
+    }
 
 }
 
@@ -245,12 +290,13 @@ void Bundle_List::SplitBundles(Arrangement_Vertex_2r &p){
     // Do a linear search through the bundles in the list for a bundle containing p
     for(std::list<Arrangement_Bundle>::iterator ii = blist_.begin(); ii != blist_.end(); ii ++){
         if((*ii).contains(p)){
-            Arrangement_Bundle R = (*ii).splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.getColor()));
+            Arrangement_Bundle R = (*ii).splitTree(Segment_2r_colored(p.getPoint(), p.getOtherPoint(), p.get_color()));
             blist_.insert(++ii, R);
             return;
         }
     }
 }
+
 std::list<Arrangement_Bundle>::iterator Bundle_List::FindIndex(const Segment_2r_colored& target_segment){
     // Return the index of the largest bundle that is below or containing target_segment
     for(std::list<Arrangement_Bundle>::iterator ii = blist_.begin(); ii != blist_.end(); ii ++){
@@ -258,12 +304,20 @@ std::list<Arrangement_Bundle>::iterator Bundle_List::FindIndex(const Segment_2r_
         if(Predicate::AIsRightOfB(target_segment.p(), ii->getTop()->support()) && Predicate::AIsLeftOfB(target_segment.p(), ii->getBot()->support())){
             return ii;
         }
-        else if(Predicate::AIsRightOfB(target_segment.p(), std::next(ii)->getBot()->support())){
-            return ii;
+        else if(Predicate::AIsRightOfB(target_segment.p(), ii->getBot()->support())){
+            if(ii == blist_.begin()) return ii;
+            else return std::prev(ii);
         }
     }
     return blist_.begin();
 
+}
+
+std::list<Arrangement_Bundle>::iterator Bundle_List::FindIndex( Arrangement_Vertex_2r& p){
+    Point_2r tmp_point = p.position();
+    bool color_of_p = p.get_color();
+    Segment_2r_colored tmp_segment = Segment_2r_colored(tmp_point, tmp_point, color_of_p);
+    return FindIndex(tmp_segment);
 }
 
 

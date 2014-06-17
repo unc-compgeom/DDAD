@@ -123,10 +123,7 @@ SplayTree<Comparable>::~SplayTree( )
 template <class Comparable>
 void SplayTree<Comparable>::insert( const Comparable & x )
 {
-    static BinaryNode<Comparable> *newNode = nullptr;
-
-    if( newNode == nullptr )
-        newNode = new BinaryNode<Comparable>;
+    BinaryNode<Comparable> *newNode = new BinaryNode<Comparable>;
     newNode->element = x;
 
     if( root == nullptr )
@@ -155,7 +152,6 @@ void SplayTree<Comparable>::insert( const Comparable & x )
         else
             return;
     }
-    newNode = nullptr;   // So next insert will call new
 }
 
 /**
