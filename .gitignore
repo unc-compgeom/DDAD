@@ -1,2 +1,4 @@
 # Ignoring user-generated CMake config files
 **/*.user*
+# Ignore autosaves
+**/*.autosave

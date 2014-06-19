@@ -22,89 +22,99 @@ enum RelativePosition{
     INDETERMINATE = 0
 };
 
+class Bundle;
+
+typedef std::shared_ptr<Bundle> SharedBundle;
+typedef std::shared_ptr<Segment_2r_colored> SharedSegment;
 
 //=============================================================================
-// Interface: Arrangement_Vertex_2r
+// Interface: ArrangementVertex_2r
 //=============================================================================
 
-class Arrangement_Vertex_2r {
+class ArrangementVertex_2r {
 public:
-    Arrangement_Vertex_2r();
-    Arrangement_Vertex_2r(SharedPoint_2r &pt, SharedPoint_2r otherPt, bool color);
+    ArrangementVertex_2r();
+    ArrangementVertex_2r(SharedPoint_2r& pt,
+                         SharedPoint_2r& other_point, bool  is_red);
 
-    const Point_2r position() const { return *pt_; }
-    const bool get_color() { return color_; }
-    SharedPoint_2r getOtherPoint() const {return otherPoint_; }
-    SharedPoint_2r getPoint() const {return pt_; }
-    const rational& getX() { return pt_->x(); }
-    const rational& getY() { return pt_->y(); }
-
+    const bool is_red() { return color_; }
+    SharedPoint_2r get_other_point() const { return other_point_; }
+    SharedPoint_2r get_point() const { return point_; }
+    const rational& get_x() { return point_->x(); }
+    const rational& get_y() { return point_->y(); }
 
 private:
     bool color_;
-    SharedPoint_2r otherPoint_;
-    SharedPoint_2r pt_;
+    SharedPoint_2r other_point_;
+    SharedPoint_2r point_;
 };
 
 //=============================================================================
-// Interface: Arrangement_Bundle
+// Interface: Bundle
 //=============================================================================
 
-class Arrangement_Bundle : public SplayTree<Segment_2r_colored>{
+class Bundle {
 public:
-    Arrangement_Bundle();
-    Arrangement_Bundle(SplayTree<Segment_2r_colored> &rhs);
-    // Checks whether an input segment is both below the top segment and above the bottom segment in the bundle
-    bool contains(const Arrangement_Vertex_2r& vert);
-    // Make sure that segments are inserted with correct orientation
-    void insert(const Segment_2r_colored &x);
-    // Bundles need to be able to tell whether they are "above", "ending at", or "below" a given point
-    RelativePosition relPosition(const Arrangement_Vertex_2r &p);
-    Segment_2r_colored* getBot() const { return botSegment_; }
-    Segment_2r_colored* getTop() const { return topSegment_; }
-    void SplitBundleAtSegment(Segment_2r_colored &pivot_segment);
-private:
-    Segment_2r_colored* topSegment_;
-    Segment_2r_colored* botSegment_;
+    Bundle();
+    Bundle(SplayTree<Segment_2r_colored>& rhs);
 
+    //Accessors
+    SharedBundle get_next_bundle() { return next_bundle_; }
+    SharedBundle get_prev_bundle() { return prev_bundle_; }
+    SharedSegment get_top_seg() { return top_segment_; }
+    SharedSegment get_bot_seg() { return bottom_segment_; }
+    SplayTree<Segment_2r_colored>* get_tree() { return &tree_; }
+    SharedBundle get_sptr() { return std::make_shared<Bundle>(this); }
+    void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
+    void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
+
+    //Class methods
+    void Insert(SharedSegment new_segment);
+    void Remove(SharedSegment old_segment);
+    SharedBundle Split(SharedSegment split_here);
+    SharedBundle Merge(SharedBundle to_merge);
+
+private:
+    //pointers to next and previous bundles in linked list
+    SharedBundle next_bundle_;
+    SharedBundle prev_bundle_;
+    //the bundle itself - tree of segments
+    SplayTree<Segment_2r_colored> tree_;
+    //pointers to the top and bottom of the bundle
+    SharedSegment top_segment_;
+    SharedSegment bottom_segment_;
 };
-bool operator<(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
-bool operator>(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
-bool operator==(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
-bool operator!=(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs);
 
 //=============================================================================
-// Interface: Bundle_Tree
+// Interface: BundleTree
 //=============================================================================
 
-class Bundle_Tree : public SplayTree<Arrangement_Bundle>{
+class BundleTree {
 public:
-    //Bundle_Tree();
-    void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
-    void splitBundles(Arrangement_Vertex_2r &p);
-
+    //For a segment input_segment, determine the bundles immediately above
+    //and below in the arrangement.  If within a bundle, both above_neighbor
+    //and below_neighbor should be that bundle.
+    void LocateVertex(ArrangementVertex_2r &input_vertex, SharedBundle above_neighbor,
+                     SharedBundle below_neighbor);
+    void AddBundle(SharedBundle add_this);
+    void RemoveBundle(SharedBundle remove_this);
+    void SplitBundleAtVertex(ArrangementVertex_2r & split_here);
 private:
-    SplayTree<Arrangement_Bundle> btree_;
-
+    SplayTree<SharedBundle> bundle_tree_;
 };
 
 //=============================================================================
 // Interface: Bundle_List
 //=============================================================================
 
-class Bundle_List {
+class BundleList{
 public:
-    //Bundle_List();
-    void Remove(std::list<Arrangement_Bundle>::iterator where);
-    void Insert(std::list<Arrangement_Bundle>::iterator where, Arrangement_Bundle& to_insert);
-    void LocatePoint(Arrangement_Vertex_2r &p, Arrangement_Bundle &top, Arrangement_Bundle &bottom);
-    void SplitBundles(Arrangement_Vertex_2r &p);
-    std::list<Arrangement_Bundle>::iterator FindIndex(const Segment_2r_colored& target_segment);
-    std::list<Arrangement_Bundle>::iterator FindIndex(Arrangement_Vertex_2r &p);
-
+    void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
+    void MergeBundles(SharedBundle merge_this, SharedBundle with_this);
 
 private:
-    std::list<Arrangement_Bundle> blist_;
+    SharedBundle front_;
+    SharedBundle back_;
 };
 
 //=============================================================================
@@ -113,7 +123,6 @@ private:
 
 class Arrangement_2r : public Visual::Geometry {
 public:
-//    Arrangement_2r();
     ~Arrangement_2r();
 
     void AddSegment(Point_2r& v, Point_2r& w, bool color);
@@ -122,13 +131,11 @@ public:
     void PushPoint(SharedPoint_2r v, bool color);
     void PopPoint();
 
-    const std::list<Arrangement_Vertex_2r>& vertices() const;
-    const std::list<Segment_2r_colored>& segments() const;
-
-
+    const std::list<ArrangementVertex_2r>& get_vertices() const;
+    const std::list<Segment_2r_colored>& get_segments() const;
 
 private:
-    std::list<Arrangement_Vertex_2r> vertices_;
+    std::list<ArrangementVertex_2r> vertices_;
     std::list<Segment_2r_colored> segments_;
     Point_2r floater_;
     bool current_color_;
@@ -136,21 +143,6 @@ private:
 
 int CountIntersections(const Arrangement_2r& A,
                        Visual::IGeometryObserver* observer = nullptr);
-
-inline bool operator<(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
-    // Only works for same-colored bundles!
-    return lhs.getTop() < rhs.getBot();
-}
-inline bool operator>(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
-    // Only works for same-colored bundles!
-    return lhs.getBot() > rhs.getTop();
-}
-inline bool operator==(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
-    return lhs.getRoot() == rhs.getRoot(); // If weird things happen, it might be because this method doesn't check for an element-by-element equivalence between two bundles.
-}
-inline bool operator!=(const Arrangement_Bundle &lhs, const Arrangement_Bundle &rhs){
-    return !(lhs == rhs);
-}
 
 } // namespace DDAD
 
