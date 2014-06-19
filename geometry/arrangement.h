@@ -23,7 +23,6 @@ enum RelativePosition{
 };
 
 class Bundle;
-
 typedef std::shared_ptr<Bundle> SharedBundle;
 typedef std::shared_ptr<Segment_2r_colored> SharedSegment;
 
@@ -59,12 +58,13 @@ public:
     Bundle(SplayTree<Segment_2r_colored>& rhs);
 
     //Accessors
-    SharedBundle get_next_bundle() { return next_bundle_; }
-    SharedBundle get_prev_bundle() { return prev_bundle_; }
-    SharedSegment get_top_seg() { return top_segment_; }
-    SharedSegment get_bot_seg() { return bottom_segment_; }
-    SplayTree<Segment_2r_colored>* get_tree() { return &tree_; }
-    SharedBundle get_sptr() { return std::make_shared<Bundle>(this); }
+    const SharedBundle get_next_bundle() const { return next_bundle_; }
+    const SharedBundle get_prev_bundle() const { return prev_bundle_; }
+    const SharedSegment get_top_seg() const { return top_segment_; }
+    const SharedSegment get_bot_seg() const { return bottom_segment_; }
+    const BinaryNode<Segment_2r_colored>* get_root() const { return tree_.getRoot(); }
+    SplayTree<Segment_2r_colored>* get_tree()  { return &tree_; }
+    const SharedBundle get_sptr() const { return std::make_shared<Bundle>(this); }
     void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
     void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
 
@@ -73,6 +73,7 @@ public:
     void Remove(SharedSegment old_segment);
     SharedBundle Split(SharedSegment split_here);
     SharedBundle Merge(SharedBundle to_merge);
+    bool Contains(ArrangementVertex_2r& test_point);
 
 private:
     //pointers to next and previous bundles in linked list
@@ -99,6 +100,7 @@ public:
     void AddBundle(SharedBundle add_this);
     void RemoveBundle(SharedBundle remove_this);
     void SplitBundleAtVertex(ArrangementVertex_2r & split_here);
+    void Find(ArrangementVertex_2r& input_vertex);
 private:
     SplayTree<SharedBundle> bundle_tree_;
 };
@@ -141,9 +143,25 @@ private:
     bool current_color_;
 };
 
-int CountIntersections(const Arrangement_2r& A,
-                       Visual::IGeometryObserver* observer = nullptr);
+//int CountIntersections(const Arrangement_2r& A, Visual::IGeometryObserver* observer = nullptr);
+
+inline bool operator<(const Bundle &lhs, const Bundle &rhs){
+    // Only works for same-colored bundles!
+    return lhs.get_top_seg() < rhs.get_bot_seg();
+}
+inline bool operator>(const Bundle &lhs, const Bundle &rhs){
+    // Only works for same-colored bundles!
+    return lhs.get_bot_seg() > rhs.get_top_seg();
+}
+inline bool operator==(const Bundle &lhs, const Bundle &rhs){
+    return lhs.get_root() == rhs.get_root(); // If weird things happen, it might be because this method doesn't check for an element-by-element equivalence between two bundles.
+}
+inline bool operator!=(const Bundle &lhs, const Bundle &rhs){
+    return !(lhs == rhs);
+}
 
 } // namespace DDAD
+
+
 
 #endif // GE_ARRANGEMENT_H
