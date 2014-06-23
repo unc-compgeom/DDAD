@@ -6,7 +6,7 @@
 
 namespace DDAD {
 
-/*
+
 int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *observer){
     // Do this on A
 //# Invariants for the algorithm:
@@ -40,25 +40,80 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
     //sort vertices lexicographically
     L.sort(compare());
 
+    // Draw a box around the arrangement
+    rational min_x = L.front().get_x();
+    rational min_y = L.front().get_y();
+    rational max_x = L.back().get_x();
+    rational max_y = L.back().get_y();
+    for(std::list<ArrangementVertex_2r>::iterator ii = L.begin(); ii != L.end(); ii++){
+        if(ii->get_y() > max_y) max_y = ii->get_y();
+        if(ii->get_y() < min_y) min_y = ii->get_y();
+    }
+    Point_2r top_left = Point_2r(min_x - 1, max_y + 1);
+    Point_2r top_right = Point_2r(max_x + 1, max_y + 1);
+    Point_2r bot_left = Point_2r(min_x - 1, min_y - 1);
+    Point_2r bot_right = Point_2r(max_x + 1, min_y - 1);
+
     // Initialize data structures
     BundleTree bdt = BundleTree();
     BundleList bdl = BundleList();
-    Bundle top_red;
-    Bundle bot_red;
-    Bundle top_blue;
-    Bundle bot_blue;
-    RelativePosition top_red_position;
-    RelativePosition bot_red_position;
-    RelativePosition top_blue_position;
-    RelativePosition bot_blue_position;
+
+    // Create a red bundle above the arrangement, a red bundle below the
+    //arrangement, and a blue bundle sandwiched between them
+    SharedBundle top_red = std::make_shared<Bundle>();
+    top_red->Insert(std::make_shared<Segment_2r_colored>(top_left, top_right, 1));
+    SharedBundle bot_red = std::make_shared<Bundle>();
+    bot_red->Insert(std::make_shared<Segment_2r_colored>(bot_left, bot_right, 1));
+    top_left = Point_2r(min_x - 2, max_y + 2);
+    top_right = Point_2r(max_x + 2, max_y + 2);
+    bot_left = Point_2r(min_x - 2, min_y - 2);
+    bot_right = Point_2r(max_x + 2, min_y - 2);
+    SharedBundle top_blue = std::make_shared<Bundle>();
+    top_blue->Insert(std::make_shared<Segment_2r_colored>(top_left, top_right, 0));
+    top_blue->Insert(std::make_shared<Segment_2r_colored>(bot_left, bot_right, 0));
+    SharedBundle bot_blue = top_blue;
+    bdt.AddBundle(top_red);
+    bdt.AddBundle(bot_red);
+    top_red->set_next_bundle(top_red);
+    top_red->set_prev_bundle(top_blue);
+    bot_red->set_next_bundle(top_red);
+    bot_red->set_prev_bundle(bot_red);
+    bdl.InsertBundle(bot_blue,bot_red);
+
+
 
     //for each event p in L do:
 
     for(std::list<ArrangementVertex_2r>::iterator ii = L.begin(); ii != L.end(); ii ++){
 
-        //	split(p, brundletree, red)
-        //	split(p, brundlelist, blue)
-        Segment_2r_colored current_segment = Segment_2r_colored(ii->get_point(), ii->get_other_point(), ii->is_red());
+        Segment_2r_colored current_segment =
+                Segment_2r_colored(ii->get_point(), ii->get_other_point(),
+                                   ii->is_red());
+        bdt.LocateVertex(*ii, top_red, bot_red);
+        // We now have the red bundles directly above and below (or containing) ii
+
+
+        // Split any bundles that might contain p, and update the tree/list
+        if(top_red == bot_red)
+        {
+            //get blue bundles that sandwich the red bundle
+            top_blue = top_red->get_next_bundle();
+            bot_blue = bot_red->get_prev_bundle();
+            bdt.SplitBundleAtVertex(*ii);
+        }
+        else
+        {
+            top_blue = bot_blue = top_red->get_prev_bundle();
+            bdl.SplitBundleAtVertex(top_blue,*ii);
+            top_blue->SetRelativePosition(*ii);
+            bot_blue->SetRelativePosition(*ii);
+        }
+        //After this point, bundles should be properly labeled as above, below, or ending at ii
+
+       crossings += bdl.SortPortion(top_blue, bot_blue);
+
+
+
         // Check on the order of the bundles around the current point
 
         //	if bundles r and b in wrong positions:
@@ -69,23 +124,15 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         // Insert any new bundles
         if(*(ii->get_point()) < *(ii->get_other_point())){ // Current point is a left-endpoint
             // Search for the point in the linked list
-            Bundle new_bundle = Bundle();
-            new_bundle.Insert(std::make_shared<Segment_2r_colored>(current_segment));
+            SharedBundle new_bundle = SharedBundle();
+            new_bundle->Insert(std::make_shared<Segment_2r_colored>(current_segment));
+
+            if(ii->is_red()) bdt.AddBundle(new_bundle);
+            else bdt.Find(*ii);
+            bdl.InsertBundle(new_bundle, bdt.get_root());
 //            std::list<Bundle>::iterator pos_in_list = bdl.FindIndex(current_segment);
 //            bdl.Insert(pos_in_list, new_bundle);
 //            bdt.insert(new_bundle);
-        }
-        else{ // Current point is a right-endpoint, pop the segment
-            // First from the bundle tree
-            Bundle tmp_bundle = Bundle();
-            tmp_bundle.Insert(current_segment);
-            bdt.find(tmp_bundle);
-            bdt.getRoot()->element.remove(current_segment);
-            if(bdt.getRoot()->element.isEmpty()) bdt.remove(bdt.getRoot()->element);
-            // Then from the list
-            std::list<Bundle>::iterator bundle_it = bdl.FindIndex(current_segment);
-            bundle_it->remove(current_segment);
-            if(bundle_it->isEmpty()) bdl.Remove(bundle_it);
         }
 
         crossings++;
@@ -94,7 +141,7 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
 
     return crossings;
 }
-*/
+
 
 //=============================================================================
 // Implementation: ArrangementVertex_2r
@@ -164,10 +211,10 @@ SharedBundle Bundle::Split(SharedSegment split_here){
     new_bundle->set_next_bundle(next_bundle_);
     if(next_bundle_ != nullptr) next_bundle_->set_prev_bundle(new_bundle);
     next_bundle_ = new_bundle;
-
+    return new_bundle;
 }
 
-SharedBundle Bundle::Merge(SharedBundle to_merge){
+void Bundle::Merge(SharedBundle to_merge){
     // Merges to_merge into the current bundle
     if(to_merge->get_next_bundle() != nullptr){
         to_merge->get_next_bundle()->set_prev_bundle(get_sptr());
@@ -176,6 +223,7 @@ SharedBundle Bundle::Merge(SharedBundle to_merge){
         to_merge->get_prev_bundle()->set_next_bundle(get_sptr());
     }
     tree_.mergeTree(to_merge->get_tree());
+
 }
 
 bool Bundle::Contains(ArrangementVertex_2r &test_point){
@@ -184,13 +232,38 @@ bool Bundle::Contains(ArrangementVertex_2r &test_point){
             Predicate::AIsLeftOfB(the_point, bottom_segment_->support()));
 }
 
+RelativePosition Bundle::SetRelativePosition(ArrangementVertex_2r &test_point){
+    Point_2r the_point = *(test_point.get_point());
+    if(Predicate::AIsLeftOfB(the_point, top_segment_->support()))
+    {
+        rel_position_ = ABOVE;
+    }
+    else if(Predicate::AIsRightOfB(the_point, bottom_segment_->support()))
+    {
+        rel_position_ = BELOW;
+    }
+    else
+    {
+        rel_position_ = ENDING;
+    }
+    return rel_position_;
+}
+
+int Bundle::CountSegments()
+{
+    return tree_.Size();
+}
+
 
 //=============================================================================
 // Implementation: BundleTree
 //=============================================================================
 
 void BundleTree::Find(ArrangementVertex_2r& input_vertex){
-    Segment_2r_colored tmp_segment = Segment_2r_colored(input_vertex.get_point(), input_vertex.get_other_point(), input_vertex.is_red());
+    Segment_2r_colored tmp_segment =
+            Segment_2r_colored(input_vertex.get_point(),
+                               input_vertex.get_other_point(),
+                               input_vertex.is_red());
     SharedBundle tmp_bundle = std::make_shared<Bundle>();
     tmp_bundle->Insert(std::make_shared<Segment_2r_colored>(tmp_segment));
     bundle_tree_.find(tmp_bundle);
@@ -245,23 +318,89 @@ void BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
     if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
         // Create a new bundle from the split
         SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(split_here.get_point(), split_here.get_other_point(), split_here.is_red());
-        SharedBundle new_bundle =
-                bundle_tree_.getRoot()->element->Split(tmp_segment);
+        SharedBundle new_bundle = bundle_tree_.getRoot()->element->Split(tmp_segment);
+        bundle_tree_.getRoot()->element->SetRelativePosition(split_here);
+        new_bundle->SetRelativePosition(split_here);
     }
 }
 
-void BundleList::InsertBundle(SharedBundle insert_this, SharedBundle after_this){
+//=============================================================================
+// Implementation: BundleList
+//=============================================================================
+
+void BundleList::InsertBundle(SharedBundle insert_this, SharedBundle after_this)
+{
     insert_this->set_next_bundle(after_this->get_next_bundle());
     insert_this->set_prev_bundle(after_this->get_sptr());
     after_this->set_next_bundle(insert_this->get_sptr());
     insert_this->get_next_bundle()->set_prev_bundle(insert_this->get_sptr());
 }
 
-void BundleList::MergeBundles(SharedBundle merge_this, SharedBundle with_this){
+void BundleList::RemoveBundle(SharedBundle remove_this)
+{
+    SharedBundle prev_bundle = remove_this->get_prev_bundle();
+    SharedBundle next_bundle = remove_this->get_next_bundle();
+
+    prev_bundle->set_next_bundle(next_bundle);
+    next_bundle->set_prev_bundle(prev_bundle);
+}
+
+void BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
+                                     ArrangementVertex_2r &here)
+{
+    SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(
+                here.get_point(), here.get_other_point(), here.is_red());
+    SharedBundle new_bundle = split_bundle->Split(tmp_segment);
+    new_bundle->SetRelativePosition(here);
+    split_bundle->SetRelativePosition(here);
+    InsertBundle(new_bundle, split_bundle);
+}
+
+int BundleList::SortPortion(SharedBundle begin, SharedBundle end)
+{
+    SharedBundle j;
+    int num_intersections = 0;
+
+    for(SharedBundle i = begin; i != end; i = i->get_next_bundle())
+    {
+        j = i;
+
+        while(j != begin && (j->get_rel_position() < j->get_prev_bundle()->get_rel_position())){
+            num_intersections += (j->CountSegments())*(j->get_prev_bundle()->CountSegments());
+            SwapBundles(j, j->get_prev_bundle());
+            j = j->get_prev_bundle();
+        }
+    }
+
+    return num_intersections;
+}
+
+void BundleList::SwapAdjacentBundles(SharedBundle a, SharedBundle b)
+{
+    SharedBundle first = a->get_prev_bundle();
+    SharedBundle last = b->get_next_bundle();
+    first->set_next_bundle(b);
+    last->set_prev_bundle(a);
+    a->set_next_bundle(last);
+    b->set_prev_bundle(first);
+    a->set_prev_bundle(b);
+    b->set_next_bundle(a);
 
 }
 
-
+void BundleList::SwapBundles(SharedBundle a, SharedBundle b){
+    SharedBundle tmp;
+    a->get_prev_bundle()->set_next_bundle(b);
+    a->get_next_bundle()->set_prev_bundle(b);
+    b->get_prev_bundle()->set_next_bundle(a);
+    b->get_next_bundle()->set_prev_bundle(a);
+    tmp = a->get_prev_bundle();
+    a->set_prev_bundle(b->get_prev_bundle());
+    b->set_prev_bundle(tmp);
+    tmp = a->get_next_bundle();
+    a->set_next_bundle(b->get_next_bundle());
+    b->set_next_bundle(tmp);
+}
 
 
 //=============================================================================

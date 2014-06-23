@@ -16,15 +16,17 @@
 namespace DDAD {
 
 enum RelativePosition{
-    ABOVE = 3,
-    ENDING = 2,
-    BELOW = 1,
-    INDETERMINATE = 0
+    ABOVE = 1,
+    ENDING = 0,
+    BELOW = -1
 };
 
 class Bundle;
 typedef std::shared_ptr<Bundle> SharedBundle;
 typedef std::shared_ptr<Segment_2r_colored> SharedSegment;
+
+class BundleTree;
+class BundleList;
 
 //=============================================================================
 // Interface: ArrangementVertex_2r
@@ -53,6 +55,8 @@ private:
 //=============================================================================
 
 class Bundle {
+friend class BundleTree;
+friend class BundleList;
 public:
     Bundle();
     Bundle(SplayTree<Segment_2r_colored>& rhs);
@@ -62,20 +66,23 @@ public:
     const SharedBundle get_prev_bundle() const { return prev_bundle_; }
     const SharedSegment get_top_seg() const { return top_segment_; }
     const SharedSegment get_bot_seg() const { return bottom_segment_; }
+    const RelativePosition get_rel_position() const { return rel_position_; }
     const BinaryNode<Segment_2r_colored>* get_root() const { return tree_.getRoot(); }
     SplayTree<Segment_2r_colored>* get_tree()  { return &tree_; }
-    const SharedBundle get_sptr() const { return std::make_shared<Bundle>(this); }
+    SharedBundle get_sptr() { return std::shared_ptr<Bundle>(this); }
     void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
     void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
 
     //Class methods
     void Insert(SharedSegment new_segment);
     void Remove(SharedSegment old_segment);
-    SharedBundle Split(SharedSegment split_here);
-    SharedBundle Merge(SharedBundle to_merge);
     bool Contains(ArrangementVertex_2r& test_point);
+    RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
+    int CountSegments();
 
 private:
+    void Merge(SharedBundle to_merge);
+    SharedBundle Split(SharedSegment split_here);
     //pointers to next and previous bundles in linked list
     SharedBundle next_bundle_;
     SharedBundle prev_bundle_;
@@ -84,6 +91,8 @@ private:
     //pointers to the top and bottom of the bundle
     SharedSegment top_segment_;
     SharedSegment bottom_segment_;
+    RelativePosition rel_position_;
+
 };
 
 //=============================================================================
@@ -95,6 +104,7 @@ public:
     //For a segment input_segment, determine the bundles immediately above
     //and below in the arrangement.  If within a bundle, both above_neighbor
     //and below_neighbor should be that bundle.
+    SharedBundle get_root() {return bundle_tree_.getRoot()->getElement();}
     void LocateVertex(ArrangementVertex_2r &input_vertex, SharedBundle above_neighbor,
                      SharedBundle below_neighbor);
     void AddBundle(SharedBundle add_this);
@@ -112,7 +122,12 @@ private:
 class BundleList{
 public:
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
-    void MergeBundles(SharedBundle merge_this, SharedBundle with_this);
+    void RemoveBundle(SharedBundle remove_this);
+    void SplitBundleAtVertex(SharedBundle split_bundle,
+                             ArrangementVertex_2r &here);
+    int SortPortion(SharedBundle begin, SharedBundle end);
+    void SwapAdjacentBundles(SharedBundle a, SharedBundle b);
+    void SwapBundles(SharedBundle a, SharedBundle b);
 
 private:
     SharedBundle front_;
@@ -143,7 +158,7 @@ private:
     bool current_color_;
 };
 
-//int CountIntersections(const Arrangement_2r& A, Visual::IGeometryObserver* observer = nullptr);
+int CountIntersections(const Arrangement_2r& A, Visual::IGeometryObserver* observer = nullptr);
 
 inline bool operator<(const Bundle &lhs, const Bundle &rhs){
     // Only works for same-colored bundles!

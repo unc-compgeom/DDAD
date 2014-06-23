@@ -63,6 +63,7 @@ class SplayTree
     bool isEmpty( ) const;
     SplayTree<Comparable> splitTree( const Comparable & x);
     void mergeTree(SplayTree<Comparable> * R);
+    int Size();
 
     void makeEmpty( );
     void insert( const Comparable & x );
@@ -78,7 +79,7 @@ class SplayTree
 
   protected:
     BinaryNode<Comparable> *root;
-
+    int Size(BinaryNode<Comparable> *root);
     const Comparable & elementAt( BinaryNode<Comparable> *t ) const;
     BinaryNode<Comparable> * clone( BinaryNode<Comparable> *t ) const;
 
@@ -295,6 +296,12 @@ void SplayTree<Comparable>::mergeTree(SplayTree<Comparable>* R){
     root->right = R->getRoot();
 }
 
+template <class Comparable>
+int SplayTree<Comparable>::Size()
+{
+    return Size(root);
+}
+
 
 /**
  * Deep copy.
@@ -414,6 +421,15 @@ void SplayTree<Comparable>::print(BinaryNode<Comparable>* node, std::string spac
 
 }
 
+template <class Comparable>
+int SplayTree<Comparable>::Size(BinaryNode<Comparable> *root)
+{
+    int tree_size = 1;
+    if(root->right != nullptr) tree_size += Size(root->right);
+    if(root->left != nullptr) tree_size += Size(root->left);
+
+    return tree_size;
+}
 
 /**
  * Internal method to clone subtree.
