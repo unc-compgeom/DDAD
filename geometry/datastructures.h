@@ -76,6 +76,7 @@ class SplayTree
     BinaryNode<Comparable>* getRoot() {return root;}
     const BinaryNode<Comparable>* getRoot() const {return root;}
     const SplayTree & operator=( const SplayTree & rhs );
+    bool ContainsValue( const Comparable & x );
 
   protected:
     BinaryNode<Comparable> *root;
@@ -83,7 +84,7 @@ class SplayTree
     const Comparable & elementAt( BinaryNode<Comparable> *t ) const;
     BinaryNode<Comparable> * clone( BinaryNode<Comparable> *t ) const;
 
-    void splay( const Comparable & x, BinaryNode<Comparable> * & t ) const;
+    void splay(const Comparable & x, BinaryNode<Comparable> *t );
 };
 /**
  * Construct the tree.
@@ -134,24 +135,27 @@ void SplayTree<Comparable>::insert( const Comparable & x )
     }
     else
     {
-        splay( x, root );
-        if( x < root->element )
-        {
-            newNode->left = root->left;
-            newNode->right = root;
-            root->left = nullptr;
-            root = newNode;
+        BinaryNode<Comparable> *tmp_root = root;
+        while(tmp_root != nullptr){
+            if(x < tmp_root->getElement())
+            {
+                if(tmp_root->left == nullptr){
+                    tmp_root->left = newNode;
+                    break;
+                }
+                tmp_root = tmp_root->left;
+            }
+            else if(x > tmp_root->getElement())
+            {
+                if(tmp_root->right == nullptr){
+                    tmp_root->right = newNode;
+                    break;
+                }
+                tmp_root = tmp_root->right;
+            }
+            else return; // No duplicates
         }
-        else
-        if( root->element < x )
-        {
-            newNode->right = root->right;
-            newNode->left = root;
-            root->right = nullptr;
-            root = newNode;
-        }
-        else
-            return;
+        splay(x, root);
     }
 }
 
@@ -163,11 +167,10 @@ void SplayTree<Comparable>::remove( const Comparable & x )
 {
     if(root == nullptr) return; // Can't remove from an empty tree
     BinaryNode<Comparable> *newTree;
-
+    if( !ContainsValue(x) )
+        return;   // Item not found; do nothing
         // If x is found, it will be at the root
     splay( x, root );
-    if( root->element != x )
-        return;   // Item not found; do nothing
 
     if( root->left == nullptr )
         newTree = root->right;
@@ -240,9 +243,6 @@ void SplayTree<Comparable>::find( const Comparable & x )
     if( isEmpty( ) )
         return;
     splay( x, root );
-    if( root->element != x )
-        return;
-
     return;
 }
 
@@ -319,6 +319,18 @@ SplayTree<Comparable>::operator=( const SplayTree<Comparable> & rhs )
     return *this;
 }
 
+template <class Comparable>
+bool SplayTree<Comparable>::ContainsValue(const Comparable &x){
+    if (isEmpty()) return false;
+    BinaryNode<Comparable>* tmp_root = root;
+    while(tmp_root != nullptr){
+        if(x < tmp_root->getElement()) tmp_root = tmp_root->left;
+        else if(x > tmp_root->getElement()) tmp_root = tmp_root->right;
+        else return true;
+    }
+    return false;
+}
+
 /**
  * Internal method to perform a top-down splay.
  * The last accessed node becomes the new root.
@@ -330,8 +342,14 @@ SplayTree<Comparable>::operator=( const SplayTree<Comparable> & rhs )
  */
 template <class Comparable>
 void SplayTree<Comparable>::splay( const Comparable & x,
-                                   BinaryNode<Comparable> * & t ) const
+                                   BinaryNode<Comparable> * t )
 {
+    if(!ContainsValue(x)){
+        insert(x);
+        remove(x);
+        return;
+
+    }
     BinaryNode<Comparable> N, *L, *R, *y;
     if(t == nullptr) return;
     N.left = N.right = nullptr;

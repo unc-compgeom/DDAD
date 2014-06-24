@@ -109,7 +109,7 @@ public:
                      SharedBundle below_neighbor);
     void AddBundle(SharedBundle add_this);
     void RemoveBundle(SharedBundle remove_this);
-    void SplitBundleAtVertex(ArrangementVertex_2r & split_here);
+    SharedBundle SplitBundleAtVertex(ArrangementVertex_2r & split_here);
     void Find(ArrangementVertex_2r& input_vertex);
 private:
     SplayTree<SharedBundle> bundle_tree_;
@@ -123,7 +123,7 @@ class BundleList{
 public:
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
-    void SplitBundleAtVertex(SharedBundle split_bundle,
+    SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
     int SortPortion(SharedBundle begin, SharedBundle end);
     void SwapAdjacentBundles(SharedBundle a, SharedBundle b);

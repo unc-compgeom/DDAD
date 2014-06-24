@@ -405,7 +405,7 @@ MA 02110-1301, USA.
 #define HAVE_UNISTD_H 1
 
 /* Define to 1 if you have the `vsnprintf' function and it works properly. */
-#define HAVE_VSNPRINTF 1
+#define HAVE_vsnprintf 1
 
 /* Assembler local label prefix */
 #define LSYM_PREFIX "L"

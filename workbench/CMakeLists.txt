@@ -54,4 +54,5 @@ target_link_libraries(
     geometry
     mpir
     mpirxx
+#    test
 )

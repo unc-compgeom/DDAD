@@ -16,6 +16,7 @@
 #include "../geometry/polygon.h"
 #include "../geometry/arrangement.h"
 
+
 #define _ELPP_THREAD_SAFE
 _INITIALIZE_EASYLOGGINGPP
 
@@ -41,29 +42,29 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Testing splay tree" << std::endl;
     DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-    int toinsert[] = {19, 52, 26, 23,7, 3, 884, 35, 62, 12, 18};
-    for(int ii = 0; ii < 11; ii++){
+    int toinsert[] = {10, 1};
+    for(int ii = 0; ii < 2; ii++){
         spt.insert(toinsert[ii]);
     }
 
     std::cout << "\n Printing splay tree \n";
     spt.print();
 
-    std::cout << "\nFinding element 2\n";
-    spt.find(2);
+    std::cout << "\nFinding element 5\n";
+    spt.find(5);
     spt.print();
 
-    std::cout << "\n Splitting the tree at 23\n";
-    DDAD::SplayTree<int> lhs = DDAD::SplayTree<int>();
-    lhs = spt.splitTree(23);
-    std::cout << "\n Left-hand tree is \n";
-    lhs.print();
-    std::cout << "\nRight-hand tree is\n";
-    spt.print();
+//    std::cout << "\n Splitting the tree at 23\n";
+//    DDAD::SplayTree<int> lhs = DDAD::SplayTree<int>();
+//    lhs = spt.splitTree(23);
+//    std::cout << "\n Left-hand tree is \n";
+//    lhs.print();
+//    std::cout << "\nRight-hand tree is\n";
+//    spt.print();
 
-    std::cout << "\n Merging lhs with spt\n";
-    lhs.mergeTree(&spt);
-    lhs.print();
+//    std::cout << "\n Merging lhs with spt\n";
+//    lhs.mergeTree(&spt);
+//    lhs.print();
 
 
 

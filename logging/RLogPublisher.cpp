@@ -15,8 +15,8 @@
  * details.
  *
  */
-		                                                                                
-                             
+
+
 
 #include "RLogPublisher.h"
 
@@ -39,7 +39,7 @@ using namespace rlog;
   status.
 
   An instance of this class is created for every error message location.
-  Normally this class is not used directly.  
+  Normally this class is not used directly.
 
   For example, this
   @code
@@ -51,17 +51,17 @@ using namespace rlog;
      static bool _rl_enabled = true;
      if(_rL.enabled)
      {
-	 static PublishLoc _rl = {
-	     enabled:  & _rl_enabled,
-	     publish:  & rlog::RLog_Register ,
-	     pub: 0,
-	     component: "component",
-	     fileName: "myfile.cpp",
-	     functionName: "functionName()",
-	     lineNum: __LINE__,
-	     channel: 0
-	 };
-	 (*_rl.publish)( &_rL, _RLDebugChannel, "hello world" );
+     static PublishLoc _rl = {
+         enabled:  & _rl_enabled,
+         publish:  & rlog::RLog_Register ,
+         pub: 0,
+         component: "component",
+         fileName: "myfile.cpp",
+         functionName: "functionName()",
+         lineNum: __LINE__,
+         channel: 0
+     };
+     (*_rl.publish)( &_rL, _RLDebugChannel, "hello world" );
      }
   @endcode
 
@@ -85,14 +85,14 @@ RLogPublisher::RLogPublisher()
 {
 }
 
-RLogPublisher::RLogPublisher(PublishLoc *loc) 
+RLogPublisher::RLogPublisher(PublishLoc *loc)
     : RLogNode()
     , src( loc )
 {
     // link to channel for channel based subscriptions
     // Lookup the componentized version
-    RLogNode *channelNode = GetComponentChannel( src->component, 
-	    src->channel->name().c_str(), src->channel->logLevel() );
+    RLogNode *channelNode = GetComponentChannel( src->component,
+        src->channel->name().c_str(), src->channel->logLevel() );
     channelNode->addPublisher( this );
 
     // link to file
@@ -110,15 +110,15 @@ RLogPublisher::setEnabled(bool active)
 {
     if(src)
     {
-	if(active)
-	    src->enable();
-	else
-	    src->disable();
+    if(active)
+        src->enable();
+    else
+        src->disable();
     }
 }
 
 void RLogPublisher::Publish( PublishLoc *loc, RLogChannel *channel,
-	const char *format, ...)
+    const char *format, ...)
 {
     va_list args;
     va_start( args, format );
@@ -127,7 +127,7 @@ void RLogPublisher::Publish( PublishLoc *loc, RLogChannel *channel,
 }
 
 void RLogPublisher::PublishVA( PublishLoc *loc, RLogChannel *,
-	const char *format, va_list ap )
+    const char *format, va_list ap )
 {
     RLogData data;
 
@@ -142,47 +142,47 @@ void RLogPublisher::PublishVA( PublishLoc *loc, RLogChannel *,
     // loop until we have allocated enough space for the message
     for(int numTries = 10; numTries; --numTries)
     {
-	va_list args;
+    va_list args;
 
-	// va_copy() is defined in C99, __va_copy() in earlier definitions, and
-	// automake says to fall back on memcpy if neither exist...
-	//
-	// FIXME: memcpy doesn't work for compilers which use array type for
-	//        va_list such as Watcom
+    // va_copy() is defined in C99, __va_copy() in earlier definitions, and
+    // automake says to fall back on memcpy if neither exist...
+    //
+    // FIXME: memcpy doesn't work for compilers which use array type for
+    //        va_list such as Watcom
 #if defined( va_copy )
-	va_copy( args, ap );
+    va_copy( args, ap );
 #elif defined( __va_copy )
-	__va_copy( args, ap );
+    __va_copy( args, ap );
 #else
-	memcpy( &args, &ap, sizeof(va_list) );
+    memcpy( &args, &ap, sizeof(va_list) );
 #endif
 
-	int ncpy = vsnprintf( buf , bufSize, format, args );
-	va_end( args );
+    int ncpy = vsnprintf( buf , bufSize, format, args );
+    va_end( args );
 
-	// if it worked, then return the buffer
-	if( ncpy > -1 && ncpy < bufSize )
-	{
-	    data.msg = buf;
-	    break;
-	} else
-	{
-	    // newer implementations of vsnprintf return # bytes needed..
-	    if(ncpy > 0) 
-		bufSize = ncpy + 1;
-	    else
-		bufSize *= 2; // try twice as much space as before
+    // if it worked, then return the buffer
+    if( ncpy > -1 && ncpy < bufSize )
+    {
+        data.msg = buf;
+        break;
+    } else
+    {
+        // newer implementations of vsnprintf return # bytes needed..
+        if(ncpy > 0)
+        bufSize = ncpy + 1;
+        else
+        bufSize *= 2; // try twice as much space as before
 
-	    if(buf != msgBuf)
-		delete[] buf;
+        if(buf != msgBuf)
+        delete[] buf;
 
-	    buf = new char[bufSize];
-	}
+        buf = new char[bufSize];
+    }
     }
 
     loc->pub->publish( data );
 
     if(buf != msgBuf)
-	delete[] buf;
+    delete[] buf;
 }
 

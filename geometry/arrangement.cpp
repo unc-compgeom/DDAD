@@ -74,10 +74,10 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
     SharedBundle bot_blue = top_blue;
     bdt.AddBundle(top_red);
     bdt.AddBundle(bot_red);
-    top_red->set_next_bundle(top_red);
+    top_red->set_next_bundle(bot_red);
     top_red->set_prev_bundle(top_blue);
     bot_red->set_next_bundle(top_red);
-    bot_red->set_prev_bundle(bot_red);
+    bot_red->set_prev_bundle(top_red);
     bdl.InsertBundle(bot_blue,bot_red);
 
 
@@ -103,8 +103,8 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         }
         else
         {
-            top_blue = bot_blue = top_red->get_prev_bundle();
-            bdl.SplitBundleAtVertex(top_blue,*ii);
+            bot_blue = top_red->get_prev_bundle();
+            top_blue = bdl.SplitBundleAtVertex(bot_blue, *ii);
             top_blue->SetRelativePosition(*ii);
             bot_blue->SetRelativePosition(*ii);
         }
@@ -312,7 +312,7 @@ void BundleTree::RemoveBundle(SharedBundle remove_this)
     bundle_tree_.remove(remove_this);
 }
 
-void BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
+SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
 {
     Find(split_here);  // Rotate the appropriate bundle to the root
     if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
@@ -321,6 +321,10 @@ void BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
         SharedBundle new_bundle = bundle_tree_.getRoot()->element->Split(tmp_segment);
         bundle_tree_.getRoot()->element->SetRelativePosition(split_here);
         new_bundle->SetRelativePosition(split_here);
+        return new_bundle;
+    }
+    else{
+        return nullptr;
     }
 }
 
@@ -345,7 +349,7 @@ void BundleList::RemoveBundle(SharedBundle remove_this)
     next_bundle->set_prev_bundle(prev_bundle);
 }
 
-void BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
+SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
                                      ArrangementVertex_2r &here)
 {
     SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(
@@ -354,6 +358,7 @@ void BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
     new_bundle->SetRelativePosition(here);
     split_bundle->SetRelativePosition(here);
     InsertBundle(new_bundle, split_bundle);
+    return new_bundle;
 }
 
 int BundleList::SortPortion(SharedBundle begin, SharedBundle end)

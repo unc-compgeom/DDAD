@@ -350,7 +350,7 @@ MA 02111-1307, USA. */
 #undef HAVE_UNISTD_H
 
 /* Define if you have vsnprintf and it works properly. */
-#undef HAVE_VSNPRINTF
+#undef HAVE_vsnprintf
 
 /* Assembler local label prefix */
 #undef LSYM_PREFIX

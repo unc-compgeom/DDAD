@@ -4,7 +4,6 @@
 #==============================================================================
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
-
 project(DDAD)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -21,6 +20,7 @@ ENDIF(${WIN32})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /INCREMENTAL:NO" )
 
 set(QT_INSTALL_DIR "" CACHE PATH "Path to Qt installation directory.")
 set(WINSDK_DIR "" CACHE PATH "Path to Windows SDK directory.")
