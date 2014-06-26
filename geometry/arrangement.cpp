@@ -49,39 +49,44 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         if(ii->get_y() > max_y) max_y = ii->get_y();
         if(ii->get_y() < min_y) min_y = ii->get_y();
     }
-    Point_2r top_left = Point_2r(min_x - 1, max_y + 1);
-    Point_2r top_right = Point_2r(max_x + 1, max_y + 1);
-    Point_2r bot_left = Point_2r(min_x - 1, min_y - 1);
-    Point_2r bot_right = Point_2r(max_x + 1, min_y - 1);
+    Point_2r top_left = Point_2r(min_x - rational(1), max_y + rational(1));
+    Point_2r top_right = Point_2r(max_x + rational(1), max_y + rational(1));
+    Point_2r bot_left = Point_2r(min_x - rational(1), min_y - rational(1));
+    Point_2r bot_right = Point_2r(max_x + rational(1), min_y - rational(1));
 
     // Initialize data structures
     BundleTree bdt = BundleTree();
     BundleList bdl = BundleList();
 
+    SharedBundle top_blue = std::make_shared<Bundle>();
+    top_blue->Insert(std::make_shared<Segment_2r_colored>(top_left,
+                                                          top_right, false));
+    top_blue->Insert(std::make_shared<Segment_2r_colored>(bot_left,
+                                                          bot_right, false));
+
+    top_left = Point_2r(min_x - rational(2), max_y + rational(2));
+    top_right = Point_2r(max_x + rational(2), max_y + rational(2));
+    bot_left = Point_2r(min_x - rational(2), min_y - rational(2));
+    bot_right = Point_2r(max_x + rational(2), min_y - rational(2));
+
     // Create a red bundle above the arrangement, a red bundle below the
     //arrangement, and a blue bundle sandwiched between them
     SharedBundle top_red = std::make_shared<Bundle>();
-    top_red->Insert(std::make_shared<Segment_2r_colored>(top_left, top_right, 1));
+    top_red->Insert(std::make_shared<Segment_2r_colored>(top_left,
+                                                         top_right, true));
     SharedBundle bot_red = std::make_shared<Bundle>();
-    bot_red->Insert(std::make_shared<Segment_2r_colored>(bot_left, bot_right, 1));
-    top_left = Point_2r(min_x - 2, max_y + 2);
-    top_right = Point_2r(max_x + 2, max_y + 2);
-    bot_left = Point_2r(min_x - 2, min_y - 2);
-    bot_right = Point_2r(max_x + 2, min_y - 2);
-    SharedBundle top_blue = std::make_shared<Bundle>();
-    top_blue->Insert(std::make_shared<Segment_2r_colored>(top_left, top_right, 0));
-    top_blue->Insert(std::make_shared<Segment_2r_colored>(bot_left, bot_right, 0));
+    bot_red->Insert(std::make_shared<Segment_2r_colored>(bot_left,
+                                                         bot_right, true));
     SharedBundle bot_blue = top_blue;
-    bdt.AddBundle(top_red);
-    bdt.AddBundle(bot_red);
+    bdt.InsertBundle(top_red);
+    bdt.InsertBundle(bot_red);
     top_red->set_next_bundle(bot_red);
     top_red->set_prev_bundle(top_blue);
     bot_red->set_next_bundle(top_red);
     bot_red->set_prev_bundle(top_red);
     bdl.InsertBundle(bot_blue,bot_red);
-
-
-
+    bdl.set_back(top_red);
+    bdl.set_front(bot_red);
     //for each event p in L do:
 
     for(std::list<ArrangementVertex_2r>::iterator ii = L.begin(); ii != L.end(); ii ++){
@@ -101,7 +106,7 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
             bot_blue = bot_red->get_prev_bundle();
             bdt.SplitBundleAtVertex(*ii);
         }
-        else
+        else if(bot_blue->Contains(*ii))
         {
             bot_blue = top_red->get_prev_bundle();
             top_blue = bdl.SplitBundleAtVertex(bot_blue, *ii);
@@ -110,7 +115,7 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         }
         //After this point, bundles should be properly labeled as above, below, or ending at ii
 
-       crossings += bdl.SortPortion(top_blue, bot_blue);
+       crossings += bdl.SortPortion(bot_blue, top_blue);
 
 
 
@@ -124,15 +129,25 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
         // Insert any new bundles
         if(*(ii->get_point()) < *(ii->get_other_point())){ // Current point is a left-endpoint
             // Search for the point in the linked list
-            SharedBundle new_bundle = SharedBundle();
+            SharedBundle new_bundle = std::make_shared<Bundle>();
             new_bundle->Insert(std::make_shared<Segment_2r_colored>(current_segment));
 
-            if(ii->is_red()) bdt.AddBundle(new_bundle);
+            if(ii->is_red()) bdt.InsertBundle(new_bundle);
             else bdt.Find(*ii);
             bdl.InsertBundle(new_bundle, bdt.get_root());
 //            std::list<Bundle>::iterator pos_in_list = bdl.FindIndex(current_segment);
 //            bdl.Insert(pos_in_list, new_bundle);
 //            bdt.insert(new_bundle);
+        }
+
+        // Merge any bundles in the list that deserve it
+        for(SharedBundle jj = bot_blue->get_prev_bundle();
+            jj != top_blue->get_next_bundle();
+            jj = jj->get_next_bundle())
+        {
+            if(jj->get_color() == jj->get_next_bundle()->get_color()){
+                jj->Merge(jj->get_next_bundle());
+            }
         }
 
         crossings++;
@@ -207,20 +222,26 @@ SharedBundle Bundle::Split(SharedSegment split_here){
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
 
     // Set next_bundle and prev_bundle pointers
-    new_bundle->set_prev_bundle(get_sptr());
+    SharedBundle my_sptr = next_bundle_->get_prev_bundle();
+    new_bundle->set_prev_bundle(my_sptr);
     new_bundle->set_next_bundle(next_bundle_);
     if(next_bundle_ != nullptr) next_bundle_->set_prev_bundle(new_bundle);
     next_bundle_ = new_bundle;
+    tree_.findMax();
+    top_segment_ = std::make_shared<Segment_2r_colored>(tree_.getRoot()->getElement());
+    tree_.findMin();
+    bottom_segment_ = std::make_shared<Segment_2r_colored>(tree_.getRoot()->getElement());
     return new_bundle;
 }
 
 void Bundle::Merge(SharedBundle to_merge){
     // Merges to_merge into the current bundle
+    SharedBundle my_sptr = next_bundle_->get_prev_bundle();
     if(to_merge->get_next_bundle() != nullptr){
-        to_merge->get_next_bundle()->set_prev_bundle(get_sptr());
+        to_merge->get_next_bundle()->set_prev_bundle(my_sptr);
     }
     if(to_merge->get_prev_bundle() != nullptr){
-        to_merge->get_prev_bundle()->set_next_bundle(get_sptr());
+        to_merge->get_prev_bundle()->set_next_bundle(my_sptr);
     }
     tree_.mergeTree(to_merge->get_tree());
 
@@ -302,7 +323,7 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
     }
 }
 
-void BundleTree::AddBundle(SharedBundle add_this)
+void BundleTree::InsertBundle(SharedBundle add_this)
 {
     bundle_tree_.insert(add_this);
 }
@@ -335,9 +356,9 @@ SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
 void BundleList::InsertBundle(SharedBundle insert_this, SharedBundle after_this)
 {
     insert_this->set_next_bundle(after_this->get_next_bundle());
-    insert_this->set_prev_bundle(after_this->get_sptr());
-    after_this->set_next_bundle(insert_this->get_sptr());
-    insert_this->get_next_bundle()->set_prev_bundle(insert_this->get_sptr());
+    insert_this->set_prev_bundle(after_this);
+    after_this->set_next_bundle(insert_this);
+    insert_this->get_next_bundle()->set_prev_bundle(insert_this);
 }
 
 void BundleList::RemoveBundle(SharedBundle remove_this)

@@ -308,6 +308,21 @@ Segment_2r_colored::Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool 
     isRed_ = color;
     support_ = Line_2r(p,q);
 }
+bool Segment_2r_colored::IsAbove(const Segment_2r_colored to_compare) const{
+    Point_2r my_l_endpoint, other_l_endpoint;
+    if(p() < q()) my_l_endpoint = p();
+    else my_l_endpoint = q();
+    if(to_compare.p() < to_compare.q()) other_l_endpoint = to_compare.p();
+    else other_l_endpoint = to_compare.q();
+    if(my_l_endpoint < other_l_endpoint){
+        return Predicate::AIsRightOfB(other_l_endpoint, support());
+    }
+    else{
+        return Predicate::AIsLeftOfB(my_l_endpoint, to_compare.support());
+    }
+
+}
+
 //Segment_2r_colored Segment_2r_colored::operator=(const Segment_2r_colored &rhs){
 //    return Segment_2r_colored(rhs);
 //}

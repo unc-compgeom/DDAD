@@ -69,7 +69,7 @@ public:
     const RelativePosition get_rel_position() const { return rel_position_; }
     const BinaryNode<Segment_2r_colored>* get_root() const { return tree_.getRoot(); }
     SplayTree<Segment_2r_colored>* get_tree()  { return &tree_; }
-    SharedBundle get_sptr() { return std::shared_ptr<Bundle>(this); }
+    bool get_color() { return top_segment_->get_color(); }
     void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
     void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
 
@@ -77,11 +77,12 @@ public:
     void Insert(SharedSegment new_segment);
     void Remove(SharedSegment old_segment);
     bool Contains(ArrangementVertex_2r& test_point);
+
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
     int CountSegments();
+    void Merge(SharedBundle to_merge);
 
 private:
-    void Merge(SharedBundle to_merge);
     SharedBundle Split(SharedSegment split_here);
     //pointers to next and previous bundles in linked list
     SharedBundle next_bundle_;
@@ -107,7 +108,7 @@ public:
     SharedBundle get_root() {return bundle_tree_.getRoot()->getElement();}
     void LocateVertex(ArrangementVertex_2r &input_vertex, SharedBundle above_neighbor,
                      SharedBundle below_neighbor);
-    void AddBundle(SharedBundle add_this);
+    void InsertBundle(SharedBundle add_this);
     void RemoveBundle(SharedBundle remove_this);
     SharedBundle SplitBundleAtVertex(ArrangementVertex_2r & split_here);
     void Find(ArrangementVertex_2r& input_vertex);
@@ -121,6 +122,8 @@ private:
 
 class BundleList{
 public:
+    void set_front(SharedBundle new_front) { front_ = new_front; }
+    void set_back(SharedBundle new_back) { back_ = new_back; }
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,

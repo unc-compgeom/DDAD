@@ -167,6 +167,7 @@ public:
     Segment_2r_colored(const Segment_2r_colored &rhs);
     Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
     Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
+    bool IsAbove(const Segment_2r_colored to_compare) const;
 
     const bool get_color() const {
         return isRed_;
@@ -176,6 +177,7 @@ public:
         isRed_ = isRed;
     }
     friend bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+
 
 private:
     bool isRed_;
@@ -277,11 +279,13 @@ private:
 
 inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
     // Only works for non-intersecting segments!
-    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
+//    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
+    return rhs.IsAbove(lhs);
 }
 inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
     // Only works for non-intersecting segments!
-    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
+//    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
+    return lhs.IsAbove(rhs);
 }
 inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
     return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());

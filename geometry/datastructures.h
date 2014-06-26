@@ -292,6 +292,10 @@ SplayTree<Comparable> SplayTree<Comparable>::splitTree(const Comparable &x){
   */
 template <class Comparable>
 void SplayTree<Comparable>::mergeTree(SplayTree<Comparable>* R){
+    if(isEmpty()){
+        root = R->getRoot();
+        return;
+    }
     findMax();  // Splay max(L) to top
     root->right = R->getRoot();
 }
@@ -344,12 +348,7 @@ template <class Comparable>
 void SplayTree<Comparable>::splay( const Comparable & x,
                                    BinaryNode<Comparable> * t )
 {
-    if(!ContainsValue(x)){
-        insert(x);
-        remove(x);
-        return;
 
-    }
     BinaryNode<Comparable> N, *L, *R, *y;
     if(t == nullptr) return;
     N.left = N.right = nullptr;
@@ -389,6 +388,17 @@ void SplayTree<Comparable>::splay( const Comparable & x,
     R->left = t->right;
     t->left = N.right;
     t->right = N.left;
+    root = t;
+
+//     Rotate right if we don't yet satisfy the output conditions
+    if(root->left != nullptr){
+        if(x < root->element && root->left->element < x){
+            t = root->left;
+            root->left = t->right;
+            t->right = root;
+            root = t;
+        }
+    }
 }
 
 /*
