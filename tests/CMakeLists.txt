@@ -1,11 +1,14 @@
-#project(DDAD)
-#INCLUDE_DIRECTORIES( ${DDAD_SOURCE_DAD} )
 
-#enable_testing()
+enable_testing()
+# Tell CMake to run moc when necessary:
 
-#find_package(Qt5Test REQUIRED)
-#find_package(Qt5Core REQUIRED)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#add_executable(test1 test1.cpp)
-#add_test(NAME test1 COMMAND test1)
-#target_link_libraries(test1 Qt5::Core Qt5::Test)
+find_package(Qt5Test)
+
+
+add_executable(tst_Geometry tst_Geometry.cpp)
+add_test(tst_Geometry tst_Geometry)
+
+target_link_libraries(tst_Geometry Qt5::Test)

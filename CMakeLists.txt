@@ -22,7 +22,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /INCREMENTAL:NO" )
 
-set(QT_INSTALL_DIR "" CACHE PATH "Path to Qt installation directory.")
+set(QT_INSTALL_DIR "D:/Qt/Qt5.3.0/5.3/msvc2010_opengl" CACHE PATH "Path to Qt installation directory.")
 set(WINSDK_DIR "" CACHE PATH "Path to Windows SDK directory.")
 set(CMAKE_PREFIX_PATH ${QT_INSTALL_DIR}; ${WINSDK_DIR})
 
