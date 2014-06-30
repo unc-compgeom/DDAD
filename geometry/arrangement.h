@@ -81,9 +81,9 @@ public:
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
     int CountSegments();
     void Merge(SharedBundle to_merge);
+    SharedBundle Split(SharedSegment split_here);
 
 private:
-    SharedBundle Split(SharedSegment split_here);
     //pointers to next and previous bundles in linked list
     SharedBundle next_bundle_;
     SharedBundle prev_bundle_;
@@ -106,10 +106,11 @@ public:
     //and below in the arrangement.  If within a bundle, both above_neighbor
     //and below_neighbor should be that bundle.
     SharedBundle get_root() {return bundle_tree_.getRoot()->getElement();}
-    void LocateVertex(ArrangementVertex_2r &input_vertex, SharedBundle above_neighbor,
-                     SharedBundle below_neighbor);
+    void LocateVertex(ArrangementVertex_2r &input_vertex, SharedBundle &above_neighbor,
+                     SharedBundle &below_neighbor);
     void InsertBundle(SharedBundle add_this);
     void RemoveBundle(SharedBundle remove_this);
+    int Size();
     SharedBundle SplitBundleAtVertex(ArrangementVertex_2r & split_here);
     void Find(ArrangementVertex_2r& input_vertex);
 private:

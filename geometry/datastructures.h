@@ -452,6 +452,7 @@ void SplayTree<Comparable>::print(BinaryNode<Comparable>* node, std::string spac
 template <class Comparable>
 int SplayTree<Comparable>::Size(BinaryNode<Comparable> *root)
 {
+    if(root == nullptr) return 0;
     int tree_size = 1;
     if(root->right != nullptr) tree_size += Size(root->right);
     if(root->left != nullptr) tree_size += Size(root->left);

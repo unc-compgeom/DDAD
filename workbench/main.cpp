@@ -66,21 +66,21 @@ int main(int argc, char *argv[]) {
     lhs.mergeTree(&spt);
     lhs.print();
 
-//    // Set up a sample arrangement for testing line intersections
-//    DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
-//    DDAD::Point_2r p, q;
-//    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(-15), DDAD::integer(1)),
-//                       DDAD::rational(DDAD::integer(0), DDAD::integer(1)));
-//    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(12), DDAD::integer(1)),
-//                       DDAD::rational(DDAD::integer(0), DDAD::integer(1)));
-//    sample_arrangement.AddSegment(p, q, true);
-//    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(0), DDAD::integer(1)),
-//                       DDAD::rational(DDAD::integer(15), DDAD::integer(1)));
-//    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(0), DDAD::integer(1)),
-//                       DDAD::rational(DDAD::integer(-12), DDAD::integer(1)));
-//    sample_arrangement.AddSegment(p, q, true);
+    // Set up a sample arrangement for testing line intersections
+    DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+    DDAD::Point_2r p, q;
+    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(3), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(6), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(6), DDAD::integer(1)));
+    sample_arrangement.AddSegment(p, q, true);
+    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(4), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(5), DDAD::integer(1)));
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(8), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+    sample_arrangement.AddSegment(p, q, false);
 
-//    std::cout << DDAD::CountIntersections(sample_arrangement);
+    std::cout << "\nFound " << DDAD::CountIntersections(sample_arrangement) << " intersections \n";
 
 
 

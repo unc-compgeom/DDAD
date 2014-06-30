@@ -99,9 +99,9 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
 
 
         // Split any bundles that might contain p, and update the tree/list
-        if(top_red == bot_red)
+        if(top_red->Contains(*ii))
         {
-            //get blue bundles that sandwich the red bundle
+            //get blue bundles that sandwich the red bundle containing the vertex
             top_blue = top_red->get_next_bundle();
             bot_blue = bot_red->get_prev_bundle();
             bdt.SplitBundleAtVertex(*ii);
@@ -150,7 +150,7 @@ int CountIntersections(const Arrangement_2r &A, Visual::IGeometryObserver *obser
             }
         }
 
-        crossings++;
+        //crossings++;
     }
 
 
@@ -222,7 +222,7 @@ SharedBundle Bundle::Split(SharedSegment split_here){
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
 
     // Set next_bundle and prev_bundle pointers
-    SharedBundle my_sptr = next_bundle_->get_prev_bundle();
+    SharedBundle my_sptr = std::make_shared<Bundle>(*this);//next_bundle_->get_prev_bundle();
     new_bundle->set_prev_bundle(my_sptr);
     new_bundle->set_next_bundle(next_bundle_);
     if(next_bundle_ != nullptr) next_bundle_->set_prev_bundle(new_bundle);
@@ -236,7 +236,9 @@ SharedBundle Bundle::Split(SharedSegment split_here){
 
 void Bundle::Merge(SharedBundle to_merge){
     // Merges to_merge into the current bundle
-    SharedBundle my_sptr = next_bundle_->get_prev_bundle();
+    SharedBundle my_sptr = nullptr;
+    if(next_bundle_ != nullptr) my_sptr = next_bundle_->get_prev_bundle();
+
     if(to_merge->get_next_bundle() != nullptr){
         to_merge->get_next_bundle()->set_prev_bundle(my_sptr);
     }
@@ -257,11 +259,11 @@ RelativePosition Bundle::SetRelativePosition(ArrangementVertex_2r &test_point){
     Point_2r the_point = *(test_point.get_point());
     if(Predicate::AIsLeftOfB(the_point, top_segment_->support()))
     {
-        rel_position_ = ABOVE;
+        rel_position_ = BELOW;
     }
     else if(Predicate::AIsRightOfB(the_point, bottom_segment_->support()))
     {
-        rel_position_ = BELOW;
+        rel_position_ = ABOVE;
     }
     else
     {
@@ -291,8 +293,8 @@ void BundleTree::Find(ArrangementVertex_2r& input_vertex){
 }
 
 void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
-                              SharedBundle above_neighbor,
-                              SharedBundle below_neighbor)
+                              SharedBundle &above_neighbor,
+                              SharedBundle &below_neighbor)
 {
     // For an empty tree, our job is easy
     if(bundle_tree_.isEmpty()){
@@ -315,7 +317,13 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
         // search down the tree for the lowest bundle above input_vertex
         below_neighbor = bundle_tree_.getRoot()->getElement();
         BinaryNode<SharedBundle>* tmp_ptr = bundle_tree_.getRoot();
-        if(tmp_ptr->right == nullptr) above_neighbor = nullptr;
+        //if the vertex is inside a bundle, return that bundle as above and below
+        if(below_neighbor->Contains(input_vertex))
+        {
+            above_neighbor = below_neighbor;
+        }
+
+        else if(tmp_ptr->right == nullptr) above_neighbor = nullptr;
         else{
             while(tmp_ptr->left != nullptr) tmp_ptr = tmp_ptr->left;
             above_neighbor = tmp_ptr->getElement();
@@ -325,12 +333,17 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
 
 void BundleTree::InsertBundle(SharedBundle add_this)
 {
-    bundle_tree_.insert(add_this);
+    if(add_this->get_color()) bundle_tree_.insert(add_this);
 }
 
 void BundleTree::RemoveBundle(SharedBundle remove_this)
 {
     bundle_tree_.remove(remove_this);
+}
+
+int BundleTree::Size()
+{
+    return bundle_tree_.Size();
 }
 
 SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
