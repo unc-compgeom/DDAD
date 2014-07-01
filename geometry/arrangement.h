@@ -123,19 +123,21 @@ private:
 
 class BundleList{
 public:
-    void set_front(SharedBundle new_front) { front_ = new_front; }
-    void set_back(SharedBundle new_back) { back_ = new_back; }
+    void set_bottom(SharedBundle new_bottom) { bottom_ = new_bottom; }
+    void set_top(SharedBundle new_top) { top_ = new_top; }
+    SharedBundle get_bottom() { return bottom_; }
+    SharedBundle get_top() { return top_; }
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
-    int SortPortion(SharedBundle begin, SharedBundle end);
+    int SortPortion(SharedBundle &begin, SharedBundle &end);
     void SwapAdjacentBundles(SharedBundle a, SharedBundle b);
     void SwapBundles(SharedBundle a, SharedBundle b);
 
 private:
-    SharedBundle front_;
-    SharedBundle back_;
+    SharedBundle bottom_;
+    SharedBundle top_;
 };
 
 //=============================================================================

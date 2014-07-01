@@ -97,6 +97,24 @@ public:
         return std::make_shared<DDAD::Bundle>(SampleBundle(seg1, seg2));
     }
 
+    DDAD::Arrangement_2r SampleArrangement()
+    {
+    // Set up a sample arrangement for testing line intersections
+    DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+    DDAD::Point_2r p, q;
+    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(3), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(6), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(6), DDAD::integer(1)));
+    sample_arrangement.AddSegment(p, q, true);
+    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(4), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(5), DDAD::integer(1)));
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(18), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+    sample_arrangement.AddSegment(p, q, false);
+    return sample_arrangement;
+    }
+
 private slots:
     //=========================================================================
     //      Datastructures: Tests
@@ -395,6 +413,47 @@ private slots:
         bdt.LocateVertex(SampleArrangementVertex(0,4,true),above,below);
         QVERIFY(above == nullptr);
         QCOMPARE(below,bdlred2);
+
+    }
+
+    void BundleTreeSplitAtVertex()
+    {
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        DDAD::SharedBundle bdlred = SampleSharedBundle();
+        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
+                                                        SampleSharedSegment(1,6,3,7,true));
+        bdt.InsertBundle(bdlred);
+        bdt.InsertBundle(bdlred2);
+
+        DDAD::ArrangementVertex_2r vertex = SampleArrangementVertex(2,5,true);
+
+        bdt.SplitBundleAtVertex(vertex);
+        QCOMPARE(bdt.Size(), 3);
+    }
+
+    void CountIntersections()
+    {
+        DDAD::Arrangement_2r sample_arrangement = SampleArrangement();
+        int intersections = DDAD::CountIntersections(sample_arrangement);
+        // Should just be two intersecting lines
+        QCOMPARE(intersections, 1);
+
+        // Add a second red line that also intersects with the blue line
+        DDAD::Point_2r p, q;
+        p = DDAD::Point_2r(DDAD::rational(DDAD::integer(8), DDAD::integer(1)),
+                           DDAD::rational(DDAD::integer(8), DDAD::integer(1)));
+        q = DDAD::Point_2r(DDAD::rational(DDAD::integer(9), DDAD::integer(1)),
+                           DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+        sample_arrangement.AddSegment(p, q, true);
+        QCOMPARE(intersections, 2);
+
+        // Add another blue line that does not intersect any existing lines
+        p = DDAD::Point_2r(DDAD::rational(DDAD::integer(12), DDAD::integer(1)),
+                           DDAD::rational(DDAD::integer(80), DDAD::integer(1)));
+        q = DDAD::Point_2r(DDAD::rational(DDAD::integer(13), DDAD::integer(1)),
+                           DDAD::rational(DDAD::integer(81), DDAD::integer(1)));
+        sample_arrangement.AddSegment(p, q, false);
+        QCOMPARE(intersections, 2);
 
     }
 

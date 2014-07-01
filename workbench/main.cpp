@@ -76,9 +76,14 @@ int main(int argc, char *argv[]) {
     sample_arrangement.AddSegment(p, q, true);
     p = DDAD::Point_2r(DDAD::rational(DDAD::integer(4), DDAD::integer(1)),
                        DDAD::rational(DDAD::integer(5), DDAD::integer(1)));
-    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(8), DDAD::integer(1)),
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(18), DDAD::integer(1)),
                        DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
     sample_arrangement.AddSegment(p, q, false);
+    p = DDAD::Point_2r(DDAD::rational(DDAD::integer(8), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(8), DDAD::integer(1)));
+    q = DDAD::Point_2r(DDAD::rational(DDAD::integer(9), DDAD::integer(1)),
+                       DDAD::rational(DDAD::integer(3), DDAD::integer(1)));
+    sample_arrangement.AddSegment(p, q, true);
 
     std::cout << "\nFound " << DDAD::CountIntersections(sample_arrangement) << " intersections \n";
 
