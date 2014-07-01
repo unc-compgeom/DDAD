@@ -76,10 +76,12 @@ public:
 
     DDAD::Bundle SampleBundle()
     {
-        return SampleBundle(SampleSharedSegment(0,0,1,1,true),SampleSharedSegment(0,5,3,2, true));
+        return SampleBundle(SampleSharedSegment(1,1,2,2,true),
+                            SampleSharedSegment(1,5,3,2, true));
     }
 
-    DDAD::Bundle SampleBundle(DDAD::SharedSegment seg1, DDAD::SharedSegment seg2)
+    DDAD::Bundle SampleBundle(DDAD::SharedSegment seg1,
+                              DDAD::SharedSegment seg2)
     {
         DDAD::Bundle bdl = DDAD::Bundle();
         bdl.Insert(seg1);
@@ -92,7 +94,15 @@ public:
         return std::make_shared<DDAD::Bundle>(SampleBundle());
     }
 
-    DDAD::SharedBundle SampleSharedBundle(DDAD::SharedSegment seg1, DDAD::SharedSegment seg2)
+    DDAD::SharedBundle SampleSharedBundle(DDAD::SharedSegment seg)
+    {
+        DDAD::SharedBundle bdl = std::make_shared<DDAD::Bundle>();
+        bdl->Insert(seg);
+        return bdl;
+    }
+
+    DDAD::SharedBundle SampleSharedBundle(DDAD::SharedSegment seg1,
+                                          DDAD::SharedSegment seg2)
     {
         return std::make_shared<DDAD::Bundle>(SampleBundle(seg1, seg2));
     }
@@ -323,7 +333,7 @@ private slots:
     void BundleSplit()
     {
         DDAD::SharedBundle sbdl1 = std::make_shared<DDAD::Bundle>();
-        sbdl1->Insert(SampleSharedSegment(0, 0, 20, 0, true));
+        sbdl1->Insert(SampleSharedSegment(1, 1, 20, 1, true));
         sbdl1->Insert(SampleSharedSegment(1, 5, 5, 2, true));
         DDAD::SharedBundle sbdl2 =
                 sbdl1->Split(SampleSharedSegment(1, 4, 5, 1, true));
@@ -333,9 +343,12 @@ private slots:
 
     void BundleCompare()
     {
-        DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
+        DDAD::SharedBundle bdlred =
+                SampleSharedBundle(SampleSharedSegment(1, 1, 5, 1, true),
+                                   SampleSharedSegment(1, 3, 12, 3, true));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
+                                   SampleSharedSegment(1, 6, 3, 7, true));
         QCOMPARE(bdlred == bdlred2, false);
         QCOMPARE(bdlred > bdlred2, false);
         QCOMPARE(bdlred < bdlred2, true);
@@ -345,10 +358,12 @@ private slots:
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
-        DDAD::SharedBundle bdlblue = SampleSharedBundle(SampleSharedSegment(0,5,10,5,false),
-                                                        SampleSharedSegment(0,6,6,6,false));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
+                                   SampleSharedSegment(1, 6, 3, 7, true));
+        DDAD::SharedBundle bdlblue =
+                SampleSharedBundle(SampleSharedSegment(1, 5, 10, 5, false),
+                                   SampleSharedSegment(1, 6, 6, 6, false));
 
         //insert a red bundle
         bdt.InsertBundle(bdlred);
@@ -356,7 +371,7 @@ private slots:
         bdt.InsertBundle(bdlblue);
         QCOMPARE(bdt.get_root(), bdlred);
         //size of bdt should be 1, since the blue bundle should not insert
-        QCOMPARE(bdt.Size(),1);
+        QCOMPARE(bdt.Size(), 1);
         //insert another red bundle
         bdt.InsertBundle(bdlred2);
         //size of bdt should be 2, now that we've added 2 red bundles
@@ -370,8 +385,9 @@ private slots:
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
+                                   SampleSharedSegment(1, 6, 3, 7, true));
 
         //insert a red bundle
         bdt.InsertBundle(bdlred);
@@ -381,15 +397,16 @@ private slots:
         bdt.RemoveBundle(bdlred);
         //second red bundle should be at the root, size should be 1
         QCOMPARE(bdt.get_root(), bdlred2);
-        QCOMPARE(bdt.Size(),1);
+        QCOMPARE(bdt.Size(), 1);
     }
 
     void BundleTreeFind()
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(0, 4, 5, 4, true),
+                                   SampleSharedSegment(1, 6, 3, 7, true));
         bdt.InsertBundle(bdlred);
         bdt.InsertBundle(bdlred2);
 
@@ -403,8 +420,9 @@ private slots:
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(0, 4, 5, 4, true),
+                                   SampleSharedSegment(1 ,6 ,3 ,7 ,true));
         DDAD::SharedBundle above, below;
 
         bdt.InsertBundle(bdlred);
@@ -420,8 +438,9 @@ private slots:
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
-        DDAD::SharedBundle bdlred2 = SampleSharedBundle(SampleSharedSegment(0,4,5,4,true),
-                                                        SampleSharedSegment(1,6,3,7,true));
+        DDAD::SharedBundle bdlred2 =
+                SampleSharedBundle(SampleSharedSegment(0, 4, 5, 4, true),
+                                   SampleSharedSegment(1, 6, 3, 7, true));
         bdt.InsertBundle(bdlred);
         bdt.InsertBundle(bdlred2);
 
@@ -435,7 +454,9 @@ private slots:
     {
         DDAD::BundleList bdl = DDAD::BundleList();
         DDAD::SharedBundle bundle = SampleSharedBundle();
-        DDAD::SharedBundle bundle2 = SampleSharedBundle(SampleSharedSegment(0,1,1,2,false),SampleSharedSegment(0,2,3,3,false));
+        DDAD::SharedBundle bundle2 =
+                SampleSharedBundle(SampleSharedSegment(0, 1, 1, 2, false),
+                                   SampleSharedSegment(0, 2, 3, 3, false));
         QVERIFY(bdl.get_bottom() == nullptr);
         QVERIFY(bdl.get_top() == nullptr);
         bdl.InsertBundle(bundle,nullptr);
@@ -450,13 +471,33 @@ private slots:
     {
         DDAD::BundleList bdl = DDAD::BundleList();
         DDAD::SharedBundle bundle = SampleSharedBundle();
-        DDAD::SharedBundle bundle2 = SampleSharedBundle(SampleSharedSegment(0,1,1,2,false),SampleSharedSegment(0,2,3,3,false));
+        DDAD::SharedBundle bundle2 =
+                SampleSharedBundle(SampleSharedSegment(0, 1, 1, 2, false),
+                                   SampleSharedSegment(0, 2, 3, 3, false));
         bdl.InsertBundle(bundle,nullptr);
         bdl.InsertBundle(bundle2,bundle);
 
         bdl.RemoveBundle(bundle);
         QCOMPARE(bdl.get_bottom(), bundle2);
         QCOMPARE(bdl.get_top(), bundle2);
+
+        // Test on a single-bundle list
+        DDAD::BundleList bdl2 = DDAD::BundleList();
+        DDAD::SharedBundle bundle1 = SampleSharedBundle();
+        bdl2.InsertBundle(bundle1, nullptr);
+        QCOMPARE(bdl2.get_top(), bundle1);
+        bdl2.RemoveBundle(bundle1);
+        QVERIFY(bdl2.get_top() == nullptr);
+
+    }
+
+    void BundleListSortPortion(){
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::SharedBundle red =
+                SampleSharedBundle(SampleSharedSegment(5, 5, 10, 10, true));
+        DDAD::SharedBundle blue =
+                SampleSharedBundle(SampleSharedSegment(5, 10, 10, 5, false));
+        bdl.InsertBundle(red, nullptr);
     }
 
     void CountIntersections()
@@ -484,10 +525,6 @@ private slots:
         QCOMPARE(intersections, 2);
 
     }
-
-
-
-
 };
 
 
