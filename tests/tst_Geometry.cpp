@@ -431,6 +431,34 @@ private slots:
         QCOMPARE(bdt.Size(), 3);
     }
 
+    void BundleListInsert()
+    {
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::SharedBundle bundle = SampleSharedBundle();
+        DDAD::SharedBundle bundle2 = SampleSharedBundle(SampleSharedSegment(0,1,1,2,false),SampleSharedSegment(0,2,3,3,false));
+        QVERIFY(bdl.get_bottom() == nullptr);
+        QVERIFY(bdl.get_top() == nullptr);
+        bdl.InsertBundle(bundle,nullptr);
+        QCOMPARE(bdl.get_bottom(), bundle);
+        QCOMPARE(bdl.get_top(), bundle);
+        bdl.InsertBundle(bundle2,bundle);
+        QCOMPARE(bdl.get_bottom(), bundle);
+        QCOMPARE(bdl.get_top(), bundle2);
+    }
+
+    void BundleListRemove()
+    {
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::SharedBundle bundle = SampleSharedBundle();
+        DDAD::SharedBundle bundle2 = SampleSharedBundle(SampleSharedSegment(0,1,1,2,false),SampleSharedSegment(0,2,3,3,false));
+        bdl.InsertBundle(bundle,nullptr);
+        bdl.InsertBundle(bundle2,bundle);
+
+        bdl.RemoveBundle(bundle);
+        QCOMPARE(bdl.get_bottom(), bundle2);
+        QCOMPARE(bdl.get_top(), bundle2);
+    }
+
     void CountIntersections()
     {
         DDAD::Arrangement_2r sample_arrangement = SampleArrangement();

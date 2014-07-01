@@ -361,12 +361,21 @@ SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
 {
     Find(split_here);  // Rotate the appropriate bundle to the root
     if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
-        // Create a new bundle from the split
+        // remove bundle, split it in two, then insert both back into the tree
         SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(split_here.get_point(), split_here.get_other_point(), split_here.is_red());
-        SharedBundle new_bundle = bundle_tree_.getRoot()->element->Split(tmp_segment);
-        bundle_tree_.getRoot()->element->SetRelativePosition(split_here);
-        new_bundle->SetRelativePosition(split_here);
-        return new_bundle;
+        SharedBundle tmp_bundle_left = bundle_tree_.getRoot()->getElement();
+        SharedBundle tmp_bundle_rt;
+        bundle_tree_.remove(tmp_bundle_left);
+        tmp_bundle_rt = tmp_bundle_left->Split(tmp_segment);
+        bundle_tree_.insert(tmp_bundle_left);
+        bundle_tree_.insert(tmp_bundle_rt);
+
+        return tmp_bundle_rt;
+//        SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(split_here.get_point(), split_here.get_other_point(), split_here.is_red());
+//        SharedBundle new_bundle = bundle_tree_.getRoot()->element->Split(tmp_segment);
+//        bundle_tree_.getRoot()->element->SetRelativePosition(split_here);
+//        new_bundle->SetRelativePosition(split_here);
+//        return new_bundle;
     }
     else{
         return nullptr;
