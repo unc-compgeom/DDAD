@@ -64,6 +64,8 @@ public:
     //Accessors
     const SharedBundle get_next_bundle() const { return next_bundle_; }
     const SharedBundle get_prev_bundle() const { return prev_bundle_; }
+    SharedBundle get_prev_bundle() { return prev_bundle_; }
+    SharedBundle get_next_bundle() { return next_bundle_; }
     const SharedSegment get_top_seg() const { return top_segment_; }
     const SharedSegment get_bot_seg() const { return bottom_segment_; }
     const RelativePosition get_rel_position() const { return rel_position_; }
@@ -109,6 +111,7 @@ public:
     //and below in the arrangement.  If within a bundle, both above_neighbor
     //and below_neighbor should be that bundle.
     SharedBundle get_root() {return bundle_tree_.getRoot()->getElement();}
+    bool is_empty() { return bundle_tree_.isEmpty(); }
     void LocateVertex(ArrangementVertex_2r &input_vertex,
                       SharedBundle &above_neighbor,
                       SharedBundle &below_neighbor);
@@ -135,8 +138,10 @@ public:
     void RemoveBundle(SharedBundle remove_this);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
-    int SortPortion(SharedBundle &begin, SharedBundle &end);
-    void SwapBundles(SharedBundle a, SharedBundle b);
+    int SortPortion(SharedBundle &begin, SharedBundle &end,
+                    ArrangementVertex_2r v);
+    void SwapAdjacentBundles(SharedBundle& left, SharedBundle& right);
+    void SwapBundles(SharedBundle &a, SharedBundle &b);
 
 private:
     SharedBundle bottom_;
