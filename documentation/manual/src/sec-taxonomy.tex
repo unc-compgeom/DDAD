@@ -1,0 +1,489 @@
+\section{Taxonomy, Previous Works, and DDAD Desiderata}
+
+A taxonomy is a means of organizing properties of a system. This section
+provides a taxonomy for geometric visualization systems, uses the taxonomy to
+guide a review of previous works, and uses the taxonomy to explain the desired
+properties of the DDAD workbench.
+
+% From their thorough review of geometric workbench systems, Dobkin and Hausner
+% extracted a set of design decisions that must be made by new
+% systems~\cite{hausner1999animation}. However, a geometric workbench is a
+% specific type of \emph{software visualization} (SV) system. The SV literature
+% contains several well-developed taxonomies that are designed to evaluate SV
+% systems~\cite{diehl2007software}. In particular, Price \emph{et al.} outline
+% six major categories in which they judge SV systems: scope, content, form,
+% method, interaction, and effectiveness~\cite{price1993principled}. We found
+% that this detailed taxonomy provided a more structured way of organizing the
+% desiderata of new workbench systems.
+%  This section recalls the taxonomy for evaulating SV systems and relates each
+% category to the specific case of workbench systems. The taxonomy is a
+% hierarchy of categories, each of which may be described in terms of a question
+% about the system. This makes the task of describing our specific desiderata
+% quite easy because we may simply answer each of these questions in turn.
+
+\subsection{Taxonomy} 
+
+\paragraph{Scope.} What is the range of programs that the SV system may take as
+input for visualization?
+
+% \begin{enumerate}
+%     \item Generality. Can the system handle a generalized range of programs or
+%     does it display a fixed set of examples?
+%     \begin{enumerate}
+%       \item Hardware. What hardware does it run on?
+%       \item Operating System. What operating system is required to run it?
+%       \item Language. What programming language must user programs be written
+%       in?
+%       \begin{enumerate}
+%         \item Concurrency. If the programming language is capable of
+%         concurrency, can the SV system visualize the concurrent aspects?
+%       \end{enumerate}
+%       \item Applications. What are the restrictions on the kinds of user
+%       programs that can be visualized?
+%       \begin{enumerate}
+%         \item Specialty. What kinds of programs is it particularly good at
+%         visualizing (as opposed to simply capable of visualizing)?
+%       \end{enumerate}
+%     \end{enumerate}
+%     \item Scalability. To what degree does the system scale up to handle large
+%     examples?
+%     \begin{enumerate}
+%       \item Program. What is the largest program it can handle?
+%       \item Data Sets. What is the largest input data set it can handle?
+%     \end{enumerate}
+%   \end{enumerate}
+
+\paragraph{Content.} What subset of information about the software is visualized
+by the SV system?
+
+% \begin{enumerate}
+%     \item Program. To what degree does the system visualize the actual
+%     implemented program?
+%     \begin{enumerate}
+%       \item Code. To what degree does the system visualize the instructions in
+%       the program source code?
+%       \begin{enumerate}
+%         \item Control Flow. To what degree does the system visualize the flow of
+%         control in the program source code?
+%       \end{enumerate}
+%       \item Data. To what degree does the system visualize the data structures
+%       in the program source code?
+%       \begin{enumerate}
+%         \item Data Flow. To what degree does the system visualize the flow of
+%         data in the program source code?
+%       \end{enumerate}
+%     \end{enumerate}
+%     \item Algorithm. To what degree does the system visualize the high-level
+%     algorithm behind the software?
+%     \begin{enumerate}
+%       \item Instructions. To what degree does the system visualize the
+%       instructions in the algorithm?
+%       \begin{enumerate}
+%         \item Control Flow. To what degree does the system visualize the flow of
+%         control in the algorithm instructions?
+%       \end{enumerate}
+%       \item Data. To what degree does the system visualize the data structures
+%       in the algorithm?
+%       \begin{enumerate}
+%         \item Data Flow. To what degree does the system visualize the flow of
+%         data in the algorithm?
+%       \end{enumerate}
+%     \end{enumerate}
+%     \item Fidelity and Completeness. Do the visual metaphors present the true
+%     and complete behavior of the underlying virtual machine?
+%     \begin{enumerate}
+%       \item Invasiveness. If the system can be used to visual concurrent
+%       applications, does its use disrupt the execution sequence of the program?
+%     \end{enumerate}
+%     \item Data Gathering Time. Is the data on which the visualization depends
+%     gathered at compile-time, at run-time, or both?
+%     \begin{enumerate}
+%       \item Temporal Control Mapping. What is the mapping between 'program time'
+%       and 'visualization time'?
+%       \item Visualization Generation Time. Is the visualization produced as a
+%       batch job (post-mortem) from data recorded during a previous run, or is it
+%       produced live as the program executes?
+%     \end{enumerate}
+%   \end{enumerate}
+
+\paragraph{Form.} What are the characteristics of the output of the system (the
+  visualization)?
+
+% \begin{enumerate}
+%     \item Medium. What is the primary target medium for the visualization
+%     system?
+%     \item Presentation Style. What is the general appearance of the
+%     visualization?
+%     \begin{enumerate}
+%       \item Graphical Vocabulary. What graphical elements are used in the
+%       visualization produced by the system?
+%       \begin{enumerate}
+%         \item Colour. To what degree does the system make use of colour in its
+%         visualizations?
+%         \item Dimensions. To what degree are extra dimensions used in the
+%         visualization?
+%       \end{enumerate}
+%       \item Animation. If the system gathers run-time data, to what degree does
+%       the resulting visualization use animation?
+%       \item Sound. To what degree does the system make use of sound to convey
+%       information?
+%     \end{enumerate}
+%     \item Granularity. To what degree does the system present coarse-granularity
+%     details?
+%     \begin{enumerate}
+%       \item Elision. To what degree does the system provide facilities for
+%       eliding information?
+%     \end{enumerate}
+%     \item Multiple Views. To what degree can the system provide multiple
+%     synchronized views of different parts of the software being visualized?
+%     \item Program Synchronization. Can the system generate visualizations of
+%     multiple programs simultaneously?
+%   \end{enumerate}
+
+\paragraph{Method.} How is the visualization specified?
+
+% \begin{enumerate}
+%     \item Visualization Specification Style. What style of specification is
+%     used?
+%     \begin{enumerate}
+%       \item Intelligence. If the visualization is automatic, how advanced is the
+%       visualization software from an AI point of view?
+%       \item Tailorability. To what degree can the user customize the
+%       visualization?
+%       \begin{enumerate}
+%         \item Customization Language. If the visualization is customizable, how
+%         can the visualization be specified?
+%       \end{enumerate}
+%     \end{enumerate}
+%     \item Connection Technique. How is the connection made between the
+%     visualization and the actual software being visualized?
+%     \begin{enumerate}
+%       \item Code Ignorance Allowance. If the visualization system is not
+%       completely automatic, how much knowledge of the program code is required
+%       for a visualization to be produced for the user?
+%       \item System-Code Coupling. How tightly is the visualization system
+%       coupled with the code?
+%     \end{enumerate}
+%   \end{enumerate}
+
+\paragraph{Interaction.} How does the user of the SV system interact with and
+  control it? 
+
+% \begin{enumerate}
+%     \item Style. What method does the user employ to give instructions to the
+%     system?
+%     \item Navigation. To what degree does the system support navigation through
+%     a visualization?
+%     \begin{enumerate}
+%       \item Elision Control. Can the user elide information or suppress detail
+%       from the display?
+%       \item Temporal Control. To what degree does the system allow the user to
+%       control the temporal aspects of the execution of the program?
+%       \begin{enumerate}
+%         \item Direction. To what degree can the user reverse the temporal
+%         direction of the visualization?
+%         \item Speed. To what degree can the user control the speed of execution?
+%       \end{enumerate}
+%     \end{enumerate}
+%     \item Scripting Facilities. Does the system provide facilities for managing
+%     the recording and playing back of interactions with particular
+%     visualizations?
+%   \end{enumerate}
+
+\subsection{Previous Works}
+
+A geometric workbench combines a geometric algorithm library with a geometric
+algorithm visualizer. \emph{Geometric algorithm libraries} provide a broad
+selection of algorithms and the substrate of types upon which they are built.
+\emph{Geometric algorithm visualizers} provide a GUI capable of animating and
+visually debugging those algorithms implemented in the library. They borrow
+heavily from techniques used in general algorithm animation
+systems~\cite{brown1984system, stasko1990tango, stasko1995polka,
+stasko1995samba}. Previous works may thus be categorized as
+libraries~\cite{mehlhorn1989leda, fabri1998design, overmars1996designing,
+fabri1996cgal}, visualizers~\cite{phillips1993geomview, hanson1994interactive,
+amenta1995geomview, basken2002geowin}, and full workbench
+systems~\cite{schorn1991robust, de1993geolab, de1993animation,
+epstein1994workbench, tal1995visualization, shneerson1997gasp,
+wei2009geobuilder}.
+
+\paragraph{XYZ GeoBench (1991)}
+
+XYZ (eXperimental geometrY Zurich) GeoBench was a geometric workbench developed
+by Peter Schorn under the supervision of Jurg Nievergelt. Schorn's 1991 thesis
+focused on the question of how to produce good software for geometric
+computation, with a particular emphasis on geometric
+robustness~\cite{schorn1991robust}. Schorn describes the
+GeoBench as ``a programming environment, implemented in an object oriented
+language, for the rapid prototyping of geometric software and a testbed for
+experiments,'' noting that ``algorithm animation is used for demonstration
+purposes and debugging.'' The XYZ Library was built on top of the GeoBench and
+offered implementations of a large number of geometric algorithms. 
+
+There are several notable features about the GeoBench. The first is the use of
+interchangable arithmetic and software simulation of parameterized floating
+point numbers. In particular, algorithm implementations make reference to an
+abstract 2D point class that does not specify a particular number system for the
+coordinates. The abstract point class is extended to form concrete point types
+for single-precision (realPoint), long integer (longIntPoint), and parameterized
+floating point (floatPoint) coordinate types. Counterinuitively, the
+parameterized floating point arithmetic was not used to ameliorate robustness
+problems by increasing precision, rather it was used to simulate low precision
+floating point to make the robustness problems more pronounced.
+
+% The GeoBench had three major goals or desiderata. First was to be a programming
+% environment. Provide the implementor of geometric algorithms with the necessary
+% infrastructure for rapid prototyping. Ingredients of this environment include
+% rich set of geometric primitives, fundamental set of basic geometric algorithms,
+% collection of abstract data types and the ability to perform ``universal
+% operations'' like input/output or scaling on geometric objects. Second was to be
+% an interactive testbed for experiments. Wanted to measure an implementation's
+% efficiency by comparing it to other programs solving the same problem. Would
+% like to experiment with different implementations of abstract data structures
+% and to try different models of arithmetic. Need to construct degenerate
+% configurations as test cases and save them in a test suite. Third was algorithm
+% animation. Most algos can be animated fairly easily since geometric objects have
+% clear standard graphical representations. algo animation is used for
+% demonstration in the classroom and for debugging.
+
+\paragraph{Workbench (1991)}
+
+Workbench is a system similar to XYZ GeoBench that focused on implementing
+complex geometric algorithms instead of robustness issues. The system is built
+in Smalltalk and composed of three main components: a library, visualization
+GUI, and tools for extending each. It focused heavily on empirical comparisons of different
+algorithms and using animations for teaching and demonstration. They define the
+minimum criteria for a geometric workbench as a system with: representations of
+geometric objects, geometric data types, non-geometric data types, algorithmic
+implementations that adhere to specification, different arithmetic types, and a
+GUI that provides animation and debugging facilities.
+
+% they identify two other projects (LEDA and GeoBench): LEDA had a large number of
+% graph algorithms and well designed data types but was just then starting to move
+% toward geometry, GeoBench is similar to workbench (UI + library) but main focus
+% is on robust implementation of fundamental algorithms. the algorithmic portion
+% of their software is layered with primitive operations and types on the bottom
+% and more complex types on top. the ui component is separate and similarly
+% layered. the primary goal of this project was to create a geometric computing
+% environment: a tool for geometric computation applicable in a variety of
+% contexts that provides useful facilities for dealing with the complex algorithms
+% typical of computational geometry. they identify three main components such an
+% environment must have: library of algs and data types, GUI for manipulating
+% library objects, and tools for enhancing and extending the lib and GUI.
+% empirical comparison of different algorithms and data structures is important,
+% display and animation features are useful for teaching/demonstration. they
+% consider the following worthwhile but didn't pursue them: optimizing
+% implementations, handling degeneracies and numerical problems.
+% 
+% they define the minimum criteria for a geometry workbench as having:
+% representations of geom objects (polygons etc), geometric data types/structures,
+% nongeometric data types/structures (splay trees, heaps), algorithmic
+% implementations adhering to specification, different arithmetic types, GUI with
+% algorithm animation, programming environment and debugging facility (I/O of
+% geometric objects). they implement the workbench in smalltalk
+
+\paragraph{GeoLab (1993)}
+
+de Rezende created GeoLab, a system that binds together support for software and
+algorithm development with realtime interaction~\cite{de1993geolab,
+de1993animation}. The system supports software development with built-in
+abstract data types for geometric objects, data structures, basic algorithms,
+and mechanisms for incorporating new components \emph{without} recompilation.
+The system supports user interaction with the ability to construct input data,
+debug implementations visually, gather statistics, input/output geometric data,
+and customize algorithm animations. Although the system is implemented in
+object-oriented C++, algorithms are not necessarily member functions of the
+classes upon which they operate -- they may be free functions. This echoes
+Meyer's advice that minimal use of member functions can often increase
+encapsulation.
+
+% software
+% development:
+% build in ADT's for geometric types, data structures, basic algorithms and some
+% complex geometric data structures, mechanisms for incorporation of new
+% components WITHOUT recompilation of the environment, etc.
+% support for interaction: GUI, ability to construct input data, debugging and
+% statistics, I/O, customization of algorithm animation. written in C++.
+
+% new modules are imported into the system via shared libraries, the kernel itself
+% contains no geometric code. GUI consists of editing area, operation pallete,
+% algorithms menu. random generators for input data. double hierarchy of classes -
+% pure objects and graphics objects. for each pure geometric object (e.g. point2d)
+% there is a graphical geometric counterpart. geometric algorithms are not
+% necessarily methods of the classes they operate on - they may be free functions.
+
+\paragraph{GASP (1995)}
+
+Tal and Dobkin describe the Geometric Animation System, Princeton
+(GASP)~\cite{tal1995visualization}. The system allows users to quickly create 3D
+visualizations, animate complex geometric algorithms, and visually debug
+implementations. The use of style files to control the visual aspects of the
+animation allows users to produce new renderings without recompiling the system.
+
+% It can be used as an illustration tool for geometric
+% constructions, to create videotapes to accompany talks, as a debugger, animator,
+% and as an instructional aid to students. 
+
+% three objectives set them apart from other
+% animation systems such as Balsa Balsa-II Tango and Zeus: quick creation of 3d
+% visulizations, can animate complex geometric algorithms, includes a visual
+% debugging facility. the system may be used in many ways: illustration tool for
+% constructions, videotapes to accompany talks/classes, for debugging, allow
+% students to interact and experiment with animations, allows users to create
+% animations to attach to their documents. previous systems identified two user
+% types (client programmer and end user), they define three: end user, naive
+% programmer (animations are easy), advanced programmer (can change the animation
+% around). uses style files to control visual aspects of animations. thus, there
+% are 4 parts to an animation: animation system, algorithm implementation, hooks
+% to animation system inside implementation, style files. programmers concentrate
+% on logical operations that need to be visualized (the what) but not how to do it
+% (the how). identify four-dimensional space as future work.
+
+%\paragraph{GASP-II (1998)}
+
+%todo~\cite{shneerson1997gasp}.
+% GASP-II had something to do with an electronic
+% classroom~\cite{shneerson1997gasp}.
+
+%\paragraph{WAVE (1999, 2001)}
+
+%todo~\cite{baker1999visualizing, demetrescu2001visualizing}.
+
+% tamassia and liotta got into visualizing geometric algorithms over the web in
+% 1999 and 2001~\cite{baker1999visualizing, demetrescu2001visualizing}.
+
+\paragraph{GeoBuilder (2009)}
+
+GeoBuilder is a cross-platform geometric workbench written in
+Java~\cite{wei2009geobuilder}. It features a novel mechanism for automatically
+positioning the 3D camera during algorithm execution and allows users to
+collaborate on programming and visualization. Wei et al demonstrate the 3D
+tracking feature by constructing convex hulls and detecting line segment
+intersections. They note that automatically positioning a single view of an
+algorithm may not be sufficient to capture all changes in algorithm state, and
+identify automatic positioning of multiple cameras for future work.
+
+% \subsection{Geometric algorithm libraries and visualizers}
+% 
+% \paragraph{LEDA}
+% 
+% The library of efficient data structures and algorithms (LEDA) is often
+% mentioned in the context of workbenches.
+% 
+% \paragraph{CGAL}
+% 
+% The computational geometry algorithms library (CGAL) is the current standard
+% implementation among the geometry community - it used to provide support for
+% GeomView but now just has its own visualization module.
+
+\paragraph{Geomview}
+
+Geomview is a geometric visualization system that focuses on rendering and
+manipulating geometric data in 3-space~\cite{phillips1993geomview,
+hanson1994interactive, amenta1995geomview}. It is able to render both static
+geometry and dynamic geometry produced by an external program running
+concurrently. External programs that use Geomview in this fashion are called
+``external modules.'' It gained a large userbase after its initial release in 1991
+due to its decoupled approach to animating geometric algorithms; users could
+implement algorithms however they wanted and simply interface with Geomview at
+runtime. Of particular note is its 4D visualization module that allow users to
+explore 4-dimensional geometry through various projections. CGAL provides a
+module for producing Geomview visualizations.
+
+\paragraph{GeoWin}
+
+GeoWin is a C++ data type that provides the ability to visualize sets of
+geometric objects, with a focus on two dimensions~\cite{basken2002geowin}. This
+functionality may be used to visualize the output of geometric algorithms or to
+animate the progression of algorithms. GeoWin defines a programming interface to
+define scenes and an interactive interface to define how the user may interact
+with the scene. The data type integrates directly with LEDA and CGAL while
+custom libraries must implement the interfaces, entailing a dependency on LEDA
+types.
+
+\subsection{DDAD Desiderata}
+
+Geometric objects on a digital computer are composed of two types of data:
+numerical and combinatorial. Examples of numerical data include the
+Cartesian coordinates of a point in 3-space, the length of a line segment
+connecting two such points, or the angle between two such line segments.
+Examples of combinatorial information include grouping two points as an
+edge, grouping a collection of edges as a face, or grouping a collection of
+faces as a surface.
+
+Geometric algorithms that operate on geometric objects are best thought of as
+two types of operations: predicates and constructions. Predicates determine
+relationships between objects. A predicate might determine if a point is to
+the left, right, or is collinear with a line segment, determine if a point is
+inside, outside, or on a circle, or determine if a line intersects a plane in
+one, none, or infinitely many points. Constructions produce new geometric
+objects from existing geometric objects. A construction might produce the
+rotation of a point around an origin, produce the point of intersection
+between two line segments, or produce an offset of an algebraic curve.
+
+\paragraph{Scope} describes the range of programs the system can take as input
+for visualization. First, the system should visualize geometric algorithms
+implemented with primitives and predicates from the degree-driven algorithm
+design library (DDAD). Second, the system should provide example implementations
+and visualizations of algorithms that solve textbook computational geometry
+problems. Third, the system should be flexible enough to visualize new geometric
+algorithms from the facilities used in example visualizations. Fourth, the
+system should run well given inputs large enough to verify the correctness of a
+particular implementation.
+
+\paragraph{Content} describes what subset of information about the software is
+visualized by the SV system. For algorithm implementers, the system should
+visualize information about the concrete implementation of the algorithm. This
+entails combining traditional debugging facilities with the new ability to
+visualize geometric structures and operations. For algorithm presenters, the
+system should visualize information about the high-level algorithm description.
+This entails mechanisms for displaying visualizations that do not necessarily
+correspond to the underlying implementation details.
+
+\paragraph{Form} describes the characteristics of the output of the system (the
+visualization). First, the output medium should be an interactive computer
+program. This is sufficient for implementers, but presenters may want to produce
+a digital recording of an algorithm animation. Fortunately, screen capture
+programs can facilitate producing this type of output. Second, the output should
+have a rich graphical vocabulary, displaying standard graphics primitives
+(points, lines, polygons), each with a variety of attributes (color,
+transparency, pattern, texture). Presenters in particular desire highly
+expressive output. Third, the output should contain both 2D and 3D elements.
+The third dimension can be used both for visualizing inherently 3D algorithms
+and to effectively display non-dimensional information. Fourth, the output
+should have multiple levels of information granularity, with the ability to
+elide and reveal specific levels as needed. Fifth, users should be able to view
+the same data in multiple ways. This capability is particularly pertinent in
+geometry where insight into a problem may be gained from viewing a dual
+formulation (\emph{e.g.} viewing points as lines).
+
+\paragraph{Method} describes how the visualization is specified. Implementers
+desire highly automated specifications that minimally invade implementation source
+code. Increased automation increases the likelihood a tool will be used for
+debugging assistance. Useful automated visualizations require a high level of
+intelligence in order to correctly recognize and display high level data
+structures. In contrast, presenters are less concerned with automated
+visualization specifications, and accept a higher degree of invasiveness in
+return for customization and increased expressibility. The system should strike
+a balance between automation and customization.
+
+\paragraph{Interaction} describes how the user of the software visualization
+system interacts with and controls it. First, users should be able to control
+the speed of execution. This includes starting, stopping, speeding up, slowing
+down, and single stepping. Second, users should be able to control a camera to
+navigate around the scene and to focus on different objects. This is especially
+important for 3D algorithms and larger data sets. Third, users should be able to
+record and play back particular runs of a visualization. For presenters this
+could aid pedagogy, and implementers might record when an algorithm fails.
+
+% \subsection{Current Capabilities}
+% 
+% The workbench currently satisfies the desired functionality as follows. It
+% extends the DDAD library with visual types and encapsulates these into a
+% geometry kernel. The geometry kernel is paired with a visualizer that is capable
+% of animating algorithm execution. The workbench strikes a balance between
+% automated visualizations and expressive power by using object
+% oriented design to encapsulate visual commands in lower level objects. The user
+% is able to control the speed of execution and pause at important moments. They
+% control two different views of the scene and can move these views interactively
+% as the algorithm executes.
