@@ -56,11 +56,14 @@ scalability. Scalability refers to both input data and algorithm complexity.
 %   \end{enumerate}
 
 \paragraph{Content.} What information about the software can the SV system
-visualize?
+visualize? In particular, systems may focus on visualizing the actual
+implementation or the high level algorithm description. Oftentimes, these will
+overlap, but there may be times where visualizing implementation details
+clutters the presentation of the high level algorithm.
 
 % \begin{enumerate}
 %     \item Program. To what degree does the system visualize the actual
-%     implemented program?
+%     implemented program? 
 %     \begin{enumerate}
 %       \item Code. To what degree does the system visualize the instructions in
 %       the program source code?
@@ -109,7 +112,10 @@ visualize?
 %   \end{enumerate}
 
 \paragraph{Form.} What are the characteristics of the output of the system (the
-  visualization)?
+visualization)? This category encompasses graphical vocabulary, granularity and
+elision, and whether the system can present multiple views of the same data.
+%   Oftentimes systems are structured around the model-view-controller
+%   design pattern.
 
 % \begin{enumerate}
 %     \item Medium. What is the primary target medium for the visualization
@@ -142,7 +148,10 @@ visualize?
 %     multiple programs simultaneously?
 %   \end{enumerate}
 
-\paragraph{Method.} How is the visualization specified?
+\paragraph{Method.} How is the visualization specified? Automatic visualization
+of algorithms is a difficult if not impossible task, so there is often a degree
+of invasiveness. Systems may require users to annotate their code at visually
+important points of execution.
 
 % \begin{enumerate}
 %     \item Visualization Specification Style. What style of specification is
@@ -169,7 +178,10 @@ visualize?
 %   \end{enumerate}
 
 \paragraph{Interaction.} How does the user of the SV system interact with and
-  control it? 
+  control it? For geometric algorithm visualization, the user may need different
+  camera types for 2 and 3 dimensions. For algorithm visualization in general,
+  the user may want controls for speeding up, slowing down, pausing, resuming,
+  and restarting algorithm execution. 
 
 % \begin{enumerate}
 %     \item Style. What method does the user employ to give instructions to the
