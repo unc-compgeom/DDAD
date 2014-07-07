@@ -84,52 +84,73 @@ void Line_2r::Update() {
 
 namespace Predicate {
 
-Orientation OrientationPQR(const Line_2r& pq, const Point_2r& r) {
+Orientation OrientationPQR(const Line_2r& pq, const Point_2r& r)
+{
     return OrientationPQR(pq.p(), pq.q(), r);
 }
 
-Orientation OrientationPQR(const Line_2r& pq, const Vector_2r& r) {
+Orientation OrientationPQR(const Line_2r& pq, const Vector_2r& r)
+{
     return OrientationPQR(pq.p(), pq.q(), Point_2r(r.x(), r.y()));
 }
 
-bool AIsLeftOfB(const Point_2r& a, const Line_2r& b) {
+bool AIsLeftOfB(const Point_2r& a, const Line_2r& b)
+{
     return OrientationPQR(b, a) == ORIENTATION_LEFT;
 }
 
-bool AIsRightOfB(const Point_2r& a, const Line_2r& b) {
+bool AIsRightOfB(const Point_2r& a, const Line_2r& b)
+{
     return OrientationPQR(b, a) == ORIENTATION_RIGHT;
 }
 
-bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b){
+bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b)
+{
     Point_2r orig = b.origin();
     Vector_2r dir = b.direction();
     return OrientationPQR(b,a) == ORIENTATION_COLINEAR &&
             ((a.x()-orig.x())*dir.x() + (a.y()-orig.y())*dir.y() > 0);
 }
 
-bool IsVertical(const Line_2r& l) {
+bool AIsRightOrAheadOfB(const Point_2r &a, const Ray_2r &b)
+{
+    return (AIsRightOfB(a, b.support()) || AIsAheadOfB(a, b));
+}
+
+bool AIsLeftOrAheadOfB(const Point_2r &a, const Ray_2r& b)
+{
+    return (AIsLeftOfB(a, b.support()) || AIsAheadOfB(a, b));
+}
+
+bool IsVertical(const Line_2r& l)
+{
     return (l.slope_type() == SLOPE_PINFINITY ||
             l.slope_type() == SLOPE_NINFINITY);
 }
 
-bool IsHorizontal(const Line_2r& l) {
+bool IsHorizontal(const Line_2r& l)
+{
     return (l.slope_type() == SLOPE_PZERO || l.slope_type() == SLOPE_NZERO);
 }
 
-bool IsDegenerate(const Line_2r& l) {
+bool IsDegenerate(const Line_2r& l)
+{
     return l.slope_type() == SLOPE_DEGENERATE;
 }
 
-bool IsGeneral(const Line_2r& l) {
+bool IsGeneral(const Line_2r& l)
+{
     return l.slope_type() == SLOPE_GENERAL;
 }
 
-bool AreParallel(const Line_2r& a, const Line_2r& b) {
+bool AreParallel(const Line_2r& a, const Line_2r& b)
+{
     assert(!IsDegenerate(a) && !IsDegenerate(b));
     return a.N() == b.N();
 }
 
-bool AreDisjoint(const Line_2r& a, const Line_2r& b) {
+bool AreDisjoint(const Line_2r& a, const Line_2r& b)
+{
     assert(!IsDegenerate(a) && !IsDegenerate(b));
     return (a.N() == b.N()) && !(a.d() == b.d());
 }
@@ -265,6 +286,9 @@ const Point_2r& Segment_2r::q() const {
 const Line_2r& Segment_2r::support() const {
     return support_;
 }
+const Ray_2r Segment_2r::support_ray() const {
+    return Ray_2r(p_, q_);
+}
 SharedPoint_2r Segment_2r::p_sptr() {
     return p_;
 }
@@ -315,10 +339,11 @@ bool Segment_2r_colored::IsAbove(const Segment_2r_colored to_compare) const{
     if(to_compare.p() < to_compare.q()) other_l_endpoint = to_compare.p();
     else other_l_endpoint = to_compare.q();
     if(my_l_endpoint < other_l_endpoint){
-        return Predicate::AIsRightOfB(other_l_endpoint, support());
+        return Predicate::AIsRightOrAheadOfB(other_l_endpoint, support_ray());
     }
     else{
-        return Predicate::AIsLeftOfB(my_l_endpoint, to_compare.support());
+        return Predicate::AIsLeftOfB(my_l_endpoint,
+                                            to_compare.support());
     }
 
 }

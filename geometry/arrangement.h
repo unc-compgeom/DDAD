@@ -87,6 +87,7 @@ public:
     int CountSegments();
     void Merge(SharedBundle to_merge);
     SharedBundle Split(SharedSegment split_here);
+    SharedBundle Split(Point_2r& split_here);
 
 private:
     //pointers to next and previous bundles in linked list
@@ -110,8 +111,13 @@ public:
     //For a segment input_segment, determine the bundles immediately above
     //and below in the arrangement.  If within a bundle, both above_neighbor
     //and below_neighbor should be that bundle.
-    SharedBundle get_root() {return bundle_tree_.getRoot()->getElement();}
+    SharedBundle get_root()
+    {
+        if(bundle_tree_.isEmpty()) return nullptr;
+        else return bundle_tree_.getRoot()->getElement();
+    }
     bool is_empty() { return bundle_tree_.isEmpty(); }
+    SplayTree<SharedBundle> get_tree() { return bundle_tree_; }
     void LocateVertex(ArrangementVertex_2r &input_vertex,
                       SharedBundle &above_neighbor,
                       SharedBundle &below_neighbor);
@@ -176,12 +182,16 @@ int CountIntersections(const Arrangement_2r& A,
                        Visual::IGeometryObserver* observer = nullptr);
 
 inline bool operator<(const Bundle &lhs, const Bundle &rhs){
+    return Predicate::AIsRightOfB(lhs.get_top_seg()->p(),
+                                  rhs.get_bot_seg()->support());
     // Only works for same-colored bundles!
-    return lhs.get_top_seg() < rhs.get_bot_seg();
+//    return lhs.get_top_seg() < rhs.get_bot_seg();
 }
 inline bool operator>(const Bundle &lhs, const Bundle &rhs){
+    return Predicate::AIsLeftOfB(lhs.get_bot_seg()->p(),
+                                 rhs.get_top_seg()->support());
     // Only works for same-colored bundles!
-    return lhs.get_bot_seg() > rhs.get_top_seg();
+//    return lhs.get_bot_seg() > rhs.get_top_seg();
 }
 inline bool operator==(const Bundle &lhs, const Bundle &rhs){
     return lhs.get_root() == rhs.get_root();
@@ -191,7 +201,27 @@ inline bool operator==(const Bundle &lhs, const Bundle &rhs){
 inline bool operator!=(const Bundle &lhs, const Bundle &rhs){
     return !(lhs == rhs);
 }
-
+inline bool operator<(const Point_2r& lhs, const SharedBundle& rhs)
+{
+    return Predicate::AIsRightOfB(lhs, rhs->get_bot_seg()->support());
+}
+inline bool operator>(const Point_2r& lhs, const SharedBundle& rhs)
+{
+    return Predicate::AIsLeftOfB(lhs, rhs->get_bot_seg()->support());
+}
+inline bool operator==(const Point_2r& lhs, const SharedBundle& rhs)
+{
+    return (Predicate::AIsRightOrAheadOfB(lhs, rhs->get_top_seg()->support_ray())
+            && Predicate::AIsLeftOrAheadOfB(lhs, rhs->get_bot_seg()->support_ray()));
+}
+inline bool operator<=(const Point_2r& lhs, const SharedBundle& rhs)
+{
+    return (lhs < rhs || lhs == rhs);
+}
+inline bool operator>=(const Point_2r& lhs, const SharedBundle& rhs)
+{
+    return (lhs > rhs || lhs == rhs);
+}
 } // namespace DDAD
 
 

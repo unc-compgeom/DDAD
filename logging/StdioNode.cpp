@@ -66,7 +66,7 @@ const char kYellowColor[] = "\033[33m";
 /*! @class rlog::StdioNode <rlog/StdioNode.h>
   @brief Logs subscribed messages to a file descriptor.
 
-  This displays all subscribed messages to a file descriptor.  If the
+  This diSplays all subscribed messages to a file descriptor.  If the
   output is a terminal, then the messages are colorized (yellow for
   warnings, red for errors).
 

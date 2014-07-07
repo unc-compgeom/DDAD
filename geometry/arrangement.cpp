@@ -146,10 +146,21 @@ int CountIntersections(const Arrangement_2r &A,
         else if(above->get_next_bundle() == nullptr) end = above;
         else end = above->get_next_bundle();
 
-        if(start != nullptr)
+
+
+
+        if((start != nullptr) && (start != end))
             crossings += bdl.SortPortion(start, end, *ii);
 
 
+
+
+        if(below == nullptr) start = bdl.get_bottom();
+        else if(below->get_prev_bundle() == nullptr) start = below;
+        else start = below->get_prev_bundle();
+        if(above == nullptr) end = bdl.get_top();
+        else if(above->get_next_bundle() == nullptr) end = above;
+        else end = above->get_next_bundle();
 
         // Check on the order of the bundles around the current point
 
@@ -167,26 +178,45 @@ int CountIntersections(const Arrangement_2r &A,
             SharedSegment new_segment =
                     std::make_shared<Segment_2r_colored>(current_segment);
             new_bundle->Insert(new_segment);
+            SharedBundle tmp = nullptr;
+
+            if(!bdt.is_empty())
+            {
+                bdt.Find(*ii);
+                tmp = bdt.get_root();
+            }
+
+
 
             if(ii->is_red())
             {
                 bdt.InsertBundle(new_bundle);
-                if(new_bundle->get_next_bundle() == nullptr)
-                    bdl.set_top(new_bundle);
-                if(new_bundle->get_prev_bundle() == nullptr)
-                    bdl.set_bottom(new_bundle);
+//                if(new_bundle->get_next_bundle() == nullptr)
+//                    bdl.set_top(new_bundle);
+//                if(new_bundle->get_prev_bundle() == nullptr)
+//                    bdl.set_bottom(new_bundle);
             }
-            else
+            bdl.InsertBundle(new_bundle, tmp);
+        }
+        else
+        {
+            // Point is a right-endpoint, remove its segment from the structure
+            // Locate the bundle containing it
+            for(SharedBundle jj = start;
+                (jj != end->get_next_bundle()) && (jj != nullptr);
+                jj = jj->get_next_bundle())
             {
-                if(bdt.is_empty())
-                    bdl.InsertBundle(new_bundle, nullptr);
-                else
+                if(jj->Contains(*ii))
                 {
-                    bdt.Find(*ii);
-                    bdl.InsertBundle(new_bundle, bdt.get_root());
-
+                    jj->Remove(std::make_shared<Segment_2r_colored>(current_segment));
+                    if(jj->CountSegments() == 0)
+                    {
+                        bdl.RemoveBundle(jj);
+                        bdt.RemoveBundle(jj);
+                    }
                 }
             }
+
         }
 
         // Merge any bundles in the list that deserve it
@@ -282,7 +312,34 @@ void Bundle::Remove(SharedSegment old_segment)
 
 SharedBundle Bundle::Split(SharedSegment split_here)
 {
-    SplayTree<Segment_2r_colored> R = tree_.splitTree(*split_here);
+    SplayTree<Segment_2r_colored> R = tree_.SplitTree(*split_here);
+
+//    if(R.getRoot() == nullptr) return nullptr;
+
+    SharedBundle new_bundle = std::make_shared<Bundle>(R);
+
+    // Set next_bundle and prev_bundle pointers
+    //next_bundle_->get_prev_bundle();
+    SharedBundle my_sptr = std::make_shared<Bundle>(*this);
+    new_bundle->set_prev_bundle(my_sptr);
+    new_bundle->set_next_bundle(next_bundle_);
+    if(next_bundle_ != nullptr) next_bundle_->set_prev_bundle(new_bundle);
+    next_bundle_ = new_bundle;
+    tree_.findMax();
+    top_segment_ =
+            std::make_shared<Segment_2r_colored>(tree_.getRoot()->getElement());
+    tree_.findMin();
+    bottom_segment_ =
+            std::make_shared<Segment_2r_colored>(tree_.getRoot()->getElement());
+    return new_bundle;
+}
+
+SharedBundle Bundle::Split(Point_2r& split_here)
+{
+    SplayTree<Segment_2r_colored> R = tree_.SplitTree(split_here);
+
+//    if(R.getRoot() == nullptr) return nullptr;
+
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
 
     // Set next_bundle and prev_bundle pointers
@@ -320,8 +377,8 @@ void Bundle::Merge(SharedBundle to_merge)
 bool Bundle::Contains(ArrangementVertex_2r &test_point)
 {
     Point_2r the_point = *(test_point.get_point());
-    return (Predicate::AIsRightOfB(the_point, top_segment_->support()) &&
-            Predicate::AIsLeftOfB(the_point, bottom_segment_->support()));
+    return (!Predicate::AIsLeftOfB(the_point, top_segment_->support()) &&
+            !Predicate::AIsRightOfB(the_point, bottom_segment_->support()));
 }
 
 RelativePosition Bundle::SetRelativePosition(ArrangementVertex_2r &test_point)
@@ -354,13 +411,7 @@ int Bundle::CountSegments()
 
 void BundleTree::Find(ArrangementVertex_2r& input_vertex)
 {
-    Segment_2r_colored tmp_segment =
-            Segment_2r_colored(input_vertex.get_point(),
-                               input_vertex.get_other_point(),
-                               input_vertex.is_red());
-    SharedBundle tmp_bundle = std::make_shared<Bundle>();
-    tmp_bundle->Insert(std::make_shared<Segment_2r_colored>(tmp_segment));
-    bundle_tree_.find(tmp_bundle);
+    bundle_tree_.Splay(*input_vertex.get_point(), bundle_tree_.getRoot());
 }
 
 void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
@@ -374,36 +425,66 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
         return;
     }
     Find(input_vertex);
-    Segment_2r_colored tmp_segment =
-            Segment_2r_colored(input_vertex.get_point(),
-                               input_vertex.get_other_point(),
-                               input_vertex.is_red());
-    SharedBundle tmp_bundle = std::make_shared<Bundle>();
-    tmp_bundle->Insert(std::make_shared<Segment_2r_colored>(tmp_segment));
-
-    // Now either the uppermost bundle below or containing the input vertex
-    //  is now at the root, or no such bundles exist and the lowest
-    //  bundle in the tree is now at the root
-    if(*(bundle_tree_.getRoot()->getElement()) > *(tmp_bundle)){
-        // input_vertex is below the entire tree
+    // Now either the greatest bundle below input_vertex is at the root, or
+    // there is no such bundle and the lowest bundle in the tree is at the root
+    if(*input_vertex.get_point() < bundle_tree_.getRoot()->getElement())
+    {
         above_neighbor = bundle_tree_.getRoot()->getElement();
         below_neighbor = nullptr;
     }
-    else{
-        // search down the tree for the lowest bundle above input_vertex
+    else if(*input_vertex.get_point() > bundle_tree_.getRoot()->getElement())
+    {
         below_neighbor = bundle_tree_.getRoot()->getElement();
-        BinaryNode<SharedBundle>* tmp_ptr = bundle_tree_.getRoot();
-        //if the vertex is inside a bundle, return that bundle
-        if(below_neighbor->Contains(input_vertex))
-            above_neighbor = below_neighbor;
-        else if(tmp_ptr->right == nullptr)
-            above_neighbor = nullptr;
+        // Search down the right subtree for the lowest bundle above input_vertex
+        BinaryNode<SharedBundle>* tmp = bundle_tree_.getRoot()->right;
+        if(tmp == nullptr) above_neighbor = nullptr;
         else
         {
-            while(tmp_ptr->left != nullptr) tmp_ptr = tmp_ptr->left;
-            above_neighbor = tmp_ptr->getElement();
+            while(tmp->left != nullptr) tmp = tmp->left;
+            above_neighbor = tmp->getElement();
         }
     }
+    else if(bundle_tree_.getRoot()->getElement()->Contains(input_vertex))
+    {
+        above_neighbor = bundle_tree_.getRoot()->getElement();
+        below_neighbor = above_neighbor;
+    }
+    else
+        std::cout << "\nCheck segment comparators! This branch should never be reached\n";
+////    Segment_2r_colored tmp_segment =
+////            Segment_2r_colored(input_vertex.get_point(),
+////                               input_vertex.get_other_point(),
+////                               input_vertex.is_red());
+////    SharedBundle tmp_bundle = std::make_shared<Bundle>();
+////    tmp_bundle->Insert(std::make_shared<Segment_2r_colored>(tmp_segment));
+
+//    // Now either the uppermost bundle below or containing the input vertex
+//    //  is now at the root, or no such bundles exist and the lowest
+//    //  bundle in the tree is now at the root
+//    if(bundle_tree_.getRoot()->left == nullptr){
+//        // Current root is the lowest bundle in the tree, and is still
+//        // above input_vertex
+////    if(*input_vertex.get_point() < bundle_tree_.getRoot()->getElement()){
+////    if(*(bundle_tree_.getRoot()->getElement()) > *(tmp_bundle)){
+//        // input_vertex is below the entire tree
+//        above_neighbor = bundle_tree_.getRoot()->getElement();
+//        below_neighbor = nullptr;
+//    }
+//    else{
+//        // search down the tree for the lowest bundle above input_vertex
+//        below_neighbor = bundle_tree_.getRoot()->getElement();
+//        BinaryNode<SharedBundle>* tmp_ptr = bundle_tree_.getRoot();
+//        //if the vertex is inside a bundle, return that bundle
+//        if(below_neighbor->Contains(input_vertex))
+//            above_neighbor = below_neighbor;
+//        else if(tmp_ptr->right == nullptr)
+//            above_neighbor = nullptr;
+//        else
+//        {
+//            while(tmp_ptr->left != nullptr) tmp_ptr = tmp_ptr->left;
+//            above_neighbor = tmp_ptr->getElement();
+//        }
+//    }
 }
 
 void BundleTree::InsertBundle(SharedBundle add_this)
@@ -423,17 +504,14 @@ int BundleTree::Size()
 
 SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
 {
+    if(bundle_tree_.Size() == 1) return bundle_tree_.getRoot()->getElement();
     Find(split_here);  // Rotate the appropriate bundle to the root
     if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
         // remove bundle, split it in two, then insert both back into the tree
-        SharedSegment tmp_segment =
-                std::make_shared<Segment_2r_colored>
-                (split_here.get_point(), split_here.get_other_point(),
-                 split_here.is_red());
         SharedBundle tmp_bundle_left = bundle_tree_.getRoot()->getElement();
         SharedBundle tmp_bundle_rt;
         bundle_tree_.remove(tmp_bundle_left);
-        tmp_bundle_rt = tmp_bundle_left->Split(tmp_segment);
+        tmp_bundle_rt = tmp_bundle_left->Split(*(split_here.get_point()));
         bundle_tree_.insert(tmp_bundle_left);
         bundle_tree_.insert(tmp_bundle_rt);
 
@@ -489,9 +567,8 @@ void BundleList::RemoveBundle(SharedBundle remove_this)
 SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
                                              ArrangementVertex_2r &here)
 {
-    SharedSegment tmp_segment = std::make_shared<Segment_2r_colored>(
-                here.get_point(), here.get_other_point(), here.is_red());
-    SharedBundle new_bundle = split_bundle->Split(tmp_segment);
+    if(split_bundle->CountSegments()==1) return split_bundle;
+    SharedBundle new_bundle = split_bundle->Split(*(here.get_point()));
     InsertBundle(new_bundle, split_bundle);
     return new_bundle;
 }
@@ -501,53 +578,34 @@ int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
 {
     SharedBundle temp_prev = begin->get_prev_bundle();
     SharedBundle temp_next = end->get_next_bundle();
-    begin->set_prev_bundle(nullptr);
-    end->set_next_bundle(nullptr);
 
-    for(SharedBundle kk = begin; (kk != nullptr);
+
+    for(SharedBundle kk = begin; (kk != temp_next);
         kk = kk->get_next_bundle() )
     {
         kk->SetRelativePosition(v);
     }
-//    if(begin != nullptr)
-//        begin->SetRelativePosition(v);
-//    if(end != nullptr)
-//        end->SetRelativePosition(v);
+
     SharedBundle j;
     SharedBundle i;
     int num_intersections = 0;
 
     for(i = begin;
-        /*(i != end->get_next_bundle()) && */(i != nullptr);
+        /*(i != end->get_next_bundle()) && */(i != temp_next);
         i = i->get_next_bundle())
     {
         j = i;
 
         while(
-              (j->get_prev_bundle() != nullptr) &&
+              (j->get_prev_bundle() != temp_prev) &&
               (j->get_rel_position() < j->get_prev_bundle()->get_rel_position())
               )
         {
             num_intersections += (j->CountSegments())*
                     (j->get_prev_bundle()->CountSegments());
             SwapAdjacentBundles(j->get_prev_bundle(), j);
-           // j = j->get_prev_bundle();
         }
     }
-
-    if(j != nullptr)
-    {
-        begin = j;
-        while(begin->get_prev_bundle() != nullptr) begin = begin->get_prev_bundle();
-    }
-    if(i != nullptr)
-    {
-        end = i;
-        while(end->get_next_bundle() != nullptr) end = end->get_next_bundle();
-    }
-
-    begin->set_prev_bundle(temp_prev);
-    end->set_next_bundle(temp_next);
 
     return num_intersections;
 }

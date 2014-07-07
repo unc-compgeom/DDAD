@@ -203,7 +203,7 @@ void reshape(int width, int height) {
 
 void idle(void) {
     if ( glutGetWindow() != main_window ) { glutSetWindow(main_window);  }
-    glutPostRedisplay();
+    glutPostRediSplay();
 }
 
 void renderDebug() {
@@ -223,7 +223,7 @@ void renderDebug() {
 }
 
 
-void display(void) {
+void diSplay(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -245,7 +245,7 @@ void display(void) {
 }
 
 //void update(int value) {
-//    glutPostRedisplay();
+//    glutPostRediSplay();
 //    glutTimerFunc(25, update, 0);
 //    return;
 //}
@@ -256,7 +256,7 @@ void setupOGL(int argc, char** argv) {
     glutInit(&argc, argv);
 
 
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitDiSplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
     //glutInitWindowSize(640, 480);
     //glutInitWindowSize(1024, 768);
@@ -264,7 +264,7 @@ void setupOGL(int argc, char** argv) {
     //glutInitWindowSize(500, 500);
 
     main_window = glutCreateWindow("Viz");
-    glutDisplayFunc(display);
+    glutDiSplayFunc(diSplay);
     glutReshapeFunc(reshape);
     glutIdleFunc(idle);
 

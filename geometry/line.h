@@ -126,6 +126,8 @@ Orientation OrientationPQR(const Ray_2r& pq, const Point_2r& r);
 bool AIsLeftOfB(const Point_2r& a, const Ray_2r& b);
 bool AIsRightOfB(const Point_2r& a, const Ray_2r& b);
 bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b);
+bool AIsRightOrAheadOfB(const Point_2r& a, const Ray_2r& b);
+bool AIsLeftOrAheadOfB(const Point_2r& a, const Ray_2r& b);
 bool AreParallel(const Ray_2r& a, const Ray_2r& b);
 bool AreParallel(const Line_2r& l, const Ray_2r& r);
 bool AreParallel(const Ray_2r& r, const Line_2r& l);
@@ -143,6 +145,7 @@ public:
     const Point_2r& p() const;
     const Point_2r& q() const;
     const Line_2r& support() const;
+    const Ray_2r support_ray() const;
 
     SharedPoint_2r p_sptr();
     SharedPoint_2r q_sptr();
@@ -176,17 +179,22 @@ public:
     void set_color(bool isRed){
         isRed_ = isRed;
     }
-    friend bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+//    friend bool operator<(const Segment_2r_colored &lhs,
+//                          const Segment_2r_colored &rhs);
 
 
 private:
     bool isRed_;
 };
-
 bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator<(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool operator>(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool operator<=(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool operator>=(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool operator==(const Point_2r &lhs, const Segment_2r_colored &rhs);
 
 
 //=============================================================================
@@ -277,22 +285,51 @@ private:
     Line_3r support_;
 };
 
-inline bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator<(const Segment_2r_colored &lhs,
+                      const Segment_2r_colored &rhs)
+{
     // Only works for non-intersecting segments!
 //    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
     return rhs.IsAbove(lhs);
 }
-inline bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator>(const Segment_2r_colored &lhs,
+                      const Segment_2r_colored &rhs)
+{
     // Only works for non-intersecting segments!
 //    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
     return lhs.IsAbove(rhs);
 }
-inline bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator==(const Segment_2r_colored &lhs,
+                       const Segment_2r_colored &rhs)
+{
     return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());
 }
-inline bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs){
+inline bool operator!=(const Segment_2r_colored &lhs,
+                       const Segment_2r_colored &rhs)
+{
     return !(lhs == rhs);
 }
+inline bool operator<(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return Predicate::AIsRightOfB(lhs, rhs.support());
+}
+inline bool operator>(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return Predicate::AIsLeftOfB(lhs, rhs.support());
+}
+inline bool operator<=(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return Predicate::AIsRightOrAheadOfB(lhs, rhs.support_ray());
+}
+inline bool operator>=(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return Predicate::AIsLeftOrAheadOfB(lhs, rhs.support_ray());
+}
+inline bool operator==(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return (lhs >= rhs && lhs <= rhs);
+}
+
 } // namespace DDAD
 
 #endif // GE_LINE_H
