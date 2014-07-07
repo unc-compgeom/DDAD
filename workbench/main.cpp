@@ -33,14 +33,14 @@ int main(int argc, char *argv[]) {
     qRegisterMetaType<QVector<DDAD::GL::Vertex>>("QVector<DDAD::GL::Vertex>");
     qRegisterMetaType<QVector<QVector3D>>("QVector<QVector3D>");
 
-    LOG(INFO) << "diSplaying splash screen";
+    LOG(INFO) << "displaying splash screen";
     QPixmap splash_image(":/splash3.png");
     QSplashScreen splash(splash_image);
     splash.show();
     splash.showMessage("Initializing...");
     a.processEvents();
 
-    LOG(INFO) << "diSplaying main window";
+    LOG(INFO) << "displaying main window";
     MainWindow w;
     w.showMaximized();
     splash.finish(&w);

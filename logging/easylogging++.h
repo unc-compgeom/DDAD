@@ -3141,7 +3141,7 @@ private:
 
 class VersionInfo : private internal::StaticClass {
 public:
-    // Minimal formatted diSplayable information
+    // Minimal formatted displayable information
     static inline const std::string formattedInfo(void) {
         std::stringstream ss;
         ss << "EasyLogging++ v" << version() << " (" << releaseDate() << ")";

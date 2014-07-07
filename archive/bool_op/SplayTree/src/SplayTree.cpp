@@ -77,13 +77,13 @@
     
 
         /**
-         * Internal method to perform a top-down Splay.
+         * Internal method to perform a top-down splay.
          * The last accessed node becomes the new root.
          * This method may be overridden to use a different
-         * Splaying algorithm, however, the Splay tree code
+         * Splaying algorithm, however, the splay tree code
          * depends on the accessed item going to the root.
-         * x is the target item to Splay around.
-         * t is the root of the subtree to Splay.
+         * x is the target item to splay around.
+         * t is the root of the subtree to splay.
          */
     
       

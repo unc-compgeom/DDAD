@@ -217,7 +217,7 @@ namespace rlog
 /*! @def rAssert( cond )
     @brief Assert condition - throws error if @a cond evaluates to false.
 
-    Assert error condition.  DiSplays error message if condition does not
+    Assert error condition.  Displays error message if condition does not
     evaluate to TRUE.
 
     We throw an error from rAssertFailed.  It isn't done inline so that we
@@ -234,9 +234,9 @@ namespace rlog
 
 /*! @def rAssertSilent( cond )
     @brief Assert condition - throws error if @a cond evaluates to false, but
-    does not diSplay error message.
+    does not display error message.
 
-    Assert error condition.  Similar to rAssert except that it does not diSplay
+    Assert error condition.  Similar to rAssert except that it does not display
     an error.
 */
 #define rAssertSilent( cond ) \

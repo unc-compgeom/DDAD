@@ -1,7 +1,7 @@
 /*!
  * @author Clinton Freeman <freeman@cs.unc.edu>
  * @date 2013-01-29
- * @brief OpenGL widget that diSplays an orthogonal view of the current scene.
+ * @brief OpenGL widget that displays an orthogonal view of the current scene.
  */
 
 #ifndef DDAD_RC_QT_WIDGET_ORTHOGRAPHIC_H

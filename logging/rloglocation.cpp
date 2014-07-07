@@ -49,7 +49,7 @@ namespace rlog
 
   int main()
   {
-      // diSplay some messages to stderr
+      // display some messages to stderr
       StdioNode std( STDERR_FILENO );
 
       // subscribe to everything from this file

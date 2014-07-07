@@ -498,7 +498,7 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
 
 
 /*
- * DiSplay Tree Elements
+ * Display Tree Elements
  */
 template <class Comparable>
 void SplayTree<Comparable>::printBreadthFirst() const{

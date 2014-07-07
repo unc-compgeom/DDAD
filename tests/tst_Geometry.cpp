@@ -188,7 +188,7 @@ private slots:
     void SplayTreeInserts()
     {
         DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        // Inserting an element should Splay to the top
+        // Inserting an element should splay to the top
         spt.insert(20);
         QCOMPARE(spt.ContainsValue(20), true);
         QCOMPARE(spt.getRoot()->getElement(), 20);
@@ -218,7 +218,7 @@ private slots:
     void SplayTreeFind()
     {
         DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        // Find should Splay an element to the top if it exists
+        // Find should splay an element to the top if it exists
         spt.find(3);
         QCOMPARE(spt.getRoot()->getElement(), 3);
         // If not, it should default to greatest elt less than
@@ -236,10 +236,10 @@ private slots:
     void SplayTreeMinMax()
     {
         DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        //findMax should Splay the maximum element to the root of the tree
+        //findMax should splay the maximum element to the root of the tree
         spt.findMax();
         QCOMPARE(spt.getRoot()->getElement(), 4);
-        //findMin should Splay the minimum element to the root of the tree
+        //findMin should splay the minimum element to the root of the tree
         spt.findMin();
         QCOMPARE(spt.getRoot()->getElement(), 0);
     }

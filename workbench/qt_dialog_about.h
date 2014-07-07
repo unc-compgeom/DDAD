@@ -1,7 +1,7 @@
 /*!
  * @author Clinton Freeman <freeman@cs.unc.edu>
  * @date 2012-05-23
- * @brief Modal dialog that diSplays program information (e.g. build date).
+ * @brief Modal dialog that displays program information (e.g. build date).
  */
 
 #ifndef RC_QT_DIALOG_ABOUT_H
