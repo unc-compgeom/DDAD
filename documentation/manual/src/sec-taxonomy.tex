@@ -221,7 +221,7 @@ systems~\cite{schorn1991robust, de1993geolab, de1993animation,
 epstein1994workbench, tal1995visualization, shneerson1997gasp,
 wei2009geobuilder}.
 
-\paragraph{XYZ GeoBench (1991)}
+\paragraph{XYZ GeoBench.}
 
 XYZ (eXperimental geometrY Zurich) GeoBench was a geometric workbench developed
 by Peter Schorn under the supervision of Jurg Nievergelt. Schorn's 1991 thesis
@@ -260,7 +260,7 @@ floating point to make the robustness problems more pronounced.
 % clear standard graphical representations. algo animation is used for
 % demonstration in the classroom and for debugging.
 
-\paragraph{Workbench (1991)}
+\paragraph{Workbench.}
 
 Workbench is a system similar to XYZ GeoBench that focused on implementing
 complex geometric algorithms instead of robustness issues. The system is built
@@ -296,7 +296,7 @@ GUI that provides animation and debugging facilities.
 % algorithm animation, programming environment and debugging facility (I/O of
 % geometric objects). they implement the workbench in smalltalk
 
-\paragraph{GeoLab (1993)}
+\paragraph{GeoLab.}
 
 de Rezende created GeoLab, a system that binds together support for software and
 algorithm development with realtime interaction~\cite{de1993geolab,
@@ -326,7 +326,7 @@ encapsulation.
 % there is a graphical geometric counterpart. geometric algorithms are not
 % necessarily methods of the classes they operate on - they may be free functions.
 
-\paragraph{GASP (1995)}
+\paragraph{GASP.}
 
 Tal and Dobkin describe the Geometric Animation System, Princeton
 (GASP)~\cite{tal1995visualization}. The system allows users to quickly create 3D
@@ -366,7 +366,7 @@ animation allows users to produce new renderings without recompiling the system.
 % tamassia and liotta got into visualizing geometric algorithms over the web in
 % 1999 and 2001~\cite{baker1999visualizing, demetrescu2001visualizing}.
 
-\paragraph{GeoBuilder (2009)}
+\paragraph{GeoBuilder.}
 
 GeoBuilder is a cross-platform geometric workbench written in
 Java~\cite{wei2009geobuilder}. It features a novel mechanism for automatically
@@ -390,7 +390,7 @@ identify automatic positioning of multiple cameras for future work.
 % implementation among the geometry community - it used to provide support for
 % GeomView but now just has its own visualization module.
 
-\paragraph{Geomview}
+\paragraph{Geomview.}
 
 Geomview is a geometric visualization system that focuses on rendering and
 manipulating geometric data in 3-space~\cite{phillips1993geomview,
@@ -404,7 +404,7 @@ runtime. Of particular note is its 4D visualization module that allow users to
 explore 4-dimensional geometry through various projections. CGAL provides a
 module for producing Geomview visualizations.
 
-\paragraph{GeoWin}
+\paragraph{GeoWin.}
 
 GeoWin is a C++ data type that provides the ability to visualize sets of
 geometric objects, with a focus on two dimensions~\cite{basken2002geowin}. This
@@ -435,8 +435,7 @@ objects from existing geometric objects. A construction might produce the
 rotation of a point around an origin, produce the point of intersection
 between two line segments, or produce an offset of an algebraic curve.
 
-\paragraph{Scope} describes the range of programs the system can take as input
-for visualization. First, the system should visualize geometric algorithms
+\paragraph{Scope.} First, the system should visualize geometric algorithms
 implemented with primitives and predicates from the degree-driven algorithm
 design library (DDAD). Second, the system should provide example implementations
 and visualizations of algorithms that solve textbook computational geometry
@@ -445,8 +444,7 @@ algorithms from the facilities used in example visualizations. Fourth, the
 system should run well given inputs large enough to verify the correctness of a
 particular implementation.
 
-\paragraph{Content} describes what subset of information about the software is
-visualized by the SV system. For algorithm implementers, the system should
+\paragraph{Content.} For algorithm implementers, the system should
 visualize information about the concrete implementation of the algorithm. This
 entails combining traditional debugging facilities with the new ability to
 visualize geometric structures and operations. For algorithm presenters, the
@@ -454,8 +452,7 @@ system should visualize information about the high-level algorithm description.
 This entails mechanisms for displaying visualizations that do not necessarily
 correspond to the underlying implementation details.
 
-\paragraph{Form} describes the characteristics of the output of the system (the
-visualization). First, the output medium should be an interactive computer
+\paragraph{Form.} First, the output medium should be an interactive computer
 program. This is sufficient for implementers, but presenters may want to produce
 a digital recording of an algorithm animation. Fortunately, screen capture
 programs can facilitate producing this type of output. Second, the output should
@@ -471,24 +468,22 @@ the same data in multiple ways. This capability is particularly pertinent in
 geometry where insight into a problem may be gained from viewing a dual
 formulation (\emph{e.g.} viewing points as lines).
 
-\paragraph{Method} describes how the visualization is specified. Implementers
-desire highly automated specifications that minimally invade implementation source
-code. Increased automation increases the likelihood a tool will be used for
-debugging assistance. Useful automated visualizations require a high level of
-intelligence in order to correctly recognize and display high level data
-structures. In contrast, presenters are less concerned with automated
-visualization specifications, and accept a higher degree of invasiveness in
-return for customization and increased expressibility. The system should strike
-a balance between automation and customization.
+\paragraph{Method.} Implementers desire highly automated specifications that
+minimally invade implementation source code. Increased automation increases the
+likelihood a tool will be used for debugging assistance. Useful automated
+visualizations require a high level of intelligence in order to correctly
+recognize and display high level data structures. In contrast, presenters are
+less concerned with automated visualization specifications, and accept a higher
+degree of invasiveness in return for customization and increased expressibility.
+The system should strike a balance between automation and customization.
 
-\paragraph{Interaction} describes how the user of the software visualization
-system interacts with and controls it. First, users should be able to control
-the speed of execution. This includes starting, stopping, speeding up, slowing
-down, and single stepping. Second, users should be able to control a camera to
-navigate around the scene and to focus on different objects. This is especially
-important for 3D algorithms and larger data sets. Third, users should be able to
-record and play back particular runs of a visualization. For presenters this
-could aid pedagogy, and implementers might record when an algorithm fails.
+\paragraph{Interaction.} First, users should be able to control the speed of
+execution. This includes starting, stopping, speeding up, slowing down, and
+single stepping. Second, users should be able to control a camera to navigate
+around the scene and to focus on different objects. This is especially important
+for 3D algorithms and larger data sets. Third, users should be able to record
+and play back particular runs of a visualization. For presenters this could aid
+pedagogy, and implementers might record when an algorithm fails.
 
 % \subsection{Current Capabilities}
 % 

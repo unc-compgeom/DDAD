@@ -1,6 +1,12 @@
 \FloatBarrier
 \section{Case Study: Incremental Delaunay Triangulation}
 
+This section reviews animating an incremental Delaunay triangulation algorithm.
+The algorithm is covered extensively in \cite{de2000computational}.  
+
+\subsection{Algorithm Overview}
+
+The algorithm uses the quadedge data structure~\cite{guibas1985primitives}.
 
 \begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
 Delaunay}] \begin{algorithmic}[1]
@@ -20,3 +26,12 @@ Delaunay}] \begin{algorithmic}[1]
     \EndFor \EndProcedure
 \end{algorithmic}
 \end{mdframed} 
+
+\subsection{Code Listing}
+
+\lstinputlisting{code-samples/delaunay.cpp}
+
+\subsection{Generating Input Data}
+
+The user is given a button in the GUI and may browse to read in point sets
+stored in text files.
