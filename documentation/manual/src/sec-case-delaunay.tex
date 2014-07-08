@@ -1,2 +1,22 @@
 \FloatBarrier
 \section{Case Study: Incremental Delaunay Triangulation}
+
+
+\begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
+Delaunay}] \begin{algorithmic}[1]
+    \Require A set $P$ of $n+1$ points in the plane.
+    \Ensure A Delaunay triangulation of $P$.
+    \vspace{0.75em}
+    \Procedure{Delaunay}{$P$}
+    \State Let $p_0$ be the lexicographically highest point of $P$.
+    \State Let $p_{-1}, p_{-2}$ be two points far away such that $P$ is
+    contained in the triangle $p_0p_{-1}p_{-2}$.
+    \State Initialize $\mathcal{T}$ as the triangulation consisting of the
+    single triangle $p_0p_{-1}p_{-2}$.
+    \State Compute a random permutation $p_1, p_2, \ldots, p_n$ of $P /
+    \{p_0\}$.
+    \For{$r = 1 \ldots n$}
+   \State derp
+    \EndFor \EndProcedure
+\end{algorithmic}
+\end{mdframed} 
