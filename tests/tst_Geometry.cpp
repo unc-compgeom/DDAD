@@ -76,8 +76,8 @@ public:
 
     DDAD::Bundle SampleBundle()
     {
-        return SampleBundle(SampleSharedSegment(1,1,2,2,true),
-                            SampleSharedSegment(1,5,3,2, true));
+        return SampleBundle(SampleSharedSegment(1, 1, 6, 2, true),
+                            SampleSharedSegment(1, 4, 7, 5, true));
     }
 
     DDAD::Bundle SampleBundle(DDAD::SharedSegment seg1,
@@ -434,10 +434,12 @@ private slots:
     void BundleTreeInsert()
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
-        DDAD::SharedBundle bdlred = SampleSharedBundle();
+        DDAD::SharedBundle bdlred =
+                SampleSharedBundle(SampleSharedSegment(1, 1, 7, 2, true),
+                             SampleSharedSegment(1, 2, 8, 3, true));
         DDAD::SharedBundle bdlred2 =
-                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
-                                   SampleSharedSegment(1, 6, 3, 7, true));
+                SampleSharedBundle(SampleSharedSegment(1, 4, 7, 4, true),
+                                   SampleSharedSegment(1, 7, 3, 7, true));
         DDAD::SharedBundle bdlblue =
                 SampleSharedBundle(SampleSharedSegment(1, 5, 10, 5, false),
                                    SampleSharedSegment(1, 6, 6, 6, false));
@@ -461,10 +463,12 @@ private slots:
     void BundleTreeRemove()
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
-        DDAD::SharedBundle bdlred = SampleSharedBundle();
+        DDAD::SharedBundle bdlred =
+                SampleSharedBundle(SampleSharedSegment(1, 1, 7, 2, true),
+                             SampleSharedSegment(1, 2, 8, 3, true));
         DDAD::SharedBundle bdlred2 =
-                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
-                                   SampleSharedSegment(1, 6, 3, 7, true));
+                SampleSharedBundle(SampleSharedSegment(1, 4, 7, 4, true),
+                                   SampleSharedSegment(1, 7, 3, 7, true));
 
         //insert a red bundle
         bdt.InsertBundle(bdlred);
@@ -535,6 +539,35 @@ private slots:
         bdt.LocateVertex(endpt1, above, below);
         QCOMPARE(below, bdlred1);
         QCOMPARE(above, bdlred1);
+
+        // Pre-test the case for the BundleList associated method
+        bdt = DDAD::BundleTree();
+        DDAD::SharedBundle red =
+                SampleSharedBundle(SampleSharedSegment(3, 2, 12, 2, true));
+        DDAD::SharedBundle red2 =
+                SampleSharedBundle(SampleSharedSegment(3, 8, 12, 8, true));
+        DDAD::SharedBundle red3 =
+                SampleSharedBundle(SampleSharedSegment(3, 12, 12, 12, true));
+        DDAD::ArrangementVertex_2r on_r1 =
+                SampleArrangementVertex(3, 2, true);
+        DDAD::ArrangementVertex_2r on_r2 =
+                SampleArrangementVertex(3, 8, true);
+        DDAD::ArrangementVertex_2r between_r1_r2 =
+                SampleArrangementVertex(9, 6, true);
+        bdt.InsertBundle(red);
+        bdt.InsertBundle(red2);
+        bdt.InsertBundle(red3);
+        bdt.LocateVertex(on_r1, above, below);
+        QVERIFY(above == red);
+        QVERIFY(below == red);
+
+        bdt.LocateVertex(on_r2, above, below);
+        QVERIFY(above == red2);
+        QVERIFY(below == red2);
+
+        bdt.LocateVertex(between_r1_r2, above, below);
+        QVERIFY(above == red2);
+        QVERIFY(below == red);
     }
 
     void BundleTreeSplitAtVertex()
@@ -610,6 +643,53 @@ private slots:
 
     }
 
+    void BundleListLocateVertex()
+    {
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        DDAD::SharedBundle red =
+                SampleSharedBundle(SampleSharedSegment(3, 2, 12, 2, true));
+        DDAD::SharedBundle red2 =
+                SampleSharedBundle(SampleSharedSegment(3, 8, 12, 8, true));
+        DDAD::SharedBundle red3 =
+                SampleSharedBundle(SampleSharedSegment(3, 12, 12, 12, true));
+        DDAD::SharedBundle blue =
+                SampleSharedBundle(SampleSharedSegment(3, 9, 11, 11, false));
+        DDAD::SharedBundle blue2 =
+                SampleSharedBundle(SampleSharedSegment(4, 7, 12, 1, false));
+        DDAD::SharedBundle above, below;
+        DDAD::ArrangementVertex_2r on_r1 =
+                SampleArrangementVertex(3, 2, true);
+        DDAD::ArrangementVertex_2r on_b2 =
+                SampleArrangementVertex(4, 7, false);
+        DDAD::ArrangementVertex_2r between_b2_r2 =
+                SampleArrangementVertex(9, 6, true);
+        bdl.InsertBundle(red, nullptr);
+        bdl.InsertBundle(blue2, red);
+        bdl.InsertBundle(red2, blue2);
+        bdl.InsertBundle(blue, red2);
+        bdl.InsertBundle(red3, blue);
+        bdt.InsertBundle(red);
+        bdt.InsertBundle(red2);
+        bdt.InsertBundle(red3);
+        bdt.LocateVertex(on_r1, above, below);
+        bdl.LocateVertex(on_r1, above, below, bdt);
+        QVERIFY(below == red);
+        QVERIFY(above == blue2);
+
+        bdt.LocateVertex(on_b2, above, below);
+        bdl.LocateVertex(on_b2, above, below, bdt);
+        QVERIFY(above == red2);
+        QVERIFY(below == red);
+
+        bdt.LocateVertex(between_b2_r2, above, below);
+        bdl.LocateVertex(between_b2_r2, above, below, bdt);
+        QVERIFY(above == blue);
+        QVERIFY(below == red);
+
+
+    }
+
     void BundleListSortPortion()
     {
         DDAD::BundleList bdl = DDAD::BundleList();
@@ -679,7 +759,7 @@ private slots:
         QVERIFY(red->get_next_bundle() == blue);
         QVERIFY(red->get_prev_bundle() == nullptr);
         QVERIFY(bdl.get_bottom() == red);
-        QVERIFY(bdl.get_top() == red);
+        QVERIFY(bdl.get_top() == blue);
         QCOMPARE(numIntersections, 1);
 
         bdl.RemoveBundle(blue);

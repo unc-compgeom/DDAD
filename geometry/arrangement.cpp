@@ -61,79 +61,7 @@ int CountIntersections(const Arrangement_2r &A,
         // We now have the red bundles directly above and below
         //  (or containing) ii
 
-        //no red bundles, 1 or 0 blue bundles
-        if((above == nullptr) && (below == nullptr))
-        {
-            //
-            if(bdl.get_bottom() != nullptr && bdl.get_bottom()->Contains(*ii))
-            {
-                above = bdl.SplitBundleAtVertex(bdl.get_bottom(), *ii);
-                below = above->get_prev_bundle();
-
-            }
-            else if((bdl.get_bottom() != nullptr) &&
-                    (bdl.get_bottom()->SetRelativePosition(*ii)==BELOW))
-            {
-                below = bdl.get_bottom();
-                above = nullptr;
-            }
-            else if((bdl.get_bottom() != nullptr) &&
-                    (bdl.get_bottom()->SetRelativePosition(*ii)==ABOVE))
-            {
-                below = nullptr;
-                above = bdl.get_bottom();
-            }
-
-        }
-        //in a red bundle
-        else if(above == below)
-        {
-            above = bdt.SplitBundleAtVertex(*ii);
-            if(above->get_next_bundle() != nullptr)
-                above = above->get_next_bundle();
-            if(below->get_prev_bundle() != nullptr)
-                below = below->get_prev_bundle();
-
-        }
-        //above all red bundles
-        else if(above == nullptr)
-        {
-            //in top blue bundle
-            if(below->Contains(*ii))
-                above = bdl.SplitBundleAtVertex(below, *ii);
-            if(below->get_prev_bundle() != nullptr)
-                below = below->get_prev_bundle();
-
-        }
-        //below all red bundles
-        else if(below == nullptr)
-        {
-            //in bottom blue bundle
-            if(above->Contains(*ii))
-            {
-                below = above;
-                above = bdl.SplitBundleAtVertex(above, *ii);
-            }
-
-            if(above->get_next_bundle() != nullptr)
-                above = above->get_next_bundle();
-        }
-        //between two red bundles
-        else
-        {
-            //in a blue bundle
-            if(below->get_next_bundle()->Contains(*ii))
-            {
-                above = bdl.SplitBundleAtVertex(below->get_next_bundle(), *ii);
-            }
-            if(above->get_next_bundle() != nullptr)
-                above = above->get_next_bundle();
-            if(below->get_prev_bundle() != nullptr)
-                below = below->get_prev_bundle();
-        }
-
-
-
+        bdl.LocateVertex(*ii, above, below, bdt);
         //After this point, bundles should be properly labeled as above,
         // below, or ending at ii
         SharedBundle start;
@@ -146,14 +74,8 @@ int CountIntersections(const Arrangement_2r &A,
         else if(above->get_next_bundle() == nullptr) end = above;
         else end = above->get_next_bundle();
 
-
-
-
         if((start != nullptr) && (start != end))
             crossings += bdl.SortPortion(start, end, *ii);
-
-
-
 
         if(below == nullptr) start = bdl.get_bottom();
         else if(below->get_prev_bundle() == nullptr) start = below;
@@ -185,17 +107,7 @@ int CountIntersections(const Arrangement_2r &A,
                 bdt.Find(*ii);
                 tmp = bdt.get_root();
             }
-
-
-
-            if(ii->is_red())
-            {
-                bdt.InsertBundle(new_bundle);
-//                if(new_bundle->get_next_bundle() == nullptr)
-//                    bdl.set_top(new_bundle);
-//                if(new_bundle->get_prev_bundle() == nullptr)
-//                    bdl.set_bottom(new_bundle);
-            }
+            if(ii->is_red()) bdt.InsertBundle(new_bundle);
             bdl.InsertBundle(new_bundle, tmp);
         }
         else
@@ -216,12 +128,9 @@ int CountIntersections(const Arrangement_2r &A,
                     }
                 }
             }
-
         }
 
         // Merge any bundles in the list that deserve it
-
-
         for(SharedBundle jj = start;
             (jj != end)&&(jj != nullptr);
             jj = jj->get_next_bundle())
@@ -233,11 +142,8 @@ int CountIntersections(const Arrangement_2r &A,
                 }
             }
         }
-
         //crossings++;
     }
-
-
     return crossings;
 }
 
@@ -451,40 +357,6 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
     }
     else
         std::cout << "\nCheck segment comparators! This branch should never be reached\n";
-////    Segment_2r_colored tmp_segment =
-////            Segment_2r_colored(input_vertex.get_point(),
-////                               input_vertex.get_other_point(),
-////                               input_vertex.is_red());
-////    SharedBundle tmp_bundle = std::make_shared<Bundle>();
-////    tmp_bundle->Insert(std::make_shared<Segment_2r_colored>(tmp_segment));
-
-//    // Now either the uppermost bundle below or containing the input vertex
-//    //  is now at the root, or no such bundles exist and the lowest
-//    //  bundle in the tree is now at the root
-//    if(bundle_tree_.getRoot()->left == nullptr){
-//        // Current root is the lowest bundle in the tree, and is still
-//        // above input_vertex
-////    if(*input_vertex.get_point() < bundle_tree_.getRoot()->getElement()){
-////    if(*(bundle_tree_.getRoot()->getElement()) > *(tmp_bundle)){
-//        // input_vertex is below the entire tree
-//        above_neighbor = bundle_tree_.getRoot()->getElement();
-//        below_neighbor = nullptr;
-//    }
-//    else{
-//        // search down the tree for the lowest bundle above input_vertex
-//        below_neighbor = bundle_tree_.getRoot()->getElement();
-//        BinaryNode<SharedBundle>* tmp_ptr = bundle_tree_.getRoot();
-//        //if the vertex is inside a bundle, return that bundle
-//        if(below_neighbor->Contains(input_vertex))
-//            above_neighbor = below_neighbor;
-//        else if(tmp_ptr->right == nullptr)
-//            above_neighbor = nullptr;
-//        else
-//        {
-//            while(tmp_ptr->left != nullptr) tmp_ptr = tmp_ptr->left;
-//            above_neighbor = tmp_ptr->getElement();
-//        }
-//    }
 }
 
 void BundleTree::InsertBundle(SharedBundle add_this)
@@ -504,9 +376,11 @@ int BundleTree::Size()
 
 SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
 {
-    if(bundle_tree_.Size() == 1) return bundle_tree_.getRoot()->getElement();
+
     Find(split_here);  // Rotate the appropriate bundle to the root
-    if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
+    if(bundle_tree_.getRoot()->getElement()->CountSegments() == 1)
+        return bundle_tree_.getRoot()->getElement();
+    else if(bundle_tree_.getRoot()->getElement()->Contains(split_here)){
         // remove bundle, split it in two, then insert both back into the tree
         SharedBundle tmp_bundle_left = bundle_tree_.getRoot()->getElement();
         SharedBundle tmp_bundle_rt;
@@ -562,6 +436,89 @@ void BundleList::RemoveBundle(SharedBundle remove_this)
         prev_bundle->set_next_bundle(next_bundle);
     if(next_bundle != nullptr)
         next_bundle->set_prev_bundle(prev_bundle);
+}
+
+void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
+                              SharedBundle &above,
+                              SharedBundle &below,
+                              BundleTree bdt)
+{
+    // Given the red bundles immediately above and below input_vertex, return
+    //  the bundles above and below those, respectively.
+    // If input_vertex is contained in a red bundle, then above and below are
+    //  both that bundle
+    // If there is no bundle below/above input_vertex, nullptr is input
+
+    //no red bundles, 1 or 0 blue bundles
+    if((above == nullptr) && (below == nullptr))
+    {
+        //
+        if(get_bottom() != nullptr && get_bottom()->Contains(input_vertex))
+        {
+            above = SplitBundleAtVertex(get_bottom(), input_vertex);
+            below = above->get_prev_bundle();
+
+        }
+        else if((get_bottom() != nullptr) &&
+                (get_bottom()->SetRelativePosition(input_vertex)==BELOW))
+        {
+            below = get_bottom();
+            above = nullptr;
+        }
+        else if((get_bottom() != nullptr) &&
+                (get_bottom()->SetRelativePosition(input_vertex)==ABOVE))
+        {
+            below = nullptr;
+            above = get_bottom();
+        }
+
+    }
+    //in a red bundle
+    else if(above == below)
+    {
+        above = bdt.SplitBundleAtVertex(input_vertex);
+        if(above->get_next_bundle() != nullptr)
+            above = above->get_next_bundle();
+        if(below->get_prev_bundle() != nullptr)
+            below = below->get_prev_bundle();
+
+    }
+    //above all red bundles
+    else if(above == nullptr)
+    {
+        //in top blue bundle
+        if(below->Contains(input_vertex))
+            above = SplitBundleAtVertex(below, input_vertex);
+        if(below->get_prev_bundle() != nullptr)
+            below = below->get_prev_bundle();
+
+    }
+    //below all red bundles
+    else if(below == nullptr)
+    {
+        //in bottom blue bundle
+        if(above->Contains(input_vertex))
+        {
+            below = above;
+            above = SplitBundleAtVertex(above, input_vertex);
+        }
+
+        if(above->get_next_bundle() != nullptr)
+            above = above->get_next_bundle();
+    }
+    //between two red bundles
+    else
+    {
+        //in a blue bundle
+        if(below->get_next_bundle()->Contains(input_vertex))
+        {
+            above = SplitBundleAtVertex(below->get_next_bundle(), input_vertex);
+        }
+        if(above->get_next_bundle() != nullptr)
+            above = above->get_next_bundle();
+        if(below->get_prev_bundle() != nullptr)
+            below = below->get_prev_bundle();
+    }
 }
 
 SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,

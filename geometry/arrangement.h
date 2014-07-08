@@ -142,6 +142,10 @@ public:
     SharedBundle get_top() { return top_; }
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
+    void LocateVertex(ArrangementVertex_2r &input_vertex,
+                      SharedBundle& above,
+                      SharedBundle& below,
+                      BundleTree bdt);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
     int SortPortion(SharedBundle &begin, SharedBundle &end,
@@ -201,6 +205,22 @@ inline bool operator==(const Bundle &lhs, const Bundle &rhs){
 inline bool operator!=(const Bundle &lhs, const Bundle &rhs){
     return !(lhs == rhs);
 }
+inline bool operator<(const SharedBundle &lhs, const SharedBundle &rhs){
+    return Predicate::AIsRightOfB(lhs->get_top_seg()->p(),
+                                  rhs->get_bot_seg()->support());
+    // Only works for same-colored bundles!
+}
+inline bool operator>(const SharedBundle &lhs, const SharedBundle &rhs){
+    return Predicate::AIsLeftOfB(lhs->get_bot_seg()->p(),
+                                 rhs->get_top_seg()->support());
+    // Only works for same-colored bundles!
+}
+//inline bool operator==(const SharedBundle &lhs, const SharedBundle &rhs){
+//    return lhs->get_root() == rhs->get_root();
+//}
+//inline bool operator!=(const SharedBundle &lhs, const SharedBundle &rhs){
+//    return !(lhs == rhs);
+//}
 inline bool operator<(const Point_2r& lhs, const SharedBundle& rhs)
 {
     return Predicate::AIsRightOfB(lhs, rhs->get_bot_seg()->support());
