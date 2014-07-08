@@ -271,11 +271,9 @@ Bundle::Bundle()
 Bundle::Bundle(SplayTree<Segment_2r_colored>& the_tree)
 {
     the_tree.findMax();
-    top_segment_ = std::make_shared<Segment_2r_colored>
-            (the_tree.getRoot()->getElement());
+    top_segment_ = std::make_shared<Segment_2r_colored>(the_tree.getRoot()->getElement());
     the_tree.findMin();
-    bottom_segment_ = std::make_shared<Segment_2r_colored>
-            (the_tree.getRoot()->getElement());
+    bottom_segment_ = std::make_shared<Segment_2r_colored>(the_tree.getRoot()->getElement());
     next_bundle_ = nullptr;
     prev_bundle_ = nullptr;
     tree_ = the_tree;
@@ -700,6 +698,7 @@ void Arrangement_2r::AddSegment(Point_2r& v, Point_2r& w, bool color){
     Visual::Point vPoint(vMat);
     Visual::Segment vSeg(vMat);
 
+    SigRegisterPoint_2r(w);
     SigRegisterPoint_2r(v);
     SigPushVisualPoint_2r(v,vPoint);
     SigPushVisualPoint_2r(w,vPoint);
