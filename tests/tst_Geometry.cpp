@@ -246,12 +246,30 @@ private slots:
 
     void SplayTreeMerge()
     {
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+        spt.insert(2);
+        spt.insert(4);
+        spt.insert(6);
+        spt.insert(7);
         DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
         spt2.insert(10);
+        spt2.insert(11);
+        spt2.insert(12);
         // Merge the two trees together
         spt.mergeTree(&spt2);
+        QCOMPARE(spt.getRoot()->getElement(), 7);
+        QCOMPARE(spt.getRoot()->right->getElement(), 12);
         QCOMPARE(spt.ContainsValue(10), true);
+        QCOMPARE(spt.Size(), 7);
+
+        spt = DDAD::SplayTree<int>();
+        spt2 = DDAD::SplayTree<int>();
+        spt2.insert(2);
+        spt2.insert(3);
+        spt.mergeTree(&spt2);
+        QVERIFY(!spt.isEmpty());
+        QCOMPARE(spt.getRoot(), spt2.getRoot());
+
     }
 
     void SplayTreeSplit(){
@@ -398,13 +416,30 @@ private slots:
         sbdl1->set_next_bundle(sbdl2);
         sbdl2->set_prev_bundle(sbdl1);
         DDAD::SharedBundle sbdl3 = std::make_shared<DDAD::Bundle>();
-        sbdl3->Insert(SampleSharedSegment(0, 4, 20, 4, true));
+        sbdl3->Insert(SampleSharedSegment(0, 4, 20, 4, false));
         sbdl2->set_next_bundle(sbdl3);
         sbdl3->set_prev_bundle(sbdl2);
         QVERIFY(sbdl3->get_prev_bundle() == sbdl2);
         sbdl1->Merge(sbdl2);
         QVERIFY(sbdl3->get_prev_bundle() == sbdl1);
+        QVERIFY(sbdl3->get_next_bundle() == nullptr);
+        QVERIFY(sbdl1->get_next_bundle() == sbdl3);
+        QVERIFY(sbdl1->get_prev_bundle() == nullptr);
+        QVERIFY(sbdl1->get_root()->right == sbdl2->get_root());
         QCOMPARE(sbdl1->CountSegments(), 2);
+
+        // Only two bundles in the list
+        sbdl1 = SampleSharedBundle(SampleSharedSegment(2, 2, 8, 2, true));
+        sbdl2 = SampleSharedBundle(SampleSharedSegment(2, 4, 8, 4, true));
+        sbdl1->set_next_bundle(sbdl2);
+        sbdl2->set_prev_bundle(sbdl1);
+        sbdl1->Merge(sbdl2);
+        QVERIFY(sbdl1->get_next_bundle() == nullptr);
+        QVERIFY(sbdl1->get_prev_bundle() == nullptr);
+        QVERIFY(sbdl1->get_root()->right == sbdl2->get_root());
+        QCOMPARE(sbdl1->CountSegments(), 2);
+
+
     }
 
     void BundleSplit()
@@ -814,6 +849,7 @@ private slots:
 
     void CountIntersections()
     {
+        // Simple arrangements
         DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(4, 5), DDAD::Point_2r(6, 6), true);
@@ -836,7 +872,8 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 2);
 
-        // Swap the coloring order
+
+        // Same arrangement, but with coloring order swapped
         sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(4, 5), DDAD::Point_2r(6, 6), false);
@@ -858,6 +895,30 @@ private slots:
                     DDAD::Point_2r(30, 30), DDAD::Point_2r(40, 40), false);
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 2);
+
+        // Only red segments
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 10), DDAD::Point_2r(10, 10), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 5), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 2), DDAD::Point_2r(10, 2), true);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 0);
+
+        // Grid arrangement
+        sample_arrangement = DDAD::Arrangement_2r();
+        for(int ii = 2; ii < 22; ii++)
+        {
+            sample_arrangement.AddSegment(
+                        DDAD::Point_2r(ii, 1), DDAD::Point_2r(ii, 24), true);
+            sample_arrangement.AddSegment(
+                        DDAD::Point_2r(1, ii), DDAD::Point_2r(24, ii), false);
+        }
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 400);
+
     }
 };
 

@@ -231,8 +231,10 @@ inline bool operator>(const Point_2r& lhs, const SharedBundle& rhs)
 }
 inline bool operator==(const Point_2r& lhs, const SharedBundle& rhs)
 {
-    return (Predicate::AIsRightOrAheadOfB(lhs, rhs->get_top_seg()->support_ray())
-            && Predicate::AIsLeftOrAheadOfB(lhs, rhs->get_bot_seg()->support_ray()));
+    return (Predicate::AIsRightOrAheadOfB(lhs,
+                                          rhs->get_top_seg()->support_ray())
+            && Predicate::AIsLeftOrAheadOfB(lhs,
+                                            rhs->get_bot_seg()->support_ray()));
 }
 inline bool operator<=(const Point_2r& lhs, const SharedBundle& rhs)
 {

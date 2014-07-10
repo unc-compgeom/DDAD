@@ -303,7 +303,8 @@ SplayTree<Comparable> SplayTree<Comparable>::SplitTree(const Comparable &x){
 }
 
 template <class Comparable>
-SplayTree<Comparable> SplayTree<Comparable>::SplitTree(const Point_2r& split_here)
+SplayTree<Comparable> SplayTree<Comparable>::SplitTree(
+        const Point_2r& split_here)
 {
     // Splitting at a minimum/maximum value should always leave at least that
     // value in the tree
@@ -535,7 +536,8 @@ void SplayTree<Comparable>::print(){
 }
 
 template <class Comparable>
-void SplayTree<Comparable>::print(BinaryNode<Comparable>* node, std::string space){
+void SplayTree<Comparable>::print(BinaryNode<Comparable>* node,
+                                  std::string space){
     if(node != nullptr){
         space.append("    ");
         print(node->right, space);
@@ -568,7 +570,8 @@ SplayTree<Comparable>::clone( BinaryNode<Comparable> * t ) const
     if(t == nullptr)
         return nullptr;
     else
-        return new BinaryNode<Comparable>( t->element, clone( t->left ), clone( t->right ) );
+        return new BinaryNode<Comparable>( t->element, clone( t->left ),
+                                           clone( t->right ) );
 }
 
 
