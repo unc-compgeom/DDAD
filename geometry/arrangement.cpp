@@ -128,9 +128,9 @@ int CountIntersections(const Arrangement_2r &A,
 
             }
             if(ii->is_red()) bdt.InsertBundle(new_bundle);
-//            if(tmp != nullptr && *(ii->get_point()) < tmp)
-//                // ii is below all bundles in the tree
-//                bdl.InsertBundle(new_bundle, tmp->get_prev_bundle());
+            //            if(tmp != nullptr && *(ii->get_point()) < tmp)
+            //                // ii is below all bundles in the tree
+            //                bdl.InsertBundle(new_bundle, tmp->get_prev_bundle());
             bdl.InsertBundle(new_bundle, tmp);
         }
         else
@@ -162,13 +162,23 @@ int CountIntersections(const Arrangement_2r &A,
                 if(jj->get_color() == jj->get_next_bundle()->get_color()){
                     if(jj->get_next_bundle() == bdl.get_top())
                         bdl.set_top(jj);
-                    jj->Merge(jj->get_next_bundle());
+                    //deal with bundle tree if bundles are red
+                    if(jj->get_color())
+                    {
+                        bdt.RemoveBundle(jj);
+                        bdt.RemoveBundle(jj->get_next_bundle());
+                        jj->Merge(jj->get_next_bundle());
+                        bdt.InsertBundle(jj);
+                    }
+                    else jj->Merge(jj->get_next_bundle());
+
                 }
             }
             jj = jj->get_next_bundle();
         }
         //crossings++;
         endpoint_index++;
+
     }
     return crossings;
 }
@@ -246,7 +256,7 @@ SharedBundle Bundle::Split(SharedSegment split_here)
 {
     SplayTree<Segment_2r_colored> R = tree_.SplitTree(*split_here);
 
-//    if(R.getRoot() == nullptr) return nullptr;
+    //    if(R.getRoot() == nullptr) return nullptr;
 
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
 
@@ -270,7 +280,7 @@ SharedBundle Bundle::Split(Point_2r& split_here)
 {
     SplayTree<Segment_2r_colored> R = tree_.SplitTree(split_here);
 
-//    if(R.getRoot() == nullptr) return nullptr;
+    //    if(R.getRoot() == nullptr) return nullptr;
 
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
 
@@ -379,8 +389,8 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
         below_neighbor = above_neighbor;
     }
     else
-        std::cout << "\nCheck segment comparators! \
-                     This branch should never be reached\n";
+        std::cout << "\nCheck segment comparators! "
+                  << "This branch should never be reached\n";
 }
 
 void BundleTree::InsertBundle(SharedBundle add_this)
@@ -419,6 +429,14 @@ SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
     else{
         return nullptr;
     }
+}
+
+void BundleTree::MergeBundles(SharedBundle above, SharedBundle below)
+{
+    bundle_tree_.remove(above);
+    bundle_tree_.remove(below);
+    below->Merge(above);
+    bundle_tree_.insert(below);
 }
 
 //=============================================================================
@@ -549,7 +567,11 @@ SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
                                              ArrangementVertex_2r &here)
 {
     if(split_bundle->CountSegments()==1) return split_bundle;
-    SharedBundle new_bundle = split_bundle->Split(*(here.get_point()));
+    SplayTree<Segment_2r_colored> R =
+            split_bundle->get_tree()->SplitTree(*(here.get_point()));
+
+    SharedBundle new_bundle = std::make_shared<Bundle>(R);
+//    new_bundle->set_prev_bundle(split_bundle);
     InsertBundle(new_bundle, split_bundle);
     return new_bundle;
 }
@@ -557,8 +579,8 @@ SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
 int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
                             ArrangementVertex_2r v)
 {
-//    SharedBundle temp_prev = begin->get_prev_bundle();
-//    SharedBundle temp_next = end->get_next_bundle();
+    //    SharedBundle temp_prev = begin->get_prev_bundle();
+    //    SharedBundle temp_next = end->get_next_bundle();
 
 
     for(SharedBundle kk = bottom_; (kk != top_->get_next_bundle());

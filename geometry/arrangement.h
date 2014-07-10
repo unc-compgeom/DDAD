@@ -126,6 +126,7 @@ public:
     int Size();
     SharedBundle SplitBundleAtVertex(ArrangementVertex_2r & split_here);
     void Find(ArrangementVertex_2r& input_vertex);
+    void MergeBundles(SharedBundle above, SharedBundle below);
 private:
     SplayTree<SharedBundle> bundle_tree_;
 };
