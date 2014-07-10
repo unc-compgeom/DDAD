@@ -11,6 +11,8 @@ algorithm. By providing a concrete example we hope to illuminate the major steps
 required to animate algorithms in general. Before we get started, let us briefly
 examine the algorithm in question.
 
+\subsection{Algorithm Overview}
+
 A \emph{polyline} $P$ is a polygonal chain of vertices $p_1, p_2, \ldots, p_n$
 connected by line segments $p_ip_{i+1}$ for $1 \leq i < n$. $P$ is \emph{simple}
 if the only intersection between segments is at their shared endpoints.
@@ -19,6 +21,11 @@ in $O(n)$ time~\cite{melkman1987line}. It can also be used to compute the convex
 hull of arbitrary point sets if we first sort by $x$ coordinate, breaking ties
 by $y$ coordinate.
 
+Given an oriented line $pq$ and a point $r$, the 2D orientation predicate
+$\textsc{Orient2D}(p, q, r)$ answers the question, ``is $r$ to the left, right,
+or on $pq$?'' It is often written as the sign of the 2-by-2 determinant, $$
+\textsc{Orient2D}(p, q, r) = \textsc{Sign}\left( \begin{vmatrix} p_x-r_x &
+p_y-r_y \\ q_x-r_x & q_y-r_y \end{vmatrix} \right).$$
 
 % Incremental convex hull algorithms construct the hull by examining each input
 % point in turn, exploiting structure in the partial hull to help reduce
@@ -28,8 +35,6 @@ by $y$ coordinate.
 % breaking ties by $y$ coordinate. Then point $p_i$ will always be a vertex of the
 % convex hull $\text{CH}(P_i)$, and it will either be adjacent to $p_{i-1}$ or
 % will cause $p_{i-1}$ to be removed from $\text{CH}(P_i)$.
-
-
 
 \begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
 Melkman}] \begin{algorithmic}[1]    
@@ -46,44 +51,33 @@ Melkman}] \begin{algorithmic}[1]
 \end{algorithmic}
 \end{mdframed} 
 
+% Animating an algorithm using the workbench is composed of a number of tasks,
+% namely 
+% \begin{itemize}
+%   \item Implement input data structures and instrument them with visualization
+%   code.
+%   \item Optionally modify the GUI to allow the user to create instances of
+%   the input data structure.
+%   \item Implement output data structures and instrument them with visualization
+%   code.
+%   \item Implement predicates.
+%   \item Implement the algorithm and instrument it with a small amount of
+%   visualization code.
+%   \item Optionally modify the GUI to allow the user to run the algorithm on
+%   selected input data. 
+% \end{itemize}
 
+% \subsection{Data Structures}
+% 
+% polychain\_2r
+% 
+% polygon\_2r
 
+\subsection{Code Listing}
 
-
-
-
-
-
-
-
-
-
-Animating an algorithm using the workbench is composed of a number of tasks,
-namely 
-\begin{itemize}
-  \item Implement input data structures and instrument them with visualization
-  code.
-  \item Optionally modify the GUI to allow the user to create instances of
-  the input data structure.
-  \item Implement output data structures and instrument them with visualization
-  code.
-  \item Implement predicates.
-  \item Implement the algorithm and instrument it with a small amount of
-  visualization code.
-  \item Optionally modify the GUI to allow the user to run the algorithm on
-  selected input data. 
-\end{itemize}
-
-\subsection{Data Structures}
-
-polychain\_2r
-
-polygon\_2r
+\lstinputlisting{code-samples/melkman.cpp}
 
 \subsection{Generating Input Data}
-
-
-
 
 Create button and implement click handler. buttongroup to model mutually
 exclusive input states.
@@ -91,60 +85,8 @@ exclusive input states.
 define input states. configmanager singleton. 
 
 
-
 Handle ortho widget mouse clicks
 forward signals from ortho to scene observer
-
-\subsection{Predicates}
-
-Given an oriented line $pq$ and a point $r$, the 2D orientation predicate
-$\textsc{Orient2D}(p, q, r)$ answers the question, ``is $r$ to the left, right,
-or on $pq$?'' It is often written as the sign of the 2-by-2 determinant, $$
-\textsc{Orient2D}(p, q, r) = \textsc{Sign}\left( \begin{vmatrix} p_x-r_x &
-p_y-r_y \\ q_x-r_x & q_y-r_y \end{vmatrix} \right).$$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

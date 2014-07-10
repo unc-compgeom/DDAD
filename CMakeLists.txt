@@ -13,9 +13,6 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    # Mac OS X specific code
     include_directories(${DDAD_SOURCE_DIR}/dependencies/mpir/Mac)
     link_directories(${DDAD_SOURCE_DIR}/dependencies/mpir/Mac)
-    set(CMAKE_CXX_FLAGS "-std=c++11")
-    set(CMAKE_C_COMPILER "gcc")
-
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 IF(${WIN32})
