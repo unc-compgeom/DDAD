@@ -20,11 +20,11 @@
 \usepackage{longtable}
 \usepackage{enumitem}
 \usepackage{mdframed}
-\usepackage{titlesec} 
+\usepackage{titlesec}
 \usepackage{etoolbox}
 \usepackage{float}
 \usepackage{fancybox}
-\usepackage{graphicx} 
+\usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{wrapfig}
 \usepackage{booktabs}
@@ -53,24 +53,24 @@
 \newtheorem{invariant}{Invariant}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
- 
+
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceiling}[1]{\left\lceil #1 \right\rceil}
 
- 
+
 \newcommand{\tightoverset}[2]{
     \mathop{#2}\limits^{\vbox to -.8ex{\kern-0.7ex\hbox{$#1$}\vss}}
 }
 
 \newcommand{\tikzoverset}[2]{%
   \tikz[baseline=(X.base),inner sep=0pt,outer sep=0pt]{%
-    \node[inner sep=0pt,outer sep=0pt] (X) {$#2$}; 
+    \node[inner sep=0pt,outer sep=0pt] (X) {$#2$};
     \node[yshift=1pt] at (X.north) {$#1$};
 }}
- 
+
 \newlength{\mOLineLength}
 \newcommand{\mOLine}[1]{
     \overset{
@@ -227,7 +227,7 @@
 \mathrel{\begin{tikzpicture}[baseline= {( $ (current bounding box.south) + (0,-0.5ex) $ )}]
 \node[inner sep=.5ex] (\thesarrow) {$\scriptstyle #1$};
 \path[draw,<-,decorate,
-  decoration={zigzag,amplitude=0.7pt,segment length=1.2mm,pre=lineto,pre length=4pt}] 
+  decoration={zigzag,amplitude=0.7pt,segment length=1.2mm,pre=lineto,pre length=4pt}]
     (\thesarrow.south east) -- (\thesarrow.south west);
 \end{tikzpicture}}%
 }
@@ -253,28 +253,28 @@
 \definecolor{cBack}{rgb}{0.95, 0.95, 0.95}
 \usepackage{listings}
 \lstset {
-	basicstyle = \footnotesize\ttfamily,
-	%numbers = left,
-	numberstyle = \tiny,
-	%stepnumber = 2,
-	numbersep = 5pt,
-	tabsize = 2,
-	extendedchars = true,
-	breaklines = true,
-	keywordstyle = \color{red},
-	frame = b,
-	stringstyle = \color{white}\ttfamily,
-	showspaces = false,
-	showtabs = false,
-	xleftmargin = 8pt,
-	framexleftmargin = 8pt,
-	framexrightmargin = 5pt,
-	framexbottommargin = 4pt,
-	showstringspaces = false
+        basicstyle = \footnotesize\ttfamily,
+        %numbers = left,
+        numberstyle = \tiny,
+        %stepnumber = 2,
+        numbersep = 5pt,
+        tabsize = 2,
+        extendedchars = true,
+        breaklines = true,
+        keywordstyle = \color{red},
+        frame = b,
+        stringstyle = \color{white}\ttfamily,
+        showspaces = false,
+        showtabs = false,
+        xleftmargin = 8pt,
+        framexleftmargin = 8pt,
+        framexrightmargin = 5pt,
+        framexbottommargin = 4pt,
+        showstringspaces = false
 }
 
 \lstloadlanguages {
-	C++
+        C++
 }
 
 \DeclareCaptionFont{white}{\color{white}}
@@ -289,10 +289,10 @@
 
 \title{A Geometric Workbench for Degree-Driven Algorithm Design}
 \author{
-	Clinton Freeman \\
-	\texttt{freeman@cs.unc.edu}
-	\and
-	Jack Snoeyink \\
+        Clinton Freeman \\
+        \texttt{freeman@cs.unc.edu}
+        \and
+        Jack Snoeyink \\
     \texttt{snoeyink@cs.unc.edu}
 }
 
@@ -376,11 +376,11 @@ execution.
 % theoretic functions), linear algebra (vectors and matrices), low-level geometric
 % primitives (points, line segments, and triangles), high-level geometric types
 % (polylines, polygons, subdivisions, etc.), and geometric algorithms (convex
-% hull, integer hull, delaunay triangulation, etc.). 
-% 
-% 
+% hull, integer hull, delaunay triangulation, etc.).
+%
+%
 % The geometry kernel encapsulates geometric algorithm implementations.
-% 
+%
 % The visualizer encapsulates the visual display of geometric algorithms.
 
 
@@ -397,7 +397,7 @@ execution.
 
 
 % \subsection{Report Overview}
-% 
+%
 % Lacking a suitable workbench, we decided to build our own. This report details
 % the resulting system and is composed of two major sections. First, we state
 % workbench desiderata, explain current workbench capabilities, and show how these
@@ -408,13 +408,13 @@ execution.
 % and identify avenues for future work.
 
 % \subsubsection{Forrest geometric computing environments}
-% 
+%
 % Forrest suggested the geometry community start building ``geometric computing
 % environments'' in the late 1980's~\cite{forrest1987computational,
 % forrest1988geometric}.
 
 % \subsubsection{LINETool (1988)}
-% 
+%
 % Yap and Ericson discuss the design of LINETool, a geometric editor. They
 % differentiate their tool from automated theorem provers for geometry. Designed
 % in support of exact computation.~\cite{ericson1988design}
@@ -423,11 +423,11 @@ execution.
 % Forrest identified the need for ``geometric computing environments'' that would
 % provide both a library of geometric algorithms and a supporting user interface
 % for animation and debugging~\cite{forrest1987computational,
-% forrest1988geometric}. 
-% 
-% 
-% 
-% 
+% forrest1988geometric}.
+%
+%
+%
+%
 % Concurrently, Yap and Ericson designed LINEtool, a
 % ``geometric editor" that allowed users to exactly specify and render geometric
 % constructions~\cite{ericson1988design}. Soon after, three projects were underway
@@ -436,8 +436,8 @@ execution.
 % Library of Efficient Data Types and Algorithms (LEDA)~\cite{mehlhorn1989leda}.
 % XYZ GeoBench and Workbench most fully fit the definition of a geometric
 % computing environment, while LEDA focused primarily on the development of a
-% library. 
-% 
+% library.
+%
 % Dobkin and Hausner~\cite{hausner1999animation} review four geometric
 % visualization systems: Workbench \cite{epstein1994workbench}, XYZ
 % GeoBench \cite{schorn1991implementing, schorn1991robust}, Geomview
@@ -446,21 +446,21 @@ execution.
 % Schorn joined
 % Nievergelt's group at UNC Chapel Hill in 1986 and completed his MSc in
 % Computer Science in 1988. Schorn and Nievergelt returned to ETH Zurich in
-% 1989, with Schorn eventually completing his PhD in 1991. 
+% 1989, with Schorn eventually completing his PhD in 1991.
 % written in Object Pascal
 
 % \subsection{General algorithm animation}
-% 
+%
 % \paragraph{BALSA} \cite{brown1984system}
-% 
+%
 % \paragraph{BALSA-II}
-% 
+%
 % \paragraph{Zeus}
-% 
+%
 % \paragraph{AnimA}
-% 
+%
 % \paragraph{TANGO} \cite{stasko1990tango}
-% 
+%
 % \paragraph{POLKA} \cite{stasko1995polka}
-% 
+%
 % \paragraph{SAMBA} \cite{stasko1995samba}

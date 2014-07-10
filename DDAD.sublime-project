@@ -1,0 +1,16 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	],
+	"build_systems":
+    [
+        {
+            "name": "List",
+            "shell_cmd": "dir"
+        }
+    ]
+}

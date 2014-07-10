@@ -89,7 +89,7 @@ protected:
 		k2->left = k1;
 		k1 = k2;
 	}
-	void splay( Comparable & x, BinaryNode<Comparable> * & t ) const
+	void Splay( Comparable & x, BinaryNode<Comparable> * & t ) const
 	{
 		BinaryNode<Comparable> *leftTreeMax, *rightTreeMin;
 		static BinaryNode<Comparable> header;
@@ -219,7 +219,7 @@ protected:
 		while( ptr->left != nullNode )
 			ptr = ptr->left;
 
-		splay( *ptr->element, root );
+		Splay( *ptr->element, root );
 		return *ptr->element;
 	}
 
@@ -236,7 +236,7 @@ protected:
 			if(ptr->right == NULL) cout << "Null pointer found" << endl;		
 			ptr = ptr->right;
 		}
-		splay( *ptr->element, root );
+		Splay( *ptr->element, root );
 		return *ptr->element;
 	}
 
@@ -244,7 +244,7 @@ protected:
 	{
 		if( isEmpty( ) )
 			return ITEM_NOT_FOUND;
-		splay( x, root );
+		Splay( x, root );
 		if( *root->element != x )
 			return ITEM_NOT_FOUND;
 
@@ -255,7 +255,7 @@ protected:
 	{
 		if( isEmpty( ) )
 			return NULL;
-		splay( x, root );
+		Splay( x, root );
 		if( root->element != x )
 			return NULL;
 
@@ -318,7 +318,7 @@ protected:
 		}
 		else
 		{
-			splay( x, root );
+			Splay( x, root );
 			if( x < *root->element )
 			{
 				newNode->left = root->left;
@@ -350,7 +350,7 @@ protected:
 		BinaryNode<Comparable> *newTree;
 
 		// If x is found, it will be at the root
-		splay( x, root );
+		Splay( x, root );
 		if( !(*root->element == x ))
 			return;   // Item not found; do nothing
 
@@ -361,7 +361,7 @@ protected:
 			// Find the maximum in the left subtree
 			// Splay it to the root; and then attach right child
 			newTree = root->left;
-			splay( x, newTree );
+			Splay( x, newTree );
 			newTree->right = root->right;
 		}
 		//needs revision, this version is a preserving one, never destroys anything

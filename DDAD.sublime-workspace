@@ -1,0 +1,207 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"selected_items":
+		[
+			[
+				"proj clo",
+				"Project: Close"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"project save",
+				"Project: Save As"
+			],
+			[
+				"package inst",
+				"Package Control: Install Package"
+			],
+			[
+				"prosave",
+				"Project: Save As"
+			],
+			[
+				"ad",
+				"Project: Add Folder"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": true,
+		"show_open_files": false,
+		"show_tabs": true,
+		"side_bar_visible": true,
+		"status_bar_visible": true
+	},
+	"file_history":
+	[
+		"/C/Users/Evan/GitHub/DDAD/archive/notes/profiling_w_valgrind",
+		"/C/Users/Evan/GitHub/DDAD/archive/base/Predicates_2.cpp",
+		"/C/Users/Evan/GitHub/DDAD/geometry/point.cpp",
+		"/C/Users/Evan/GitHub/DDAD/workbench/qt_widget_perspective.cpp",
+		"/C/Users/Evan/GitHub/DDAD/compiling",
+		"/C/Users/Evan/GitHub/DDAD/CMakeLists.txt",
+		"/C/Users/Evan/GitHub/DDAD/dependencies/mpir/Win64/Debug/longlong_post.h",
+		"/C/Users/Evan/GitHub/DDAD/documentation/manual/src/sec-conclusion.tex",
+		"/C/Users/Evan/GitHub/DDAD/tests/tst_arrangement.cpp",
+		"/C/Users/Evan/GitHub/DDAD/DDAD.sublime-project",
+		"/C/Users/Evan/Dropbox/cards.rb",
+		"/D/Qt/Qt5.3.0/Tools/QtCreator/share/qtcreator/styles/monokai.xml",
+		"/D/Qt/Qt5.3.0/Tools/QtCreator/share/qtcreator/styles/inkpot.xml",
+		"/C/Users/Evan/Dropbox/circles/circtest.cpp",
+		"/C/Users/Evan/Desktop/new-project.sublime-project",
+		"/C/Users/Evan/Desktop/#linesimp2.tex#"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "DDAD.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Users\\Evan\\GitHub\\DDAD\\CMakeLists.sublime-workspace"
+			],
+			[
+				"new",
+				"C:\\Users\\Evan\\Desktop\\new-project.sublime-project"
+			],
+			[
+				"test",
+				"C:\\Users\\Evan\\Desktop\\test-project.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

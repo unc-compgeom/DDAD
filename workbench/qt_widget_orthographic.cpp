@@ -54,6 +54,44 @@ void OrthographicWidget::initialize(Renderer* renderer,
             SIGNAL(SelectObject(QVector2D)),
             &scene_manager_->scene_observer_,
             SLOT(onSelectObject(QVector2D)));
+
+    // polyline
+    connect(this,
+            SIGNAL(BeginCreatePolyLine(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreatePolyLine(QVector2D)));
+    connect(this,
+            SIGNAL(UpdateNewPolyLine(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onUpdateNewPolyLine(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreatePolyLine()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreatePolyLine()));
+
+    // arrangement
+    connect(this,
+            SIGNAL(BeginCreateArrangement(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreateArrangement(QVector2D)));
+    connect(this,
+            SIGNAL(BeginCreateSegment(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreateSegment(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreateSegment(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateSegment(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreateArrangement()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateArrangement()));
+    connect(this,
+            SIGNAL(SwitchInputColor()),
+            &scene_manager_->scene_observer_,
+            SLOT(onSwitchInputColor()));
+
+    // polytope
     connect(this,
             SIGNAL(BeginCreatePolytope(QVector2D, QVector2D)),
             &scene_manager_->scene_observer_,
@@ -256,12 +294,36 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
             create_polytope_pos = event->pos();
 
             break;
+        case CREATE_POLYLINE:
+            emit BeginCreatePolyLine(world_coords);
+            break;
+        case UPDATE_POLYLINE:
+            emit UpdateNewPolyLine(world_coords);
+            break;
+        case CREATE_ARRANGEMENT:
+            qDebug() << "Creating arrangement";
+            emit BeginCreateArrangement(world_coords);
+            break;
+        case CREATE_SEGMENT:
+            qDebug() << "Creating segment";
+            emit BeginCreateSegment(world_coords);
+            break;
+        case UPDATE_ARRANGEMENT:
+            emit EndCreateSegment(world_coords);
+            break;
         default:
             break;
         }
     }
 
     if (event->buttons() & Qt::MiddleButton) {
+        switch (ConfigManager::get().input_state()) {
+        case CREATE_SEGMENT:
+            qDebug() << "Ending the arrangement";
+            emit EndCreateArrangement();
+            break;
+        }
+
         setCursor(Qt::ClosedHandCursor);
         last_click_pos.setX(event->x());
         last_click_pos.setY(convertedY);
@@ -269,7 +331,17 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
 
     if (event->buttons() & Qt::RightButton) {
         switch (ConfigManager::get().input_state()) {
-        case SELECT:
+        case UPDATE_POLYLINE:
+            emit EndCreatePolyLine();
+            break;
+        case CREATE_ARRANGEMENT:
+            qDebug() << "Switching input color!";
+            emit SwitchInputColor();
+            break;
+        case CREATE_SEGMENT:
+            qDebug() << "Switching input color!";
+            emit SwitchInputColor();
+            break;
         default:
             break;
         }
@@ -386,12 +458,19 @@ void OrthographicWidget::ShowContextMenu(const QPoint &p) {
 }
 
 void OrthographicWidget::keyPressEvent(QKeyEvent *event) {
+
     key_states_[event->key()] = true;
 }
 
+
+
+
 void OrthographicWidget::keyReleaseEvent(QKeyEvent *event) {
     key_states_[event->key()] = false;
+
 }
+
+
 
 //=============================================================================
 // Misc overrides / OpenGL support routines

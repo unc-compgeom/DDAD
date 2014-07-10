@@ -23,6 +23,7 @@
 #include <vector>
 #include <stack>
 #include <list>
+#include <queue>
 #include <limits>
 #include <array>
 #include <memory>
@@ -31,7 +32,7 @@
 #include <tuple>
 
 // logging
-#include "../logging/easylogging++.h"
+//#include "../logging/easylogging++.h"
 
 #define UNUSED(x) (void)x;
 

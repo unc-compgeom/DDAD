@@ -208,6 +208,7 @@ void Geometry::SigUpdate() const {
 
 Color::Color() {
     rgba_.assign(0);
+    rgba_[3] = 255;
 }
 
 Color::Color(const unsigned char r, const unsigned char g,

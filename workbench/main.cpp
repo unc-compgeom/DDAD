@@ -12,6 +12,11 @@
 #include "common.h"
 #include "qt_window_main.h"
 
+ //test
+#include "../geometry/polygon.h"
+#include "../geometry/arrangement.h"
+
+
 #define _ELPP_THREAD_SAFE
 _INITIALIZE_EASYLOGGINGPP
 
@@ -32,7 +37,7 @@ int main(int argc, char *argv[]) {
     QPixmap splash_image(":/splash3.png");
     QSplashScreen splash(splash_image);
     splash.show();
-    //splash.showMessage("Initializing...");
+    splash.showMessage("Initializing...");
     a.processEvents();
 
     LOG(INFO) << "displaying main window";
