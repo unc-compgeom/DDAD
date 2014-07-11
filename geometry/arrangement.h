@@ -141,12 +141,12 @@ public:
     void set_top(SharedBundle new_top) { top_ = new_top; }
     SharedBundle get_bottom() { return bottom_; }
     SharedBundle get_top() { return top_; }
+    void GenerateSentinels(std::list<ArrangementVertex_2r> L,
+                           BundleTree& bdt);
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
-    void LocateVertex(ArrangementVertex_2r &input_vertex,
-                      SharedBundle& above,
-                      SharedBundle& below,
-                      BundleTree bdt);
+    SharedBundle LocateVertex(ArrangementVertex_2r &input_vertex,
+                              BundleTree& bdt);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
     int SortPortion(SharedBundle &begin, SharedBundle &end,

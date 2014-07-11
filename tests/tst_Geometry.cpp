@@ -620,6 +620,23 @@ private slots:
         QCOMPARE(bdt.Size(), 3);
     }
 
+    void BundleListGenerateSentinels()
+    {
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 5), DDAD::Point_2r(6, 6), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(3, 8), DDAD::Point_2r(10, 3), false);
+        std::list<DDAD::ArrangementVertex_2r> L = sample_arrangement.get_vertices();
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(L, bdt);
+        QVERIFY(DDAD::Point_2r(3, 8) < bdl.get_top());
+        QVERIFY(DDAD::Point_2r(10, 3) > bdl.get_bottom());
+        QVERIFY(bdl.get_top()->get_next_bundle() != nullptr);
+        QVERIFY(bdl.get_bottom()->get_prev_bundle() != nullptr);
+    }
+
     void BundleListInsert()
     {
         DDAD::BundleList bdl = DDAD::BundleList();
@@ -635,6 +652,10 @@ private slots:
         bdl.InsertBundle(bundle2,bundle);
         QCOMPARE(bdl.get_bottom(), bundle);
         QCOMPARE(bdl.get_top(), bundle2);
+        QCOMPARE(bundle->get_next_bundle(), bundle2);
+        QCOMPARE(bundle2->get_prev_bundle(), bundle);
+        QVERIFY(bundle->get_prev_bundle() == nullptr);
+        QVERIFY(bundle2->get_next_bundle() == nullptr);
     }
 
     void BundleListRemove()
@@ -679,49 +700,42 @@ private slots:
 
     void BundleListLocateVertex()
     {
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        // Create bounding box
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(3, 3), DDAD::Point_2r(12, 9), true);
         DDAD::BundleList bdl = DDAD::BundleList();
         DDAD::BundleTree bdt = DDAD::BundleTree();
-        DDAD::SharedBundle red =
-                SampleSharedBundle(SampleSharedSegment(3, 2, 12, 2, true));
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        // Add a bunch of segments
+        DDAD::SharedBundle red1 =
+                SampleSharedBundle(SampleSharedSegment(3, 3, 12, 3, true));
         DDAD::SharedBundle red2 =
                 SampleSharedBundle(SampleSharedSegment(3, 8, 12, 8, true));
-        DDAD::SharedBundle red3 =
-                SampleSharedBundle(SampleSharedSegment(3, 12, 12, 12, true));
-        DDAD::SharedBundle blue =
-                SampleSharedBundle(SampleSharedSegment(3, 9, 11, 11, false));
+        DDAD::SharedBundle blue1 =
+                SampleSharedBundle(SampleSharedSegment(3, 5, 12, 5, false));
         DDAD::SharedBundle blue2 =
-                SampleSharedBundle(SampleSharedSegment(4, 7, 12, 1, false));
-        DDAD::SharedBundle above, below;
+                SampleSharedBundle(SampleSharedSegment(3, 9, 12, 9, false));
         DDAD::ArrangementVertex_2r on_r1 =
-                SampleArrangementVertex(3, 2, true);
+                SampleArrangementVertex(3, 3, true);
         DDAD::ArrangementVertex_2r on_b2 =
-                SampleArrangementVertex(4, 7, false);
-        DDAD::ArrangementVertex_2r between_b2_r2 =
-                SampleArrangementVertex(9, 6, true);
-        bdl.InsertBundle(red, nullptr);
-        bdl.InsertBundle(blue2, red);
-        bdl.InsertBundle(red2, blue2);
-        bdl.InsertBundle(blue, red2);
-        bdl.InsertBundle(red3, blue);
-        bdt.InsertBundle(red);
+                SampleArrangementVertex(3, 9, false);
+        DDAD::ArrangementVertex_2r between_r1_b1 =
+                SampleArrangementVertex(9, 4, true);
+        bdl.InsertBundle(red1, bdl.get_bottom());
+        bdl.InsertBundle(blue1, red1);
+        bdl.InsertBundle(red2, blue1);
+        bdl.InsertBundle(blue2, red2);
+        bdt.InsertBundle(red1);
         bdt.InsertBundle(red2);
-        bdt.InsertBundle(red3);
-        bdt.LocateVertex(on_r1, above, below);
-        bdl.LocateVertex(on_r1, above, below, bdt);
-        QVERIFY(below == red);
-        QVERIFY(above == blue2);
-
-        bdt.LocateVertex(on_b2, above, below);
-        bdl.LocateVertex(on_b2, above, below, bdt);
-        QVERIFY(above == red2);
-        QVERIFY(below == red);
-
-        bdt.LocateVertex(between_b2_r2, above, below);
-        bdl.LocateVertex(between_b2_r2, above, below, bdt);
-        QVERIFY(above == blue);
-        QVERIFY(below == red);
-
-
+        // Tests
+        DDAD::SharedBundle below;
+        below = bdl.LocateVertex(on_r1, bdt);
+        QVERIFY(below == red1);
+        below = bdl.LocateVertex(on_b2, bdt);
+        QVERIFY(below == blue2);
+        below = bdl.LocateVertex(between_r1_b1, bdt);
+        QVERIFY(below == red1);
     }
 
     void BundleListSplitBundleAtVertex()
