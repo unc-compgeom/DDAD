@@ -43,10 +43,68 @@ int CountIntersections(const Arrangement_2r &A,
     };
     //sort vertices lexicographically
     L.sort(compare());
-    DDAD::BundleTree bdt = BundleTree();
-    DDAD::BundleList bdl = BundleList();
-    DDAD::SharedBundle above;
-    DDAD::SharedBundle below;
+
+    // Find the bounding box of the list of vertices
+    rational min_x, max_x, min_y, max_y;
+    min_x = L.front().get_x() - 2;
+    max_x = L.back().get_x() + 2;
+    min_y = L.front().get_y() - 2;
+    max_y = L.back().get_y() + 2;
+    for(std::list<ArrangementVertex_2r>::iterator ii = L.begin();
+        ii != L.end(); ii++)
+    {
+        if(ii->get_y() > max_y)
+            max_y = ii->get_y();
+        else if(ii->get_y() < min_y)
+            min_y = ii->get_y();
+    }
+    BundleTree bdt = BundleTree();
+    BundleList bdl = BundleList();
+    SharedBundle above;
+    SharedBundle below;
+
+//    // Generate sentinels at the top and bottom of the list
+//    SharedBundle top_red_sentinel = std::make_shared<Bundle>();
+//    Segment_2r_colored tmp_segment = Segment_2r_colored(
+//                std::make_shared<Point_2r>(min_x, max_y+rational(1)),
+//                std::make_shared<Point_2r>(max_x, max_y+rational(1)),
+//                true);
+//    top_red_sentinel->Insert
+//                (std::make_shared<Segment_2r_colored>(tmp_segment));
+
+//    SharedBundle top_blue_sentinel = std::make_shared<Bundle>();
+//    tmp_segment = Segment_2r_colored(
+//                std::make_shared<Point_2r>(min_x, max_y+rational(2)),
+//                std::make_shared<Point_2r>(max_x, max_y+rational(2)),
+//                false);
+//    top_blue_sentinel->Insert
+//                (std::make_shared<Segment_2r_colored>(tmp_segment));
+
+//    SharedBundle bot_red_sentinel = std::make_shared<Bundle>();
+//    tmp_segment = Segment_2r_colored(
+//                std::make_shared<Point_2r>(min_x, min_y-rational(2)),
+//                std::make_shared<Point_2r>(max_x, min_y-rational(2)),
+//                true);
+//    bot_red_sentinel->Insert
+//                (std::make_shared<Segment_2r_colored>(tmp_segment));
+
+//    SharedBundle bot_blue_sentinel = std::make_shared<Bundle>();
+//    tmp_segment = Segment_2r_colored(
+//                std::make_shared<Point_2r>(min_x, min_y-rational(1)),
+//                std::make_shared<Point_2r>(max_x, min_y-rational(1)),
+//                false);
+//    bot_blue_sentinel->Insert
+//                (std::make_shared<Segment_2r_colored>(tmp_segment));
+
+//    bdl.InsertBundle(bot_red_sentinel, nullptr);
+//    bdl.InsertBundle(bot_blue_sentinel, bot_red_sentinel);
+//    bdl.InsertBundle(top_red_sentinel, bot_blue_sentinel);
+//    bdl.InsertBundle(top_blue_sentinel, top_red_sentinel);
+//    bdt.InsertBundle(bot_red_sentinel);
+//    bdt.InsertBundle(top_red_sentinel);
+//    bdl.set_bottom(bot_red_sentinel);
+//    bdl.set_top(top_blue_sentinel);
+
 
     //for each event p in L do:
     int endpoint_index = 0; //debug

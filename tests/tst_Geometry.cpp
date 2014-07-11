@@ -1026,22 +1026,22 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 400);
 
-        // Zig-zag arrangement
-        sample_arrangement = DDAD::Arrangement_2r();
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(23, 19), DDAD::Point_2r(33, 15), true);
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(33, 15), DDAD::Point_2r(23, 8), true);
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(23, 8), DDAD::Point_2r(33, 6), true);
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(33, 6), DDAD::Point_2r(23, 1), true);
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(25, 22), DDAD::Point_2r(25, 0), false);
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(29, 21), DDAD::Point_2r(29, 2), false);
-        intersections = DDAD::CountIntersections(sample_arrangement);
-        QCOMPARE(intersections, 8);
+//        // Zig-zag arrangement
+//        sample_arrangement = DDAD::Arrangement_2r();
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(23, 19), DDAD::Point_2r(33, 15), true);
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(33, 15), DDAD::Point_2r(23, 8), true);
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(23, 8), DDAD::Point_2r(33, 6), true);
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(33, 6), DDAD::Point_2r(23, 1), true);
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(25, 22), DDAD::Point_2r(25, 0), false);
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(29, 21), DDAD::Point_2r(29, 2), false);
+//        intersections = DDAD::CountIntersections(sample_arrangement);
+//        QCOMPARE(intersections, 8);
     }
 };
 
