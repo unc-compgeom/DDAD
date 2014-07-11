@@ -56,6 +56,7 @@ private slots:
     void onCreatePolyLineTriggered();
     void onCreatePolytopeTriggered();
     void onCreateArrangementTriggered();
+//    void onEndArrangement();
     void onCreateTerrainTriggered();
     void onSnapToGridToggled(bool state);
 

@@ -9,7 +9,7 @@ namespace DDAD {
 
 int CountIntersections(const Arrangement_2r &A,
                        Visual::IGeometryObserver *observer){
-    // Do this on A
+    /* Do this on A
     //# Invariants for the algorithm:
     //#
     //#	- All intersections whose witnesses are left of the sweepline have
@@ -30,7 +30,7 @@ int CountIntersections(const Arrangement_2r &A,
     //# Input:
     //#	- set of segments, each colored red or blue
     //#
-    //#
+    */
     int crossings = 0;
     std::list<ArrangementVertex_2r> L = A.get_vertices();
     //vertex comparator
@@ -106,7 +106,9 @@ int CountIntersections(const Arrangement_2r &A,
             {
                 bdt.Find(*ii);
                 tmp = bdt.get_root();
-                if(*(ii->get_point()) < tmp) tmp = tmp->get_prev_bundle();
+                while(tmp != nullptr && *(ii->get_point()) < tmp)
+                    tmp = tmp->get_prev_bundle();
+//                if(*(ii->get_point()) < tmp) tmp = tmp->get_prev_bundle();
             }
             else if(bdl.get_bottom() != nullptr)
             {
@@ -170,7 +172,8 @@ int CountIntersections(const Arrangement_2r &A,
                         jj->Merge(jj->get_next_bundle());
                         bdt.InsertBundle(jj);
                     }
-                    else jj->Merge(jj->get_next_bundle());
+                    else
+                        jj->Merge(jj->get_next_bundle());
 
                 }
             }
@@ -308,6 +311,7 @@ void Bundle::Merge(SharedBundle to_merge)
         to_merge->get_next_bundle()->set_prev_bundle(my_sptr);
     }
     set_next_bundle(to_merge->get_next_bundle());
+    top_segment_ = to_merge->get_top_seg();
     tree_.mergeTree(to_merge->get_tree());
 
 }

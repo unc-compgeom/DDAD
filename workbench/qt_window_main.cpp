@@ -66,6 +66,13 @@ MainWindow::MainWindow(QWidget *parent) :
             SIGNAL(triggered()),
             SLOT(onCreateArrangementTriggered()));
 
+    // compute intersections button
+    QAction* compute_intersections = new QAction("Find Intersections",
+                                                 input_state_buttons);
+//    connect(compute_intersections,
+//            SIGNAL(triggered()),
+//            SLOT(onEndArrangement()));
+
 
     // create polytope button
     QAction* create_polytope = new QAction("Create Polytope",
@@ -101,6 +108,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolBar->addAction(select_objects);
     ui->toolBar->addAction(create_polyline);
     ui->toolBar->addAction(create_arrangement);
+    ui->toolBar->addAction(compute_intersections);
     ui->toolBar->addAction(create_polytope);
     ui->toolBar->addAction(create_terrain);
     ui->toolBar->addSeparator();
@@ -144,6 +152,11 @@ MainWindow::MainWindow(QWidget *parent) :
             SIGNAL(CreateTerrainMesh(const QVector<QVector3D>&)),
             &scene_manager_->scene_observer_,
             SLOT(onCreateTerrainMesh(const QVector<QVector3D>&)));
+
+    connect(compute_intersections,
+            SIGNAL(triggered()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateArrangement()));
 
     // initialize widgets
     qDebug() << "Initializing ortho.";

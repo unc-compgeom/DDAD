@@ -9,6 +9,7 @@
 class tst_Geometry : public QObject {
     Q_OBJECT
 public:
+
     //=========================================================================
     //      Line: Factories
     //=========================================================================
@@ -59,6 +60,7 @@ public:
         }
         return spt;
     }
+
     //=========================================================================
     //      Arrangement: Factories
     //=========================================================================
@@ -174,7 +176,6 @@ private slots:
         QCOMPARE(node2.left->getElement(), 1);
     }
 
-
     void SplayTreeConstructors()
     {
         DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
@@ -199,6 +200,7 @@ private slots:
         QCOMPARE(spt.Size(), current_count+1);
 
     }
+
     void SplayTreeRemove()
     {
         DDAD::SplayTree<int> spt = SampleSplayTree_int();
@@ -215,6 +217,7 @@ private slots:
         spt.remove(100000);
         QCOMPARE(spt.Size(), current_count);
     }
+
     void SplayTreeFind()
     {
         DDAD::SplayTree<int> spt = SampleSplayTree_int();
@@ -298,12 +301,9 @@ private slots:
         QCOMPARE(spt.ContainsValue(2), false);
     }
 
-
-
     //=========================================================================
     //      Arrangement: Tests
     //=========================================================================
-
     void BundleConstructor()
     {
         DDAD::Bundle bdl = DDAD::Bundle();
@@ -430,6 +430,7 @@ private slots:
         sbdl3->set_prev_bundle(sbdl2);
         QVERIFY(sbdl3->get_prev_bundle() == sbdl2);
         sbdl1->Merge(sbdl2);
+        QVERIFY(sbdl1->get_top_seg() == sbdl2->get_top_seg());
         QVERIFY(sbdl3->get_prev_bundle() == sbdl1);
         QVERIFY(sbdl3->get_next_bundle() == nullptr);
         QVERIFY(sbdl1->get_next_bundle() == sbdl3);
@@ -954,7 +955,41 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 0);
 
-        // Grid arrangement
+        // Small grid arrangement
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), true);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 9);
+
+        // Small grid arrangement with reversed colors
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), false);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 9);
+
+        // Larger grid arrangement
         sample_arrangement = DDAD::Arrangement_2r();
         for(int ii = 2; ii < 22; ii++)
         {
@@ -966,7 +1001,7 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 400);
 
-        // Grid arrangement with reversed colors and non-vertical lines
+        // Larger grid arrangement with reversed colors and non-vertical lines
         sample_arrangement = DDAD::Arrangement_2r();
         for(int ii = 2; ii < 22; ii++)
         {
@@ -986,10 +1021,27 @@ private slots:
             sample_arrangement.AddSegment(
                         DDAD::Point_2r(1, ii), DDAD::Point_2r(24, ii+1), true);
         }
-        sample_arrangement.AddSegment(DDAD::Point_2r(50, 15), DDAD::Point_2r(60,20),true);
+        sample_arrangement.AddSegment(DDAD::Point_2r(50, 15),
+                                      DDAD::Point_2r(60, 20), true);
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 400);
 
+        // Zig-zag arrangement
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(23, 19), DDAD::Point_2r(33, 15), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(33, 15), DDAD::Point_2r(23, 8), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(23, 8), DDAD::Point_2r(33, 6), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(33, 6), DDAD::Point_2r(23, 1), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(25, 22), DDAD::Point_2r(25, 0), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(29, 21), DDAD::Point_2r(29, 2), false);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 8);
     }
 };
 

@@ -458,7 +458,6 @@ void OrthographicWidget::ShowContextMenu(const QPoint &p) {
 }
 
 void OrthographicWidget::keyPressEvent(QKeyEvent *event) {
-
     key_states_[event->key()] = true;
 }
 
