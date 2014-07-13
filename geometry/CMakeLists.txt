@@ -5,7 +5,9 @@
 
 add_library(geometry
     arithmetic.cpp
+    arrangement.cpp
     common.cpp
+    datastructures.cpp
     intersection.cpp
     line.cpp
     matrix.cpp

@@ -15,7 +15,7 @@
  * details.
  *
  */
-		                                                                                
+
 
 #include "StdioNode.h"
 
@@ -24,6 +24,8 @@
 #ifndef _WIN32
 #include <pthread.h>
 #endif
+#define _CRT_SECURE_NO_WARNINGS
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -91,7 +93,7 @@ const char kYellowColor[] = "\033[33m";
 */
 
 /*! @param _fdOut File descriptor to send output
-  @param flags bitmask of the following options: 
+  @param flags bitmask of the following options:
   @code
       OutputChannel - Includes the channel name in the output. e.g. [debug]
       OutputContext - Includes the filename and line number in the output. e.g. OpsecAgent.cpp:209
@@ -104,7 +106,7 @@ StdioNode::StdioNode(int _fdOut, int flags)
     , fdOut( _fdOut )
 {
     if(flags == DefaultOutput)
-	flags = OutputColor | OutputContext;
+    flags = OutputColor | OutputContext;
 
 #ifdef USE_COLOURS
     colorize = (flags & OutputColor) && isatty( fdOut );
@@ -159,7 +161,7 @@ StdioNode::publish( const RLogData &data )
     char timeStamp[32];
     time_t errTime = data.time;
     tm currentTime;
-   
+
 #ifdef HAVE_LOCALTIME_R
     localtime_r( &errTime, &currentTime );
 #else
@@ -169,37 +171,37 @@ StdioNode::publish( const RLogData &data )
     const char *color = NULL;
     if(colorize)
     {
-	sprintf(timeStamp, "%s%02i:%02i:%02i%s ",
-		kGreenColor,
-		currentTime.tm_hour,
-		currentTime.tm_min,
-		currentTime.tm_sec,
-		kNormalColor);
-    
-	string channel = data.publisher->channel->name();
-	LogLevel level = data.publisher->channel->logLevel();
+    sprintf(timeStamp, "%s%02i:%02i:%02i%s ",
+        kGreenColor,
+        currentTime.tm_hour,
+        currentTime.tm_min,
+        currentTime.tm_sec,
+        kNormalColor);
 
-	switch(level)
-	{
-	case Log_Critical:
-	case Log_Error:
-	    color = kRedColor;
-	    break;
-	case Log_Warning:
-	    color = kYellowColor;
-	    break;
-	case Log_Notice:
-	case Log_Info:
-	case Log_Debug:
-	case Log_Undef:
-	    break;
-	}
+    string channel = data.publisher->channel->name();
+    LogLevel level = data.publisher->channel->logLevel();
+
+    switch(level)
+    {
+    case Log_Critical:
+    case Log_Error:
+        color = kRedColor;
+        break;
+    case Log_Warning:
+        color = kYellowColor;
+        break;
+    case Log_Notice:
+    case Log_Info:
+    case Log_Debug:
+    case Log_Undef:
+        break;
+    }
     } else
     {
-	sprintf(timeStamp, "%02i:%02i:%02i ",
-		currentTime.tm_hour,
-		currentTime.tm_min,
-		currentTime.tm_sec);
+    sprintf(timeStamp, "%02i:%02i:%02i ",
+        currentTime.tm_hour,
+        currentTime.tm_min,
+        currentTime.tm_sec);
     }
 
 #ifdef USE_STRSTREAM
@@ -214,7 +216,7 @@ StdioNode::publish( const RLogData &data )
     }
     if (outputContext) {
     ss << "(" << data.publisher->fileName << ':'
-	<< data.publisher->lineNum << ") ";
+    << data.publisher->lineNum << ") ";
     }
 #ifndef _WIN32
     if (outputThreadId) {
@@ -225,12 +227,12 @@ StdioNode::publish( const RLogData &data )
 #endif
 
     if(color)
-	ss << color;
+    ss << color;
 
     ss << data.msg;
-    
+
     if(color)
-	ss << kNormalColor;
+    ss << kNormalColor;
 
     ss << '\n';
 

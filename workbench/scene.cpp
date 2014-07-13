@@ -286,6 +286,88 @@ void SceneObserver::SlotUpdate() {
 }
 
 //=============================================================================
+// PolyLine_2 management
+//=============================================================================
+
+void SceneObserver::onBeginCreatePolyLine(const QVector2D& start) {
+    qDebug() << "SceneObserver BeginCreatePolyLine " << start;
+
+    onDeselect();
+
+    static int numPolyLines = 0;
+    selected_name_ = QString("polyline2_%1").arg(numPolyLines++);
+    scene_objects_.insert(selected_name_,
+                          QSharedPointer<ISceneObject>(new ScenePolyLine_2()));
+    SelectedPolyLine_2()->AddObserver(this);
+    SelectedPolyLine_2()->Initialize(start);
+
+    ConfigManager::get().set_input_state(UPDATE_POLYLINE);
+}
+
+void SceneObserver::onUpdateNewPolyLine(const QVector2D& cur) {
+    qDebug() << "SceneObserver UpdateNewPolyLine " << cur;
+    SelectedPolyLine_2()->Update(cur);
+}
+
+void SceneObserver::onEndCreatePolyLine() {
+    qDebug() << "SceneObserver EndCreatePolytope";
+    ConfigManager::get().set_input_state(CREATE_POLYLINE);
+    DDAD::Polygon_2rDq CVH = DDAD::Melkman(SelectedPolyLine_2()->polyline(), SelectedPolyLine_2());
+    qDebug() << "Resulting hull:";
+    Visual::Material vMat;
+    vMat.set_ambient(Visual::Color(0, 255, 0, 255));
+    Visual::Point vPoint(vMat);
+    for(int ii = 0; ii < CVH.NumVertices(); ii++){
+        PolyChainVertex_2r vt = CVH[ii];
+        CVH.SigPushVisualPoint_2r(vt.vertex(), vPoint, 1000);
+    }
+    //SelectedPolytope_3()->Update();
+}
+
+//=============================================================================
+// Arrangement management
+//=============================================================================
+
+void SceneObserver::onBeginCreateArrangement(const QVector2D& start){
+    qDebug() << "SceneObserver onBeginCreateArrangement " << start;
+
+    onDeselect();
+
+    static int numArrangements = 0;
+    selected_name_ = QString("Arrangement2_%1").arg(numArrangements++);
+    scene_objects_.insert(selected_name_,
+                          QSharedPointer<ISceneObject>(new SceneArrangement_2()));
+
+
+    SelectedArrangement_2()->AddObserver(this);
+    SelectedArrangement_2()->InitSceneSegment(start, ConfigManager::get().input_color());
+
+    ConfigManager::get().set_input_state(UPDATE_ARRANGEMENT);
+}
+
+void SceneObserver::onBeginCreateSegment(const QVector2D& start){
+    qDebug() << "SceneObserver BeginCreateSegment" << start;
+    SelectedArrangement_2()->InitSceneSegment(start, ConfigManager::get().input_color());
+    ConfigManager::get().set_input_state(UPDATE_ARRANGEMENT);
+}
+void SceneObserver::onEndCreateSegment(const QVector2D& start){
+    qDebug() << "SceneObserver EndCreateSegment" << start;
+    SelectedArrangement_2()->AddSceneSegment(start);
+    ConfigManager::get().set_input_state(CREATE_SEGMENT);
+}
+
+void SceneObserver::onEndCreateArrangement(){
+    int foundIntersections = DDAD::CountIntersections(SelectedArrangement_2()->arrangement(), SelectedArrangement_2());
+    qDebug() << "SceneObserver EndCreateArrangement. found" << foundIntersections << "intersections.";
+    ConfigManager::get().set_input_state(CREATE_ARRANGEMENT);
+}
+
+void SceneObserver::onSwitchInputColor(){
+    qDebug() << "SceneObserver SwitchInputColor";
+    ConfigManager::get().switch_input_color();
+}
+
+//=============================================================================
 // Polytope_3 management
 //=============================================================================
 
@@ -402,6 +484,14 @@ int SceneObserver::NumObjects() const {
 
 ISceneObject* SceneObserver::SelectedObject() {
     return scene_objects_.value(selected_name_).data();
+}
+
+ScenePolyLine_2* SceneObserver::SelectedPolyLine_2() {
+    return dynamic_cast<ScenePolyLine_2*>(SelectedObject());
+}
+
+SceneArrangement_2* SceneObserver::SelectedArrangement_2() {
+    return dynamic_cast<SceneArrangement_2*>(SelectedObject());
 }
 
 ScenePolytope_3* SceneObserver::SelectedPolytope_3() {

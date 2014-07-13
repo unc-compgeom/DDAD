@@ -145,6 +145,7 @@ private:
 
 bool operator==(const Point_2r& lhs, const Point_2r& rhs);
 bool operator!=(const Point_2r& lhs, const Point_2r& rhs);
+bool operator<(const Point_2r& lhs, const Point_2r& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_2r& p);
 std::string to_string(const Point_2r& p);
 
@@ -410,6 +411,12 @@ inline bool operator==(const Point_2r& lhs, const Point_2r& rhs) {
 //! @brief Sequentially calls operator!= element-wise.
 inline bool operator!=(const Point_2r& lhs, const Point_2r& rhs) {
     return lhs.elements() != rhs.elements();
+}
+
+inline bool operator<(const Point_2r& lhs, const Point_2r& rhs) {
+    if(lhs.x() < rhs.x()) return true;
+    if(lhs.x() > rhs.x()) return false;
+    return lhs.y() < rhs.y();
 }
 
 inline std::ostream& operator<<(std::ostream& o, const Point_2r& p) {

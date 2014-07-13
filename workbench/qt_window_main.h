@@ -53,7 +53,10 @@ private slots:
     void UpdateStatusBarMsg(const QString& status);
 
     void onSelectObjectsTriggered();
+    void onCreatePolyLineTriggered();
     void onCreatePolytopeTriggered();
+    void onCreateArrangementTriggered();
+//    void onEndArrangement();
     void onCreateTerrainTriggered();
     void onSnapToGridToggled(bool state);
 

@@ -44,6 +44,36 @@ MainWindow::MainWindow(QWidget *parent) :
             SIGNAL(triggered()),
             SLOT(onSelectObjectsTriggered()));
 
+    // create polyline button
+    QAction* create_polyline = new QAction("Create PolyLine",
+                                           input_state_buttons);
+    //create_polytope->setIcon(QIcon("://icons/create_polytope.png"));
+    create_polyline->setCheckable(true);
+    create_polyline->setChecked(true);
+
+    connect(create_polyline,
+            SIGNAL(triggered()),
+            SLOT(onCreatePolyLineTriggered()));
+
+    // create arrangement button
+    QAction* create_arrangement = new QAction("Create Arrangment",
+                                           input_state_buttons);
+    //create_arrangment->setIcon(QIcon("://icons/create_arrangement.png"));
+    create_arrangement->setCheckable(true);
+    create_arrangement->setChecked(true);
+
+    connect(create_arrangement,
+            SIGNAL(triggered()),
+            SLOT(onCreateArrangementTriggered()));
+
+    // compute intersections button
+    QAction* compute_intersections = new QAction("Find Intersections",
+                                                 input_state_buttons);
+//    connect(compute_intersections,
+//            SIGNAL(triggered()),
+//            SLOT(onEndArrangement()));
+
+
     // create polytope button
     QAction* create_polytope = new QAction("Create Polytope",
                                            input_state_buttons);
@@ -76,6 +106,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // add buttons to toolbar
     ui->toolBar->addAction(select_objects);
+    ui->toolBar->addAction(create_polyline);
+    ui->toolBar->addAction(create_arrangement);
+    ui->toolBar->addAction(compute_intersections);
     ui->toolBar->addAction(create_polytope);
     ui->toolBar->addAction(create_terrain);
     ui->toolBar->addSeparator();
@@ -119,6 +152,11 @@ MainWindow::MainWindow(QWidget *parent) :
             SIGNAL(CreateTerrainMesh(const QVector<QVector3D>&)),
             &scene_manager_->scene_observer_,
             SLOT(onCreateTerrainMesh(const QVector<QVector3D>&)));
+
+    connect(compute_intersections,
+            SIGNAL(triggered()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreateArrangement()));
 
     // initialize widgets
     qDebug() << "Initializing ortho.";
@@ -169,6 +207,14 @@ void MainWindow::onSelectObjectsTriggered() {
     ConfigManager::get().set_input_state(SELECT);
 }
 
+void MainWindow::onCreatePolyLineTriggered() {
+    ConfigManager::get().set_input_state(CREATE_POLYLINE);
+}
+
+void MainWindow::onCreateArrangementTriggered() {
+    ConfigManager::get().set_input_state(CREATE_ARRANGEMENT);
+}
+
 void MainWindow::onCreatePolytopeTriggered() {
     ConfigManager::get().set_input_state(CREATE_POLYTOPE);
 }
@@ -195,10 +241,17 @@ void MainWindow::onCreateTerrainTriggered() {
     while (!in.atEnd()) {
         QString line = in.readLine();
         auto tokens = line.split(QRegularExpression("\\s+"), QString::SkipEmptyParts);
-        //qDebug() << tokens << " size: " << tokens.size();
+        qDebug() << tokens << " size: " << tokens.size();
+        if(tokens.size() > 3){
         points.push_back(QVector3D(tokens.at(1).toFloat(),
                                    tokens.at(2).toFloat(),
                                    tokens.at(3).toFloat()));
+        }
+        if(tokens.size() == 3){
+        points.push_back(QVector3D(tokens.at(0).toFloat(),
+                                   tokens.at(1).toFloat(),
+                                   tokens.at(2).toFloat()));
+        }
         //qDebug() << points.back();
     }
 

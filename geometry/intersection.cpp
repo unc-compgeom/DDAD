@@ -46,8 +46,7 @@ void Line_2rLine_2r::Update() {
     time_ = (line_imp_->d()-Dot(line_imp_->N(), line_par_->p()))/
             (Dot(line_imp_->N(), line_par_->V()));
     if (!intersection_) {
-        intersection_ = std::make_shared<Point_2r>(line_par_->p()+
-                                                   line_par_->V()*time_);
+        intersection_ = std::shared_ptr<Point_2r>(new Point_2r(line_par_->p()+line_par_->V()*time_));
     } else {
         *intersection_ = line_par_->p()+line_par_->V()*time_;
     }

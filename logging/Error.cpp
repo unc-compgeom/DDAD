@@ -15,12 +15,13 @@
  * details.
  *
  */
-		                                                                                
-                             
+
+
 #include "Error.h"
 
 #include <stdio.h>
 #include <stdarg.h>
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -50,25 +51,25 @@ namespace rlog
     */
     struct ErrorData
     {
-	//! for reference counting
-	int usageCount; // to make copy fast
+    //! for reference counting
+    int usageCount; // to make copy fast
 
-	//! component where error occured
-	string component;
-	//! file where error occured
-	string file;
-	//! function name where error occured
-	string function;
-	//! line number where error occured
-	int line;
-	//! condition string (in case of rAssert) at error location
-	string msg;
+    //! component where error occured
+    string component;
+    //! file where error occured
+    string file;
+    //! function name where error occured
+    string function;
+    //! line number where error occured
+    int line;
+    //! condition string (in case of rAssert) at error location
+    string msg;
     };
 }
 
-static 
-string errorMessage( const char *file, int line, 
-	const char *msg)
+static
+string errorMessage( const char *file, int line,
+    const char *msg)
 {
 #ifdef USE_STRSTREAM
     ostrstream ss;
@@ -85,7 +86,7 @@ string errorMessage( const char *file, int line,
 
 /*! @class rlog::Error <rlog/Error.h>
   @brief Error Used as exception thrown from rAssert() on failure.
-  
+
   Error is derived from std::runtime_error exception and is thrown from
   rAssert() to indicate the reason and location of the failure.
 
@@ -100,11 +101,11 @@ string errorMessage( const char *file, int line,
   {
       try
       {
-	  testFunc();
+      testFunc();
       } catch( Error &err )
       {
-	  rDebug("caught assert failure from %s line %i ( %s )",
-	      err.file(), err.line(), err.function() );
+      rDebug("caught assert failure from %s line %i ( %s )",
+          err.file(), err.line(), err.function() );
       }
   }
   @endcode
@@ -115,7 +116,7 @@ string errorMessage( const char *file, int line,
 
 
 Error::Error( const char *component, const char *file, const char *function,
-	int line, const char *msg )
+    int line, const char *msg )
     : runtime_error( errorMessage( file, line, msg ) )
 {
     data = new ErrorData;
@@ -128,7 +129,7 @@ Error::Error( const char *component, const char *file, const char *function,
 }
 
 Error::Error( const char *component, const char *file, const char *function,
-	int line, const std::string &msg )
+    int line, const std::string &msg )
     : runtime_error( errorMessage( file, line, msg.c_str() ) )
 {
     data = new ErrorData;
@@ -151,9 +152,9 @@ Error::~Error() throw()
 {
     if(data)
     {
-	if(--data->usageCount == 0)
-	    delete data;
-	data = 0;
+    if(--data->usageCount == 0)
+        delete data;
+    data = 0;
     }
 }
 
@@ -161,12 +162,12 @@ Error & Error::operator = (const Error & src)
 {
     if(data != src.data)
     {
-	++src.data->usageCount;
-	if(--data->usageCount == 0)
-	    delete data;
-	data = src.data;
+    ++src.data->usageCount;
+    if(--data->usageCount == 0)
+        delete data;
+    data = src.data;
     }
-	
+
     return *this;
 }
 
@@ -220,22 +221,22 @@ string rlog::_format_msg( const char *format, ... )
     std::string result;
     if(ncpy < (int)sizeof(msgBuf))
     {
-	if(ncpy > 0)
-	    result = msgBuf;
-	else
-	    result = "RLOG internal formatting error";
+    if(ncpy > 0)
+        result = msgBuf;
+    else
+        result = "RLOG internal formatting error";
     } else
     {
-	// buffer wasn't large ehough, allocate a temporary
-	int len = ncpy + 1;
-	char *buf = new char[len];
-	
-	va_start( args, format );
-    vsnprintf( buf, len, format, args );
-	va_end( args );
+    // buffer wasn't large ehough, allocate a temporary
+    int len = ncpy + 1;
+    char *buf = new char[len];
 
-	result = buf;
-	delete[] buf;
+    va_start( args, format );
+    vsnprintf( buf, len, format, args );
+    va_end( args );
+
+    result = buf;
+    delete[] buf;
     }
 
     return result;

@@ -15,8 +15,8 @@
  * details.
  *
  */
-		                                                                                
-                             
+
+
 #ifndef _Error_incl_
 #define _Error_incl_
 
@@ -24,6 +24,7 @@
 #include "common.h"
 
 #include <string>
+#define _CRT_SECURE_NO_WARNINGS
 
 namespace rlog
 {
@@ -33,25 +34,25 @@ namespace rlog
     class RLOG_DECL Error : public std::runtime_error
     {
     public:
-	Error( const char *component, const char *file, const char *function,
-		int line, const char *msg );
-	Error( const char *component, const char *file, const char *function,
-		int line, const std::string &msg );
-	Error(const Error &src );
-	virtual ~Error() throw();
+    Error( const char *component, const char *file, const char *function,
+        int line, const char *msg );
+    Error( const char *component, const char *file, const char *function,
+        int line, const std::string &msg );
+    Error(const Error &src );
+    virtual ~Error() throw();
 
-	Error &operator = (const Error &src);
+    Error &operator = (const Error &src);
 
-	void log( RLogChannel * channel ) const;
+    void log( RLogChannel * channel ) const;
 
-	const char *component() const;
-	const char *file() const;
-	const char *function() const;
-	int line() const;
-	const char *message() const;
+    const char *component() const;
+    const char *file() const;
+    const char *function() const;
+    int line() const;
+    const char *message() const;
 
     private:
-	struct ErrorData *data;
+    struct ErrorData *data;
     };
 
     std::string _format_msg( const char *fmt, ... ) PRINTF(1,2);
@@ -65,12 +66,12 @@ namespace rlog
 #if C99_VARIADAC_MACROS
 #define _ERROR_IMPL_VA( COMPONENT, FMT, ... ) \
     rlog::Error( STR(COMPONENT), __FILE__, __FUNCTION__, __LINE__, \
-	    rlog::_format_msg( FMT, __VA_ARGS__ ) )
+        rlog::_format_msg( FMT, __VA_ARGS__ ) )
 #define ERROR_FMT( FMT, ... ) _ERROR_IMPL_VA( RLOG_COMPONENT, FMT, __VA_ARGS__ )
 #elif PREC99_VARIADIC_MACROS
 #define _ERROR_IMPL_VA( COMPONENT, FMT, ARGS... ) \
     rlog::Error( STR(COMPONENT), __FILE__, __FUNCTION__, __LINE__, \
-	    rlog::_format_msg( FMT, ##ARGS ) )
+        rlog::_format_msg( FMT, ##ARGS ) )
 #define ERROR_FMT( FMT, ARGS... ) _ERROR_IMPL_VA( RLOG_COMPONENT, FMT, ##ARGS )
 #else
 // TODO: implement for no variadics case..
