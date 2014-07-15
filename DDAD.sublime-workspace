@@ -7,6 +7,41 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "geometry/arrangement.cpp",
+			"settings":
+			{
+				"buffer_size": 23169,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "geometry/arrangement.h",
+			"settings":
+			{
+				"buffer_size": 9033,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "geometry/datastructures.h",
+			"settings":
+			{
+				"buffer_size": 14632,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "package com.spritzinc.android.sdk.sample.helloworld;\n\nimport com.spritzinc.android.sdk.SpritzSDK;\n\n/**\n * Created by avanha on 1/2/14.\n */\npublic class Application extends android.app.Application {\n\n    @Override\n    public void onCreate() {\n        super.onCreate();\n\n        SpritzSDK.init(this,\n        	\"YOUR CLIENT ID\",\n       		\"YOUR CLIENT SECRET\",\n       		\"https://sdk.spritzinc.com/android/examples/login_success.html\"\n        );\n    }\n\n}\n",
+			"file": "/C/Users/Evan/AppData/Local/Temp/Temp1_SpritzSDK.zip/samples/HelloWorld/src/main/java/com/spritzinc/android/sdk/sample/helloworld/Application.java",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 449,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -60,6 +95,13 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Evan/Dropbox/cg/matlab/segint/sweep.m",
+		"/C/Users/Evan/Dropbox/cg/matlab/segint/countCrossings.m",
+		"/C/Users/Evan/GitHub/DDAD/geometry/arrangement2.cpp",
+		"/C/Users/Evan/GitHub/DDAD/geometry/arrangement2.h",
+		"/C/Users/Evan/GitHub/DDAD/geometry/triangle.cpp",
+		"/C/Users/Evan/GitHub/DDAD/archive/test/test_Discrete_upper_envelope.cc",
+		"/C/Users/Evan/GitHub/DDAD/archive/bool_op/RedBlue/src/TheMain.cpp",
 		"/C/Users/Evan/GitHub/DDAD/archive/notes/profiling_w_valgrind",
 		"/C/Users/Evan/GitHub/DDAD/archive/base/Predicates_2.cpp",
 		"/C/Users/Evan/GitHub/DDAD/geometry/point.cpp",
@@ -110,8 +152,127 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "geometry/arrangement.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23169,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "geometry/arrangement.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9033,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "geometry/datastructures.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14632,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 9310.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/Evan/AppData/Local/Temp/Temp1_SpritzSDK.zip/samples/HelloWorld/src/main/java/com/spritzinc/android/sdk/sample/helloworld/Application.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 449,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								445,
+								445
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -146,6 +307,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0

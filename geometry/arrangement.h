@@ -145,8 +145,12 @@ public:
                            BundleTree& bdt);
     void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
     void RemoveBundle(SharedBundle remove_this);
-    SharedBundle LocateVertex(ArrangementVertex_2r &input_vertex,
-                              BundleTree& bdt);
+    void LocateVertex(ArrangementVertex_2r &input_vertex,
+                              BundleTree& bdt,
+                      SharedBundle& red_above,
+                      SharedBundle& red_below,
+                      SharedBundle& blue_above,
+                      SharedBundle& blue_below);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
     int SortPortion(SharedBundle &begin, SharedBundle &end,

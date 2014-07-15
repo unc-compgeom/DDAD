@@ -45,8 +45,7 @@ int CountIntersections(const Arrangement_2r &A,
     L.sort(compare());
     BundleTree bdt = BundleTree();
     BundleList bdl = BundleList();
-    SharedBundle above;
-    SharedBundle below;
+    SharedBundle red_above, red_below, blue_above, blue_below, bot, top;
     bdl.GenerateSentinels(L, bdt);
 
     //for each event p in L do:
@@ -58,12 +57,16 @@ int CountIntersections(const Arrangement_2r &A,
         Segment_2r_colored current_segment =
                 Segment_2r_colored(ii->get_point(), ii->get_other_point(),
                                    ii->is_red());
-        bdt.LocateVertex(*ii, above, below);
-        // We now have the red bundles directly above and below
-        //  (or containing) ii
 
-        below = bdl.LocateVertex(*ii, bdt);
+        bdl.LocateVertex(*ii, bdt, blue_above, blue_below,
+                                 red_above, red_below);
         // Locates the highest bundle below or containing the current event
+        top = (blue_above > red_above)? blue_above : red_above;
+        bot = (blue_below < red_below)? blue_below : red_below;
+        bdl.SplitBundlesContaining(*ii, top, bot);
+        // Split any bundles containing the current vertex (must be in
+        //  range [bottom, top]
+
 
         crossings += bdl.SortPortion(bdl.get_bottom(), bdl.get_top(), *ii);
         // Count the crossings witnessed by the event point
@@ -274,17 +277,11 @@ RelativePosition Bundle::SetRelativePosition(ArrangementVertex_2r &test_point)
 {
     Point_2r the_point = *(test_point.get_point());
     if(Predicate::AIsLeftOfB(the_point, top_segment_->support()))
-    {
         rel_position_ = BELOW;
-    }
     else if(Predicate::AIsRightOfB(the_point, bottom_segment_->support()))
-    {
         rel_position_ = ABOVE;
-    }
     else
-    {
         rel_position_ = ENDING;
-    }
     return rel_position_;
 }
 
@@ -373,9 +370,7 @@ SharedBundle BundleTree::SplitBundleAtVertex(ArrangementVertex_2r &split_here)
         tmp_bundle_rt = tmp_bundle_left->Split(*(split_here.get_point()));
         bundle_tree_.insert(tmp_bundle_left);
         bundle_tree_.insert(tmp_bundle_rt);
-
         return tmp_bundle_rt;
-
     }
     else{
         return nullptr;
@@ -410,52 +405,66 @@ void BundleList::GenerateSentinels(std::list<ArrangementVertex_2r> L,
             max_y = ii->get_y();
         else if(ii->get_y() < min_y)
             min_y = ii->get_y();
-        else if(ii->get_x() > max_x)
+        if(ii->get_x() > max_x)
             max_x = ii->get_x();
         else if(ii->get_x() < min_x)
             min_x = ii->get_x();
     }
-    // Generate sentinels at the top and bottom of the list
-    SharedBundle top_red_sentinel = std::make_shared<Bundle>();
+    /* Generate sentinels at the top and bottom of the list
+        (order is blue-red-blue-red-blue from bottom to top) */
+    SharedBundle top_blue_cap = std::make_shared<Bundle>();
     Segment_2r_colored tmp_segment = Segment_2r_colored(
-                std::make_shared<Point_2r>(min_x, max_y+(1)),
-                std::make_shared<Point_2r>(max_x, max_y+(1)),
-                true);
-    top_red_sentinel->Insert
-                (std::make_shared<Segment_2r_colored>(tmp_segment));
+                std::make_shared<Point_2r>(min_x, max_y+3),
+                std::make_shared<Point_2r>(max_x, max_y+3),
+                false);
+    top_blue_cap->Insert
+            (std::make_shared<Segment_2r_colored>(tmp_segment));
+    SharedBundle top_red_sentinel = std::make_shared<Bundle>();
 
-    SharedBundle top_blue_sentinel = std::make_shared<Bundle>();
     tmp_segment = Segment_2r_colored(
                 std::make_shared<Point_2r>(min_x, max_y+(2)),
                 std::make_shared<Point_2r>(max_x, max_y+(2)),
+                true);
+    top_red_sentinel->Insert
+            (std::make_shared<Segment_2r_colored>(tmp_segment));
+    //    std::cout << "\nTop red: " << tmp_segment.p() << tmp_segment.q();
+
+    SharedBundle top_blue_sentinel = std::make_shared<Bundle>();
+    tmp_segment = Segment_2r_colored(
+                std::make_shared<Point_2r>(min_x, max_y+(1)),
+                std::make_shared<Point_2r>(max_x, max_y+(1)),
                 false);
     top_blue_sentinel->Insert
-                (std::make_shared<Segment_2r_colored>(tmp_segment));
+            (std::make_shared<Segment_2r_colored>(tmp_segment));
+    //    std::cout << "\nTop blue: " << tmp_segment.p() << tmp_segment.q();
 
     SharedBundle bot_red_sentinel = std::make_shared<Bundle>();
     tmp_segment = Segment_2r_colored(
-                std::make_shared<Point_2r>(min_x, min_y+(-2)),
-                std::make_shared<Point_2r>(max_x, min_y+(-2)),
+                std::make_shared<Point_2r>(min_x, min_y+(-1)),
+                std::make_shared<Point_2r>(max_x, min_y+(-1)),
                 true);
     bot_red_sentinel->Insert
-                (std::make_shared<Segment_2r_colored>(tmp_segment));
+            (std::make_shared<Segment_2r_colored>(tmp_segment));
+    //    std::cout << "\nBot red: " << tmp_segment.p() << tmp_segment.q();
 
     SharedBundle bot_blue_sentinel = std::make_shared<Bundle>();
     tmp_segment = Segment_2r_colored(
-                std::make_shared<Point_2r>(min_x, min_y+(-1)),
-                std::make_shared<Point_2r>(max_x, min_y+(-1)),
+                std::make_shared<Point_2r>(min_x, min_y+(-2)),
+                std::make_shared<Point_2r>(max_x, min_y+(-2)),
                 false);
     bot_blue_sentinel->Insert
-                (std::make_shared<Segment_2r_colored>(tmp_segment));
+            (std::make_shared<Segment_2r_colored>(tmp_segment));
+    //    std::cout << "\nBot blue: " << tmp_segment.p() << tmp_segment.q();
 
-    InsertBundle(bot_red_sentinel, nullptr);
-    InsertBundle(bot_blue_sentinel, bot_red_sentinel);
-    InsertBundle(top_red_sentinel, bot_blue_sentinel);
-    InsertBundle(top_blue_sentinel, top_red_sentinel);
+    InsertBundle(bot_blue_sentinel, nullptr);
+    InsertBundle(bot_red_sentinel, bot_blue_sentinel);
+    InsertBundle(top_blue_sentinel, bot_red_sentinel);
+    InsertBundle(top_red_sentinel, top_blue_sentinel);
+    InsertBundle(top_blue_cap, top_red_sentinel);
     bdt.InsertBundle(bot_red_sentinel);
     bdt.InsertBundle(top_red_sentinel);
-    set_bottom(bot_blue_sentinel);
-    set_top(top_red_sentinel);
+    set_bottom(bot_red_sentinel);
+    set_top(top_blue_sentinel);
 }
 
 void BundleList::InsertBundle(SharedBundle insert_this, SharedBundle after_this)
@@ -477,6 +486,9 @@ void BundleList::InsertBundle(SharedBundle insert_this, SharedBundle after_this)
     if(temp == nullptr) top_ = insert_this;
     else temp->set_prev_bundle(insert_this);
 
+    //    std::cout << get_bottom()->get_bot_seg()->p();
+    //    std::cout << get_bottom()->get_bot_seg()->q();
+
 }
 
 void BundleList::RemoveBundle(SharedBundle remove_this)
@@ -495,22 +507,32 @@ void BundleList::RemoveBundle(SharedBundle remove_this)
         next_bundle->set_prev_bundle(prev_bundle);
 }
 
-SharedBundle BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
-                                      BundleTree& bdt)
+void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
+                              BundleTree& bdt,
+                              SharedBundle& red_above,
+                              SharedBundle& red_below,
+                              SharedBundle& blue_above,
+                              SharedBundle& blue_below)
 {
     // Using the tree and list, locate the highest bundle below or containing
     //  the input vertex
-    SharedBundle above, below, out;
-    bdt.LocateVertex(input_vertex, above, below);
-    out = above->get_next_bundle();
-    while(out->SetRelativePosition(input_vertex) == ABOVE)
+    // Locate red bundles within the tree
+    bdt.LocateVertex(input_vertex, red_above, red_below);
+    if(red_above->Contains(input_vertex) && red_below->Contains(input_vertex))
     {
-        out = out->get_prev_bundle();
+        red_above = red_above->get_next_bundle()->get_next_bundle();
+        red_below = red_below->get_prev_bundle()->get_prev_bundle();
     }
-    if(out->Contains(input_vertex) && out->CountSegments()>1)
-        SplitBundleAtVertex(out, input_vertex);
-    return out;
 
+    // Locate blue bundles using the list
+    blue_below = red_below->get_next_bundle();
+    blue_above = red_below->get_prev_bundle();
+    while(blue_below->SetRelativePosition(input_vertex) != BELOW)
+//    while(*(input_vertex.get_point()) <= blue_below)
+        blue_below = blue_below->get_prev_bundle()->get_prev_bundle();
+    while(blue_above->SetRelativePosition(input_vertex) != ABOVE)
+//    while(*(input_vertex.get_point()) >= blue_above)
+        blue_above = blue_above->get_next_bundle()->get_next_bundle();
 }
 
 SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
@@ -521,34 +543,33 @@ SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
             split_bundle->get_tree()->SplitTree(*(here.get_point()));
 
     SharedBundle new_bundle = std::make_shared<Bundle>(R);
-//    new_bundle->set_prev_bundle(split_bundle);
+    //    new_bundle->set_prev_bundle(split_bundle);
     InsertBundle(new_bundle, split_bundle);
     return new_bundle;
+}
+
+void BundleList::SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
+                                        SharedBundle& top,
+                                        SharedBundle& bot)
+{
+
 }
 
 int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
                             ArrangementVertex_2r v)
 {
-    //    SharedBundle temp_prev = begin->get_prev_bundle();
-    //    SharedBundle temp_next = end->get_next_bundle();
-
-
     for(SharedBundle kk = bottom_; (kk != top_->get_next_bundle());
         kk = kk->get_next_bundle() )
     {
         kk->SetRelativePosition(v);
     }
-
     SharedBundle j;
     SharedBundle i;
     int num_intersections = 0;
 
-    for(i = bottom_;
-        /*(i != end->get_next_bundle()) && */(i != top_->get_next_bundle());
-        i = i->get_next_bundle())
+    for(i = bottom_; (i != top_->get_next_bundle()); i = i->get_next_bundle())
     {
         j = i;
-
         while(
               (j->get_prev_bundle() != bottom_->get_prev_bundle()) &&
               (j->get_rel_position() < j->get_prev_bundle()->get_rel_position())
@@ -583,10 +604,14 @@ void BundleList::SwapAdjacentBundles(SharedBundle& left, SharedBundle& right)
 void BundleList::SwapBundles(SharedBundle& a, SharedBundle& b)
 {
     SharedBundle tmp = std::make_shared<Bundle>();
-    if(a == bottom_) bottom_ = b;
-    else if(b == bottom_) bottom_ = a;
-    if(a == top_) top_ = b;
-    else if(b == top_) top_ = a;
+    if(a == bottom_)
+        bottom_ = b;
+    else if(b == bottom_)
+        bottom_ = a;
+    if(a == top_)
+        top_ = b;
+    else if(b == top_)
+        top_ = a;
     tmp->set_next_bundle(a->get_next_bundle());
     tmp->set_prev_bundle(a->get_prev_bundle());
     a->set_prev_bundle(b->get_prev_bundle());
