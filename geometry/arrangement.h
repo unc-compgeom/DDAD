@@ -153,6 +153,10 @@ public:
                       SharedBundle& blue_below);
     SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
                              ArrangementVertex_2r &here);
+    void SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
+                                BundleTree& bdt,
+                                SharedBundle& top,
+                                SharedBundle& bot);
     int SortPortion(SharedBundle &begin, SharedBundle &end,
                     ArrangementVertex_2r v);
     void SwapAdjacentBundles(SharedBundle& left, SharedBundle& right);

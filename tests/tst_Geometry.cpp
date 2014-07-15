@@ -802,6 +802,31 @@ private slots:
         QCOMPARE(sbdl2->get_prev_bundle()->CountSegments(), 1);
     }
 
+    void BundleListSplitBundlesContaining()
+    {
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        // Create bounding box
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(100, 100), DDAD::Point_2r(3, 3), true);
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        DDAD::SharedBundle bdl1 = std::make_shared<DDAD::Bundle>();
+        bdl1->Insert(SampleSharedSegment(5, 5, 20, 5, true));
+        bdl1->Insert(SampleSharedSegment(5, 10, 20, 10, true));
+        bdt.InsertBundle(bdl1);
+        bdl.InsertBundle(bdl1, bdl.get_bottom());
+        DDAD::ArrangementVertex_2r test_pt =
+                SampleArrangementVertex(6, 6, true);
+        bdl.SplitBundlesContaining(test_pt, bdt, bdl.get_top(), bdl.get_bottom());
+        QCOMPARE(bdl1->CountSegments(), 1);
+        QCOMPARE(bdl1->get_next_bundle()->CountSegments(), 1);
+        QVERIFY(bdl1->get_next_bundle() != nullptr);
+        QVERIFY(bdl1->get_next_bundle()->get_next_bundle() != nullptr);
+        QVERIFY(bdl1->get_prev_bundle() != nullptr);
+        QVERIFY(bdl1->get_prev_bundle()->get_prev_bundle() != nullptr);
+    }
+
     void BundleListSortPortion()
     {
         DDAD::BundleList bdl = DDAD::BundleList();

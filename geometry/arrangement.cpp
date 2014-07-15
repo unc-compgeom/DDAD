@@ -63,12 +63,14 @@ int CountIntersections(const Arrangement_2r &A,
         // Locates the highest bundle below or containing the current event
         top = (blue_above > red_above)? blue_above : red_above;
         bot = (blue_below < red_below)? blue_below : red_below;
-        bdl.SplitBundlesContaining(*ii, top, bot);
+        // This isn't quite right, but it might be close enough
+
+        bdl.SplitBundlesContaining(*ii, bdt, top, bot);
         // Split any bundles containing the current vertex (must be in
         //  range [bottom, top]
 
 
-        crossings += bdl.SortPortion(bdl.get_bottom(), bdl.get_top(), *ii);
+        crossings += bdl.SortPortion(bot, top, *ii);
         // Count the crossings witnessed by the event point
 
         if(*(ii->get_point()) < *(ii->get_other_point()))
@@ -549,16 +551,25 @@ SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
 }
 
 void BundleList::SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
+                                        BundleTree& bdt,
                                         SharedBundle& top,
                                         SharedBundle& bot)
 {
-
+    for(SharedBundle ii = bot; ii != top; ii = ii->get_next_bundle())
+    {
+        if(ii->Contains(input_vertex))
+        {
+            if(input_vertex.is_red())
+                bdt.SplitBundleAtVertex(input_vertex);
+            SplitBundleAtVertex(ii, input_vertex);
+        }
+    }
 }
 
 int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
                             ArrangementVertex_2r v)
 {
-    for(SharedBundle kk = bottom_; (kk != top_->get_next_bundle());
+    for(SharedBundle kk = begin; (kk != end->get_next_bundle());
         kk = kk->get_next_bundle() )
     {
         kk->SetRelativePosition(v);
@@ -567,11 +578,11 @@ int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
     SharedBundle i;
     int num_intersections = 0;
 
-    for(i = bottom_; (i != top_->get_next_bundle()); i = i->get_next_bundle())
+    for(i = begin; (i != end->get_next_bundle()); i = i->get_next_bundle())
     {
         j = i;
         while(
-              (j->get_prev_bundle() != bottom_->get_prev_bundle()) &&
+              (j->get_prev_bundle() != begin->get_prev_bundle()) &&
               (j->get_rel_position() < j->get_prev_bundle()->get_rel_position())
               )
         {
