@@ -54,9 +54,7 @@ int CountIntersections(const Arrangement_2r &A,
     for(std::list<ArrangementVertex_2r>::iterator ii = L.begin();
         ii != L.end(); ii ++)
     {
-        Segment_2r_colored current_segment =
-                Segment_2r_colored(ii->get_point(), ii->get_other_point(),
-                                   ii->is_red());
+
 
         bdl.LocateVertex(*ii, bdt, blue_above, blue_below,
                                  red_above, red_below);
@@ -74,63 +72,17 @@ int CountIntersections(const Arrangement_2r &A,
         // Count the crossings witnessed by the event point
 
         if(*(ii->get_point()) < *(ii->get_other_point()))
-        {
             // Current point is a left-endpoint
             // Search for the point in the linked list
-            SharedBundle new_bundle = std::make_shared<Bundle>();
-            SharedSegment new_segment =
-                    std::make_shared<Segment_2r_colored>(current_segment);
-            new_bundle->Insert(new_segment);
-            bdt.Find(*ii);
-            SharedBundle tmp = bdt.get_root();
-            while(*(ii->get_point()) < tmp)
-                tmp = tmp->get_prev_bundle();
-            if(ii->is_red()) bdt.InsertBundle(new_bundle);
-            //            if(tmp != nullptr && *(ii->get_point()) < tmp)
-            //                // ii is below all bundles in the tree
-            //                bdl.InsertBundle(new_bundle, tmp->get_prev_bundle());
-            bdl.InsertBundle(new_bundle, tmp);
-        }
+            bdl.InsertLeftEndpoint(*ii, bdt);
         else
-        {
             // Point is a right-endpoint, remove its segment from the structure
             // Locate the bundle containing it
-            for(SharedBundle jj = bdl.get_bottom();
-                (jj != nullptr);
-                jj = jj->get_next_bundle())
-            {
-                if(jj->Contains(*ii))
-                {
-                    jj->Remove(std::make_shared<Segment_2r_colored>
-                               (current_segment));
-                    if(jj->CountSegments() == 0)
-                    {
-                        bdl.RemoveBundle(jj);
-                        bdt.RemoveBundle(jj);
-                    }
-                }
-            }
-        }
+            bdl.RemoveRightEndpoint(*ii, bdt);
 
         // Merge any bundles in the list that deserve it
-        for(SharedBundle jj = bdl.get_bottom(); jj != bdl.get_top()->get_prev_bundle(); )
-        {
-            if(jj->get_color() == jj->get_next_bundle()->get_color())
-            {
-                //deal with bundle tree if bundles are red
-                if(jj->get_color())
-                {
-                    bdt.RemoveBundle(jj);
-                    bdt.RemoveBundle(jj->get_next_bundle());
-                    jj->Merge(jj->get_next_bundle());
-                    bdt.InsertBundle(jj);
-                }
-                else
-                    jj->Merge(jj->get_next_bundle());
+        bdl.MergeOrderedBundles(bdt);
 
-            }
-            jj = jj->get_next_bundle();
-        }
         //crossings++;
         endpoint_index++;
 
@@ -610,6 +562,79 @@ void BundleList::SwapAdjacentBundles(SharedBundle& left, SharedBundle& right)
     right->set_next_bundle(left);
     if(right->get_prev_bundle() != nullptr)
         right->get_prev_bundle()->set_next_bundle(right);
+}
+
+void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
+                                    BundleTree& bdt)
+{
+
+    SharedBundle new_bundle = std::make_shared<Bundle>();
+    Segment_2r_colored current_segment =
+            Segment_2r_colored(input_vertex.get_point(),
+                               input_vertex.get_other_point(),
+                               input_vertex.is_red());
+    SharedSegment new_segment =
+            std::make_shared<Segment_2r_colored>(current_segment);
+    new_bundle->Insert(new_segment);
+    bdt.Find(input_vertex);
+    SharedBundle tmp = bdt.get_root();
+    while(*(input_vertex.get_point()) < tmp)
+        tmp = tmp->get_prev_bundle();
+    if(input_vertex.is_red()) bdt.InsertBundle(new_bundle);
+    //            if(tmp != nullptr && *(ii->get_point()) < tmp)
+    //                // ii is below all bundles in the tree
+    //                bdl.InsertBundle(new_bundle, tmp->get_prev_bundle());
+    InsertBundle(new_bundle, tmp);
+}
+
+void BundleList::RemoveRightEndpoint(ArrangementVertex_2r& input_vertex,
+                                     BundleTree& bdt)
+{
+    for(SharedBundle jj = get_bottom();
+        (jj != nullptr);
+        jj = jj->get_next_bundle())
+    {
+        if(jj->Contains(input_vertex))
+        {
+            Segment_2r_colored current_segment =
+                    Segment_2r_colored(input_vertex.get_point(),
+                                       input_vertex.get_other_point(),
+                                       input_vertex.is_red());
+            jj->Remove(std::make_shared<Segment_2r_colored>
+                       (current_segment));
+            if(jj->CountSegments() == 0)
+            {
+                RemoveBundle(jj);
+                bdt.RemoveBundle(jj);
+            }
+        }
+    }
+}
+
+void BundleList::MergeOrderedBundles(BundleTree& bdt)
+{
+    for(SharedBundle jj = get_bottom(); jj != get_top()->get_next_bundle(); )
+    {
+        if(jj->get_color() == jj->get_next_bundle()->get_color())
+        {
+            // reset top if need be
+            if(jj->get_next_bundle() == top_)
+                top_ = jj;
+
+            //deal with bundle tree if bundles are red
+            if(jj->get_color())
+            {
+                bdt.RemoveBundle(jj);
+                bdt.RemoveBundle(jj->get_next_bundle());
+                jj->Merge(jj->get_next_bundle());
+                bdt.InsertBundle(jj);
+            }
+            else
+                jj->Merge(jj->get_next_bundle());
+
+        }
+        jj = jj->get_next_bundle();
+    }
 }
 
 void BundleList::SwapBundles(SharedBundle& a, SharedBundle& b)

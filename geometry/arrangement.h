@@ -160,6 +160,11 @@ public:
     int SortPortion(SharedBundle &begin, SharedBundle &end,
                     ArrangementVertex_2r v);
     void SwapAdjacentBundles(SharedBundle& left, SharedBundle& right);
+    void InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
+                            BundleTree& bdt);
+    void RemoveRightEndpoint(ArrangementVertex_2r& input_vertex,
+                             BundleTree& bdt);
+    void MergeOrderedBundles(BundleTree& bdt);
     void SwapBundles(SharedBundle &a, SharedBundle &b);
 
 private:

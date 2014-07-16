@@ -751,6 +751,23 @@ private slots:
         QVERIFY(blue_below == blue1);
         QVERIFY(blue_above == blue2);
 
+        // Two segments that intersect
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(3, 3), DDAD::Point_2r(10, 8), true);
+        bdl = DDAD::BundleList();
+        bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        // Add a bunch of segments
+        DDAD::ArrangementVertex_2r pt1 =
+                SampleArrangementVertex(3, 8, false);
+        bdl.LocateVertex(pt1, bdt, red_above, red_below, blue_above, blue_below);
+        QVERIFY(red_below == bdl.get_bottom());
+        QVERIFY(red_above == bdl.get_bottom()->get_next_bundle()->get_next_bundle());
+        QVERIFY(blue_below == bdl.get_top()->get_prev_bundle()->get_prev_bundle());
+        QVERIFY(blue_above == bdl.get_top());
+
+
     }
 
     void BundleListSplitBundleAtVertex()
@@ -949,6 +966,77 @@ private slots:
         QVERIFY(bdl.get_top()->get_prev_bundle() == red);
     }
 
+    void BundleListMergeOrderedBundles()
+    {
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        // Create bounding box
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(100, 100), DDAD::Point_2r(3, 3), true);
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        DDAD::SharedBundle blue1 = SampleSharedBundle(
+                    SampleSharedSegment(5, 5, 10, 5, false));
+        DDAD::SharedBundle blue2 = SampleSharedBundle(
+                    SampleSharedSegment(10, 5, 10, 10, false));
+        DDAD::SharedBundle original_bottom = bdl.get_bottom();
+        DDAD::SharedBundle original_top = bdl.get_top();
+        bdl.InsertBundle(blue1, bdl.get_bottom());
+        bdl.InsertBundle(blue2, blue1);
+        QVERIFY(bdl.get_bottom() == original_bottom);
+        QVERIFY(bdl.get_top() == original_top);
+        bdl.MergeOrderedBundles(bdt);
+        QVERIFY(bdl.get_bottom() == original_bottom);
+        QVERIFY(bdl.get_top() == original_top);
+        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
+    }
+
+    void BundleListInsertLeftEndpoint()
+    {
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        // Create bounding box
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(100, 100), DDAD::Point_2r(3, 3), true);
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        DDAD::SharedPoint_2r pt1 = std::make_shared<DDAD::Point_2r>(3, 8);
+        DDAD::SharedPoint_2r pt2 = std::make_shared<DDAD::Point_2r>(10, 3);
+        DDAD::ArrangementVertex_2r to_insert =
+                DDAD::ArrangementVertex_2r(pt1, pt2, true);
+        DDAD::SharedBundle original_bottom = bdl.get_bottom();
+        DDAD::SharedBundle original_top = bdl.get_top();
+        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
+        QVERIFY(bdl.get_top()->get_prev_bundle() == bdl.get_bottom());
+        bdl.InsertLeftEndpoint(to_insert, bdt);
+        QVERIFY(bdl.get_bottom()->get_next_bundle() != bdl.get_top());
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle() == bdl.get_top());
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert));
+        QVERIFY(bdl.get_bottom() == original_bottom);
+        QVERIFY(bdl.get_top() == original_top);
+
+        // Have to return list to invariant state
+        bdl.MergeOrderedBundles(bdt);
+        pt1 = std::make_shared<DDAD::Point_2r>(4, 5);
+        pt2 = std::make_shared<DDAD::Point_2r>(6, 6);
+        DDAD::ArrangementVertex_2r to_insert2 =
+                DDAD::ArrangementVertex_2r(pt1, pt2, false);
+        bdl.InsertLeftEndpoint(to_insert2, bdt);
+        QVERIFY(bdl.get_top() == original_top);
+        QVERIFY(bdl.get_bottom() == original_bottom);
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle()->Contains(to_insert2));
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert));
+        QVERIFY(bdl.get_top()->get_prev_bundle()->Contains(to_insert));
+        QVERIFY(bdl.get_top()->get_prev_bundle()->get_prev_bundle()->Contains(to_insert2));
+
+    }
+
+    void BundleListRemoveRightEndpoint()
+    {
+
+    }
+
+
     void CountIntersections()
     {
         // Simple arrangements
@@ -1009,39 +1097,39 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 0);
 
-//        // Small grid arrangement
-//        sample_arrangement = DDAD::Arrangement_2r();
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), true);
-//        intersections = DDAD::CountIntersections(sample_arrangement);
-//        QCOMPARE(intersections, 9);
+        // Small grid arrangement
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), true);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 9);
 
-//        // Small grid arrangement with reversed colors
-//        sample_arrangement = DDAD::Arrangement_2r();
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), false);
-//        intersections = DDAD::CountIntersections(sample_arrangement);
-//        QCOMPARE(intersections, 9);
+        // Small grid arrangement with reversed colors
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 5), DDAD::Point_2r(10, 4), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 10), DDAD::Point_2r(11, 5), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(2, 1), DDAD::Point_2r(5, 11), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(4, 1), DDAD::Point_2r(7, 9), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(7, 1), DDAD::Point_2r(12, 9), false);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 9);
 
         // Larger grid arrangement
         sample_arrangement = DDAD::Arrangement_2r();
@@ -1080,22 +1168,22 @@ private slots:
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 400);
 
-//        // Zig-zag arrangement
-//        sample_arrangement = DDAD::Arrangement_2r();
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(23, 19), DDAD::Point_2r(33, 15), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(33, 15), DDAD::Point_2r(23, 8), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(23, 8), DDAD::Point_2r(33, 6), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(33, 6), DDAD::Point_2r(23, 1), true);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(25, 22), DDAD::Point_2r(25, 0), false);
-//        sample_arrangement.AddSegment(
-//                    DDAD::Point_2r(29, 21), DDAD::Point_2r(29, 2), false);
-//        intersections = DDAD::CountIntersections(sample_arrangement);
-//        QCOMPARE(intersections, 8);
+        // Zig-zag arrangement
+        sample_arrangement = DDAD::Arrangement_2r();
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(23, 19), DDAD::Point_2r(33, 15), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(33, 15), DDAD::Point_2r(23, 8), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(23, 8), DDAD::Point_2r(33, 6), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(33, 6), DDAD::Point_2r(23, 1), true);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(25, 22), DDAD::Point_2r(25, 0), false);
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(29, 21), DDAD::Point_2r(29, 2), false);
+        intersections = DDAD::CountIntersections(sample_arrangement);
+        QCOMPARE(intersections, 8);
     }
 };
 
