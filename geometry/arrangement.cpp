@@ -113,7 +113,7 @@ int CountIntersections(const Arrangement_2r &A,
         }
 
         // Merge any bundles in the list that deserve it
-        for(SharedBundle jj = bdl.get_bottom(); jj != bdl.get_top(); )
+        for(SharedBundle jj = bdl.get_bottom(); jj != bdl.get_top()->get_prev_bundle(); )
         {
             if(jj->get_color() == jj->get_next_bundle()->get_color())
             {
@@ -569,7 +569,7 @@ void BundleList::SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
 int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
                             ArrangementVertex_2r v)
 {
-    for(SharedBundle kk = begin; (kk != end->get_next_bundle());
+    for(SharedBundle kk = bottom_; (kk != top_->get_next_bundle());
         kk = kk->get_next_bundle() )
     {
         kk->SetRelativePosition(v);
@@ -578,11 +578,11 @@ int BundleList::SortPortion(SharedBundle &begin, SharedBundle &end,
     SharedBundle i;
     int num_intersections = 0;
 
-    for(i = begin; (i != end->get_next_bundle()); i = i->get_next_bundle())
+    for(i = bottom_; (i != top_->get_next_bundle()); i = i->get_next_bundle())
     {
         j = i;
         while(
-              (j->get_prev_bundle() != begin->get_prev_bundle()) &&
+              (j->get_prev_bundle() != bottom_->get_prev_bundle()) &&
               (j->get_rel_position() < j->get_prev_bundle()->get_rel_position())
               )
         {
