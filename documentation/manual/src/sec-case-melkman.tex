@@ -35,18 +35,30 @@ p_y-r_y \\ q_x-r_x & q_y-r_y \end{vmatrix} \right).$$
 % breaking ties by $y$ coordinate. Then point $p_i$ will always be a vertex of the
 % convex hull $\text{CH}(P_i)$, and it will either be adjacent to $p_{i-1}$ or
 % will cause $p_{i-1}$ to be removed from $\text{CH}(P_i)$.
-
+ 
 \begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
-Melkman}] \begin{algorithmic}[1]    
+Melkman}] 
+\begin{algorithmic}[1]    
     \Require Simple polyline $P = \langle v_1, \ldots, v_m \rangle$.
     \Ensure $\text{CH}(P)$.
     \vspace{0.75em}
     \Procedure{Melkman}{$P$}
-    \State $\text{CH}(P).push(v_2);$ $\text{CH}(P).push(v_1);$
-    $\text{CH}(P).push(v_2);$ \Comment{Init hull}
+    \State $H.push\_back(v_2); H.push\_back(v_1); H.push\_back(v_2);$
+    \Comment{Init hull}
     \For{$i=3\ldots m$}
-    	\State derp 
+    	\If{\textsc{!LeftOrInside}$(H.back(1), H.back(0), v_i)$ or
+    	\textsc{!LeftOrInside}$(v_i, H.front(1), H.front(0))$} 
+    		\While{\textsc{!LeftOrInside}$(H.back(1), H.back(0), v_i)$}
+    			\State $H.pop\_back();$
+    		\EndWhile
+    		\While{\textsc{!LeftOrInside}$(v_i, H.front(1), H.front(0))$}
+    			\State $H.pop\_front();$
+    		\EndWhile
+    		\State $H.push\_back(v_i);$
+    		\State $H.push\_front(v_i);$
+    	\EndIf
     \EndFor
+    \State \Return $H$
     \EndProcedure
 \end{algorithmic}
 \end{mdframed} 
@@ -74,6 +86,10 @@ Melkman}] \begin{algorithmic}[1]
 % polygon\_2r
 
 \subsection{Code Listing}
+
+The actual implementation is mostly a straightforward transcription of the
+pseudocode. The visualization code resides within the associated polyline and
+polygon data structures.
 
 \lstinputlisting{code-samples/melkman.cpp}
 
