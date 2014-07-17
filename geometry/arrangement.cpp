@@ -249,9 +249,10 @@ int Bundle::CountSegments()
 // Implementation: BundleTree
 //=============================================================================
 
-void BundleTree::Find(ArrangementVertex_2r& input_vertex)
+SharedBundle BundleTree::Find(ArrangementVertex_2r& input_vertex)
 {
     bundle_tree_.Splay(*input_vertex.get_point(), bundle_tree_.getRoot());
+    return bundle_tree_.getRoot()->getElement();
 }
 
 void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
@@ -260,7 +261,7 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
 {
     // For an empty tree, our job is easy
     if(bundle_tree_.isEmpty()){
-        above_neighbor = nullptr;
+        above_neighbor = this->get_tree().findMax();
         below_neighbor = nullptr;
         return;
     }
