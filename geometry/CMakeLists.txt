@@ -6,7 +6,6 @@
 add_library(geometry
     arithmetic.cpp
     arrangement.cpp
-    arrangement2.cpp
     common.cpp
     datastructures.cpp
     intersection.cpp

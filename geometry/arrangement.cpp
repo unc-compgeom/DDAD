@@ -261,7 +261,7 @@ void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
 {
     // For an empty tree, our job is easy
     if(bundle_tree_.isEmpty()){
-        above_neighbor = this->get_tree().findMax();
+        above_neighbor = nullptr;
         below_neighbor = nullptr;
         return;
     }
@@ -472,7 +472,8 @@ void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
     // Using the tree and list, locate the highest bundle below or containing
     //  the input vertex
     // Locate red bundles within the tree
-    bdt.LocateVertex(input_vertex, red_above, red_below);
+    red_below = bdt.Find(input_vertex);
+    red_above = red_below->get_next_bundle()->get_next_bundle();
     if(red_above->Contains(input_vertex) && red_below->Contains(input_vertex))
     {
         red_above = red_above->get_next_bundle()->get_next_bundle();
