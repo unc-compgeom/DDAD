@@ -982,12 +982,12 @@ private slots:
         DDAD::SharedBundle original_bottom = bdl.get_bottom();
         DDAD::SharedBundle original_top = bdl.get_top();
         bdl.InsertBundle(blue1, bdl.get_bottom());
-        bdl.InsertBundle(blue2, blue1);
+//        bdl.InsertBundle(blue2, blue1);
         QVERIFY(bdl.get_bottom() == original_bottom);
         QVERIFY(bdl.get_top() == original_top);
         bdl.MergeOrderedBundles(bdt);
         QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_top() == original_top);
+        QVERIFY(bdl.get_top() != original_top);
         QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
     }
 
@@ -1010,13 +1010,15 @@ private slots:
         QVERIFY(bdl.get_top()->get_prev_bundle() == bdl.get_bottom());
         bdl.InsertLeftEndpoint(to_insert, bdt);
         QVERIFY(bdl.get_bottom()->get_next_bundle() != bdl.get_top());
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle() == bdl.get_top());
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle()
+                == bdl.get_top());
         QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert));
         QVERIFY(bdl.get_bottom() == original_bottom);
         QVERIFY(bdl.get_top() == original_top);
 
         // Have to return list to invariant state
         bdl.MergeOrderedBundles(bdt);
+        // Add the next bundle
         pt1 = std::make_shared<DDAD::Point_2r>(4, 5);
         pt2 = std::make_shared<DDAD::Point_2r>(6, 6);
         DDAD::ArrangementVertex_2r to_insert2 =
@@ -1024,16 +1026,44 @@ private slots:
         bdl.InsertLeftEndpoint(to_insert2, bdt);
         QVERIFY(bdl.get_top() == original_top);
         QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle()->Contains(to_insert2));
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert));
-        QVERIFY(bdl.get_top()->get_prev_bundle()->Contains(to_insert));
-        QVERIFY(bdl.get_top()->get_prev_bundle()->get_prev_bundle()->Contains(to_insert2));
-
+        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert2));
+        QVERIFY(bdl.get_bottom()->Contains(to_insert));
+        QVERIFY(bdl.get_top()->get_prev_bundle()->Contains(to_insert2));
+        QVERIFY(bdl.get_top()->get_prev_bundle()->get_prev_bundle()
+                ->Contains(to_insert));
     }
 
     void BundleListRemoveRightEndpoint()
     {
-
+        // Set up the state of the first InsertLeftEndpoint tes.t
+        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+        // Create bounding box
+        sample_arrangement.AddSegment(
+                    DDAD::Point_2r(100, 100), DDAD::Point_2r(3, 3), true);
+        DDAD::BundleList bdl = DDAD::BundleList();
+        DDAD::BundleTree bdt = DDAD::BundleTree();
+        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        DDAD::SharedPoint_2r pt1 = std::make_shared<DDAD::Point_2r>(3, 8);
+        DDAD::SharedPoint_2r pt2 = std::make_shared<DDAD::Point_2r>(10, 8);
+        DDAD::ArrangementVertex_2r to_insert =
+                DDAD::ArrangementVertex_2r(pt1, pt2, true);
+        bdl.InsertLeftEndpoint(to_insert, bdt);
+        bdl.MergeOrderedBundles(bdt);
+        DDAD::SharedPoint_2r pt3 = std::make_shared<DDAD::Point_2r>(4, 5);
+        DDAD::SharedPoint_2r pt4 = std::make_shared<DDAD::Point_2r>(6, 6);
+        DDAD::ArrangementVertex_2r to_insert2 =
+                DDAD::ArrangementVertex_2r(pt3, pt4, false);
+        bdl.InsertLeftEndpoint(to_insert2, bdt);
+        // When we get to the first right-endpoint, remove that segment
+        DDAD::ArrangementVertex_2r to_remove =
+                DDAD::ArrangementVertex_2r(pt2, pt1, true);
+        int current_count = bdl.get_bottom()->CountSegments();
+        bdl.RemoveRightEndpoint(to_remove, bdt);
+        QCOMPARE(bdl.get_bottom()->CountSegments(), current_count-1);
+        to_remove = DDAD::ArrangementVertex_2r(pt4, pt3, false);
+        bdl.RemoveRightEndpoint(to_remove, bdt);
+        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
+        QVERIFY(bdl.get_top()->get_prev_bundle() == bdl.get_bottom());
     }
 
 
