@@ -255,46 +255,46 @@ SharedBundle BundleTree::Find(ArrangementVertex_2r& input_vertex)
     return bundle_tree_.getRoot()->getElement();
 }
 
-void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
-                              SharedBundle &above_neighbor,
-                              SharedBundle &below_neighbor)
-{
-    // For an empty tree, our job is easy
-    if(bundle_tree_.isEmpty()){
-        above_neighbor = nullptr;
-        below_neighbor = nullptr;
-        return;
-    }
-    Find(input_vertex);
-    // Now either the greatest bundle below input_vertex is at the root, or
-    // there is no such bundle and the lowest bundle in the tree is at the root
-    if(*input_vertex.get_point() < bundle_tree_.getRoot()->getElement())
-    {
-        above_neighbor = bundle_tree_.getRoot()->getElement();
-        below_neighbor = nullptr;
-    }
-    else if(*input_vertex.get_point() > bundle_tree_.getRoot()->getElement())
-    {
-        below_neighbor = bundle_tree_.getRoot()->getElement();
-        // Search down the right subtree for the lowest bundle
-        //  above input_vertex
-        BinaryNode<SharedBundle>* tmp = bundle_tree_.getRoot()->right;
-        if(tmp == nullptr) above_neighbor = nullptr;
-        else
-        {
-            while(tmp->left != nullptr) tmp = tmp->left;
-            above_neighbor = tmp->getElement();
-        }
-    }
-    else if(bundle_tree_.getRoot()->getElement()->Contains(input_vertex))
-    {
-        above_neighbor = bundle_tree_.getRoot()->getElement();
-        below_neighbor = above_neighbor;
-    }
-    else
-        std::cout << "\nCheck segment comparators! "
-                  << "This branch should never be reached\n";
-}
+//void BundleTree::LocateVertex(ArrangementVertex_2r &input_vertex,
+//                              SharedBundle &above_neighbor,
+//                              SharedBundle &below_neighbor)
+//{
+//    // For an empty tree, our job is easy
+//    if(bundle_tree_.isEmpty()){
+//        above_neighbor = nullptr;
+//        below_neighbor = nullptr;
+//        return;
+//    }
+//    Find(input_vertex);
+//    // Now either the greatest bundle below input_vertex is at the root, or
+//    // there is no such bundle and the lowest bundle in the tree is at the root
+//    if(*input_vertex.get_point() < bundle_tree_.getRoot()->getElement())
+//    {
+//        above_neighbor = bundle_tree_.getRoot()->getElement();
+//        below_neighbor = nullptr;
+//    }
+//    else if(*input_vertex.get_point() > bundle_tree_.getRoot()->getElement())
+//    {
+//        below_neighbor = bundle_tree_.getRoot()->getElement();
+//        // Search down the right subtree for the lowest bundle
+//        //  above input_vertex
+//        BinaryNode<SharedBundle>* tmp = bundle_tree_.getRoot()->right;
+//        if(tmp == nullptr) above_neighbor = nullptr;
+//        else
+//        {
+//            while(tmp->left != nullptr) tmp = tmp->left;
+//            above_neighbor = tmp->getElement();
+//        }
+//    }
+//    else if(bundle_tree_.getRoot()->getElement()->Contains(input_vertex))
+//    {
+//        above_neighbor = bundle_tree_.getRoot()->getElement();
+//        below_neighbor = above_neighbor;
+//    }
+//    else
+//        std::cout << "\nCheck segment comparators! "
+//                  << "This branch should never be reached\n";
+//}
 
 void BundleTree::InsertBundle(SharedBundle add_this)
 {
@@ -473,7 +473,9 @@ void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
     //  the input vertex
     // Locate red bundles within the tree
     red_below = bdt.Find(input_vertex);
-    red_above = red_below->get_next_bundle()->get_next_bundle();
+    red_above = (red_below->Contains(input_vertex)) ?
+                red_below :
+                red_below->get_next_bundle()->get_next_bundle();
     if(red_above->Contains(input_vertex) && red_below->Contains(input_vertex))
     {
         red_above = red_above->get_next_bundle()->get_next_bundle();

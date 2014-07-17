@@ -118,9 +118,6 @@ public:
     }
     bool is_empty() { return bundle_tree_.isEmpty(); }
     SplayTree<SharedBundle> get_tree() { return bundle_tree_; }
-    void LocateVertex(ArrangementVertex_2r &input_vertex,
-                      SharedBundle &above_neighbor,
-                      SharedBundle &below_neighbor);
     void InsertBundle(SharedBundle add_this);
     void RemoveBundle(SharedBundle remove_this);
     int Size();
