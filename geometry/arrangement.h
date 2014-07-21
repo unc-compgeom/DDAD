@@ -23,7 +23,7 @@ enum RelativePosition{
 
 class Bundle;
 typedef std::shared_ptr<Bundle> SharedBundle;
-typedef std::shared_ptr<Segment_2r_colored> SharedSegment;
+
 
 class BundleTree;
 class BundleList;
@@ -36,18 +36,21 @@ class ArrangementVertex_2r {
 public:
     ArrangementVertex_2r();
     ArrangementVertex_2r(SharedPoint_2r& pt,
-                         SharedPoint_2r& other_point, bool  is_red);
+                         SharedPoint_2r& other_point, bool  is_red,
+                         SharedSegment& my_segment);
 
     const bool is_red() { return color_; }
     SharedPoint_2r get_other_point() const { return other_point_; }
     SharedPoint_2r get_point() const { return point_; }
     const rational& get_x() { return point_->x(); }
     const rational& get_y() { return point_->y(); }
+    SharedSegment get_segment() const { return my_segment_; }
 
 private:
     bool color_;
     SharedPoint_2r other_point_;
     SharedPoint_2r point_;
+    SharedSegment my_segment_;
 };
 
 //=============================================================================
@@ -59,7 +62,7 @@ friend class BundleTree;
 friend class BundleList;
 public:
     Bundle();
-    Bundle(SplayTree<Segment_2r_colored>& rhs);
+    Bundle(SplayTree<SharedSegment>& rhs);
 
     //Accessors
     const SharedBundle get_next_bundle() const { return next_bundle_; }
@@ -69,14 +72,13 @@ public:
     const SharedSegment get_top_seg() const { return top_segment_; }
     const SharedSegment get_bot_seg() const { return bottom_segment_; }
     const RelativePosition get_rel_position() const { return rel_position_; }
-    const BinaryNode<Segment_2r_colored>* get_root() const
-    {
-        return tree_.getRoot();
-    }
-    SplayTree<Segment_2r_colored>* get_tree()  { return &tree_; }
+    const BinaryNode<SharedSegment>* get_root() const { return tree_.getRoot();}
+    SplayTree<SharedSegment>* get_tree()  { return &tree_; }
     bool get_color() { return top_segment_->get_color(); }
+    int get_size() { return size_; }
     void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
     void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
+    void set_size(int new_size) { size_ = new_size; }
 
     //Class methods
     void Insert(SharedSegment new_segment);
@@ -86,19 +88,22 @@ public:
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
     int CountSegments();
     void Merge(SharedBundle to_merge);
-    SharedBundle Split(SharedSegment split_here);
-    SharedBundle Split(Point_2r& split_here);
+    SharedBundle Split(SharedSegment split_here,
+                       SharedBundle& my_sptr);
+    SharedBundle Split(Point_2r& split_here,
+                       SharedBundle& my_sptr);
 
 private:
     //pointers to next and previous bundles in linked list
     SharedBundle next_bundle_;
     SharedBundle prev_bundle_;
     //the bundle itself - tree of segments
-    SplayTree<Segment_2r_colored> tree_;
+    SplayTree<SharedSegment> tree_;
     //pointers to the top and bottom of the bundle
     SharedSegment top_segment_;
     SharedSegment bottom_segment_;
     RelativePosition rel_position_;
+    int size_;
 
 };
 
@@ -154,8 +159,8 @@ public:
                                 BundleTree& bdt,
                                 SharedBundle& top,
                                 SharedBundle& bot);
-    int SortPortion(SharedBundle &begin, SharedBundle &end,
-                    ArrangementVertex_2r v);
+    int SortPortion(ArrangementVertex_2r& v, SharedBundle& begin,
+                    SharedBundle& end);
     void SwapAdjacentBundles(SharedBundle& left, SharedBundle& right);
     void InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
                             BundleTree& bdt);
@@ -183,12 +188,18 @@ public:
     void PushPoint(SharedPoint_2r v, bool color);
     void PopPoint();
 
-    const std::list<ArrangementVertex_2r>& get_vertices() const;
-    const std::list<Segment_2r_colored>& get_segments() const;
+    const std::list<ArrangementVertex_2r>& get_vertices() const
+    {
+        return vertices_;
+    }
+    const std::list<SharedSegment>& get_segments() const
+    {
+        return segments_;
+    }
 
 private:
     std::list<ArrangementVertex_2r> vertices_;
-    std::list<Segment_2r_colored> segments_;
+    std::list<SharedSegment> segments_;
     Point_2r floater_;
     bool current_color_;
 };

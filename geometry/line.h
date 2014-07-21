@@ -25,6 +25,8 @@ enum SlopeType {
     SLOPE_NZERO,
     SLOPE_DEGENERATE
 };
+class Segment_2r_colored;
+typedef std::shared_ptr<Segment_2r_colored> SharedSegment;
 
 /*!
  * @brief The Line_2r class represents an oriented rational line in the plane.
@@ -190,11 +192,14 @@ bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
 bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool operator<(const SharedSegment& lhs, const SharedSegment& rhs);
+bool operator>(const SharedSegment& lhs, const SharedSegment& rhs);
 bool operator<(const Point_2r &lhs, const Segment_2r_colored &rhs);
 bool operator>(const Point_2r &lhs, const Segment_2r_colored &rhs);
 bool operator<=(const Point_2r &lhs, const Segment_2r_colored &rhs);
 bool operator>=(const Point_2r &lhs, const Segment_2r_colored &rhs);
 bool operator==(const Point_2r &lhs, const Segment_2r_colored &rhs);
+
 
 
 //=============================================================================
@@ -309,6 +314,19 @@ inline bool operator!=(const Segment_2r_colored &lhs,
 {
     return !(lhs == rhs);
 }
+inline bool operator<(const SharedSegment &lhs,
+                      const SharedSegment &rhs)
+{
+    // Only works for non-intersecting segments!
+    return rhs->IsAbove(*lhs);
+}
+inline bool operator>(const SharedSegment &lhs,
+                      const SharedSegment &rhs)
+{
+    // Only works for non-intersecting segments!
+    return lhs->IsAbove(*rhs);
+}
+
 inline bool operator<(const Point_2r& lhs, const Segment_2r_colored& rhs)
 {
     return Predicate::AIsRightOfB(lhs, rhs.support());
@@ -326,6 +344,27 @@ inline bool operator>=(const Point_2r& lhs, const Segment_2r_colored& rhs)
     return Predicate::AIsLeftOrAheadOfB(lhs, rhs.support_ray());
 }
 inline bool operator==(const Point_2r& lhs, const Segment_2r_colored& rhs)
+{
+    return (lhs >= rhs && lhs <= rhs);
+}
+
+inline bool operator<(const Point_2r& lhs, const SharedSegment& rhs)
+{
+    return Predicate::AIsRightOfB(lhs, rhs->support());
+}
+inline bool operator>(const Point_2r& lhs, const SharedSegment& rhs)
+{
+    return Predicate::AIsLeftOfB(lhs, rhs->support());
+}
+inline bool operator<=(const Point_2r& lhs, const SharedSegment& rhs)
+{
+    return Predicate::AIsRightOrAheadOfB(lhs, rhs->support_ray());
+}
+inline bool operator>=(const Point_2r& lhs, const SharedSegment& rhs)
+{
+    return Predicate::AIsLeftOrAheadOfB(lhs, rhs->support_ray());
+}
+inline bool operator==(const Point_2r& lhs, const SharedSegment& rhs)
 {
     return (lhs >= rhs && lhs <= rhs);
 }

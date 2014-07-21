@@ -70,7 +70,7 @@ class SplayTree
 
     void makeEmpty( );
     void insert( const Comparable & x );
-    void remove( const Comparable & x );
+    bool remove( const Comparable & x );
 
     void printBreadthFirst() const;
     void print();
@@ -167,12 +167,13 @@ void SplayTree<Comparable>::insert( const Comparable & x )
  * Remove x from the tree.
  */
 template <class Comparable>
-void SplayTree<Comparable>::remove( const Comparable & x )
+bool SplayTree<Comparable>::remove( const Comparable & x )
 {
-    if(root == nullptr) return; // Can't remove from an empty tree
+    if(root == nullptr) return false; // Can't remove from an empty tree
     BinaryNode<Comparable> *newTree;
+
     if( !ContainsValue(x) )
-        return;   // Item not found; do nothing
+        return false;   // Item not found; do nothing
         // If x is found, it will be at the root
     Splay( x, root );
 
@@ -181,14 +182,16 @@ void SplayTree<Comparable>::remove( const Comparable & x )
     else
     {
         // Find the maximum in the left subtree
-        // Splay it to the root; and then attach right child
-        newTree = root->left;
-        Splay( x, newTree );
+        SplayTree<Comparable>* newSplay = new SplayTree<Comparable>(root->left);
+        newSplay->Splay(x, newSplay->getRoot());
+        newTree = newSplay->getRoot();
+        assert(newTree->right == nullptr);
         newTree->right = root->right;
     }
 
 //    delete root;
     root = newTree;
+    return true;
 }
 
 /**
@@ -392,6 +395,8 @@ void SplayTree<Comparable>::Splay( const Comparable & x,
     if(t == nullptr) return;
     N.left = N.right = nullptr;
     L = R = &N;
+
+    if((t->left == nullptr) && (t->right == nullptr)) return;
 
     while(true){
         if(x < t->element){
