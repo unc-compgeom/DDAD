@@ -135,19 +135,30 @@ is identical with $CH(P_i)$, and the invariant already holds.
 
 \subsection{Algorithm Implementation}
 
-The code listed below shows the Melkman function which is our C++ implementation
-of Melkman's algorithm. The function takes as input a Polyline\_2r and an
-IGeometryObserver, and produces as output a Polygon\_2r object. All branching
-tests make use of the RIsLeftOrInsidePQ predicate, which encapsulates the logic
-described in the previous section. We will describe each of these in the
-paragraphs that follow.
+The code listed below shows the \texttt{Melkman} function which is our C++
+implementation of Melkman's algorithm. The function takes as input a
+\texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
+a \texttt{Polygon\_2r} object. All branching tests make use of the
+\texttt{RIsLeftOrInsidePQ} predicate, which encapsulates the logic described in
+the previous section. We will describe each of these in the paragraphs that
+follow.
  
 \lstinputlisting{code-samples/melkman.cpp} 
 
+The \texttt{Polyline\_2r} class uses a deque to store its vertices. The
+\texttt{push\_back} and \texttt{pop\_back} methods are responsible for
+visualizing how those operations affect the visual state of the object.
+
 \lstinputlisting{code-samples/polyline.cpp}
 
-\lstinputlisting{code-samples/polygon.cpp}  
+\lstinputlisting{code-samples/polyline-push-back.cpp}
 
+The \texttt{Polygon\_2r} class is composed of a \text{Polyline\_2r} boundary
+that is responsible for visualizing vertices and edges. It can optionally
+visualize the polygon interior by triangulating it into a fan.  
+
+\lstinputlisting{code-samples/polygon.cpp}  
+ 
 \subsection{Generating Input Data} 
 
 Create button and implement click handler. buttongroup to model mutually

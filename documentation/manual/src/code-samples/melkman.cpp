@@ -3,9 +3,7 @@ Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer) {
     hull.AddObserver(observer);
 
     // initialize hull
-    hull.push_back(P[0]);
-    hull.push_back(P[1]);
-    hull.push_back(P[0]);
+    hull.push_back(P[0]); hull.push_back(P[1]); hull.push_back(P[0]);
 
     for (size_t i = 2; i < P.size(); ++i) {
         if (!RIsLeftOrInsidePQ(*hull.back(1), *hull.back(0), *P[i]) ||
