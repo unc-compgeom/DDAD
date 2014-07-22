@@ -1056,6 +1056,7 @@ private slots:
     void CountIntersections()
     {
         // Simple arrangements
+        std::cout << "\nTest: Two crossing segments... ";
         DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(4, 6), DDAD::Point_2r(6, 7), true);
@@ -1066,13 +1067,14 @@ private slots:
 
         QCOMPARE(intersections, 1);
 
+        std::cout << "\nTest: Three crossing segments...";
         // Add a second red line that also intersects with the blue line
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(7, 2), DDAD::Point_2r(9, 6), true);
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 2);
 
-
+        std::cout << "\nTest: Three crossing segments and one floating...";
         // Add another blue line that does not intersect any existing lines
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(30, 30), DDAD::Point_2r(40, 40), true);
@@ -1081,6 +1083,7 @@ private slots:
 
 
         // Same arrangement, but with coloring order swapped
+        std::cout << "\nTest: Two crossing segments (reversed colors)...";
         sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(4, 5), DDAD::Point_2r(6, 6), false);
@@ -1091,6 +1094,7 @@ private slots:
         QCOMPARE(intersections, 1);
 
         // Add a second red line that also intersects with the blue line
+        std::cout << "\nTest: Three crossing segments (reversed colors)...";
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(7, 2), DDAD::Point_2r(8, 4), false);
         intersections = DDAD::CountIntersections(sample_arrangement);
@@ -1098,12 +1102,14 @@ private slots:
 
 
         // Add another blue line that does not intersect any existing lines
+        std::cout << "\nTest: Three crossing segments and one floating (reversed colors)...";
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(30, 30), DDAD::Point_2r(40, 40), false);
         intersections = DDAD::CountIntersections(sample_arrangement);
         QCOMPARE(intersections, 2);
 
         // Only red segments
+        std::cout << "\nTest: Only red segments...";
         sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(2, 10), DDAD::Point_2r(10, 10), true);
@@ -1115,6 +1121,7 @@ private slots:
         QCOMPARE(intersections, 0);
 
         // Small grid arrangement
+        std::cout << "\nTest: Small grid arrangement...";
         sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(11, 14), DDAD::Point_2r(19, 12), false);
@@ -1132,6 +1139,7 @@ private slots:
         QCOMPARE(intersections, 9);
 
         // Small grid arrangement with reversed colors
+        std::cout << "\nTest: Small grid arrangement (reversed colors)...";
         sample_arrangement = DDAD::Arrangement_2r();
         sample_arrangement.AddSegment(
                     DDAD::Point_2r(1, 4), DDAD::Point_2r(9, 2), true);

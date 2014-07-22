@@ -55,6 +55,7 @@ int CountIntersections(const Arrangement_2r &A,
         ii != L.end(); ii ++)
     {
 
+        std::cout << "\nCurrent vertex: " << *(ii->get_point());
 
         bdl.LocateVertex(*ii, bdt, red_above, red_below,
                                  blue_above, blue_below);
@@ -64,6 +65,8 @@ int CountIntersections(const Arrangement_2r &A,
         bot = bdl.get_bottom()->get_prev_bundle();
         top = bdl.get_top()->get_next_bundle();
         // This isn't quite right, but it might be close enough
+
+        bdl.PrintState(bdl.get_bottom(), bdl.get_top());
 
         bdl.SplitBundlesContaining(*ii, bdt, top, bot);
         // Split any bundles containing the current vertex (must be in
@@ -633,6 +636,25 @@ void BundleList::SwapBundles(SharedBundle& a, SharedBundle& b)
     if(b->get_next_bundle() != nullptr)
         b->get_next_bundle()->set_prev_bundle(a);
 
+}
+
+void BundleList::PrintState(SharedBundle &start, SharedBundle &end)
+{
+    std::string current_color, bp, bq, tp, tq;
+    int nsegments;
+    for(SharedBundle tmp = start; tmp != end->get_next_bundle(); tmp = tmp->get_next_bundle())
+    {
+        current_color = (tmp->get_color()) ? "RED" : "BLUE";
+        tp = to_string(tmp->get_top_seg()->p());
+        tq = to_string(tmp->get_top_seg()->q());
+        bp = to_string(tmp->get_bot_seg()->p());
+        bq = to_string(tmp->get_bot_seg()->q());
+        nsegments =tmp->CountSegments();
+        printf("\n%8.8s -> %8.8s | %8.8s -> %8.8s | %4.4s | %2.2i",
+               bp.c_str(), bq.c_str(), tp.c_str(), tq.c_str(),
+               current_color.c_str(), nsegments);
+    }
+    printf("\n");
 }
 
 

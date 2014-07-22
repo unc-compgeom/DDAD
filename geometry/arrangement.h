@@ -168,6 +168,7 @@ public:
                              BundleTree& bdt);
     void MergeOrderedBundles(BundleTree& bdt);
     void SwapBundles(SharedBundle &a, SharedBundle &b);
+    void PrintState(SharedBundle& start, SharedBundle& end);
 
 private:
     SharedBundle bottom_;

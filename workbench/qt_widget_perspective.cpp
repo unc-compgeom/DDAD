@@ -110,7 +110,7 @@ void PerspectiveWidget::paintEvent(QPaintEvent *event) {
     ++num_frames_;
 }
 
-static const float pi180 = M_PI/180.0f;
+static const float pi180 = float(M_PI)/180.0f;
 void PerspectiveWidget::handleInput() {
     if (camera_active_) {
         float sinx = sin(camera_rot_.x()*pi180);
