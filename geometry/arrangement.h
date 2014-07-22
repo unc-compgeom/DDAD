@@ -266,6 +266,29 @@ inline bool operator>=(const Point_2r& lhs, const SharedBundle& rhs)
 {
     return (lhs > rhs || lhs == rhs);
 }
+inline bool operator<(const Point_2r& lhs, const Bundle& rhs)
+{
+    return Predicate::AIsRightOfB(lhs, rhs.get_bot_seg()->support());
+}
+inline bool operator>(const Point_2r& lhs, const Bundle& rhs)
+{
+    return Predicate::AIsLeftOfB(lhs, rhs.get_bot_seg()->support());
+}
+inline bool operator==(const Point_2r& lhs, const Bundle& rhs)
+{
+    return (Predicate::AIsRightOrAheadOfB(lhs,
+                                          rhs.get_top_seg()->support_ray())
+            && Predicate::AIsLeftOrAheadOfB(lhs,
+                                            rhs.get_bot_seg()->support_ray()));
+}
+inline bool operator<=(const Point_2r& lhs, const Bundle& rhs)
+{
+    return (lhs < rhs || lhs == rhs);
+}
+inline bool operator>=(const Point_2r& lhs, const Bundle& rhs)
+{
+    return (lhs > rhs || lhs == rhs);
+}
 } // namespace DDAD
 
 

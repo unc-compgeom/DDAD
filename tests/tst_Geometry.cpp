@@ -1064,9 +1064,6 @@ private slots:
         int intersections = DDAD::CountIntersections(sample_arrangement);
         // Should just be two intersecting lines
 
-        // Bug to come back to on Friday:  on the last merge,
-        // bottom->next->next->prev != bottom->next
-
         QCOMPARE(intersections, 1);
 
         // Add a second red line that also intersects with the blue line

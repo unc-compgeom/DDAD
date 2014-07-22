@@ -585,23 +585,23 @@ void BundleList::MergeOrderedBundles(BundleTree& bdt)
 {
     for(SharedBundle jj = get_bottom(); jj != get_top()->get_next_bundle(); )
     {
+        SharedBundle tmp;
         while(jj->get_color() == jj->get_next_bundle()->get_color())
         {
-            // reset top if need be
-            if(jj->get_next_bundle() == top_)
-                top_ = jj;
-
+            tmp = jj->get_next_bundle();
             //deal with bundle tree if bundles are red
             if(jj->get_color())
             {
                 bdt.RemoveBundle(jj);
-                bdt.RemoveBundle(jj->get_next_bundle());
-                jj->Merge(jj->get_next_bundle());
+                bdt.RemoveBundle(tmp);
+                jj->Merge(tmp);
                 bdt.InsertBundle(jj);
             }
             else
                 jj->Merge(jj->get_next_bundle());
-
+            // reset top if need be
+            if(tmp == top_)
+                top_ = jj;
         }
         jj = jj->get_next_bundle();
     }

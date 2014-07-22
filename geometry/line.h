@@ -307,7 +307,8 @@ inline bool operator>(const Segment_2r_colored &lhs,
 inline bool operator==(const Segment_2r_colored &lhs,
                        const Segment_2r_colored &rhs)
 {
-    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());
+    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() &&
+            lhs.get_color() == rhs.get_color());
 }
 inline bool operator!=(const Segment_2r_colored &lhs,
                        const Segment_2r_colored &rhs)
