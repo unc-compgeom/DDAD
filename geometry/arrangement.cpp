@@ -154,8 +154,8 @@ void Bundle::Insert(SharedSegment new_segment)
         top_segment_ = bottom_segment_ = new_segment;
     }
     else{
-        if(*top_segment_ < *new_segment) top_segment_ = new_segment;
-        if(*new_segment < *bottom_segment_) bottom_segment_ = new_segment;
+        if(Predicate::SegmentAIsBelowB(*top_segment_, *new_segment)) top_segment_ = new_segment;
+        if(Predicate::SegmentAIsBelowB(*new_segment, *bottom_segment_)) bottom_segment_ = new_segment;
     }
     size_ = tree_.Size();
 }
@@ -555,7 +555,7 @@ void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
     new_bundle->Insert(new_segment);
     bdt.Find(input_vertex);
     SharedBundle tmp = bdt.get_root();
-    while(AIsBelowB(*(input_vertex.get_point()), tmp))
+    while(Predicate::PointAIsBelowB(*(input_vertex.get_point()), tmp))
         tmp = tmp->get_prev_bundle();
     if(input_vertex.is_red()) bdt.InsertBundle(new_bundle);
     //            if(tmp != nullptr && *(ii->get_point()) < tmp)

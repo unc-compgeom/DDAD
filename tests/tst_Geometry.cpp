@@ -453,18 +453,18 @@ private slots:
 
     }
 
-    void BundleCompare()
-    {
-        DDAD::SharedBundle bdlred =
-                SampleSharedBundle(SampleSharedSegment(1, 1, 5, 1, true),
-                                   SampleSharedSegment(1, 3, 12, 3, true));
-        DDAD::SharedBundle bdlred2 =
-                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
-                                   SampleSharedSegment(1, 6, 3, 7, true));
-        QCOMPARE(*bdlred == *bdlred2, false);
-        QCOMPARE(*bdlred > *bdlred2, false);
-        QCOMPARE(*bdlred < *bdlred2, true);
-    }
+//    void BundleCompare()
+//    {
+//        DDAD::SharedBundle bdlred =
+//                SampleSharedBundle(SampleSharedSegment(1, 1, 5, 1, true),
+//                                   SampleSharedSegment(1, 3, 12, 3, true));
+//        DDAD::SharedBundle bdlred2 =
+//                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
+//                                   SampleSharedSegment(1, 6, 3, 7, true));
+//        QCOMPARE(*bdlred == *bdlred2, false);
+//        QCOMPARE(*bdlred > *bdlred2, false);
+//        QCOMPARE(*bdlred < *bdlred2, true);
+//    }
 
     void BundleSplit()
     {

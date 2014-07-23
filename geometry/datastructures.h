@@ -315,7 +315,7 @@ SplayTree<Comparable> SplayTree<Comparable>::SplitTree(
     SplayTree<Comparable>* R;
     Splay(split_here, root);
 
-    if(split_here == root->getElement() && root->right == nullptr)
+    if(Predicate::PointAIsInB(split_here, root->getElement()) && root->right == nullptr)
     {
         R = new SplayTree();
         R->insert(root->getElement());
@@ -413,9 +413,9 @@ void SplayTree<Comparable>::Splay( const Comparable & x,
             R = t;
             t = t->left;
         }
-        else if(x > t->element){
+        else if(Predicate::AIsAboveB(x, t->element)){
             if(t->right == nullptr) break;
-            if(x > t->right->element){
+            if(Predicate::AIsAboveB(x, t->right->element)){
                 y = t->right;
                 t->right = y->left;
                 y->left = t;
@@ -437,7 +437,7 @@ void SplayTree<Comparable>::Splay( const Comparable & x,
 
 //     Rotate right if we don't yet satisfy the output conditions
     if(root->left != nullptr){
-        if(x < root->element && root->left->element < x){
+        if(Predicate::AIsBelowB(x, root->element) && Predicate::AIsBelowB(root->left->element, x)){
             t = root->left;
             root->left = t->right;
             t->right = root;
@@ -457,9 +457,9 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
     L = R = &N;
 
     while(true){
-        if(AIsBelowB(x, t->element)){
+        if(Predicate::AIsBelowB(x, t->element)){
             if(t->left == nullptr) break;
-            if(AIsBelowB(x, t->left->element)){
+            if(Predicate::AIsBelowB(x, t->left->element)){
                 y = t->left;
                 t->left = y->right;
                 y->right = t;
@@ -470,9 +470,9 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
             R = t;
             t = t->left;
         }
-        else if(AIsAboveB(x, t->element)){
+        else if(Predicate::AIsAboveB(x, t->element)){
             if(t->right == nullptr) break;
-            if(AIsAboveB(x, t->right->element)){
+            if(Predicate::AIsAboveB(x, t->right->element)){
                 y = t->right;
                 t->right = y->left;
                 y->left = t;
@@ -494,7 +494,7 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
 
 //     Rotate right if we don't yet satisfy the output conditions
     if(root->left != nullptr){
-        if(AIsBelowB(x, root->element) && AIsAboveB(x, root->left->element)){
+        if(Predicate::AIsBelowB(x, root->element) && Predicate::AIsAboveB(x, root->left->element)){
             t = root->left;
             root->left = t->right;
             t->right = root;

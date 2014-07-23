@@ -317,7 +317,7 @@ void SceneObserver::onEndCreatePolyLine() {
     Visual::Material vMat;
     vMat.set_ambient(Visual::Color(0, 255, 0, 255));
     Visual::Point vPoint(vMat);
-    for(int ii = 0; ii < CVH.NumVertices(); ii++){
+    for(size_t ii = 0; ii < CVH.NumVertices(); ii++){
         PolyChainVertex_2r vt = CVH[ii];
         CVH.SigPushVisualPoint_2r(vt.vertex(), vPoint, 1000);
     }

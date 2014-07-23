@@ -188,18 +188,16 @@ public:
 private:
     bool isRed_;
 };
-bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator<(const SharedSegment& lhs, const SharedSegment& rhs);
-bool operator>(const SharedSegment& lhs, const SharedSegment& rhs);
-bool operator<(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator>(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator<=(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator>=(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator==(const Point_2r &lhs, const Segment_2r_colored &rhs);
-
+namespace Predicate{
+bool SegmentAIsBelowB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool SegmentAIsAboveB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool SegmentAEqualsB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool SharedSegmentAIsBelowB(const SharedSegment& lhs, const SharedSegment& rhs);
+bool SharedSegmentAIsAboveB(const SharedSegment& lhs, const SharedSegment& rhs);
+bool SharedSegmentAIsBelowB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool PointAIsAboveB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool PointAIsInB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+}
 
 
 //=============================================================================
@@ -289,87 +287,62 @@ private:
     SharedPoint_3r q_;
     Line_3r support_;
 };
-
-inline bool operator<(const Segment_2r_colored &lhs,
-                      const Segment_2r_colored &rhs)
+namespace Predicate{
+inline bool SegmentAIsBelowB(const Segment_2r_colored &lhs,
+               const Segment_2r_colored &rhs)
 {
     // Only works for non-intersecting segments!
-//    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
     return rhs.IsAbove(lhs);
 }
-inline bool operator>(const Segment_2r_colored &lhs,
-                      const Segment_2r_colored &rhs)
+inline bool SegmentAIsAboveB(const Segment_2r_colored &lhs,
+               const Segment_2r_colored &rhs)
 {
     // Only works for non-intersecting segments!
-//    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
     return lhs.IsAbove(rhs);
 }
-inline bool operator==(const Segment_2r_colored &lhs,
-                       const Segment_2r_colored &rhs)
+inline bool SegmentAEqualsB(const Segment_2r_colored &lhs,
+              const Segment_2r_colored &rhs)
 {
     return (lhs.p() == rhs.p() && lhs.q() == rhs.q() &&
             lhs.get_color() == rhs.get_color());
 }
-inline bool operator!=(const Segment_2r_colored &lhs,
-                       const Segment_2r_colored &rhs)
-{
-    return !(lhs == rhs);
-}
-inline bool operator<(const SharedSegment &lhs,
-                      const SharedSegment &rhs)
+inline bool SharedSegmentAIsBelowB(const SharedSegment &lhs,
+               const SharedSegment &rhs)
 {
     // Only works for non-intersecting segments!
     return rhs->IsAbove(*lhs);
 }
-inline bool operator>(const SharedSegment &lhs,
-                      const SharedSegment &rhs)
+inline bool SharedSegmentAIsAboveB(const SharedSegment &lhs,
+               const SharedSegment &rhs)
 {
     // Only works for non-intersecting segments!
     return lhs->IsAbove(*rhs);
 }
-
-inline bool operator<(const Point_2r& lhs, const Segment_2r_colored& rhs)
+inline bool PointAIsBelowB(const Point_2r& lhs, const Segment_2r_colored& rhs)
 {
-    return Predicate::AIsRightOfB(lhs, rhs.support());
+    return AIsRightOfB(lhs, rhs.support());
 }
-inline bool operator>(const Point_2r& lhs, const Segment_2r_colored& rhs)
+inline bool PointAIsAboveB(const Point_2r& lhs, const Segment_2r_colored& rhs)
 {
-    return Predicate::AIsLeftOfB(lhs, rhs.support());
+    return AIsLeftOfB(lhs, rhs.support());
 }
-inline bool operator<=(const Point_2r& lhs, const Segment_2r_colored& rhs)
+inline bool PointAIsInB(const Point_2r& lhs, const Segment_2r_colored& rhs)
 {
-    return Predicate::AIsRightOrAheadOfB(lhs, rhs.support_ray());
+    return AIsAheadOfB(lhs, rhs.support_ray());
 }
-inline bool operator>=(const Point_2r& lhs, const Segment_2r_colored& rhs)
+inline bool PointAIsBelowB(const Point_2r& lhs, const SharedSegment& rhs)
 {
-    return Predicate::AIsLeftOrAheadOfB(lhs, rhs.support_ray());
+    return AIsRightOfB(lhs, rhs->support());
 }
-inline bool operator==(const Point_2r& lhs, const Segment_2r_colored& rhs)
+inline bool PointAIsAboveB(const Point_2r& lhs, const SharedSegment& rhs)
 {
-    return (lhs >= rhs && lhs <= rhs);
+    return AIsLeftOfB(lhs, rhs->support());
 }
-
-inline bool operator<(const Point_2r& lhs, const SharedSegment& rhs)
+inline bool PointAIsInB(const Point_2r& lhs, const SharedSegment& rhs)
 {
-    return Predicate::AIsRightOfB(lhs, rhs->support());
+    return AIsAheadOfB(lhs, rhs->support_ray());
 }
-inline bool operator>(const Point_2r& lhs, const SharedSegment& rhs)
-{
-    return Predicate::AIsLeftOfB(lhs, rhs->support());
 }
-inline bool operator<=(const Point_2r& lhs, const SharedSegment& rhs)
-{
-    return Predicate::AIsRightOrAheadOfB(lhs, rhs->support_ray());
-}
-inline bool operator>=(const Point_2r& lhs, const SharedSegment& rhs)
-{
-    return Predicate::AIsLeftOrAheadOfB(lhs, rhs->support_ray());
-}
-inline bool operator==(const Point_2r& lhs, const SharedSegment& rhs)
-{
-    return (lhs >= rhs && lhs <= rhs);
-}
-
 } // namespace DDAD
 
 #endif // GE_LINE_H

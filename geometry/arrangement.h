@@ -104,8 +104,26 @@ private:
     SharedSegment bottom_segment_;
     RelativePosition rel_position_;
     int size_;
-
 };
+
+namespace Predicate{
+//bundle comparisons
+inline bool BundleAIsBelowB(const Bundle &lhs, const Bundle &rhs);
+inline bool BundleAIsAboveB(const Bundle &lhs, const Bundle &rhs);
+inline bool BundleAEqualsB(const Bundle &lhs, const Bundle &rhs);
+//sharedbundle comparisons
+inline bool SharedBundleAIsBelowB(const SharedBundle &lhs, const SharedBundle &rhs);
+inline bool SharedBundleAIsAboveB(const SharedBundle &lhs, const SharedBundle &rhs);
+inline bool SharedBundleAEqualsB(const SharedBundle &lhs, const SharedBundle &rhs);
+//point and sharedbundle comparisons
+inline bool PointAIsBelowB(const Point_2r& lhs, const SharedBundle& rhs);
+inline bool PointAIsAboveB(const Point_2r& lhs, const SharedBundle& rhs);
+inline bool PointAIsInB(const Point_2r& lhs, const SharedBundle& rhs);
+//point and bundle comparisons
+inline bool PointAIsBelowB(const Point_2r& lhs, const Bundle& rhs);
+inline bool PointAIsAboveB(const Point_2r& lhs, const Bundle& rhs);
+inline bool PointAIsInB(const Point_2r& lhs, const Bundle& rhs);
+} //namespace Predicate
 
 //=============================================================================
 // Interface: BundleTree
@@ -208,81 +226,77 @@ private:
 int CountIntersections(const Arrangement_2r& A,
                        Visual::IGeometryObserver* observer = nullptr);
 
-
+namespace Predicate{
 //bundle comparisons
-bool AIsBelowB(const Bundle &lhs, const Bundle &rhs){
-    return Predicate::AIsRightOfB(lhs.get_top_seg()->p(),
+inline bool BundleAIsBelowB(const Bundle &lhs, const Bundle &rhs){
+    return AIsRightOfB(lhs.get_top_seg()->p(),
                                   rhs.get_bot_seg()->support());
 }
 
-bool AIsAboveB(const Bundle &lhs, const Bundle &rhs){
-    return Predicate::AIsLeftOfB(lhs.get_bot_seg()->p(),
+inline bool BundleAIsAboveB(const Bundle &lhs, const Bundle &rhs){
+    return AIsLeftOfB(lhs.get_bot_seg()->p(),
                                  rhs.get_top_seg()->support());
 }
 
-bool AEqualsB(const Bundle &lhs, const Bundle &rhs){
+inline bool BundleAEqualsB(const Bundle &lhs, const Bundle &rhs){
     return lhs.get_root() == rhs.get_root();
     // If weird things happen, it might be because this method doesn't check for
     // an element-by-element equivalence between two bundles.
 }
 
 //sharedbundle comparisons
-bool AIsBelowB(const SharedBundle &lhs, const SharedBundle &rhs){
-    return Predicate::AIsRightOfB(lhs->get_top_seg()->p(),
+inline bool SharedBundleAIsBelowB(const SharedBundle &lhs, const SharedBundle &rhs){
+    return AIsRightOfB(lhs->get_top_seg()->p(),
                                   rhs->get_bot_seg()->support());
 }
 
-bool AIsAboveB(const SharedBundle &lhs, const SharedBundle &rhs){
-    return Predicate::AIsLeftOfB(lhs->get_bot_seg()->p(),
+inline bool SharedBundleAIsAboveB(const SharedBundle &lhs, const SharedBundle &rhs){
+    return AIsLeftOfB(lhs->get_bot_seg()->p(),
                                  rhs->get_top_seg()->support());
 }
 
-bool AEqualsB(const SharedBundle &lhs, const SharedBundle &rhs){
+inline bool SharedBundleAEqualsB(const SharedBundle &lhs, const SharedBundle &rhs){
     return lhs->get_root() == rhs->get_root();
     // If weird things happen, it might be because this method doesn't check for
     // an element-by-element equivalence between two bundles.
 }
 
 //point and sharedbundle comparisons
-bool AIsBelowB(const Point_2r& lhs, const SharedBundle& rhs)
+inline bool PointAIsBelowB(const Point_2r& lhs, const SharedBundle& rhs)
 {
-    return Predicate::AIsRightOfB(lhs, rhs->get_bot_seg()->support());
+    return AIsRightOfB(lhs, rhs->get_bot_seg()->support());
 }
 
-bool AIsAboveB(const Point_2r& lhs, const SharedBundle& rhs)
+inline bool PointAIsAboveB(const Point_2r& lhs, const SharedBundle& rhs)
 {
-    return Predicate::AIsLeftOfB(lhs, rhs->get_bot_seg()->support());
+    return AIsLeftOfB(lhs, rhs->get_bot_seg()->support());
 }
 
-bool AIsInB(const Point_2r& lhs, const SharedBundle& rhs)
+inline bool PointAIsInB(const Point_2r& lhs, const SharedBundle& rhs)
 {
-    return (Predicate::AIsRightOrAheadOfB(lhs,
-                                          rhs->get_top_seg()->support_ray())
-            && Predicate::AIsLeftOrAheadOfB(lhs,
-                                            rhs->get_bot_seg()->support_ray()));
+    return (AIsRightOrAheadOfB(lhs, rhs->get_top_seg()->support_ray())
+            && AIsLeftOrAheadOfB(lhs, rhs->get_bot_seg()->support_ray()));
 }
 
 
 
 //point and bundle comparisons
-bool AIsBelowB(const Point_2r& lhs, const Bundle& rhs)
+inline bool PointAIsBelowB(const Point_2r& lhs, const Bundle& rhs)
 {
-    return Predicate::AIsRightOfB(lhs, rhs.get_bot_seg()->support());
+    return AIsRightOfB(lhs, rhs.get_bot_seg()->support());
 }
 
-bool AIsAboveB(const Point_2r& lhs, const Bundle& rhs)
+inline bool PointAIsAboveB(const Point_2r& lhs, const Bundle& rhs)
 {
-    return Predicate::AIsLeftOfB(lhs, rhs.get_bot_seg()->support());
+    return AIsLeftOfB(lhs, rhs.get_bot_seg()->support());
 }
 
-bool AIsInB(const Point_2r& lhs, const Bundle& rhs)
+inline bool PointAIsInB(const Point_2r& lhs, const Bundle& rhs)
 {
-    return (Predicate::AIsRightOrAheadOfB(lhs,
-                                          rhs.get_top_seg()->support_ray())
-            && Predicate::AIsLeftOrAheadOfB(lhs,
-                                            rhs.get_bot_seg()->support_ray()));
+    return (AIsRightOrAheadOfB(lhs, rhs.get_top_seg()->support_ray())
+            && AIsLeftOrAheadOfB(lhs, rhs.get_bot_seg()->support_ray()));
 }
-
+} //namespace Predicate
 } // namespace DDAD
 
 
