@@ -189,14 +189,14 @@ private:
     bool isRed_;
 };
 namespace Predicate{
-bool SegmentAIsBelowB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool SegmentAIsAboveB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool SegmentAEqualsB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool SharedSegmentAIsBelowB(const SharedSegment& lhs, const SharedSegment& rhs);
-bool SharedSegmentAIsAboveB(const SharedSegment& lhs, const SharedSegment& rhs);
-bool SharedSegmentAIsBelowB(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool PointAIsAboveB(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool PointAIsInB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool AIsBelowB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool AIsAboveB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool AEqualsB(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
+bool AIsBelowB(const SharedSegment& lhs, const SharedSegment& rhs);
+bool AIsAboveB(const SharedSegment& lhs, const SharedSegment& rhs);
+bool AIsBelowB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool AIsAboveB(const Point_2r &lhs, const Segment_2r_colored &rhs);
+bool AIsInB(const Point_2r &lhs, const Segment_2r_colored &rhs);
 }
 
 
@@ -318,6 +318,13 @@ inline bool SharedSegmentAIsAboveB(const SharedSegment &lhs,
     // Only works for non-intersecting segments!
     return lhs->IsAbove(*rhs);
 }
+
+inline bool SharedSegmentAEqualsB(const SharedSegment &lhs, const SharedSegment &rhs)
+{
+    return (lhs->p() == rhs->p() && lhs->q() == rhs->q() &&
+            lhs->get_color() == rhs->get_color());
+}
+
 inline bool PointAIsBelowB(const Point_2r& lhs, const Segment_2r_colored& rhs)
 {
     return AIsRightOfB(lhs, rhs.support());

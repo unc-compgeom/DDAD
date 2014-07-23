@@ -555,7 +555,7 @@ void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
     new_bundle->Insert(new_segment);
     bdt.Find(input_vertex);
     SharedBundle tmp = bdt.get_root();
-    while(Predicate::PointAIsBelowB(*(input_vertex.get_point()), tmp))
+    while(DDAD::AIsBelowB(*(input_vertex.get_point()), tmp))
         tmp = tmp->get_prev_bundle();
     if(input_vertex.is_red()) bdt.InsertBundle(new_bundle);
     //            if(tmp != nullptr && *(ii->get_point()) < tmp)
