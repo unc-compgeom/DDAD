@@ -208,88 +208,81 @@ private:
 int CountIntersections(const Arrangement_2r& A,
                        Visual::IGeometryObserver* observer = nullptr);
 
-inline bool operator<(const Bundle &lhs, const Bundle &rhs){
+
+//bundle comparisons
+bool AIsBelowB(const Bundle &lhs, const Bundle &rhs){
     return Predicate::AIsRightOfB(lhs.get_top_seg()->p(),
                                   rhs.get_bot_seg()->support());
-    // Only works for same-colored bundles!
-//    return lhs.get_top_seg() < rhs.get_bot_seg();
 }
-inline bool operator>(const Bundle &lhs, const Bundle &rhs){
+
+bool AIsAboveB(const Bundle &lhs, const Bundle &rhs){
     return Predicate::AIsLeftOfB(lhs.get_bot_seg()->p(),
                                  rhs.get_top_seg()->support());
-    // Only works for same-colored bundles!
-//    return lhs.get_bot_seg() > rhs.get_top_seg();
 }
-inline bool operator==(const Bundle &lhs, const Bundle &rhs){
+
+bool AEqualsB(const Bundle &lhs, const Bundle &rhs){
     return lhs.get_root() == rhs.get_root();
     // If weird things happen, it might be because this method doesn't check for
     // an element-by-element equivalence between two bundles.
 }
-inline bool operator!=(const Bundle &lhs, const Bundle &rhs){
-    return !(lhs == rhs);
-}
-inline bool operator<(const SharedBundle &lhs, const SharedBundle &rhs){
+
+//sharedbundle comparisons
+bool AIsBelowB(const SharedBundle &lhs, const SharedBundle &rhs){
     return Predicate::AIsRightOfB(lhs->get_top_seg()->p(),
                                   rhs->get_bot_seg()->support());
-    // Only works for same-colored bundles!
 }
-inline bool operator>(const SharedBundle &lhs, const SharedBundle &rhs){
+
+bool AIsAboveB(const SharedBundle &lhs, const SharedBundle &rhs){
     return Predicate::AIsLeftOfB(lhs->get_bot_seg()->p(),
                                  rhs->get_top_seg()->support());
-    // Only works for same-colored bundles!
 }
-//inline bool operator==(const SharedBundle &lhs, const SharedBundle &rhs){
-//    return lhs->get_root() == rhs->get_root();
-//}
-//inline bool operator!=(const SharedBundle &lhs, const SharedBundle &rhs){
-//    return !(lhs == rhs);
-//}
-inline bool operator<(const Point_2r& lhs, const SharedBundle& rhs)
+
+bool AEqualsB(const SharedBundle &lhs, const SharedBundle &rhs){
+    return lhs->get_root() == rhs->get_root();
+    // If weird things happen, it might be because this method doesn't check for
+    // an element-by-element equivalence between two bundles.
+}
+
+//point and sharedbundle comparisons
+bool AIsBelowB(const Point_2r& lhs, const SharedBundle& rhs)
 {
     return Predicate::AIsRightOfB(lhs, rhs->get_bot_seg()->support());
 }
-inline bool operator>(const Point_2r& lhs, const SharedBundle& rhs)
+
+bool AIsAboveB(const Point_2r& lhs, const SharedBundle& rhs)
 {
     return Predicate::AIsLeftOfB(lhs, rhs->get_bot_seg()->support());
 }
-inline bool operator==(const Point_2r& lhs, const SharedBundle& rhs)
+
+bool AIsInB(const Point_2r& lhs, const SharedBundle& rhs)
 {
     return (Predicate::AIsRightOrAheadOfB(lhs,
                                           rhs->get_top_seg()->support_ray())
             && Predicate::AIsLeftOrAheadOfB(lhs,
                                             rhs->get_bot_seg()->support_ray()));
 }
-inline bool operator<=(const Point_2r& lhs, const SharedBundle& rhs)
-{
-    return (lhs < rhs || lhs == rhs);
-}
-inline bool operator>=(const Point_2r& lhs, const SharedBundle& rhs)
-{
-    return (lhs > rhs || lhs == rhs);
-}
-inline bool operator<(const Point_2r& lhs, const Bundle& rhs)
+
+
+
+//point and bundle comparisons
+bool AIsBelowB(const Point_2r& lhs, const Bundle& rhs)
 {
     return Predicate::AIsRightOfB(lhs, rhs.get_bot_seg()->support());
 }
-inline bool operator>(const Point_2r& lhs, const Bundle& rhs)
+
+bool AIsAboveB(const Point_2r& lhs, const Bundle& rhs)
 {
     return Predicate::AIsLeftOfB(lhs, rhs.get_bot_seg()->support());
 }
-inline bool operator==(const Point_2r& lhs, const Bundle& rhs)
+
+bool AIsInB(const Point_2r& lhs, const Bundle& rhs)
 {
     return (Predicate::AIsRightOrAheadOfB(lhs,
                                           rhs.get_top_seg()->support_ray())
             && Predicate::AIsLeftOrAheadOfB(lhs,
                                             rhs.get_bot_seg()->support_ray()));
 }
-inline bool operator<=(const Point_2r& lhs, const Bundle& rhs)
-{
-    return (lhs < rhs || lhs == rhs);
-}
-inline bool operator>=(const Point_2r& lhs, const Bundle& rhs)
-{
-    return (lhs > rhs || lhs == rhs);
-}
+
 } // namespace DDAD
 
 

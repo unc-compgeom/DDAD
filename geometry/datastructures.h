@@ -6,6 +6,7 @@
 #include <queue>
 #include "point.h"
 #include "line.h"
+#include "arrangement.h"
 
 
 namespace DDAD{
@@ -456,9 +457,9 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
     L = R = &N;
 
     while(true){
-        if(x < t->element){
+        if(AIsBelowB(x, t->element)){
             if(t->left == nullptr) break;
-            if(x < t->left->element){
+            if(AIsBelowB(x, t->left->element)){
                 y = t->left;
                 t->left = y->right;
                 y->right = t;
@@ -469,9 +470,9 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
             R = t;
             t = t->left;
         }
-        else if(x > t->element){
+        else if(AIsAboveB(x, t->element)){
             if(t->right == nullptr) break;
-            if(x > t->right->element){
+            if(AIsAboveB(x, t->right->element)){
                 y = t->right;
                 t->right = y->left;
                 y->left = t;
@@ -493,7 +494,7 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
 
 //     Rotate right if we don't yet satisfy the output conditions
     if(root->left != nullptr){
-        if(x < root->element && x > root->left->element){
+        if(AIsBelowB(x, root->element) && AIsAboveB(x, root->left->element)){
             t = root->left;
             root->left = t->right;
             t->right = root;
