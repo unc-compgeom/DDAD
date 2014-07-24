@@ -42,24 +42,24 @@ public:
     //=========================================================================
     //      Datastructures: Factories
     //=========================================================================
-    DDAD::BinaryNode<int> SampleBinaryNode_int()
-    {
-        DDAD::BinaryNode<int> bnd = DDAD::BinaryNode<int>();
-        bnd.left = nullptr;
-        bnd.right = nullptr;
-        bnd.element = 1;
-        return bnd;
-    }
+//    DDAD::BinaryNode<int> SampleBinaryNode_int()
+//    {
+//        DDAD::BinaryNode<int> bnd = DDAD::BinaryNode<int>();
+//        bnd.left = nullptr;
+//        bnd.right = nullptr;
+//        bnd.element = 1;
+//        return bnd;
+//    }
 
-    DDAD::SplayTree<int> SampleSplayTree_int()
-    {
-        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-        int toinsert[] = {1, 2, 3, 4, 0};
-        for(int ii = 0; ii < 5; ii++){
-            spt.insert(toinsert[ii]);
-        }
-        return spt;
-    }
+//    DDAD::SplayTree<int> SampleSplayTree_int()
+//    {
+//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+//        int toinsert[] = {1, 2, 3, 4, 0};
+//        for(int ii = 0; ii < 5; ii++){
+//            spt.insert(toinsert[ii]);
+//        }
+//        return spt;
+//    }
 
     //=========================================================================
     //      Arrangement: Factories
@@ -166,141 +166,141 @@ private slots:
     //=========================================================================
     //      Datastructures: Tests
     //=========================================================================
-    void BinaryNodeConstructors()
-    {
-        DDAD::BinaryNode<int> tmpNode = SampleBinaryNode_int();
-        QCOMPARE(tmpNode.getElement(), 1);
+//    void BinaryNodeConstructors()
+//    {
+//        DDAD::BinaryNode<int> tmpNode = SampleBinaryNode_int();
+//        QCOMPARE(tmpNode.getElement(), 1);
 
-        // Try the copy constructor as well
-        DDAD::BinaryNode<int> node2 =
-                DDAD::BinaryNode<int>(2, &tmpNode, nullptr);
-        QCOMPARE(node2.left->getElement(), 1);
-    }
+//        // Try the copy constructor as well
+//        DDAD::BinaryNode<int> node2 =
+//                DDAD::BinaryNode<int>(2, &tmpNode, nullptr);
+//        QCOMPARE(node2.left->getElement(), 1);
+//    }
 
-    void SplayTreeConstructors()
-    {
-        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-        QVERIFY(spt.getRoot()==nullptr);
+//    void SplayTreeConstructors()
+//    {
+//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+//        QVERIFY(spt.getRoot()==nullptr);
 
-        spt = SampleSplayTree_int();
-        DDAD::SplayTree<int> spt2 = spt;
-        QCOMPARE(spt2.getRoot()->getElement(), spt.getRoot()->getElement());
-    }
+//        spt = SampleSplayTree_int();
+//        DDAD::SplayTree<int> spt2 = spt;
+//        QCOMPARE(spt2.getRoot()->getElement(), spt.getRoot()->getElement());
+//    }
 
-    void SplayTreeInserts()
-    {
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        // Inserting an element should splay to the top
-        spt.insert(20);
-        QCOMPARE(spt.ContainsValue(20), true);
-        QCOMPARE(spt.getRoot()->getElement(), 20);
-        int current_count = spt.Size();
-        spt.insert(49);
-        QCOMPARE(spt.ContainsValue(49), true);
-        QCOMPARE(spt.getRoot()->getElement(), 49);
-        QCOMPARE(spt.Size(), current_count+1);
+//    void SplayTreeInserts()
+//    {
+//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+//        // Inserting an element should splay to the top
+//        spt.insert(20);
+//        QCOMPARE(spt.ContainsValue(20), true);
+//        QCOMPARE(spt.getRoot()->getElement(), 20);
+//        int current_count = spt.Size();
+//        spt.insert(49);
+//        QCOMPARE(spt.ContainsValue(49), true);
+//        QCOMPARE(spt.getRoot()->getElement(), 49);
+//        QCOMPARE(spt.Size(), current_count+1);
 
-    }
+//    }
 
-    void SplayTreeRemove()
-    {
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        // Remove 2 from the tree
-        spt.remove(2);
-        // Tree should now remove 2 from the tree
-        QCOMPARE(spt.ContainsValue(2), false);
-        spt.insert(30);
-        spt.insert(20);
-        int current_count = spt.Size();
-        spt.remove(30);
-        QCOMPARE(spt.Size(), current_count-1);
-        current_count = spt.Size();
-        spt.remove(100000);
-        QCOMPARE(spt.Size(), current_count);
-    }
+//    void SplayTreeRemove()
+//    {
+//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+//        // Remove 2 from the tree
+//        spt.remove(2);
+//        // Tree should now remove 2 from the tree
+//        QCOMPARE(spt.ContainsValue(2), false);
+//        spt.insert(30);
+//        spt.insert(20);
+//        int current_count = spt.Size();
+//        spt.remove(30);
+//        QCOMPARE(spt.Size(), current_count-1);
+//        current_count = spt.Size();
+//        spt.remove(100000);
+//        QCOMPARE(spt.Size(), current_count);
+//    }
 
-    void SplayTreeFind()
-    {
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        // Find should splay an element to the top if it exists
-        spt.find(3);
-        QCOMPARE(spt.getRoot()->getElement(), 3);
-        // If not, it should default to greatest elt less than
-        spt.find(20);
-        QCOMPARE(spt.getRoot()->getElement(), 4);
-        // or least elt greater than
-        spt.find(-1);
-        QCOMPARE(spt.getRoot()->getElement(), 0);
-        spt.insert(30);
-        spt.find(1);
-        spt.find(49);
-        QCOMPARE(spt.getRoot()->getElement(), 30);
-    }
+//    void SplayTreeFind()
+//    {
+//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+//        // Find should splay an element to the top if it exists
+//        spt.find(3);
+//        QCOMPARE(spt.getRoot()->getElement(), 3);
+//        // If not, it should default to greatest elt less than
+//        spt.find(20);
+//        QCOMPARE(spt.getRoot()->getElement(), 4);
+//        // or least elt greater than
+//        spt.find(-1);
+//        QCOMPARE(spt.getRoot()->getElement(), 0);
+//        spt.insert(30);
+//        spt.find(1);
+//        spt.find(49);
+//        QCOMPARE(spt.getRoot()->getElement(), 30);
+//    }
 
-    void SplayTreeMinMax()
-    {
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        //findMax should splay the maximum element to the root of the tree
-        spt.findMax();
-        QCOMPARE(spt.getRoot()->getElement(), 4);
-        //findMin should splay the minimum element to the root of the tree
-        spt.findMin();
-        QCOMPARE(spt.getRoot()->getElement(), 0);
-    }
+//    void SplayTreeMinMax()
+//    {
+//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+//        //findMax should splay the maximum element to the root of the tree
+//        spt.findMax();
+//        QCOMPARE(spt.getRoot()->getElement(), 4);
+//        //findMin should splay the minimum element to the root of the tree
+//        spt.findMin();
+//        QCOMPARE(spt.getRoot()->getElement(), 0);
+//    }
 
-    void SplayTreeMerge()
-    {
-        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-        spt.insert(2);
-        spt.insert(4);
-        spt.insert(6);
-        spt.insert(7);
-        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
-        spt2.insert(10);
-        spt2.insert(11);
-        spt2.insert(12);
-        // Merge the two trees together
-        spt.mergeTree(&spt2);
-        QCOMPARE(spt.getRoot()->getElement(), 7);
-        QCOMPARE(spt.getRoot()->right->getElement(), 12);
-        QCOMPARE(spt.ContainsValue(10), true);
-        QCOMPARE(spt.Size(), 7);
+//    void SplayTreeMerge()
+//    {
+//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+//        spt.insert(2);
+//        spt.insert(4);
+//        spt.insert(6);
+//        spt.insert(7);
+//        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
+//        spt2.insert(10);
+//        spt2.insert(11);
+//        spt2.insert(12);
+//        // Merge the two trees together
+//        spt.mergeTree(&spt2);
+//        QCOMPARE(spt.getRoot()->getElement(), 7);
+//        QCOMPARE(spt.getRoot()->right->getElement(), 12);
+//        QCOMPARE(spt.ContainsValue(10), true);
+//        QCOMPARE(spt.Size(), 7);
 
-        spt = DDAD::SplayTree<int>();
-        spt2 = DDAD::SplayTree<int>();
-        spt2.insert(2);
-        spt2.insert(3);
-        spt.mergeTree(&spt2);
-        QVERIFY(!spt.isEmpty());
-        QCOMPARE(spt.getRoot(), spt2.getRoot());
+//        spt = DDAD::SplayTree<int>();
+//        spt2 = DDAD::SplayTree<int>();
+//        spt2.insert(2);
+//        spt2.insert(3);
+//        spt.mergeTree(&spt2);
+//        QVERIFY(!spt.isEmpty());
+//        QCOMPARE(spt.getRoot(), spt2.getRoot());
 
-    }
+//    }
 
-    void SplayTreeSplit(){
-        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
-        //SplitTree should return the subtree >
-        spt2 = spt.SplitTree(2);
-        QCOMPARE(spt2.ContainsValue(2), false);
-        QCOMPARE(spt2.ContainsValue(3), true);
-        QCOMPARE(spt2.ContainsValue(4), true);
-        QCOMPARE(spt.ContainsValue(2), true);
-        QCOMPARE(spt.ContainsValue(1), true);
-        QCOMPARE(spt.ContainsValue(3), false);
-        DDAD::SplayTree<int> spt3 = DDAD::SplayTree<int>();
-        spt3.insert(3);
-        spt3.insert(4);
-        spt2 = spt3.SplitTree(3);
-        QCOMPARE(spt3.ContainsValue(3), true);
-        QCOMPARE(spt3.ContainsValue(4), false);
-        spt = DDAD::SplayTree<int>();
-        spt2 = DDAD::SplayTree<int>();
-        spt.insert(1);
-        spt.insert(2);
-        spt2 = spt.SplitTree(2);
-        QCOMPARE(spt.ContainsValue(1), true);
-        QCOMPARE(spt.ContainsValue(2), false);
-    }
+//    void SplayTreeSplit(){
+//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+//        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
+//        //SplitTree should return the subtree >
+//        spt2 = spt.SplitTree(2);
+//        QCOMPARE(spt2.ContainsValue(2), false);
+//        QCOMPARE(spt2.ContainsValue(3), true);
+//        QCOMPARE(spt2.ContainsValue(4), true);
+//        QCOMPARE(spt.ContainsValue(2), true);
+//        QCOMPARE(spt.ContainsValue(1), true);
+//        QCOMPARE(spt.ContainsValue(3), false);
+//        DDAD::SplayTree<int> spt3 = DDAD::SplayTree<int>();
+//        spt3.insert(3);
+//        spt3.insert(4);
+//        spt2 = spt3.SplitTree(3);
+//        QCOMPARE(spt3.ContainsValue(3), true);
+//        QCOMPARE(spt3.ContainsValue(4), false);
+//        spt = DDAD::SplayTree<int>();
+//        spt2 = DDAD::SplayTree<int>();
+//        spt.insert(1);
+//        spt.insert(2);
+//        spt2 = spt.SplitTree(2);
+//        QCOMPARE(spt.ContainsValue(1), true);
+//        QCOMPARE(spt.ContainsValue(2), false);
+//    }
 
     //=========================================================================
     //      Arrangement: Tests
@@ -606,8 +606,8 @@ private slots:
         DDAD::BundleList bdl = DDAD::BundleList();
         DDAD::BundleTree bdt = DDAD::BundleTree();
         bdl.GenerateSentinels(L, bdt);
-        QVERIFY(DDAD::Point_2r(3, 8) < bdl.get_top());
-        QVERIFY(DDAD::Point_2r(10, 3) > bdl.get_bottom());
+        //QVERIFY(DDAD::Point_2r(3, 8) < bdl.get_top());
+       // QVERIFY(DDAD::Point_2r(10, 3) > bdl.get_bottom());
         QVERIFY(bdl.get_top()->get_next_bundle() != nullptr);
         QVERIFY(bdl.get_bottom()->get_prev_bundle() != nullptr);
     }

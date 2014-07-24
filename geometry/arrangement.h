@@ -7,7 +7,7 @@
 #ifndef GE_ARRANGEMENT_H
 #define GE_ARRANGEMENT_H
 
-//#include "common.h"
+#include "common.h"
 #include "visual.h"
 #include "point.h"
 #include "line.h"

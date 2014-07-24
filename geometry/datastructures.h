@@ -6,7 +6,7 @@
 #include <queue>
 #include "point.h"
 #include "line.h"
-#include "arrangement.h"
+//#include "arrangement.h"
 
 
 namespace DDAD{
@@ -18,9 +18,9 @@ namespace DDAD{
 // ******************PUBLIC OPERATIONS*********************
 // void insert( x )       --> Insert x
 // void remove( x )       --> Remove x
-// Comparable find( x )   --> Return item that matches x
-// Comparable findMin( )  --> Return smallest item
-// Comparable findMax( )  --> Return largest item
+// T find( x )   --> Return item that matches x
+// T findMin( )  --> Return smallest item
+// T findMax( )  --> Return largest item
 // boolean isEmpty( )     --> Return true if empty; else false
 // void makeEmpty( )      --> Remove all items
 // void print( )          --> Print ascii tree
@@ -29,86 +29,86 @@ namespace DDAD{
   // Node and forward declaration because g++ does
   // not understand nested classes.
 
-template <class Comparable>
+template <class T>
 class SplayTree;
 
-template <class Comparable>
+template <class T>
 class BinaryNode
 {
 public:
-    Comparable getElement() {return element;}
+    T getElement() {return element;}
 
-    Comparable  element;
-    BinaryNode *left;
-    BinaryNode *right;
+    T  element;
+    BinaryNode<T> *left;
+    BinaryNode<T> *right;
 
-    BinaryNode( ) : left( nullptr ), right( nullptr ) { }
-    BinaryNode( const Comparable & theElement, BinaryNode *lt, BinaryNode *rt )
+    BinaryNode<T>( ) : left( nullptr ), right( nullptr ) { }
+    BinaryNode<T>( const T & theElement, BinaryNode<T> *lt, BinaryNode<T> *rt )
       : element( theElement ), left( lt ), right( rt ) { }
 
-    friend class SplayTree<Comparable>;
+    friend class SplayTree<T>;
 };
 
 
-template <class Comparable>
+template <class T>
 class SplayTree
 {
   public:
-    explicit SplayTree();
-    SplayTree(BinaryNode<Comparable>* newroot);
-    SplayTree( const SplayTree & rhs );
+    explicit SplayTree<T>();
+    SplayTree<T>(BinaryNode<T>* newroot);
+    SplayTree<T>( const SplayTree & rhs );
 
-    ~SplayTree( );
+    ~SplayTree<T>( );
 
     void findMin( );
     void findMax( );
-    void find( const Comparable & x );
+    void find( const T & x );
     bool isEmpty( ) const;
-    SplayTree<Comparable> SplitTree( const Comparable & x);
-    SplayTree<Comparable> SplitTree( const Point_2r& split_here);
-    void mergeTree(SplayTree<Comparable> * R);
+    SplayTree<T> SplitTree( const T & x);
+    SplayTree<T> SplitTree( const Point_2r& split_here);
+    void mergeTree(SplayTree<T> * R);
     int Size();
 
     void makeEmpty( );
-    void insert( const Comparable & x );
-    bool remove( const Comparable & x );
+    void insert( const T & x );
+    bool remove( const T & x );
 
     void printBreadthFirst() const;
     void print();
-    void print(BinaryNode<Comparable>* node, std::string space);
+    void print(BinaryNode<T>* node, std::string space);
 
-    BinaryNode<Comparable>* getRoot() {return root;}
-    const BinaryNode<Comparable>* getRoot() const {return root;}
+    BinaryNode<T>* getRoot() {return root;}
+    const BinaryNode<T>* getRoot() const {return root;}
     const SplayTree & operator=( const SplayTree & rhs );
-    bool ContainsValue( const Comparable & x );
-    void Splay(const Point_2r& x, BinaryNode<Comparable> *t);
+    bool ContainsValue( const T & x );
+    void Splay(const Point_2r& x, BinaryNode<T> *t);
 
   protected:
-    BinaryNode<Comparable> *root;
-    int Size(BinaryNode<Comparable> *root);
-    const Comparable & elementAt( BinaryNode<Comparable> *t ) const;
-    BinaryNode<Comparable> * clone( BinaryNode<Comparable> *t ) const;
+    BinaryNode<T> *root;
+    int Size(BinaryNode<T> *root);
+    const T & elementAt( BinaryNode<T> *t ) const;
+    BinaryNode<T> * clone( BinaryNode<T> *t ) const;
 
-    void Splay(const Comparable & x, BinaryNode<Comparable> *t );
+    void Splay(const T & x, BinaryNode<T> *t );
 };
 /**
  * Construct the tree.
  */
-template <class Comparable>
-SplayTree<Comparable>::SplayTree()
+template <class T>
+SplayTree<T>::SplayTree()
 {
     root = nullptr;
 }
-template <class Comparable>
-SplayTree<Comparable>::SplayTree(BinaryNode<Comparable> *newroot) {
+template <class T>
+SplayTree<T>::SplayTree(BinaryNode<T> *newroot) {
     root = newroot;
 }
 
 /**
  * Copy constructor.
  */
-template <class Comparable>
-SplayTree<Comparable>::SplayTree( const SplayTree<Comparable> & rhs )
+template <class T>
+SplayTree<T>::SplayTree( const SplayTree<T> & rhs )
 {
     root = nullptr;
     *this = rhs;
@@ -118,8 +118,8 @@ SplayTree<Comparable>::SplayTree( const SplayTree<Comparable> & rhs )
 /**
  * Destructor.
  */
-template <class Comparable>
-SplayTree<Comparable>::~SplayTree( )
+template <class T>
+SplayTree<T>::~SplayTree( )
 {
     makeEmpty( );
 }
@@ -127,10 +127,10 @@ SplayTree<Comparable>::~SplayTree( )
 /**
  * Insert x into the tree.
  */
-template <class Comparable>
-void SplayTree<Comparable>::insert( const Comparable & x )
+template <class T>
+void SplayTree<T>::insert( const T & x )
 {
-    BinaryNode<Comparable> *newNode = new BinaryNode<Comparable>;
+    BinaryNode<T> *newNode = new BinaryNode<T>;
     newNode->element = x;
 
     if( root == nullptr )
@@ -140,7 +140,7 @@ void SplayTree<Comparable>::insert( const Comparable & x )
     }
     else
     {
-        BinaryNode<Comparable> *tmp_root = root;
+        BinaryNode<T> *tmp_root = root;
         while(tmp_root != nullptr){
             if(x < tmp_root->getElement())
             {
@@ -167,11 +167,11 @@ void SplayTree<Comparable>::insert( const Comparable & x )
 /**
  * Remove x from the tree.
  */
-template <class Comparable>
-bool SplayTree<Comparable>::remove( const Comparable & x )
+template <class T>
+bool SplayTree<T>::remove( const T & x )
 {
     if(root == nullptr) return false; // Can't remove from an empty tree
-    BinaryNode<Comparable> *newTree;
+    BinaryNode<T> *newTree;
 
     if( !ContainsValue(x) )
         return false;   // Item not found; do nothing
@@ -183,10 +183,10 @@ bool SplayTree<Comparable>::remove( const Comparable & x )
     else
     {
         // Find the maximum in the left subtree
-        SplayTree<Comparable>* newSplay = new SplayTree<Comparable>(root->left);
+        SplayTree<T>* newSplay = new SplayTree<T>(root->left);
         newSplay->Splay(x, newSplay->getRoot());
         newTree = newSplay->getRoot();
-        assert(newTree->right == nullptr);
+        //assert(newTree->right == nullptr);
         newTree->right = root->right;
     }
 
@@ -203,13 +203,13 @@ bool SplayTree<Comparable>::remove( const Comparable & x )
  *     smaller than any item in the tree, then call findMin.
  * Return the smallest item or ITEM_NOT_FOUND if empty.
  */
-template <class Comparable>
-void SplayTree<Comparable>::findMin( )
+template <class T>
+void SplayTree<T>::findMin( )
 {
     if( isEmpty( ) )
         return;
 
-    BinaryNode<Comparable> *ptr = root;
+    BinaryNode<T> *ptr = root;
 
     while( ptr->left != nullptr )
         ptr = ptr->left;
@@ -226,13 +226,13 @@ void SplayTree<Comparable>::findMin( )
  *     larger than any item in the tree, then call findMax.
  * Return the largest item or ITEM_NOT_FOUND if empty.
  */
-template <class Comparable>
-void SplayTree<Comparable>::findMax( )
+template <class T>
+void SplayTree<T>::findMax( )
 {
     if( isEmpty( ) )
         return;
 
-    BinaryNode<Comparable> *ptr = root;
+    BinaryNode<T> *ptr = root;
 
     while( ptr->right != nullptr )
         ptr = ptr->right;
@@ -245,8 +245,8 @@ void SplayTree<Comparable>::findMax( )
  * Find item x in the tree.
  * Return the matching item or ITEM_NOT_FOUND if not found.
  */
-template <class Comparable>
-void SplayTree<Comparable>::find( const Comparable & x )
+template <class T>
+void SplayTree<T>::find( const T & x )
 {
     if( isEmpty( ) )
         return;
@@ -257,8 +257,8 @@ void SplayTree<Comparable>::find( const Comparable & x )
 /**
  * Make the tree logically empty.
  */
-template <class Comparable>
-void SplayTree<Comparable>::makeEmpty( )
+template <class T>
+void SplayTree<T>::makeEmpty( )
 {
 /******************************
  * Comment this out, because it is prone to excessive
@@ -276,8 +276,8 @@ void SplayTree<Comparable>::makeEmpty( )
  * Test if the tree is logically empty.
  * @return true if empty, false otherwise.
  */
-template <class Comparable>
-bool SplayTree<Comparable>::isEmpty( ) const
+template <class T>
+bool SplayTree<T>::isEmpty( ) const
 {
     return root == nullptr;
 }
@@ -286,11 +286,11 @@ bool SplayTree<Comparable>::isEmpty( ) const
   * Split the tree at elt into two subtrees such that subtree L is <= elt
   * and all remaining nodes in the tree are > elt
   */
-template <class Comparable>
-SplayTree<Comparable> SplayTree<Comparable>::SplitTree(const Comparable &x){
+template <class T>
+SplayTree<T> SplayTree<T>::SplitTree(const T &x){
     // Splitting at a minimum/maximum value should always leave at least that
     // value in the tree
-    SplayTree<Comparable>* R;
+    SplayTree<T>* R;
     find(x);  // Indexed elements are Splayed to the top of the tree
     if(x == root->getElement() && root->right == nullptr)
     {
@@ -306,13 +306,13 @@ SplayTree<Comparable> SplayTree<Comparable>::SplitTree(const Comparable &x){
     return *R;
 }
 
-template <class Comparable>
-SplayTree<Comparable> SplayTree<Comparable>::SplitTree(
+template <class T>
+SplayTree<T> SplayTree<T>::SplitTree(
         const Point_2r& split_here)
 {
     // Splitting at a minimum/maximum value should always leave at least that
     // value in the tree
-    SplayTree<Comparable>* R;
+    SplayTree<T>* R;
     Splay(split_here, root);
 
     if(Predicate::PointAIsInB(split_here, root->getElement()) && root->right == nullptr)
@@ -333,8 +333,8 @@ SplayTree<Comparable> SplayTree<Comparable>::SplitTree(
 /**
   * Merge tree R into tree L (current tree). L must be < R.
   */
-template <class Comparable>
-void SplayTree<Comparable>::mergeTree(SplayTree<Comparable>* R){
+template <class T>
+void SplayTree<T>::mergeTree(SplayTree<T>* R){
     if(isEmpty()){
         root = R->getRoot();
         return;
@@ -343,8 +343,8 @@ void SplayTree<Comparable>::mergeTree(SplayTree<Comparable>* R){
     root->right = R->getRoot();
 }
 
-template <class Comparable>
-int SplayTree<Comparable>::Size()
+template <class T>
+int SplayTree<T>::Size()
 {
     return Size(root);
 }
@@ -353,9 +353,9 @@ int SplayTree<Comparable>::Size()
 /**
  * Deep copy.
  */
-template <class Comparable>
-const SplayTree<Comparable> &
-SplayTree<Comparable>::operator=( const SplayTree<Comparable> & rhs )
+template <class T>
+const SplayTree<T> &
+SplayTree<T>::operator=( const SplayTree<T> & rhs )
 {
     if( this != &rhs )
     {
@@ -366,10 +366,10 @@ SplayTree<Comparable>::operator=( const SplayTree<Comparable> & rhs )
     return *this;
 }
 
-template <class Comparable>
-bool SplayTree<Comparable>::ContainsValue(const Comparable &x){
+template <class T>
+bool SplayTree<T>::ContainsValue(const T &x){
     if (isEmpty()) return false;
-    BinaryNode<Comparable>* tmp_root = root;
+    BinaryNode<T>* tmp_root = root;
     while(tmp_root != nullptr){
         if(x < tmp_root->getElement()) tmp_root = tmp_root->left;
         else if(x > tmp_root->getElement()) tmp_root = tmp_root->right;
@@ -387,12 +387,12 @@ bool SplayTree<Comparable>::ContainsValue(const Comparable &x){
  * x is the target item to Splay around.
  * t is the root of the subtree to Splay.
  */
-template <class Comparable>
-void SplayTree<Comparable>::Splay( const Comparable & x,
-                                   BinaryNode<Comparable> * t )
+template <class T>
+void SplayTree<T>::Splay( const T & x,
+                                   BinaryNode<T> * t )
 {
 
-    BinaryNode<Comparable> N, *L, *R, *y;
+    BinaryNode<T> N, *L, *R, *y;
     if(t == nullptr) return;
     N.left = N.right = nullptr;
     L = R = &N;
@@ -400,7 +400,7 @@ void SplayTree<Comparable>::Splay( const Comparable & x,
     if((t->left == nullptr) && (t->right == nullptr)) return;
 
     while(true){
-        if(x < t->element){
+        if(DDAD::AIsBelowB(x, t->element)){
             if(t->left == nullptr) break;
             if(x < t->left->element){
                 y = t->left;
@@ -446,12 +446,12 @@ void SplayTree<Comparable>::Splay( const Comparable & x,
     }
 }
 
-template <class Comparable>
-void SplayTree<Comparable>::Splay( const Point_2r & x,
-                                   BinaryNode<Comparable> * t )
+template <class T>
+void SplayTree<T>::Splay( const Point_2r & x,
+                                   BinaryNode<T> * t )
 {
 
-    BinaryNode<Comparable> N, *L, *R, *y;
+    BinaryNode<T> N, *L, *R, *y;
     if(t == nullptr) return;
     N.left = N.right = nullptr;
     L = R = &N;
@@ -507,17 +507,17 @@ void SplayTree<Comparable>::Splay( const Point_2r & x,
 /*
  * Display Tree Elements
  */
-template <class Comparable>
-void SplayTree<Comparable>::printBreadthFirst() const{
+template <class T>
+void SplayTree<T>::printBreadthFirst() const{
     int depth = 0;
-    std::queue<BinaryNode<Comparable>*> q;
+    std::queue<BinaryNode<T>*> q;
     if (root != nullptr) {
         q.push(root);
         std::cout << "\n" << root->element << " ";
     }
     while (!q.empty()){
         depth++;
-        const BinaryNode<Comparable>* const temp_node = q.front();
+        const BinaryNode<T>* const temp_node = q.front();
         q.pop();
 
         if(temp_node->left != nullptr){
@@ -536,13 +536,13 @@ void SplayTree<Comparable>::printBreadthFirst() const{
     std::cout << "\n";
 }
 
-template <class Comparable>
-void SplayTree<Comparable>::print(){
+template <class T>
+void SplayTree<T>::print(){
     print(root, std::string(""));
 }
 
-template <class Comparable>
-void SplayTree<Comparable>::print(BinaryNode<Comparable>* node,
+template <class T>
+void SplayTree<T>::print(BinaryNode<T>* node,
                                   std::string space){
     if(node != nullptr){
         space.append("    ");
@@ -553,8 +553,8 @@ void SplayTree<Comparable>::print(BinaryNode<Comparable>* node,
 
 }
 
-template <class Comparable>
-int SplayTree<Comparable>::Size(BinaryNode<Comparable> *root)
+template <class T>
+int SplayTree<T>::Size(BinaryNode<T> *root)
 {
     if(root == nullptr) return 0;
     int tree_size = 1;
@@ -568,15 +568,15 @@ int SplayTree<Comparable>::Size(BinaryNode<Comparable> *root)
  * Internal method to clone subtree.
  * WARNING: This is prone to running out of stack space.
  */
-template <class Comparable>
-BinaryNode<Comparable> *
-SplayTree<Comparable>::clone( BinaryNode<Comparable> * t ) const
+template <class T>
+BinaryNode<T> *
+SplayTree<T>::clone( BinaryNode<T> * t ) const
 {
 //    if( t == t->left )  // Cannot test against nullptr!!!
     if(t == nullptr)
         return nullptr;
     else
-        return new BinaryNode<Comparable>( t->element, clone( t->left ),
+        return new BinaryNode<T>( t->element, clone( t->left ),
                                            clone( t->right ) );
 }
 

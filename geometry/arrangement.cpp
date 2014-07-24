@@ -2,6 +2,7 @@
 #include "line.h"
 #include "intersection.h"
 #include "arrangement.h"
+#include "point.h"
 
 
 namespace DDAD {
