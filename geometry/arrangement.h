@@ -57,28 +57,12 @@ private:
 // Interface: Bundle
 //=============================================================================
 
-class Bundle {
+class Bundle : public SplayTree<Segment_2r_colored>{
 friend class BundleTree;
 friend class BundleList;
 public:
     Bundle();
     Bundle(SplayTree<SharedSegment>& rhs);
-
-    //Accessors
-    const SharedBundle get_next_bundle() const { return next_bundle_; }
-    const SharedBundle get_prev_bundle() const { return prev_bundle_; }
-    SharedBundle get_prev_bundle() { return prev_bundle_; }
-    SharedBundle get_next_bundle() { return next_bundle_; }
-    const SharedSegment get_top_seg() const { return top_segment_; }
-    const SharedSegment get_bot_seg() const { return bottom_segment_; }
-    const RelativePosition get_rel_position() const { return rel_position_; }
-    const BinaryNode<SharedSegment>* get_root() const { return tree_.getRoot();}
-    SplayTree<SharedSegment>* get_tree()  { return &tree_; }
-    bool get_color() { return top_segment_->get_color(); }
-    int get_size() { return size_; }
-    void set_next_bundle(SharedBundle new_next) { next_bundle_ = new_next; }
-    void set_prev_bundle(SharedBundle new_prev) { prev_bundle_ = new_prev; }
-    void set_size(int new_size) { size_ = new_size; }
 
     //Class methods
     void Insert(SharedSegment new_segment);
@@ -86,24 +70,20 @@ public:
     bool Contains(ArrangementVertex_2r& test_point);
 
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
-    int CountSegments();
     void Merge(SharedBundle to_merge);
     SharedBundle Split(SharedSegment split_here,
                        SharedBundle& my_sptr);
     SharedBundle Split(Point_2r& split_here,
                        SharedBundle& my_sptr);
 
-private:
-    //pointers to next and previous bundles in linked list
+    // pointers to next and previous bundles in linked list
     SharedBundle next_bundle_;
     SharedBundle prev_bundle_;
-    //the bundle itself - tree of segments
-    SplayTree<SharedSegment> tree_;
-    //pointers to the top and bottom of the bundle
+    // pointers to the top and bottom of the bundle
     SharedSegment top_segment_;
     SharedSegment bottom_segment_;
+    // Position relative to the last vertex accessed
     RelativePosition rel_position_;
-    int size_;
 };
 
 namespace Predicate{
