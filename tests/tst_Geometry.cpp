@@ -308,7 +308,7 @@ private slots:
     void BundleConstructor()
     {
         DDAD::Bundle bdl = DDAD::Bundle();
-        QVERIFY(bdl.get_root()==nullptr);
+        QVERIFY(bdl.root_==nullptr);
     }
 
     void BundleSetNextPrev()
@@ -319,31 +319,31 @@ private slots:
                 std::make_shared<DDAD::Bundle>();
         sbdl2->Insert(SampleSharedSegment(2, 2, 3, 3, true));
         sbdl2->Insert(SampleSharedSegment(2, 2, 4, 4, true));
-        sbdl1->set_next_bundle(sbdl2);
-        sbdl2->set_prev_bundle(sbdl1);
-        QVERIFY(sbdl1->get_next_bundle() == sbdl2);
+        sbdl1->next_bundle_ = sbdl2;
+        sbdl2->prev_bundle_ = sbdl1;
+        QVERIFY(sbdl1->next_bundle_ == sbdl2);
         DDAD::SharedBundle sbdl3 =
                 std::make_shared<DDAD::Bundle>();
         sbdl3->Insert(SampleSharedSegment(0, 10, 3, 10, true));
-        sbdl2->set_next_bundle(sbdl3);
-        sbdl3->set_prev_bundle(sbdl2);
-        QVERIFY(sbdl1->get_next_bundle()->get_next_bundle()==sbdl3);
-        QVERIFY(sbdl3->get_prev_bundle()->get_prev_bundle()==sbdl1);
+        sbdl2->next_bundle_ = sbdl3;
+        sbdl3->prev_bundle_ = sbdl2;
+        QVERIFY(sbdl1->next_bundle_->next_bundle_==sbdl3);
+        QVERIFY(sbdl3->prev_bundle_->prev_bundle_==sbdl1);
     }
 
     void BundleInsert()
     {
         DDAD::Bundle bdl = SampleBundle();
-        int current_segments = bdl.CountSegments();
+        int current_segments = bdl.Size();
         // Non-parallel segments
         bdl.Insert(SampleSharedSegment(0, 1, 11, 11, true));
-        QCOMPARE(bdl.CountSegments(), current_segments+1);
+        QCOMPARE(bdl.Size(), current_segments+1);
         bdl = SampleBundle();
         // Parallel segments
         bdl.Insert(SampleSharedSegment(0, 2, 5, 2, true));
-        current_segments = bdl.CountSegments();
+        current_segments = bdl.Size();
         bdl.Insert(SampleSharedSegment(0, 4, 5, 4, true));
-        QCOMPARE(bdl.CountSegments(), current_segments+1);
+        QCOMPARE(bdl.Size(), current_segments+1);
         // Contains a point between two inserted segments
         bdl = DDAD::Bundle();
         bdl.Insert(SampleSharedSegment(0, 2, 5, 2, true));
@@ -358,9 +358,9 @@ private slots:
                 SampleSharedSegment(100, 100, 120, 120, true);
         bdl.Insert(to_be_removed);
         // Try to remove a segment
-        int current_count = bdl.CountSegments();
+        int current_count = bdl.Size();
         bdl.Remove(to_be_removed);
-        QCOMPARE(bdl.CountSegments(), current_count - 1);
+        QCOMPARE(bdl.Size(), current_count - 1);
     }
 
     void BundleContains()
@@ -372,8 +372,8 @@ private slots:
         QCOMPARE(bdl.Contains(test_vertex), true);
 
         DDAD::Bundle bdl2 = DDAD::Bundle();
-        bdl2.Insert(SampleSharedSegment(5, 5, 10, 10, true));
         bdl2.Insert(SampleSharedSegment(3, 3, 10, 3, true));
+        bdl2.Insert(SampleSharedSegment(5, 5, 10, 10, true));
         test_vertex = SampleArrangementVertex(2, 2, true);
         QCOMPARE(bdl2.Contains(test_vertex), false);
         test_vertex = SampleArrangementVertex(6, 4, true);
@@ -407,14 +407,14 @@ private slots:
         QCOMPARE(rel_position, DDAD::ABOVE);
     }
 
-    void BundleCountSegments()
+    void BundleSize()
     {
         DDAD::Bundle bdl = DDAD::Bundle();
         bdl.Insert(SampleSharedSegment(1, 5, 5, 5, true));
         bdl.Insert(SampleSharedSegment(1, 6, 5, 6, true));
-        QCOMPARE(bdl.CountSegments(), 2);
+        QCOMPARE(bdl.Size(), 2);
         DDAD::Bundle bdl2 = DDAD::Bundle();
-        QCOMPARE(bdl2.CountSegments(), 0);
+        QCOMPARE(bdl2.Size(), 0);
     }
 
     void BundleMerge()
@@ -423,48 +423,35 @@ private slots:
         sbdl1->Insert(SampleSharedSegment(0, 0, 20, 0, true));
         DDAD::SharedBundle sbdl2 = std::make_shared<DDAD::Bundle>();
         sbdl2->Insert(SampleSharedSegment(1, 1, 5, 2, true));
-        sbdl1->set_next_bundle(sbdl2);
-        sbdl2->set_prev_bundle(sbdl1);
+        sbdl1->next_bundle_ = sbdl2;
+        sbdl2->prev_bundle_ = sbdl1;
         DDAD::SharedBundle sbdl3 = std::make_shared<DDAD::Bundle>();
         sbdl3->Insert(SampleSharedSegment(0, 4, 20, 4, false));
-        sbdl2->set_next_bundle(sbdl3);
-        sbdl3->set_prev_bundle(sbdl2);
-        QVERIFY(sbdl3->get_prev_bundle() == sbdl2);
+        sbdl2->next_bundle_ = sbdl3;
+        sbdl3->prev_bundle_ = sbdl2;
+        QVERIFY(sbdl3->prev_bundle_ == sbdl2);
         sbdl1->Merge(sbdl2);
-        QVERIFY(sbdl1->get_top_seg() == sbdl2->get_top_seg());
-        QVERIFY(sbdl3->get_prev_bundle() == sbdl1);
-        QVERIFY(sbdl3->get_next_bundle() == nullptr);
-        QVERIFY(sbdl1->get_next_bundle() == sbdl3);
-        QVERIFY(sbdl1->get_prev_bundle() == nullptr);
-        QVERIFY(sbdl1->get_root()->right == sbdl2->get_root());
-        QCOMPARE(sbdl1->CountSegments(), 2);
+        QVERIFY(sbdl1->top_segment_ == sbdl2->top_segment_);
+        QVERIFY(sbdl3->prev_bundle_ == sbdl1);
+        QVERIFY(sbdl3->next_bundle_ == nullptr);
+        QVERIFY(sbdl1->next_bundle_ == sbdl3);
+        QVERIFY(sbdl1->prev_bundle_ == nullptr);
+        QVERIFY(sbdl1->root_->right == sbdl2->root_);
+        QCOMPARE(sbdl1->Size(), 2);
 
         // Only two bundles in the list
         sbdl1 = SampleSharedBundle(SampleSharedSegment(2, 2, 8, 2, true));
         sbdl2 = SampleSharedBundle(SampleSharedSegment(2, 4, 8, 4, true));
-        sbdl1->set_next_bundle(sbdl2);
-        sbdl2->set_prev_bundle(sbdl1);
+        sbdl1->next_bundle_ = sbdl2;
+        sbdl2->prev_bundle_ = sbdl1;
         sbdl1->Merge(sbdl2);
-        QVERIFY(sbdl1->get_next_bundle() == nullptr);
-        QVERIFY(sbdl1->get_prev_bundle() == nullptr);
-        QVERIFY(sbdl1->get_root()->right == sbdl2->get_root());
-        QCOMPARE(sbdl1->CountSegments(), 2);
+        QVERIFY(sbdl1->next_bundle_ == nullptr);
+        QVERIFY(sbdl1->prev_bundle_ == nullptr);
+        QVERIFY(sbdl1->root_->right == sbdl2->root_);
+        QCOMPARE(sbdl1->Size(), 2);
 
 
     }
-
-//    void BundleCompare()
-//    {
-//        DDAD::SharedBundle bdlred =
-//                SampleSharedBundle(SampleSharedSegment(1, 1, 5, 1, true),
-//                                   SampleSharedSegment(1, 3, 12, 3, true));
-//        DDAD::SharedBundle bdlred2 =
-//                SampleSharedBundle(SampleSharedSegment(1, 4, 5, 4, true),
-//                                   SampleSharedSegment(1, 6, 3, 7, true));
-//        QCOMPARE(*bdlred == *bdlred2, false);
-//        QCOMPARE(*bdlred > *bdlred2, false);
-//        QCOMPARE(*bdlred < *bdlred2, true);
-//    }
 
     void BundleSplit()
     {
@@ -472,33 +459,33 @@ private slots:
                 SampleSharedBundle(SampleSharedSegment(4, 4, 10, 4, true),
                                    SampleSharedSegment(4, 14, 10, 14, true));
         DDAD::Point_2r split_here = DDAD::Point_2r(5, 5);
-        int current_segments = bdl->CountSegments();
+        int current_segments = bdl->Size();
         QCOMPARE(current_segments, 2);
         bdl->Split(split_here, bdl);
-        QCOMPARE(bdl->CountSegments(), current_segments - 1);
-        QVERIFY(bdl->get_next_bundle() != nullptr);
-        QVERIFY(bdl->get_next_bundle()->get_prev_bundle() == bdl);
+        QCOMPARE(bdl->Size(), current_segments - 1);
+        QVERIFY(bdl->next_bundle_ != nullptr);
+        QVERIFY(bdl->next_bundle_->prev_bundle_ == bdl);
 
         DDAD::SharedBundle bdl2 =
                 SampleSharedBundle(SampleSharedSegment(4, 4, 10, 4, true));
         split_here = DDAD::Point_2r(10, 4);
         bdl2->Split(split_here, bdl2);
-        QVERIFY(bdl2->CountSegments() == 1);
-        QVERIFY(bdl2->get_next_bundle() == nullptr);
-        QVERIFY(bdl2->get_prev_bundle() == nullptr);
+        QVERIFY(bdl2->Size() == 1);
+        QVERIFY(bdl2->next_bundle_ == nullptr);
+        QVERIFY(bdl2->prev_bundle_ == nullptr);
 
         DDAD::SharedBundle bdl3 =
                 SampleSharedBundle(SampleSharedSegment(4, 4, 10, 4, true),
                                    SampleSharedSegment(4, 14, 10, 14, true));
         bdl3->Insert(SampleSharedSegment(4, 2, 10, 2, true));
-        current_segments = bdl3->CountSegments();
+        current_segments = bdl3->Size();
         QVERIFY(current_segments == 3);
         bdl3->Split(DDAD::Point_2r(5, 5), bdl3);
-        QVERIFY(bdl3->CountSegments() == 2);
-        QVERIFY(bdl3->get_next_bundle()->CountSegments() == 1);
-        QVERIFY(bdl3->get_next_bundle()->get_next_bundle() == nullptr);
-        QVERIFY(bdl3->get_prev_bundle() == nullptr);
-        QVERIFY(bdl3->get_next_bundle()->get_prev_bundle() == bdl3);
+        QVERIFY(bdl3->Size() == 2);
+        QVERIFY(bdl3->next_bundle_->Size() == 1);
+        QVERIFY(bdl3->next_bundle_->next_bundle_ == nullptr);
+        QVERIFY(bdl3->prev_bundle_ == nullptr);
+        QVERIFY(bdl3->next_bundle_->prev_bundle_ == bdl3);
 
     }
 
@@ -516,17 +503,17 @@ private slots:
                                    SampleSharedSegment(1, 6, 6, 6, false));
 
         //insert a red bundle
-        bdt.InsertBundle(bdlred);
+        bdt.Insert(bdlred);
         //try to insert a blue bundle
-        bdt.InsertBundle(bdlblue);
-        QCOMPARE(bdt.get_root(), bdlred);
+        bdt.Insert(bdlblue);
+        QCOMPARE(bdt.root_->element, bdlred);
         //size of bdt should be 1, since the blue bundle should not insert
         QCOMPARE(bdt.Size(), 1);
         //insert another red bundle
-        bdt.InsertBundle(bdlred2);
+        bdt.Insert(bdlred2);
         //size of bdt should be 2, now that we've added 2 red bundles
         QCOMPARE(bdt.Size(), 2);
-        bdt.InsertBundle(bdlred2);
+        bdt.Insert(bdlred2);
         //shouldn't be able to insert duplicates
         QCOMPARE(bdt.Size(), 2);
     }
@@ -542,29 +529,29 @@ private slots:
                                    SampleSharedSegment(1, 7, 3, 7, true));
 
         //insert a red bundle
-        bdt.InsertBundle(bdlred);
+        bdt.Insert(bdlred);
         //insert a second red bundle
-        bdt.InsertBundle(bdlred2);
+        bdt.Insert(bdlred2);
         //remove first red bundle
-        bdt.RemoveBundle(bdlred);
+        bdt.Remove(bdlred);
         //second red bundle should be at the root, size should be 1
-        QCOMPARE(bdt.get_root(), bdlred2);
+        QCOMPARE(bdt.root_->element, bdlred2);
         QCOMPARE(bdt.Size(), 1);
     }
 
-    void BundleTreeFind()
+    void BundleTreeSplay()
     {
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::SharedBundle bdlred = SampleSharedBundle();
         DDAD::SharedBundle bdlred2 =
                 SampleSharedBundle(SampleSharedSegment(0, 4, 5, 4, true),
                                    SampleSharedSegment(1, 6, 3, 7, true));
-        bdt.InsertBundle(bdlred);
-        bdt.InsertBundle(bdlred2);
+        bdt.Insert(bdlred);
+        bdt.Insert(bdlred2);
 
         DDAD::ArrangementVertex_2r vertex = SampleArrangementVertex(0,4,true);
-        bdt.Find(vertex);
-        QCOMPARE(bdt.get_root(),bdlred2);
+        bdt.Splay(*vertex.get_point(), bdt.root_);
+        QCOMPARE(bdt.root_->element,bdlred2);
 
     }
 
@@ -607,9 +594,9 @@ private slots:
         DDAD::BundleTree bdt = DDAD::BundleTree();
         bdl.GenerateSentinels(L, bdt);
         //QVERIFY(DDAD::Point_2r(3, 8) < bdl.get_top());
-       // QVERIFY(DDAD::Point_2r(10, 3) > bdl.get_bottom());
-        QVERIFY(bdl.get_top()->get_next_bundle() != nullptr);
-        QVERIFY(bdl.get_bottom()->get_prev_bundle() != nullptr);
+       // QVERIFY(DDAD::Point_2r(10, 3) > bdl.get_bottom_segment_);
+        QVERIFY(bdl.top()->next_bundle() != nullptr);
+        QVERIFY(bdl.bottom_segment_->prev_bundle() != nullptr);
     }
 
     void BundleListInsert()
@@ -619,18 +606,18 @@ private slots:
         DDAD::SharedBundle bundle2 =
                 SampleSharedBundle(SampleSharedSegment(0, 1, 1, 2, false),
                                    SampleSharedSegment(0, 2, 3, 3, false));
-        QVERIFY(bdl.get_bottom() == nullptr);
-        QVERIFY(bdl.get_top() == nullptr);
+        QVERIFY(bdl.bottom_segment_ == nullptr);
+        QVERIFY(bdl.top() == nullptr);
         bdl.InsertBundle(bundle,nullptr);
-        QCOMPARE(bdl.get_bottom(), bundle);
-        QCOMPARE(bdl.get_top(), bundle);
+        QCOMPARE(bdl.bottom_segment_, bundle);
+        QCOMPARE(bdl.top(), bundle);
         bdl.InsertBundle(bundle2,bundle);
-        QCOMPARE(bdl.get_bottom(), bundle);
-        QCOMPARE(bdl.get_top(), bundle2);
-        QCOMPARE(bundle->get_next_bundle(), bundle2);
-        QCOMPARE(bundle2->get_prev_bundle(), bundle);
-        QVERIFY(bundle->get_prev_bundle() == nullptr);
-        QVERIFY(bundle2->get_next_bundle() == nullptr);
+        QCOMPARE(bdl.bottom_segment_, bundle);
+        QCOMPARE(bdl.top(), bundle2);
+        QCOMPARE(bundle->next_bundle(), bundle2);
+        QCOMPARE(bundle2->prev_bundle(), bundle);
+        QVERIFY(bundle->prev_bundle() == nullptr);
+        QVERIFY(bundle2->next_bundle() == nullptr);
     }
 
     void BundleListRemove()
@@ -644,16 +631,16 @@ private slots:
         bdl.InsertBundle(bundle2,bundle);
 
         bdl.RemoveBundle(bundle);
-        QCOMPARE(bdl.get_bottom(), bundle2);
-        QCOMPARE(bdl.get_top(), bundle2);
+        QCOMPARE(bdl.bottom_segment_, bundle2);
+        QCOMPARE(bdl.top(), bundle2);
 
         // Test on a single-bundle list
         DDAD::BundleList bdl2 = DDAD::BundleList();
         DDAD::SharedBundle bundle1 = SampleSharedBundle();
         bdl2.InsertBundle(bundle1, nullptr);
-        QCOMPARE(bdl2.get_top(), bundle1);
+        QCOMPARE(bdl2.top(), bundle1);
         bdl2.RemoveBundle(bundle1);
-        QVERIFY(bdl2.get_top() == nullptr);
+        QVERIFY(bdl2.top() == nullptr);
 
         // Swap colors
         bdl = DDAD::BundleList();
@@ -666,10 +653,10 @@ private slots:
         bdl.InsertBundle(bundle2, bundle);
 
         bdl.RemoveBundle(bundle);
-        QCOMPARE(bdl.get_bottom(), bundle2);
-        QCOMPARE(bdl.get_top(), bundle2);
-        QVERIFY(bundle2->get_next_bundle() == nullptr);
-        QVERIFY(bundle2->get_prev_bundle() == nullptr);
+        QCOMPARE(bdl.bottom_segment_, bundle2);
+        QCOMPARE(bdl.top(), bundle2);
+        QVERIFY(bundle2->next_bundle() == nullptr);
+        QVERIFY(bundle2->prev_bundle() == nullptr);
 
     }
 
@@ -697,7 +684,7 @@ private slots:
                 SampleArrangementVertex(3, 8, false);
         DDAD::ArrangementVertex_2r between_b1_r1 =
                 SampleArrangementVertex(9, 4, true);
-        bdl.InsertBundle(blue1, bdl.get_bottom());
+        bdl.InsertBundle(blue1, bdl.bottom_segment_);
         bdl.InsertBundle(red1, blue1);
         bdl.InsertBundle(blue2, red1);
         bdl.InsertBundle(red2, blue2);
@@ -707,7 +694,7 @@ private slots:
         DDAD::SharedBundle red_below, red_above, blue_below, blue_above;
         bdl.LocateVertex(on_r1, bdt, red_above, red_below,
                                  blue_above, blue_below);
-        QVERIFY(red_below == red1->get_prev_bundle()->get_prev_bundle());
+        QVERIFY(red_below == red1->prev_bundle()->prev_bundle());
         QVERIFY(red_above == red2);
         QVERIFY(blue_above == blue2);
         QVERIFY(blue_below == blue1);
@@ -717,11 +704,11 @@ private slots:
         QVERIFY(red_below == red1);
         QVERIFY(red_above == red2);
         QVERIFY(blue_below == blue1);
-        QVERIFY(blue_above == blue2->get_next_bundle()->get_next_bundle());
+        QVERIFY(blue_above == blue2->next_bundle()->next_bundle());
 
         bdl.LocateVertex(between_b1_r1, bdt, red_above, red_below,
                          blue_above, blue_below);
-        QVERIFY(red_below == red1->get_prev_bundle()->get_prev_bundle());
+        QVERIFY(red_below == red1->prev_bundle()->prev_bundle());
         QVERIFY(red_above == red1);
         QVERIFY(blue_below == blue1);
         QVERIFY(blue_above == blue2);
@@ -737,10 +724,10 @@ private slots:
         DDAD::ArrangementVertex_2r pt1 =
                 SampleArrangementVertex(3, 8, false);
         bdl.LocateVertex(pt1, bdt, red_above, red_below, blue_above, blue_below);
-        QVERIFY(red_below == bdl.get_bottom());
-        QVERIFY(red_above == bdl.get_bottom()->get_next_bundle()->get_next_bundle());
-        QVERIFY(blue_below == bdl.get_top()->get_prev_bundle()->get_prev_bundle());
-        QVERIFY(blue_above == bdl.get_top());
+        QVERIFY(red_below == bdl.bottom_segment_);
+        QVERIFY(red_above == bdl.bottom_segment_->next_bundle()->next_bundle());
+        QVERIFY(blue_below == bdl.top()->prev_bundle()->prev_bundle());
+        QVERIFY(blue_above == bdl.top());
 
 
     }
@@ -755,10 +742,10 @@ private slots:
         bdl.InsertBundle(sbdl1, nullptr);
         bdl.SplitBundleAtVertex(
                     sbdl1, SampleArrangementVertex(5, 3, true));
-        QVERIFY(bdl.get_bottom() == sbdl1);
-        QCOMPARE(sbdl1->CountSegments(), 1);
-        QVERIFY(bdl.get_top() == sbdl1->get_next_bundle());
-        QVERIFY(sbdl1->get_next_bundle()->get_prev_bundle() == sbdl1);
+        QVERIFY(bdl.bottom_segment_ == sbdl1);
+        QCOMPARE(sbdl1->Size(), 1);
+        QVERIFY(bdl.top() == sbdl1->next_bundle());
+        QVERIFY(sbdl1->next_bundle()->prev_bundle() == sbdl1);
 
         // Splitting at vertex at an endpoint
         bdl = DDAD::BundleList();
@@ -769,11 +756,11 @@ private slots:
         bdl.InsertBundle(sbdl1, nullptr);
         bdl.SplitBundleAtVertex(
                     sbdl1, SampleArrangementVertex(20, 5, true));
-        QVERIFY(bdl.get_bottom() == sbdl1);
-        QCOMPARE(sbdl1->CountSegments(), 2);
-        QVERIFY(bdl.get_top() == sbdl1->get_next_bundle());
-        QVERIFY(sbdl1->get_next_bundle()->get_prev_bundle() == sbdl1);
-        QCOMPARE(sbdl1->get_next_bundle()->CountSegments(), 1);
+        QVERIFY(bdl.bottom_segment_ == sbdl1);
+        QCOMPARE(sbdl1->Size(), 2);
+        QVERIFY(bdl.top() == sbdl1->next_bundle());
+        QVERIFY(sbdl1->next_bundle()->prev_bundle() == sbdl1);
+        QCOMPARE(sbdl1->next_bundle()->Size(), 1);
 
         // Splitting with a bundle above
         bdl = DDAD::BundleList();
@@ -786,12 +773,12 @@ private slots:
         bdl.InsertBundle(sbdl2, sbdl1);
         bdl.SplitBundleAtVertex(
                     sbdl1, SampleArrangementVertex(20, 5, true));
-        QVERIFY(bdl.get_bottom() == sbdl1);
-        QVERIFY(bdl.get_top() == sbdl2);
-        QVERIFY(sbdl1->get_next_bundle() != sbdl2);
-        QVERIFY(sbdl2->get_prev_bundle() != sbdl1);
-        QCOMPARE(sbdl1->CountSegments(), 1);
-        QCOMPARE(sbdl2->get_prev_bundle()->CountSegments(), 1);
+        QVERIFY(bdl.bottom_segment_ == sbdl1);
+        QVERIFY(bdl.top() == sbdl2);
+        QVERIFY(sbdl1->next_bundle() != sbdl2);
+        QVERIFY(sbdl2->prev_bundle() != sbdl1);
+        QCOMPARE(sbdl1->Size(), 1);
+        QCOMPARE(sbdl2->prev_bundle()->Size(), 1);
     }
 
     void BundleListSplitBundlesContaining()
@@ -807,16 +794,16 @@ private slots:
         bdl1->Insert(SampleSharedSegment(5, 5, 20, 5, true));
         bdl1->Insert(SampleSharedSegment(5, 10, 20, 10, true));
         bdt.InsertBundle(bdl1);
-        bdl.InsertBundle(bdl1, bdl.get_bottom());
+        bdl.InsertBundle(bdl1, bdl.bottom_segment_);
         DDAD::ArrangementVertex_2r test_pt =
                 SampleArrangementVertex(6, 6, true);
-        bdl.SplitBundlesContaining(test_pt, bdt, bdl.get_top(), bdl.get_bottom());
-        QCOMPARE(bdl1->CountSegments(), 1);
-        QCOMPARE(bdl1->get_next_bundle()->CountSegments(), 1);
-        QVERIFY(bdl1->get_next_bundle() != nullptr);
-        QVERIFY(bdl1->get_next_bundle()->get_next_bundle() != nullptr);
-        QVERIFY(bdl1->get_prev_bundle() != nullptr);
-        QVERIFY(bdl1->get_prev_bundle()->get_prev_bundle() != nullptr);
+        bdl.SplitBundlesContaining(test_pt, bdt, bdl.top(), bdl.bottom_segment_);
+        QCOMPARE(bdl1->Size(), 1);
+        QCOMPARE(bdl1->next_bundle()->Size(), 1);
+        QVERIFY(bdl1->next_bundle() != nullptr);
+        QVERIFY(bdl1->next_bundle()->next_bundle() != nullptr);
+        QVERIFY(bdl1->prev_bundle() != nullptr);
+        QVERIFY(bdl1->prev_bundle()->prev_bundle() != nullptr);
     }
 
     void BundleListSortPortion()
@@ -834,24 +821,24 @@ private slots:
                 SampleSharedBundle(SampleSharedSegment(3, 8, 9, 2, true));
         int numIntersections = 0;
 
-        bdl.InsertBundle(blue, bdl.get_bottom());
+        bdl.InsertBundle(blue, bdl.bottom_segment_);
         bdl.InsertBundle(red, blue);
         bdt.InsertBundle(red);
 
-        QVERIFY(red->get_prev_bundle() == blue);
-        QVERIFY(blue->get_next_bundle() == red);
-        QVERIFY(red->get_next_bundle() == bdl.get_top());
-        QVERIFY(blue->get_prev_bundle() == bdl.get_bottom());
-        QVERIFY(bdl.get_top()->get_prev_bundle() == red);
-        QVERIFY(bdl.get_bottom()->get_next_bundle() == blue);
+        QVERIFY(red->prev_bundle() == blue);
+        QVERIFY(blue->next_bundle() == red);
+        QVERIFY(red->next_bundle() == bdl.top());
+        QVERIFY(blue->prev_bundle() == bdl.bottom_segment_);
+        QVERIFY(bdl.top()->prev_bundle() == red);
+        QVERIFY(bdl.bottom_segment_->next_bundle() == blue);
         numIntersections +=
                 bdl.SortPortion(SampleArrangementVertex(6, 6, true),
-                                bdl.get_bottom(), bdl.get_top());
+                                bdl.bottom_segment_, bdl.top());
 
-        QVERIFY(red->get_next_bundle() == blue);
-        QVERIFY(red->get_prev_bundle() == bdl.get_bottom());
-        QVERIFY(blue->get_prev_bundle() == red);
-        QVERIFY(blue->get_next_bundle() == bdl.get_top());
+        QVERIFY(red->next_bundle() == blue);
+        QVERIFY(red->prev_bundle() == bdl.bottom_segment_);
+        QVERIFY(blue->prev_bundle() == red);
+        QVERIFY(blue->next_bundle() == bdl.top());
         QCOMPARE(numIntersections, 1);
 
 //        bdl.RemoveBundle(blue);
@@ -917,12 +904,12 @@ private slots:
         bdl.InsertBundle(blue, nullptr);
         bdl.InsertBundle(red, nullptr);
         bdl.SwapAdjacentBundles(red, blue);
-        QVERIFY(red->get_next_bundle() == nullptr);
-        QVERIFY(red->get_prev_bundle() == blue);
-        QVERIFY(blue->get_prev_bundle() == nullptr);
-        QVERIFY(blue->get_next_bundle() == red);
-        QVERIFY(bdl.get_bottom() == blue);
-        QVERIFY(bdl.get_top() == red);
+        QVERIFY(red->next_bundle() == nullptr);
+        QVERIFY(red->prev_bundle() == blue);
+        QVERIFY(blue->prev_bundle() == nullptr);
+        QVERIFY(blue->next_bundle() == red);
+        QVERIFY(bdl.bottom_segment_ == blue);
+        QVERIFY(bdl.top() == red);
 
         // Try a longer list of bundles
         bdl = DDAD::BundleList();
@@ -936,13 +923,13 @@ private slots:
         bdl.InsertBundle(red, blue2);
         bdl.InsertBundle(blue, red);
         bdl.InsertBundle(red2, blue);
-        QVERIFY(bdl.get_bottom() == blue2);
-        QVERIFY(bdl.get_top() == red2);
+        QVERIFY(bdl.bottom_segment_ == blue2);
+        QVERIFY(bdl.top() == red2);
         bdl.SwapAdjacentBundles(red, blue);
-        QVERIFY(bdl.get_bottom() == blue2);
-        QVERIFY(bdl.get_top() == red2);
-        QVERIFY(bdl.get_bottom()->get_next_bundle() == blue);
-        QVERIFY(bdl.get_top()->get_prev_bundle() == red);
+        QVERIFY(bdl.bottom_segment_ == blue2);
+        QVERIFY(bdl.top() == red2);
+        QVERIFY(bdl.bottom_segment_->next_bundle() == blue);
+        QVERIFY(bdl.top()->prev_bundle() == red);
     }
 
     void BundleListMergeOrderedBundles()
@@ -953,21 +940,21 @@ private slots:
                     DDAD::Point_2r(100, 100), DDAD::Point_2r(3, 3), true);
         DDAD::BundleList bdl = DDAD::BundleList();
         DDAD::BundleTree bdt = DDAD::BundleTree();
-        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+        bdl.GenerateSentinels(sample_arrangement.vertices(), bdt);
         DDAD::SharedBundle blue1 = SampleSharedBundle(
                     SampleSharedSegment(5, 5, 10, 5, false));
         DDAD::SharedBundle blue2 = SampleSharedBundle(
                     SampleSharedSegment(10, 5, 10, 10, false));
-        DDAD::SharedBundle original_bottom = bdl.get_bottom();
-        DDAD::SharedBundle original_top = bdl.get_top();
-        bdl.InsertBundle(blue1, bdl.get_bottom());
+        DDAD::SharedBundle original_bottom = bdl.bottom_segment_;
+        DDAD::SharedBundle original_top = bdl.top();
+        bdl.InsertBundle(blue1, bdl.bottom_segment_);
 //        bdl.InsertBundle(blue2, blue1);
-        QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_top() == original_top);
+        QVERIFY(bdl.bottom_segment_ == original_bottom);
+        QVERIFY(bdl.top() == original_top);
         bdl.MergeOrderedBundles(bdt);
-        QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_top() != original_top);
-        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
+        QVERIFY(bdl.bottom_segment_ == original_bottom);
+        QVERIFY(bdl.top() != original_top);
+        QVERIFY(bdl.bottom_segment_->next_bundle() == bdl.top());
     }
 
     void BundleListInsertLeftEndpoint()
@@ -985,17 +972,17 @@ private slots:
                 std::make_shared<DDAD::Segment_2r_colored>(pt1, pt2, true);
         DDAD::ArrangementVertex_2r to_insert =
                 DDAD::ArrangementVertex_2r(pt1, pt2, true, seg12);
-        DDAD::SharedBundle original_bottom = bdl.get_bottom();
-        DDAD::SharedBundle original_top = bdl.get_top();
-        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
-        QVERIFY(bdl.get_top()->get_prev_bundle() == bdl.get_bottom());
+        DDAD::SharedBundle original_bottom = bdl.bottom_segment_;
+        DDAD::SharedBundle original_top = bdl.top();
+        QVERIFY(bdl.bottom_segment_->next_bundle() == bdl.top());
+        QVERIFY(bdl.top()->prev_bundle() == bdl.bottom_segment_);
         bdl.InsertLeftEndpoint(to_insert, bdt);
-        QVERIFY(bdl.get_bottom()->get_next_bundle() != bdl.get_top());
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->get_next_bundle()
-                == bdl.get_top());
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert));
-        QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_top() == original_top);
+        QVERIFY(bdl.bottom_segment_->next_bundle() != bdl.top());
+        QVERIFY(bdl.bottom_segment_->next_bundle()->next_bundle()
+                == bdl.top());
+        QVERIFY(bdl.bottom_segment_->next_bundle()->Contains(to_insert));
+        QVERIFY(bdl.bottom_segment_ == original_bottom);
+        QVERIFY(bdl.top() == original_top);
 
         // Have to return list to invariant state
         bdl.MergeOrderedBundles(bdt);
@@ -1006,12 +993,12 @@ private slots:
         DDAD::ArrangementVertex_2r to_insert2 =
                 DDAD::ArrangementVertex_2r(pt1, pt2, false, seg12);
         bdl.InsertLeftEndpoint(to_insert2, bdt);
-        QVERIFY(bdl.get_top() == original_top);
-        QVERIFY(bdl.get_bottom() == original_bottom);
-        QVERIFY(bdl.get_bottom()->get_next_bundle()->Contains(to_insert2));
-        QVERIFY(bdl.get_bottom()->Contains(to_insert));
-        QVERIFY(bdl.get_top()->get_prev_bundle()->Contains(to_insert2));
-        QVERIFY(bdl.get_top()->get_prev_bundle()->get_prev_bundle()
+        QVERIFY(bdl.top() == original_top);
+        QVERIFY(bdl.bottom_segment_ == original_bottom);
+        QVERIFY(bdl.bottom_segment_->next_bundle()->Contains(to_insert2));
+        QVERIFY(bdl.bottom_segment_->Contains(to_insert));
+        QVERIFY(bdl.top()->prev_bundle()->Contains(to_insert2));
+        QVERIFY(bdl.top()->prev_bundle()->prev_bundle()
                 ->Contains(to_insert));
     }
 
@@ -1043,13 +1030,13 @@ private slots:
         // When we get to the first right-endpoint, remove that segment
         DDAD::ArrangementVertex_2r to_remove =
                 DDAD::ArrangementVertex_2r(pt2, pt1, true, seg12);
-        int current_count = bdl.get_bottom()->CountSegments();
+        int current_count = bdl.bottom_segment_->Size();
         bdl.RemoveRightEndpoint(to_remove, bdt);
-        QCOMPARE(bdl.get_bottom()->CountSegments(), current_count-1);
+        QCOMPARE(bdl.bottom_segment_->Size(), current_count-1);
         to_remove = DDAD::ArrangementVertex_2r(pt4, pt3, false, seg34);
         bdl.RemoveRightEndpoint(to_remove, bdt);
-        QVERIFY(bdl.get_bottom()->get_next_bundle() == bdl.get_top());
-        QVERIFY(bdl.get_top()->get_prev_bundle() == bdl.get_bottom());
+        QVERIFY(bdl.bottom_segment_->next_bundle() == bdl.top());
+        QVERIFY(bdl.top()->prev_bundle() == bdl.bottom_segment_);
     }
 
 
