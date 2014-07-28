@@ -602,10 +602,8 @@ void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
     blue_below = red_below->next_bundle_;
     blue_above = red_below->prev_bundle_;
     while(blue_below->SetRelativePosition(input_vertex) != BELOW)
-//    while(*(input_vertex.get_point()) <= blue_below)
         blue_below = blue_below->prev_bundle_->prev_bundle_;
     while(blue_above->SetRelativePosition(input_vertex) != ABOVE)
-//    while(*(input_vertex.get_point()) >= blue_above)
        blue_above = blue_above->next_bundle_->next_bundle_;
 }
 
@@ -615,13 +613,7 @@ SharedBundle BundleList::SplitBundleAtVertex(SharedBundle split_bundle,
     if(split_bundle->Size()==1) return split_bundle;
     SharedBundle new_bundle = split_bundle->Split(*(here.get_point()),
                                                   split_bundle);
-//    SplayTree<SharedSegment> R =
-//            split_bundle->get_tree()->SplitTree(*(here.get_point()));
-
-//    SharedBundle new_bundle = std::make_shared<Bundle>(R);
-//    //    new_bundle->prev_bundle_= (split_bundle);
     if(split_bundle == top_) top_ = new_bundle;
-//    InsertBundle(new_bundle, split_bundle);
     return new_bundle;
 }
 
