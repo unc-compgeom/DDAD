@@ -40,6 +40,11 @@ class SplayTree
 {
   public:
     /**
+     * @brief The root of the current tree
+     */
+    BinaryNode<T>* root_;
+
+    /**
      * Construct the tree.
      */
     explicit SplayTree<T>();
@@ -152,21 +157,8 @@ class SplayTree
      *  displays a visualization of the tree structure using a recursive
      *  method
      */
-    void print();
-    void print(BinaryNode<T>* node, std::string space);
-
-    /**
-     * @brief The root of the current tree
-     */
-    BinaryNode<T>* root_;
-
-  protected:
-    /**
-     * @brief Internal method to clone subtree (with memory management)
-     * @param t : root of the subtree to return
-     * @return clone of a subtree
-     */
-    BinaryNode<T>* Clone( BinaryNode<T>* t ) const;
+    void PrintTree();
+    void PrintTree(BinaryNode<T>* node, std::string space);
 };
 } //namespace DDAD
 

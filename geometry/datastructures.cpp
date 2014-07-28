@@ -278,7 +278,7 @@ void SplayTree<T>::PrintTree(){
 }
 
 template <class T>
-void SplayTree<T>::print(BinaryNode<T>* node,
+void SplayTree<T>::PrintTree(BinaryNode<T>* node,
                                   std::string space){
     if(node != nullptr){
         space.append("    ");
