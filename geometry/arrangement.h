@@ -21,10 +21,6 @@ enum RelativePosition{
     BELOW = -1
 };
 
-class Bundle;
-typedef std::shared_ptr<Bundle> SharedBundle;
-
-
 class BundleTree;
 class BundleList;
 
@@ -62,8 +58,8 @@ class Bundle : public SplayTree<SharedSegment>{
     friend class BundleList;
 public:
     // pointers to next and previous bundles in linked list
-    SharedBundle next_bundle_;
-    SharedBundle prev_bundle_;
+    Bundle* next_bundle_;
+    Bundle* prev_bundle_;
     // pointers to the top and bottom of the bundle
     SharedSegment top_segment_;
     SharedSegment bottom_segment_;
@@ -73,6 +69,7 @@ public:
     Bundle();
     Bundle(SplayTree<SharedSegment>& rhs);
     Bundle(BinaryNode<SharedSegment>* new_root);
+    Bundle(SharedSegment& new_segment);
     ~Bundle();
 
     //Class methods
@@ -80,12 +77,11 @@ public:
     void Splay(const SharedSegment& x, BinaryNode<SharedSegment>* t);
     void Splay (const Point_2r &x, BinaryNode<SharedSegment> *t);
     void Insert(const SharedSegment& new_segment);
+    void Merge(Bundle* to_merge);
     bool Contains(const ArrangementVertex_2r& test_point);
-    RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
-    void Merge(SharedBundle to_merge);
-    SharedBundle Split(Point_2r& split_here,
-                       SharedBundle& my_sptr);
     bool Remove(const SharedSegment &x);
+    RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
+    Bundle* Split(Point_2r& split_here);
 
 };
 
@@ -93,11 +89,12 @@ public:
 // Interface: BundleTree
 //=============================================================================
 
-class BundleTree : public SplayTree<SharedBundle>{
+class BundleTree : public SplayTree<Bundle*>{
 public:
-    void Splay (const SharedBundle& x, BinaryNode<SharedBundle>* t);
-    void Splay (const Point_2r& x, BinaryNode<SharedBundle>* t);
-    void Insert(const SharedBundle& new_bundle);
+    void Splay (const Bundle& x, BinaryNode<Bundle*>* t);
+    void Splay (const Point_2r& x, BinaryNode<Bundle*>* t);
+    void Insert(Bundle* new_bundle);
+    bool Remove(Bundle* remove_this);
     void SplitAtVertex(const ArrangementVertex_2r input_vertex);
 };
 
@@ -107,35 +104,30 @@ public:
 
 class BundleList{
 public:
-    SharedBundle bottom_;
-    SharedBundle top_;
-    void GenerateSentinels(std::list<ArrangementVertex_2r> L,
-                           BundleTree& bdt);
-    void InsertBundle(SharedBundle insert_this, SharedBundle after_this);
-    void RemoveBundle(SharedBundle remove_this);
-    void LocateVertex(ArrangementVertex_2r &input_vertex,
+    Bundle* bottom_;
+    Bundle* top_;
+    void GenerateSentinels(std::list<ArrangementVertex_2r> L, BundleTree& bdt);
+    void Insert(Bundle* insert_this, Bundle* after_this);
+    void Remove(Bundle* remove_this);
+    void LocateVertex(ArrangementVertex_2r& input_vertex,
                       BundleTree& bdt,
-                      SharedBundle& red_above,
-                      SharedBundle& red_below,
-                      SharedBundle& blue_above,
-                      SharedBundle& blue_below);
-    SharedBundle SplitBundleAtVertex(SharedBundle split_bundle,
-                                     ArrangementVertex_2r &here);
+                      Bundle* red_above,
+                      Bundle* red_below,
+                      Bundle* blue_above,
+                      Bundle* blue_below);
+    Bundle* SplitBundleAtVertex(Bundle* split_bundle,
+                                     ArrangementVertex_2r& here);
     void SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
-                                BundleTree& bdt,
-                                SharedBundle& top,
-                                SharedBundle& bot);
-    int SortPortion(ArrangementVertex_2r& v, SharedBundle& begin,
-                    SharedBundle& end);
-    void SwapAdjacentBundles(SharedBundle& left, SharedBundle& right);
+                                Bundle* top,
+                                Bundle* bot);
+    int SortPortion(ArrangementVertex_2r& v, Bundle* begin, Bundle* end);
+    void SwapAdjacentBundles(Bundle* left, Bundle* right);
     void InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
                             BundleTree& bdt);
     void RemoveRightEndpoint(ArrangementVertex_2r& input_vertex,
                              BundleTree& bdt);
     void MergeOrderedBundles(BundleTree& bdt);
-    void SwapBundles(SharedBundle &a, SharedBundle &b);
-    void PrintState(SharedBundle& start, SharedBundle& end);
-
+    void PrintState(Bundle* start, Bundle* end);
 };
 
 //=============================================================================
