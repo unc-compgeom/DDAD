@@ -481,7 +481,7 @@ bool BundleTree::Remove(Bundle* remove_this)
         // If x is found, it will be at the root
     const Bundle const_copy = *remove_this;
     Splay( const_copy, root_ );
-
+//    assert(root_->left == nullptr);
     if( root_->left == nullptr )
         new_node = root_->right;
     else
