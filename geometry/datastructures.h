@@ -191,6 +191,20 @@ SplayTree<T>::SplayTree( const SplayTree<T> & rhs )
 //    root_ = nullptr;
     *this = rhs;
 }
+/**
+ * Deep copy.
+ */
+template <class T>
+const SplayTree<T> &
+SplayTree<T>::operator=( const SplayTree<T> & rhs )
+{
+    if( this != &rhs )
+    {
+        root_ = Clone( rhs.root_ );
+    }
+
+    return *this;
+}
 
 template <class T>
 SplayTree<T>::~SplayTree( )
