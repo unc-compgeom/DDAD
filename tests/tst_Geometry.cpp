@@ -42,24 +42,24 @@ public:
     //=========================================================================
     //      Datastructures: Factories
     //=========================================================================
-//    DDAD::BinaryNode<int> SampleBinaryNode_int()
-//    {
-//        DDAD::BinaryNode<int> bnd = DDAD::BinaryNode<int>();
-//        bnd.left = nullptr;
-//        bnd.right = nullptr;
-//        bnd.element = 1;
-//        return bnd;
-//    }
+    DDAD::BinaryNode<int> SampleBinaryNode_int()
+    {
+        DDAD::BinaryNode<int> bnd = DDAD::BinaryNode<int>();
+        bnd.left = nullptr;
+        bnd.right = nullptr;
+        bnd.element = 1;
+        return bnd;
+    }
 
-//    DDAD::SplayTree<int> SampleSplayTree_int()
-//    {
-//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-//        int toinsert[] = {1, 2, 3, 4, 0};
-//        for(int ii = 0; ii < 5; ii++){
-//            spt.insert(toinsert[ii]);
-//        }
-//        return spt;
-//    }
+    DDAD::SplayTree<int> SampleSplayTree_int()
+    {
+        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+        int to_insert[] = {1, 2, 3, 4, 0};
+        for(int ii = 0; ii < 5; ii++){
+            spt.Insert(to_insert[ii]);
+        }
+        return spt;
+    }
 
     //=========================================================================
     //      Arrangement: Factories
@@ -166,141 +166,141 @@ private slots:
     //=========================================================================
     //      Datastructures: Tests
     //=========================================================================
-//    void BinaryNodeConstructors()
-//    {
-//        DDAD::BinaryNode<int> tmpNode = SampleBinaryNode_int();
-//        QCOMPARE(tmpNode.getElement(), 1);
+    void BinaryNodeConstructors()
+    {
+        DDAD::BinaryNode<int> tmpNode = SampleBinaryNode_int();
+        QCOMPARE(tmpNode.element, 1);
 
-//        // Try the copy constructor as well
-//        DDAD::BinaryNode<int> node2 =
-//                DDAD::BinaryNode<int>(2, &tmpNode, nullptr);
-//        QCOMPARE(node2.left->getElement(), 1);
-//    }
+        // Try the copy constructor as well
+        DDAD::BinaryNode<int> node2 =
+                DDAD::BinaryNode<int>(2, &tmpNode, nullptr);
+        QCOMPARE(node2.left->element, 1);
+    }
 
-//    void SplayTreeConstructors()
-//    {
-//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-//        QVERIFY(spt.getRoot()==nullptr);
+    void SplayTreeConstructors()
+    {
+        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+        QVERIFY(spt.root_==nullptr);
 
-//        spt = SampleSplayTree_int();
-//        DDAD::SplayTree<int> spt2 = spt;
-//        QCOMPARE(spt2.getRoot()->getElement(), spt.getRoot()->getElement());
-//    }
+        spt = SampleSplayTree_int();
+        DDAD::SplayTree<int> spt2 = spt;
+        QCOMPARE(spt2.root_->element, spt.root_->element);
+    }
 
-//    void SplayTreeInserts()
-//    {
-//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-//        // Inserting an element should splay to the top
-//        spt.insert(20);
-//        QCOMPARE(spt.ContainsValue(20), true);
-//        QCOMPARE(spt.getRoot()->getElement(), 20);
-//        int current_count = spt.Size();
-//        spt.insert(49);
-//        QCOMPARE(spt.ContainsValue(49), true);
-//        QCOMPARE(spt.getRoot()->getElement(), 49);
-//        QCOMPARE(spt.Size(), current_count+1);
+    void SplayTreeInserts()
+    {
+        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        // Inserting an element should splay to the top
+        spt.Insert(20);
+        QCOMPARE(spt.ContainsValue(20), true);
+        QCOMPARE(spt.root_->element, 20);
+        int current_count = spt.Size();
+        spt.Insert(49);
+        QCOMPARE(spt.ContainsValue(49), true);
+        QCOMPARE(spt.root_->element, 49);
+        QCOMPARE(spt.Size(), current_count+1);
 
-//    }
+    }
 
-//    void SplayTreeRemove()
-//    {
-//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-//        // Remove 2 from the tree
-//        spt.remove(2);
-//        // Tree should now remove 2 from the tree
-//        QCOMPARE(spt.ContainsValue(2), false);
-//        spt.insert(30);
-//        spt.insert(20);
-//        int current_count = spt.Size();
-//        spt.remove(30);
-//        QCOMPARE(spt.Size(), current_count-1);
-//        current_count = spt.Size();
-//        spt.remove(100000);
-//        QCOMPARE(spt.Size(), current_count);
-//    }
+    void SplayTreeRemove()
+    {
+        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        // Remove 2 from the tree
+        spt.Remove(2);
+        // Tree should now Remove 2 from the tree
+        QCOMPARE(spt.ContainsValue(2), false);
+        spt.Insert(30);
+        spt.Insert(20);
+        int current_count = spt.Size();
+        spt.Remove(30);
+        QCOMPARE(spt.Size(), current_count-1);
+        current_count = spt.Size();
+        spt.Remove(100000);
+        QCOMPARE(spt.Size(), current_count);
+    }
 
-//    void SplayTreeFind()
-//    {
-//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-//        // Find should splay an element to the top if it exists
-//        spt.find(3);
-//        QCOMPARE(spt.getRoot()->getElement(), 3);
-//        // If not, it should default to greatest elt less than
-//        spt.find(20);
-//        QCOMPARE(spt.getRoot()->getElement(), 4);
-//        // or least elt greater than
-//        spt.find(-1);
-//        QCOMPARE(spt.getRoot()->getElement(), 0);
-//        spt.insert(30);
-//        spt.find(1);
-//        spt.find(49);
-//        QCOMPARE(spt.getRoot()->getElement(), 30);
-//    }
+    void SplayTreeFind()
+    {
+        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        // Find should splay an element to the top if it exists
+        spt.Find(3);
+        QCOMPARE(spt.root_->element, 3);
+        // If not, it should default to greatest elt less than
+        spt.Find(20);
+        QCOMPARE(spt.root_->element, 4);
+        // or least elt greater than
+        spt.Find(-1);
+        QCOMPARE(spt.root_->element, 0);
+        spt.Insert(30);
+        spt.Find(1);
+        spt.Find(49);
+        QCOMPARE(spt.root_->element, 30);
+    }
 
-//    void SplayTreeMinMax()
-//    {
-//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-//        //findMax should splay the maximum element to the root of the tree
-//        spt.findMax();
-//        QCOMPARE(spt.getRoot()->getElement(), 4);
-//        //findMin should splay the minimum element to the root of the tree
-//        spt.findMin();
-//        QCOMPARE(spt.getRoot()->getElement(), 0);
-//    }
+    void SplayTreeMinMax()
+    {
+        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        //FindMax should splay the maximum element to the root of the tree
+        spt.FindMax();
+        QCOMPARE(spt.root_->element, 4);
+        //FindMin should splay the minimum element to the root of the tree
+        spt.FindMin();
+        QCOMPARE(spt.root_->element, 0);
+    }
 
-//    void SplayTreeMerge()
-//    {
-//        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
-//        spt.insert(2);
-//        spt.insert(4);
-//        spt.insert(6);
-//        spt.insert(7);
-//        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
-//        spt2.insert(10);
-//        spt2.insert(11);
-//        spt2.insert(12);
-//        // Merge the two trees together
-//        spt.mergeTree(&spt2);
-//        QCOMPARE(spt.getRoot()->getElement(), 7);
-//        QCOMPARE(spt.getRoot()->right->getElement(), 12);
-//        QCOMPARE(spt.ContainsValue(10), true);
-//        QCOMPARE(spt.Size(), 7);
+    void SplayTreeMerge()
+    {
+        DDAD::SplayTree<int> spt = DDAD::SplayTree<int>();
+        spt.Insert(2);
+        spt.Insert(4);
+        spt.Insert(6);
+        spt.Insert(7);
+        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
+        spt2.Insert(10);
+        spt2.Insert(11);
+        spt2.Insert(12);
+        // Merge the two trees together
+        spt.MergeTree(&spt2);
+        QCOMPARE(spt.root_->element, 7);
+        QCOMPARE(spt.root_->right->element, 12);
+        QCOMPARE(spt.ContainsValue(10), true);
+        QCOMPARE(spt.Size(), 7);
 
-//        spt = DDAD::SplayTree<int>();
-//        spt2 = DDAD::SplayTree<int>();
-//        spt2.insert(2);
-//        spt2.insert(3);
-//        spt.mergeTree(&spt2);
-//        QVERIFY(!spt.isEmpty());
-//        QCOMPARE(spt.getRoot(), spt2.getRoot());
+        spt = DDAD::SplayTree<int>();
+        spt2 = DDAD::SplayTree<int>();
+        spt2.Insert(2);
+        spt2.Insert(3);
+        spt.MergeTree(&spt2);
+        QVERIFY(!spt.is_empty());
+        QCOMPARE(spt.root_, spt2.root_);
 
-//    }
+    }
 
-//    void SplayTreeSplit(){
-//        DDAD::SplayTree<int> spt = SampleSplayTree_int();
-//        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
-//        //SplitTree should return the subtree >
-//        spt2 = spt.SplitTree(2);
-//        QCOMPARE(spt2.ContainsValue(2), false);
-//        QCOMPARE(spt2.ContainsValue(3), true);
-//        QCOMPARE(spt2.ContainsValue(4), true);
-//        QCOMPARE(spt.ContainsValue(2), true);
-//        QCOMPARE(spt.ContainsValue(1), true);
-//        QCOMPARE(spt.ContainsValue(3), false);
-//        DDAD::SplayTree<int> spt3 = DDAD::SplayTree<int>();
-//        spt3.insert(3);
-//        spt3.insert(4);
-//        spt2 = spt3.SplitTree(3);
-//        QCOMPARE(spt3.ContainsValue(3), true);
-//        QCOMPARE(spt3.ContainsValue(4), false);
-//        spt = DDAD::SplayTree<int>();
-//        spt2 = DDAD::SplayTree<int>();
-//        spt.insert(1);
-//        spt.insert(2);
-//        spt2 = spt.SplitTree(2);
-//        QCOMPARE(spt.ContainsValue(1), true);
-//        QCOMPARE(spt.ContainsValue(2), false);
-//    }
+    void SplayTreeSplit(){
+        DDAD::SplayTree<int> spt = SampleSplayTree_int();
+        DDAD::SplayTree<int> spt2 = DDAD::SplayTree<int>();
+        //SplitTree should return the subtree >
+        spt2 = spt.SplitTree(2);
+        QCOMPARE(spt2.ContainsValue(2), false);
+        QCOMPARE(spt2.ContainsValue(3), true);
+        QCOMPARE(spt2.ContainsValue(4), true);
+        QCOMPARE(spt.ContainsValue(2), true);
+        QCOMPARE(spt.ContainsValue(1), true);
+        QCOMPARE(spt.ContainsValue(3), false);
+        DDAD::SplayTree<int> spt3 = DDAD::SplayTree<int>();
+        spt3.Insert(3);
+        spt3.Insert(4);
+        spt2 = spt3.SplitTree(3);
+        QCOMPARE(spt3.ContainsValue(3), true);
+        QCOMPARE(spt3.ContainsValue(4), false);
+        spt = DDAD::SplayTree<int>();
+        spt2 = DDAD::SplayTree<int>();
+        spt.Insert(1);
+        spt.Insert(2);
+        spt2 = spt.SplitTree(2);
+        QCOMPARE(spt.ContainsValue(1), true);
+        QCOMPARE(spt.ContainsValue(2), false);
+    }
 
     //=========================================================================
     //      Arrangement: Tests
@@ -861,92 +861,92 @@ private slots:
         QVERIFY(blue->prev_bundle_->next_bundle_ == blue);
     }
 
-    void BundleListSortPortion()
-    {
-        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
-        // Create bounding box
-        sample_arrangement.AddSegment(
-                    DDAD::Point_2r(100, 100), DDAD::Point_2r(2, 2), true);
-        DDAD::BundleList bdl = DDAD::BundleList();
-        DDAD::BundleTree bdt = DDAD::BundleTree();
-        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
-        DDAD::SharedBundle blue =
-                SampleSharedBundle(SampleSharedSegment(3, 3, 6, 6, false));
-        DDAD::SharedBundle red =
-                SampleSharedBundle(SampleSharedSegment(3, 8, 9, 2, true));
-        int numIntersections = 0;
-
-        bdl.InsertBundle(blue, bdl.bottom_);
-        bdl.InsertBundle(red, blue);
-        bdt.Insert(red);
-
-        QVERIFY(red->prev_bundle_ == blue);
-        QVERIFY(blue->next_bundle_ == red);
-        QVERIFY(red->next_bundle_ == bdl.top_);
-        QVERIFY(blue->prev_bundle_ == bdl.bottom_);
-        QVERIFY(bdl.top_->prev_bundle_ == red);
-        QVERIFY(bdl.bottom_->next_bundle_ == blue);
-        numIntersections +=
-                bdl.SortPortion(SampleArrangementVertex(6, 6, true),
-                                bdl.bottom_, bdl.top_);
-
-        QVERIFY(red->next_bundle_ == blue);
-        QVERIFY(red->prev_bundle_ == bdl.bottom_);
-        QVERIFY(blue->prev_bundle_ == red);
-        QVERIFY(blue->next_bundle_ == bdl.top_);
-        QCOMPARE(numIntersections, 1);
-
-//        bdl.RemoveBundle(blue);
-//        bdl.InsertBundle(blue2, bdl.get_bottom());
-//        bdl.MergeOrderedBundles(bdt);
-//        numIntersections =
-//                bdl.SortPortion(SampleArrangementVertex(8, 4, true),
-//                                red2, blue);
-//        QVERIFY(red2->get_next_bundle_ == nullptr);
-//        QVERIFY(blue ->prev_bundle_ == nullptr);
-//        QCOMPARE(numIntersections, 2);
-
-//        // Swap red/blue
-//        bdl = DDAD::BundleList();
-//        blue =
+//    void BundleListSortPortion()
+//    {
+//        DDAD::Arrangement_2r sample_arrangement = DDAD::Arrangement_2r();
+//        // Create bounding box
+//        sample_arrangement.AddSegment(
+//                    DDAD::Point_2r(100, 100), DDAD::Point_2r(2, 2), true);
+//        DDAD::BundleList bdl = DDAD::BundleList();
+//        DDAD::BundleTree bdt = DDAD::BundleTree();
+//        bdl.GenerateSentinels(sample_arrangement.get_vertices(), bdt);
+//        DDAD::SharedBundle blue =
 //                SampleSharedBundle(SampleSharedSegment(3, 3, 6, 6, false));
-//        DDAD::SharedBundle blue2 =
-//                SampleSharedBundle(SampleSharedSegment(7, 2, 8, 4, false));
-//        red =
+//        DDAD::SharedBundle red =
 //                SampleSharedBundle(SampleSharedSegment(3, 8, 9, 2, true));
-//        numIntersections = 0;
+//        int numIntersections = 0;
 
-//        bdl.InsertBundle(red, nullptr);
-//        bdl.InsertBundle(blue, nullptr);
+//        bdl.InsertBundle(blue, bdl.bottom_);
+//        bdl.InsertBundle(red, blue);
+//        bdt.Insert(red);
 
-//        QVERIFY(blue->prev_bundle_ == nullptr);
-//        QVERIFY(red->get_next_bundle_ == nullptr);
-//        QVERIFY(blue->get_next_bundle_ == red);
 //        QVERIFY(red->prev_bundle_ == blue);
-//        QVERIFY(bdl.get_bottom() == blue);
-//        QVERIFY(bdl.get_top() == red);
+//        QVERIFY(blue->next_bundle_ == red);
+//        QVERIFY(red->next_bundle_ == bdl.top_);
+//        QVERIFY(blue->prev_bundle_ == bdl.bottom_);
+//        QVERIFY(bdl.top_->prev_bundle_ == red);
+//        QVERIFY(bdl.bottom_->next_bundle_ == blue);
 //        numIntersections +=
-//                bdl.SortPortion(SampleArrangementVertex(6, 6, false),
-//                                blue, red);
+//                bdl.SortPortion(SampleArrangementVertex(6, 6, true),
+//                                bdl.bottom_, bdl.top_);
 
-//        QVERIFY(blue->get_next_bundle_ == nullptr);
+//        QVERIFY(red->next_bundle_ == blue);
+//        QVERIFY(red->prev_bundle_ == bdl.bottom_);
 //        QVERIFY(blue->prev_bundle_ == red);
-//        QVERIFY(red->get_next_bundle_ == blue);
-//        QVERIFY(red->prev_bundle_ == nullptr);
-//        QVERIFY(bdl.get_bottom() == red);
-//        QVERIFY(bdl.get_top() == blue);
+//        QVERIFY(blue->next_bundle_ == bdl.top_);
 //        QCOMPARE(numIntersections, 1);
 
-//        bdl.RemoveBundle(blue);
-//        bdl.InsertBundle(blue2, nullptr);
-//        numIntersections +=
-//                bdl.SortPortion(SampleArrangementVertex(8, 4, false),
-//                                blue2, red);
-//        QVERIFY(blue2->get_next_bundle_ == nullptr);
-//        QVERIFY(red->prev_bundle_ == nullptr);
-//        QCOMPARE(numIntersections, 2);
+////        bdl.RemoveBundle(blue);
+////        bdl.InsertBundle(blue2, bdl.get_bottom());
+////        bdl.MergeOrderedBundles(bdt);
+////        numIntersections =
+////                bdl.SortPortion(SampleArrangementVertex(8, 4, true),
+////                                red2, blue);
+////        QVERIFY(red2->get_next_bundle_ == nullptr);
+////        QVERIFY(blue ->prev_bundle_ == nullptr);
+////        QCOMPARE(numIntersections, 2);
 
-    }
+////        // Swap red/blue
+////        bdl = DDAD::BundleList();
+////        blue =
+////                SampleSharedBundle(SampleSharedSegment(3, 3, 6, 6, false));
+////        DDAD::SharedBundle blue2 =
+////                SampleSharedBundle(SampleSharedSegment(7, 2, 8, 4, false));
+////        red =
+////                SampleSharedBundle(SampleSharedSegment(3, 8, 9, 2, true));
+////        numIntersections = 0;
+
+////        bdl.InsertBundle(red, nullptr);
+////        bdl.InsertBundle(blue, nullptr);
+
+////        QVERIFY(blue->prev_bundle_ == nullptr);
+////        QVERIFY(red->get_next_bundle_ == nullptr);
+////        QVERIFY(blue->get_next_bundle_ == red);
+////        QVERIFY(red->prev_bundle_ == blue);
+////        QVERIFY(bdl.get_bottom() == blue);
+////        QVERIFY(bdl.get_top() == red);
+////        numIntersections +=
+////                bdl.SortPortion(SampleArrangementVertex(6, 6, false),
+////                                blue, red);
+
+////        QVERIFY(blue->get_next_bundle_ == nullptr);
+////        QVERIFY(blue->prev_bundle_ == red);
+////        QVERIFY(red->get_next_bundle_ == blue);
+////        QVERIFY(red->prev_bundle_ == nullptr);
+////        QVERIFY(bdl.get_bottom() == red);
+////        QVERIFY(bdl.get_top() == blue);
+////        QCOMPARE(numIntersections, 1);
+
+////        bdl.RemoveBundle(blue);
+////        bdl.InsertBundle(blue2, nullptr);
+////        numIntersections +=
+////                bdl.SortPortion(SampleArrangementVertex(8, 4, false),
+////                                blue2, red);
+////        QVERIFY(blue2->get_next_bundle_ == nullptr);
+////        QVERIFY(red->prev_bundle_ == nullptr);
+////        QCOMPARE(numIntersections, 2);
+
+//    }
 
 //    void BundleListMergeOrderedBundles()
 //    {

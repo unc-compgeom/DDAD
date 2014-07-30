@@ -54,7 +54,7 @@ class SplayTree
      */
     SplayTree<T>( BinaryNode<T>* new_root );
     SplayTree<T>( const SplayTree& rhs );
-//    const SplayTree & operator=( const SplayTree & rhs );
+    const SplayTree & operator=( const SplayTree & rhs );
 
     /**
      * Destructor.
@@ -159,7 +159,14 @@ class SplayTree
      */
     void PrintTree();
     void PrintTree(BinaryNode<T>* node, std::string space);
+    /**
+     * @brief Deep copy of a splay tree with root t
+     * @param t
+     * @return
+     */
+    BinaryNode<T>* Clone(BinaryNode<T> * t ) const;
 };
+
 } //namespace DDAD
 
 //IMPLEMENTATION
@@ -184,22 +191,6 @@ SplayTree<T>::SplayTree( const SplayTree<T> & rhs )
 //    root_ = nullptr;
     *this = rhs;
 }
-
-/**
- * Deep copy.
- */
-//template <class T>
-//const SplayTree<T> &
-//SplayTree<T>::operator=( const SplayTree<T> & rhs )
-//{
-//    if( this != &rhs )
-//    {
-//        MakeEmpty( );
-//        root_ = Clone( rhs.root_ );
-//    }
-
-//    return *this;
-//}
 
 template <class T>
 SplayTree<T>::~SplayTree( )
@@ -450,6 +441,23 @@ void SplayTree<T>::PrintTree(BinaryNode<T>* node,
         std::cout << space <<node->element << "\n";
         PrintTree(node->left, space);
     }
+}
+
+
+/**
+ * Internal method to clone subtree.
+ * WARNING: This is prone to running out of stack space.
+ */
+template <class T>
+BinaryNode<T> *
+SplayTree<T>::Clone( BinaryNode<T> * t ) const
+{
+//    if( t == t->left )  // Cannot test against nullptr!!!
+    if(t == nullptr)
+        return nullptr;
+    else
+        return new BinaryNode<T>( t->element, Clone( t->left ),
+                                           Clone( t->right ) );
 }
 } // namespace DDAD
 
