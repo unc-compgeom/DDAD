@@ -85,6 +85,7 @@ public:
     void Merge(SharedBundle to_merge);
     SharedBundle Split(Point_2r& split_here,
                        SharedBundle& my_sptr);
+    bool Remove(const SharedSegment &x);
 
 };
 
@@ -97,6 +98,7 @@ public:
     void Splay (const SharedBundle& x, BinaryNode<SharedBundle>* t);
     void Splay (const Point_2r& x, BinaryNode<SharedBundle>* t);
     void Insert(const SharedBundle& new_bundle);
+    void SplitAtVertex(const ArrangementVertex_2r input_vertex);
 };
 
 //=============================================================================

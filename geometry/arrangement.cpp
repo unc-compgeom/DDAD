@@ -326,6 +326,30 @@ RelativePosition Bundle::SetRelativePosition(ArrangementVertex_2r &test_point)
     return rel_position_;
 }
 
+bool Bundle::Remove(const SharedSegment &x)
+{
+    if(root_ == nullptr) return false; // Can't remove from an empty tree
+    BinaryNode<SharedSegment> *new_node;
+
+    if( !ContainsValue(x) )
+        return false;   // Item not found; do nothing
+        // If x is found, it will be at the root
+    Splay( x->p(), root_ );
+
+    if( root_->left == nullptr )
+        new_node = root_->right;
+    else
+    {
+        // Find the maximum in the left subtree
+        Bundle* new_tree = new Bundle(root_->left);
+        new_tree->Splay(x->p(), new_tree->root_);
+        new_node = new_tree->root_;
+        new_node->right = root_->right;
+    }
+//    delete root;
+    root_ = new_node;
+    return true;
+}
 
 //=============================================================================
 // Implementation: BundleTree
@@ -403,6 +427,8 @@ void BundleTree::Insert(const SharedBundle &new_bundle)
     BinaryNode<SharedBundle> *newNode = new BinaryNode<SharedBundle>;
     newNode->element = new_bundle;
 
+    if(!new_bundle->get_color()) return;    //don't insert if the bundle is blue
+
     if( root_ == nullptr )
     {
         newNode->left = newNode->right = nullptr;
@@ -432,6 +458,13 @@ void BundleTree::Insert(const SharedBundle &new_bundle)
         }
         Splay(new_bundle->bottom_segment_->p(), root_);
     }
+}
+
+void BundleTree::SplitAtVertex(const ArrangementVertex_2r input_vertex)
+{
+    Splay(*input_vertex.get_point(),root_);
+    SharedBundle new_bundle = root_->element->Split(*input_vertex.get_point(),root_->element);
+    Insert(new_bundle);
 }
 
 //=============================================================================
@@ -666,10 +699,14 @@ int BundleList::SortPortion(ArrangementVertex_2r& v, SharedBundle& begin,
 
 void BundleList::SwapAdjacentBundles(SharedBundle& left, SharedBundle& right)
 {
-    if(left == bottom_) bottom_ = right;
-    else if(right == bottom_) bottom_ = left;
-    if(left == top_) top_ = right;
-    else if(right == top_) top_ = left;
+    if(left == bottom_)
+        bottom_ = right;
+    else if(right == bottom_)
+        bottom_ = left;
+    if(left == top_)
+        top_ = right;
+    else if(right == top_)
+        top_ = left;
     SharedBundle tmp = left->prev_bundle_;
     left->prev_bundle_ = (right);
     left->next_bundle_ = (right->next_bundle_);
