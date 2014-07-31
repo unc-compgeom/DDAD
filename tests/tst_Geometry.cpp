@@ -530,6 +530,7 @@ private slots:
 
     void BundleTreeRemove()
     {
+        for(int ii = 0; ii < 30; ii++){
         DDAD::BundleTree bdt = DDAD::BundleTree();
         DDAD::Bundle* redbundle1 =
                 SampleBundle(SampleSharedSegment(1, 1, 7, 2, true),
@@ -549,6 +550,7 @@ private slots:
         QCOMPARE(bdt.Size(), 1);
 
         delete redbundle1, redbundle2;
+        }
     }
 
     void BundleTreeSplay()
