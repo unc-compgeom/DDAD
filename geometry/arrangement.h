@@ -79,6 +79,7 @@ public:
     void Insert(const SharedSegment& new_segment);
     void Merge(Bundle* to_merge);
     bool Contains(const ArrangementVertex_2r& test_point);
+    bool ContainsValue(const SharedSegment &x);
     bool Remove(const SharedSegment &x);
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
     Bundle* Split(Point_2r& split_here);
@@ -95,6 +96,7 @@ public:
     void Splay (const Point_2r& x, BinaryNode<Bundle*>* t);
     void Insert(Bundle* new_bundle);
     bool Remove(Bundle* remove_this);
+    bool ContainsValue(Bundle * const &x);
     void SplitAtVertex(const ArrangementVertex_2r input_vertex);
 };
 
@@ -111,10 +113,10 @@ public:
     void Remove(Bundle* remove_this);
     void LocateVertex(ArrangementVertex_2r& input_vertex,
                       BundleTree& bdt,
-                      Bundle* red_above,
-                      Bundle* red_below,
-                      Bundle* blue_above,
-                      Bundle* blue_below);
+                      Bundle *&red_above,
+                      Bundle *&red_below,
+                      Bundle *&blue_above,
+                      Bundle *&blue_below);
     Bundle* SplitBundleAtVertex(Bundle* split_bundle,
                                      ArrangementVertex_2r& here);
     void SplitBundlesContaining(ArrangementVertex_2r& input_vertex,
