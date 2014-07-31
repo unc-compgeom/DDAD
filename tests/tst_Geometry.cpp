@@ -1005,9 +1005,9 @@ private slots:
         DDAD::SharedPoint_2r pt1 = std::make_shared<DDAD::Point_2r>(3, 8);
         DDAD::SharedPoint_2r pt2 = std::make_shared<DDAD::Point_2r>(10, 3);
         DDAD::SharedSegment seg12 =
-                std::make_shared<DDAD::Segment_2r_colored>(pt1, pt2, true);
+                std::make_shared<DDAD::Segment_2r_colored>(pt1, pt2, false);
         DDAD::ArrangementVertex_2r to_insert =
-                DDAD::ArrangementVertex_2r(pt1, pt2, true, seg12);
+                DDAD::ArrangementVertex_2r(pt1, pt2, false, seg12);
         DDAD::Bundle* original_bottom = bdl.bottom_;
         DDAD::Bundle* original_top = bdl.top_;
         QVERIFY(bdl.bottom_->next_bundle_ == bdl.top_);
@@ -1025,17 +1025,15 @@ private slots:
         // Add the next bundle
         pt1 = std::make_shared<DDAD::Point_2r>(4, 5);
         pt2 = std::make_shared<DDAD::Point_2r>(6, 6);
-        seg12 = std::make_shared<DDAD::Segment_2r_colored>(pt1, pt2, false);
+        seg12 = std::make_shared<DDAD::Segment_2r_colored>(pt1, pt2, true);
         DDAD::ArrangementVertex_2r to_insert2 =
-                DDAD::ArrangementVertex_2r(pt1, pt2, false, seg12);
+                DDAD::ArrangementVertex_2r(pt1, pt2, true, seg12);
         bdl.InsertLeftEndpoint(to_insert2, bdt);
-        QVERIFY(bdl.top_ == original_top);
-        QVERIFY(bdl.bottom_ == original_bottom);
-        QVERIFY(bdl.bottom_->next_bundle_->Contains(to_insert2));
-        QVERIFY(bdl.bottom_->Contains(to_insert));
-        QVERIFY(bdl.top_->prev_bundle_->Contains(to_insert2));
-        QVERIFY(bdl.top_->prev_bundle_->prev_bundle_
-                ->Contains(to_insert));
+        bdl.MergeOrderedBundles(bdt);
+        QVERIFY(bdl.top_->Contains(to_insert));
+        QVERIFY(bdl.bottom_->Contains(to_insert2));
+        QCOMPARE(bdl.bottom_->Size(), 2);
+        QCOMPARE(bdl.top_->Size(), 2);
     }
 
     void BundleListRemoveRightEndpoint()

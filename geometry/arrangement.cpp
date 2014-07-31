@@ -72,7 +72,7 @@ int CountIntersections(const Arrangement_2r &A,
         top = bdl.top_->next_bundle_;
         // This isn't quite right, but it might be close enough
 
-        bdl.PrintState(bdl.bottom_, bdl.top_);
+//        bdl.PrintState(bdl.bottom_, bdl.top_);
 
         bdl.SplitBundlesContaining(*ii, top, bot);
         // Split any bundles containing the current vertex (must be in
@@ -316,6 +316,21 @@ void Bundle::Merge(Bundle* to_merge)
     root_->right = to_merge->root_;
 }
 
+bool Bundle::ContainsValue(const SharedSegment &x)
+{
+    if (is_empty()) return false;
+    BinaryNode<SharedSegment>* tmp_root = root_;
+    while(tmp_root != nullptr){
+        if(Predicate::AIsRightOfB(x->p(), tmp_root->element->support()))
+            tmp_root = tmp_root->left;
+        else if(Predicate::AIsLeftOfB(x->p(), tmp_root->element->support()))
+            tmp_root = tmp_root->right;
+        else
+            return true;
+    }
+    return false;
+}
+
 bool Bundle::Contains(const ArrangementVertex_2r &test_point)
 {
     Point_2r the_point = *(test_point.get_point());
@@ -507,6 +522,23 @@ void BundleTree::SplitAtVertex(const ArrangementVertex_2r input_vertex)
     Insert(new_bundle);
 }
 
+bool BundleTree::ContainsValue(Bundle * const &x)
+{
+    if (is_empty()) return false;
+    BinaryNode<Bundle*>* tmp_root = root_;
+    while(tmp_root != nullptr){
+        if(Predicate::AIsRightOfB(x->top_segment_->p(), tmp_root->element->bottom_segment_->support()))
+            tmp_root = tmp_root->left;
+        else if(Predicate::AIsLeftOfB(x->bottom_segment_->p(), tmp_root->element->top_segment_->support()))
+            tmp_root = tmp_root->right;
+        else if(x == tmp_root->element)
+            return true;
+        else
+            return true;
+    }
+    return false;
+}
+
 //=============================================================================
 // Implementation: BundleList
 //=============================================================================
@@ -651,15 +683,15 @@ void BundleList::Remove(Bundle* remove_this)
         prev_bundle->next_bundle_ = (next_bundle);
     if(next_bundle != nullptr)
         next_bundle->prev_bundle_ = (prev_bundle);
-    delete remove_this;
+//    delete remove_this;
 }
 
 void BundleList::LocateVertex(ArrangementVertex_2r &input_vertex,
                               BundleTree& bdt,
-                              Bundle* red_above,
-                              Bundle* red_below,
-                              Bundle* blue_above,
-                              Bundle* blue_below)
+                              Bundle*& red_above,
+                              Bundle*& red_below,
+                              Bundle*& blue_above,
+                              Bundle*& blue_below)
 {
     // Using the tree and list, locate the highest bundle below or containing
     //  the input vertex
