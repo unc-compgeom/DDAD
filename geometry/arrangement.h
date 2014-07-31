@@ -83,6 +83,8 @@ public:
     bool Remove(const SharedSegment &x);
     RelativePosition SetRelativePosition(ArrangementVertex_2r& test_point);
     Bundle* Split(Point_2r& split_here);
+    BinaryNode<SharedSegment>* FindMax();
+    BinaryNode<SharedSegment>* FindMin();
 
 };
 
@@ -98,6 +100,8 @@ public:
     bool Remove(Bundle* remove_this);
     bool ContainsValue(Bundle * const &x);
     void SplitAtVertex(const ArrangementVertex_2r input_vertex);
+    BinaryNode<Bundle*>* FindMax();
+    BinaryNode<Bundle*>* FindMin();
 };
 
 //=============================================================================
@@ -130,6 +134,8 @@ public:
                              BundleTree& bdt);
     void MergeOrderedBundles(BundleTree& bdt);
     void PrintState(Bundle* start, Bundle* end);
+    bool CheckInvariants();
+    bool CheckCorrectOrder() const;
 };
 
 //=============================================================================

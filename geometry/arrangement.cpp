@@ -46,6 +46,8 @@ int CountIntersections(const Arrangement_2r &A,
     L.sort(compare());
     BundleTree bdt = BundleTree();
     BundleList bdl = BundleList();
+    // Generate horizontal sentinels
+    //  (order is red-blue-red-...-blue-red-blue from bottom to top)
     bdl.GenerateSentinels(L, bdt);
     Bundle* red_above = bdl.top_->next_bundle_;
     Bundle* red_below = bdl.bottom_;
@@ -63,24 +65,31 @@ int CountIntersections(const Arrangement_2r &A,
 
         std::cout << "\nCurrent vertex: " << *(ii->get_point());
 
+        // Locates the highest bundle below or containing the current event
         bdl.LocateVertex(*ii, bdt, red_above, red_below,
                                  blue_above, blue_below);
-        // Locates the highest bundle below or containing the current event
-//        top = (blue_above > red_above)? blue_above : red_above;
-//        bot = (blue_below < red_below)? blue_below : red_below;
+        // Just performing linear search through the list for now
         bot = bdl.bottom_->prev_bundle_;
         top = bdl.top_->next_bundle_;
-        // This isn't quite right, but it might be close enough
 
-//        bdl.PrintState(bdl.bottom_, bdl.top_);
+        // Debug
+        bdl.PrintState(bdl.bottom_, bdl.top_);
 
-        bdl.SplitBundlesContaining(*ii, top, bot);
         // Split any bundles containing the current vertex (must be in
         //  range [bottom, top]
+        bdl.SplitBundlesContaining(*ii, top, bot);
+
+        // Check to make sure bundles are still in the right order
+        if(!bdl.CheckCorrectOrder())
+            std::cout << "Something wrong here.";
 
 
-        crossings += bdl.SortPortion(*ii, bot, top);
         // Count the crossings witnessed by the event point
+        crossings += bdl.SortPortion(*ii, bot, top);
+
+        // Check to make sure bundles are still in the right order
+        if(!bdl.CheckCorrectOrder())
+            std::cout << "Something wrong here.";
 
         if(*(ii->get_point()) < *(ii->get_other_point()))
             // Current point is a left-endpoint
@@ -91,9 +100,17 @@ int CountIntersections(const Arrangement_2r &A,
             // Locate the bundle containing it
             bdl.RemoveRightEndpoint(*ii, bdt);
 
+        // Check to make sure bundles are still in the right order
+        if(!bdl.CheckCorrectOrder())
+            std::cout << "Something wrong here.";
+
         // Merge any bundles in the list that deserve it
         bdl.MergeOrderedBundles(bdt);
 
+        if(!bdl.CheckCorrectOrder())
+            std::cout << "MergeOrderedBundles: Something wrong here.";
+        if(!bdl.CheckInvariants())
+            std::cout << "NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO";
         //crossings++;
         endpoint_index++;
 
@@ -303,6 +320,8 @@ Bundle* Bundle::Split(Point_2r& split_here)
 
 void Bundle::Merge(Bundle* to_merge)
 {
+    if(!(Predicate::AIsLeftOfB(to_merge->bottom_segment_->p(), top_segment_->support())))
+        std::cout << "Merge: NOOOOOOOOOOOOOOOOOOO";
     if(to_merge->next_bundle_!= nullptr){
         to_merge->next_bundle_->prev_bundle_= this;
     }
@@ -373,6 +392,32 @@ bool Bundle::Remove(const SharedSegment &x)
 //    delete root;
     root_ = new_node;
     return true;
+}
+
+BinaryNode<SharedSegment>* Bundle::FindMax()
+{
+    if( is_empty( ) )
+        return nullptr;
+
+    BinaryNode<SharedSegment>* ptr = root_;
+
+    while( ptr->right != nullptr )
+        ptr = ptr->right;
+
+    Splay( ptr->element, root_ );
+    return root_;
+}
+
+BinaryNode<SharedSegment>* Bundle::FindMin( )
+{
+    if( is_empty( ) )
+        return nullptr;
+    BinaryNode<SharedSegment> *ptr = root_;
+    while( ptr->left != nullptr )
+        ptr = ptr->left;
+
+    Splay( ptr->element, root_ );
+    return root_;
 }
 
 //=============================================================================
@@ -538,6 +583,34 @@ bool BundleTree::ContainsValue(Bundle * const &x)
     }
     return false;
 }
+
+
+BinaryNode<Bundle*>* BundleTree::FindMax()
+{
+    if( is_empty( ) )
+        return nullptr;
+
+    BinaryNode<Bundle*>* ptr = root_;
+
+    while( ptr->right != nullptr )
+        ptr = ptr->right;
+
+    Splay( *(ptr->element), root_ );
+    return root_;
+}
+
+BinaryNode<Bundle*>* BundleTree::FindMin( )
+{
+    if( is_empty( ) )
+        return nullptr;
+    BinaryNode<Bundle*> *ptr = root_;
+    while( ptr->left != nullptr )
+        ptr = ptr->left;
+
+    Splay( *(ptr->element), root_ );
+    return root_;
+}
+
 
 //=============================================================================
 // Implementation: BundleList
@@ -806,13 +879,16 @@ void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
             std::make_shared<Segment_2r_colored>(current_segment);
     new_bundle->Insert(new_segment);
     bdt.Splay(*input_vertex.get_point(), bdt.root_);
-    Bundle* tmp = bdt.root_->element;
+    Bundle* tmp = bdt.root_->element->next_bundle_;
     while(Predicate::AIsRightOfB(*(input_vertex.get_point()),
-                                 tmp->top_segment_->support()))
+                                 tmp->bottom_segment_->support()))
         tmp = tmp->prev_bundle_;
     if(input_vertex.is_red())
         bdt.Insert(new_bundle);
     Insert(new_bundle, tmp);
+
+    if(!CheckCorrectOrder())
+        std::cout << "InsertLeftEndpoint: Something wrong here.";
 }
 
 void BundleList::RemoveRightEndpoint(ArrangementVertex_2r& input_vertex,
@@ -833,13 +909,16 @@ void BundleList::RemoveRightEndpoint(ArrangementVertex_2r& input_vertex,
             }
         }
     }
+    if(!CheckCorrectOrder())
+        std::cout << "RemoveRightEndpoint: Something wrong here.";
 }
 
 void BundleList::MergeOrderedBundles(BundleTree& bdt)
 {
     for(Bundle* jj = bottom_; jj != top_->next_bundle_; )
     {
-        Bundle* tmp;
+
+        Bundle* tmp = new Bundle();
         while(jj->get_color() == jj->next_bundle_->get_color())
         {
             tmp = jj->next_bundle_;
@@ -856,6 +935,8 @@ void BundleList::MergeOrderedBundles(BundleTree& bdt)
             // reset top if need be
             if(tmp == top_)
                 top_ = jj;
+            if(!CheckCorrectOrder())
+                std::cout << "MergeOrderedBundles: Something wrong here.";
         }
         jj = jj->next_bundle_;
     }
@@ -878,6 +959,47 @@ void BundleList::PrintState(Bundle* start, Bundle* end)
                current_color.c_str(), nsegments);
     }
     printf("\n");
+}
+
+bool BundleList::CheckInvariants()
+{
+    Bundle* next_same_color;
+    for(Bundle* ii = bottom_; ii != top_->next_bundle_; ii = ii->next_bundle_)
+    {
+        if(ii->next_bundle_->get_color() == ii->get_color()) return false;
+        if(ii->prev_bundle_->get_color() == ii->get_color()) return false;
+        if(ii->next_bundle_->next_bundle_ != nullptr)
+        {
+            next_same_color = ii->next_bundle_->next_bundle_;
+            if(Predicate::AIsLeftOfB(ii->top_segment_->p(), next_same_color->bottom_segment_->support())) return false;
+        }
+    }
+    return true;
+}
+
+bool BundleList::CheckCorrectOrder() const
+{
+    BundleList blue_list = BundleList();
+    BundleList red_list = BundleList();
+    // Separate out red and blue lists
+    for(Bundle* ii = top_; ii != bottom_; ii = ii->prev_bundle_)
+    {
+        Bundle* bundle_copy = new Bundle(*ii);
+        if(ii->get_color()) red_list.Insert(bundle_copy, nullptr);
+        else blue_list.Insert(bundle_copy, nullptr);
+    }
+
+    for(Bundle* jj = blue_list.bottom_; jj != blue_list.top_; jj = jj->next_bundle_)
+    {
+        if(Predicate::AIsLeftOfB(jj->top_segment_->p(), jj->next_bundle_->bottom_segment_->support()))
+            return false;
+    }
+    for(Bundle* kk = red_list.bottom_; kk != red_list.top_; kk = kk->next_bundle_)
+    {
+        if(Predicate::AIsLeftOfB(kk->top_segment_->p(), kk->next_bundle_->bottom_segment_->support()))
+            return false;
+    }
+    return true;
 }
 
 
