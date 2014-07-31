@@ -73,7 +73,7 @@ int CountIntersections(const Arrangement_2r &A,
         top = bdl.top_->next_bundle_;
 
         // Debug
-        bdl.PrintState(bdl.bottom_, bdl.top_);
+//        bdl.PrintState(bdl.bottom_, bdl.top_);
 
         // Split any bundles containing the current vertex (must be in
         //  range [bottom, top]
@@ -170,7 +170,63 @@ Bundle::Bundle(SharedSegment& new_segment)
 
 void Bundle::Splay(const SharedSegment &x, BinaryNode<SharedSegment> *t)
 {
-    Splay(x->p(), t);
+
+    BinaryNode<SharedSegment> N, *L, *R, *y;
+    if(t == nullptr) return;
+    N.left = N.right = nullptr;
+    L = R = &N;
+
+    if((t->left == nullptr) && (t->right == nullptr)) return;
+
+    while(true){
+        if(t->element->IsAbove(*x)){
+            if(t->left == nullptr) break;
+            if(t->left->element->IsAbove(*x))
+            {
+                y = t->left;
+                t->left = y->right;
+                y->right = t;
+                t = y;
+                if(t->left == nullptr) break;
+            }
+            R->left = t;
+            R = t;
+            t = t->left;
+        }
+        else if(x->IsAbove(*(t->element)))
+        {
+            if(t->right == nullptr) break;
+            if(x->IsAbove(*(t->right->element)))
+            {
+                y = t->right;
+                t->right = y->left;
+                y->left = t;
+                t = y;
+                if(t->right == nullptr) break;
+            }
+            L->right = t;
+            L = t;
+            t = t->right;
+        }
+        else break;
+    }
+
+    L->right = t->left;
+    R->left = t->right;
+    t->left = N.right;
+    t->right = N.left;
+    root_ = t;
+
+//     Rotate right if we don't yet satisfy the output conditions
+    if(root_->left != nullptr){
+        if(root_->element->IsAbove(*x) && x->IsAbove(*root_->left->element))
+        {
+            t = root_->left;
+            root_->left = t->right;
+            t->right = root_;
+            root_ = t;
+        }
+    }
 }
 
 void Bundle::Splay(const Point_2r &x, BinaryNode<SharedSegment> *t)
@@ -256,7 +312,7 @@ void Bundle::Insert( const SharedSegment & x )
     {
         BinaryNode<SharedSegment> *tmp_root = root_;
         while(tmp_root != nullptr){
-            if(Predicate::AIsRightOfB(x->p(), tmp_root->element->support()))
+            if(tmp_root->element->IsAbove(*x))
             {
                 if(tmp_root->left == nullptr){
                     tmp_root->left = newNode;
@@ -264,7 +320,7 @@ void Bundle::Insert( const SharedSegment & x )
                 }
                 tmp_root = tmp_root->left;
             }
-            else if(Predicate::AIsLeftOfB(x->p(), tmp_root->element->support()))
+            else if(x->IsAbove(*(tmp_root->element)))
             {
                 if(tmp_root->right == nullptr){
                     tmp_root->right = newNode;
@@ -274,16 +330,16 @@ void Bundle::Insert( const SharedSegment & x )
             }
             else return; // No duplicates
         }
-        Splay(x->p(), root_);
+        Splay(x, root_);
     }
 //     Make sure top_segment and bottom_segment have been set
         if(top_segment_ == nullptr && bottom_segment_ == nullptr){
             top_segment_ = bottom_segment_ = x;
         }
         else{
-            if(Predicate::AIsLeftOfB(x->p(), top_segment_->support()))
+            if(x->IsAbove(*top_segment_))
                 top_segment_ = x;
-            if(Predicate::AIsRightOfB(x->p(), bottom_segment_->support()))
+            if(bottom_segment_->IsAbove(*x))
                 bottom_segment_ = x;
         }
 }
@@ -320,7 +376,7 @@ Bundle* Bundle::Split(Point_2r& split_here)
 
 void Bundle::Merge(Bundle* to_merge)
 {
-    if(!(Predicate::AIsLeftOfB(to_merge->bottom_segment_->p(), top_segment_->support())))
+    if(top_segment_->IsAbove(*(to_merge->bottom_segment_)))
         std::cout << "Merge: NOOOOOOOOOOOOOOOOOOO";
     if(to_merge->next_bundle_!= nullptr){
         to_merge->next_bundle_->prev_bundle_= this;
@@ -340,9 +396,9 @@ bool Bundle::ContainsValue(const SharedSegment &x)
     if (is_empty()) return false;
     BinaryNode<SharedSegment>* tmp_root = root_;
     while(tmp_root != nullptr){
-        if(Predicate::AIsRightOfB(x->p(), tmp_root->element->support()))
+        if(tmp_root->element->IsAbove(*x))
             tmp_root = tmp_root->left;
-        else if(Predicate::AIsLeftOfB(x->p(), tmp_root->element->support()))
+        else if(x->IsAbove(*(tmp_root->element)))
             tmp_root = tmp_root->right;
         else
             return true;
@@ -377,7 +433,7 @@ bool Bundle::Remove(const SharedSegment &x)
     if( !ContainsValue(x) )
         return false;   // Item not found; do nothing
         // If x is found, it will be at the root
-    Splay( x->p(), root_ );
+    Splay( x, root_ );
 
     if( root_->left == nullptr )
         new_node = root_->right;
@@ -385,7 +441,7 @@ bool Bundle::Remove(const SharedSegment &x)
     {
         // Find the maximum in the left subtree
         Bundle* new_tree = new Bundle(root_->left);
-        new_tree->Splay(x->p(), new_tree->root_);
+        new_tree->Splay(x, new_tree->root_);
         new_node = new_tree->root_;
         new_node->right = root_->right;
     }
@@ -426,7 +482,64 @@ BinaryNode<SharedSegment>* Bundle::FindMin( )
 
 void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
 {
-    Splay(x.bottom_segment_->p(), t);
+    BinaryNode<Bundle*> N, *L, *R, *y;
+    if(t == nullptr) return;
+    N.left = N.right = nullptr;
+    L = R = &N;
+
+    if((t->left == nullptr) && (t->right == nullptr)) return;
+
+    while(true){
+        if(t->element->bottom_segment_->IsAbove(*(x.top_segment_)))
+        {
+            if(t->left == nullptr) break;
+            if(t->left->element->bottom_segment_->IsAbove(*(x.top_segment_)))
+            {
+                y = t->left;
+                t->left = y->right;
+                y->right = t;
+                t = y;
+                if(t->left == nullptr) break;
+            }
+            R->left = t;
+            R = t;
+            t = t->left;
+        }
+        else if(x.bottom_segment_->IsAbove(*(t->element->top_segment_)))
+        {
+            if(t->right == nullptr) break;
+            if(x.bottom_segment_->IsAbove(*(t->right->element->top_segment_)))
+            {
+                y = t->right;
+                t->right = y->left;
+                y->left = t;
+                t = y;
+                if(t->right == nullptr) break;
+            }
+            L->right = t;
+            L = t;
+            t = t->right;
+        }
+        else break;
+    }
+
+    L->right = t->left;
+    R->left = t->right;
+    t->left = N.right;
+    t->right = N.left;
+    root_ = t;
+
+//     Rotate right if we don't yet satisfy the output conditions
+    if(root_->left != nullptr){
+        if(root_->element->bottom_segment_->IsAbove(*(x.top_segment_)) &&
+            (x.bottom_segment_->IsAbove(*(root_->left->element->top_segment_))))
+        {
+            t = root_->left;
+            root_->left = t->right;
+            t->right = root_;
+            root_ = t;
+        }
+    }
 }
 
 void BundleTree::Splay(const Point_2r &x, BinaryNode<Bundle*> *t)
@@ -527,7 +640,7 @@ void BundleTree::Insert(Bundle* new_bundle)
             }
             else return; // No duplicates
         }
-        Splay(new_bundle->bottom_segment_->p(), root_);
+        Splay(*new_bundle, root_);
     }
 }
 
@@ -878,10 +991,9 @@ void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
     SharedSegment new_segment =
             std::make_shared<Segment_2r_colored>(current_segment);
     new_bundle->Insert(new_segment);
-    bdt.Splay(*input_vertex.get_point(), bdt.root_);
+    bdt.Splay(new_segment, bdt.root_);
     Bundle* tmp = bdt.root_->element->next_bundle_;
-    while(Predicate::AIsRightOfB(*(input_vertex.get_point()),
-                                 tmp->bottom_segment_->support()))
+    while(tmp->bottom_segment_->IsAbove(*new_segment))
         tmp = tmp->prev_bundle_;
     if(input_vertex.is_red())
         bdt.Insert(new_bundle);
@@ -971,7 +1083,8 @@ bool BundleList::CheckInvariants()
         if(ii->next_bundle_->next_bundle_ != nullptr)
         {
             next_same_color = ii->next_bundle_->next_bundle_;
-            if(Predicate::AIsLeftOfB(ii->top_segment_->p(), next_same_color->bottom_segment_->support())) return false;
+            if(ii->top_segment_->IsAbove(*(next_same_color->bottom_segment_)))
+                return false;
         }
     }
     return true;
@@ -991,12 +1104,12 @@ bool BundleList::CheckCorrectOrder() const
 
     for(Bundle* jj = blue_list.bottom_; jj != blue_list.top_; jj = jj->next_bundle_)
     {
-        if(Predicate::AIsLeftOfB(jj->top_segment_->p(), jj->next_bundle_->bottom_segment_->support()))
+        if(jj->top_segment_->IsAbove(*(jj->next_bundle_->top_segment_)))
             return false;
     }
     for(Bundle* kk = red_list.bottom_; kk != red_list.top_; kk = kk->next_bundle_)
     {
-        if(Predicate::AIsLeftOfB(kk->top_segment_->p(), kk->next_bundle_->bottom_segment_->support()))
+        if(kk->top_segment_->IsAbove(*(kk->next_bundle_->bottom_segment_)))
             return false;
     }
     return true;

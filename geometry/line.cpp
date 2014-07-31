@@ -338,14 +338,10 @@ bool Segment_2r_colored::IsAbove(const Segment_2r_colored to_compare) const{
     else my_l_endpoint = q();
     if(to_compare.p() < to_compare.q()) other_l_endpoint = to_compare.p();
     else other_l_endpoint = to_compare.q();
-    if(my_l_endpoint < other_l_endpoint){
+    if(my_l_endpoint < other_l_endpoint)
         return Predicate::AIsRightOrAheadOfB(other_l_endpoint, support_ray());
-    }
-    else{
-        return Predicate::AIsLeftOfB(my_l_endpoint,
-                                            to_compare.support());
-    }
-
+    else
+        return Predicate::AIsLeftOfB(my_l_endpoint, to_compare.support());
 }
 
 //Segment_2r_colored Segment_2r_colored::operator=(const Segment_2r_colored &rhs){
