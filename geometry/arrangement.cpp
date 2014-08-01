@@ -168,7 +168,7 @@ Bundle::Bundle(SharedSegment& new_segment)
     prev_bundle_ = nullptr;
 }
 
-void Bundle::Splay(const SharedSegment &x, BinaryNode<SharedSegment> *t)
+void Bundle::Splay( SharedSegment x, BinaryNode<SharedSegment> *t)
 {
 
     BinaryNode<SharedSegment> N, *L, *R, *y;
@@ -229,7 +229,7 @@ void Bundle::Splay(const SharedSegment &x, BinaryNode<SharedSegment> *t)
     }
 }
 
-void Bundle::Splay(const Point_2r &x, BinaryNode<SharedSegment> *t)
+void Bundle::Splay( Point_2r &x, BinaryNode<SharedSegment> *t)
 {
 
     BinaryNode<SharedSegment> N, *L, *R, *y;
@@ -450,37 +450,37 @@ bool Bundle::Remove(const SharedSegment &x)
     return true;
 }
 
-BinaryNode<SharedSegment>* Bundle::FindMax()
-{
-    if( is_empty( ) )
-        return nullptr;
+//BinaryNode<SharedSegment>* Bundle::FindMax()
+//{
+//    if( is_empty( ) )
+//        return nullptr;
 
-    BinaryNode<SharedSegment>* ptr = root_;
+//    BinaryNode<SharedSegment>* ptr = root_;
 
-    while( ptr->right != nullptr )
-        ptr = ptr->right;
+//    while( ptr->right != nullptr )
+//        ptr = ptr->right;
 
-    Splay( ptr->element, root_ );
-    return root_;
-}
+//    Splay( ptr->element, root_ );
+//    return root_;
+//}
 
-BinaryNode<SharedSegment>* Bundle::FindMin( )
-{
-    if( is_empty( ) )
-        return nullptr;
-    BinaryNode<SharedSegment> *ptr = root_;
-    while( ptr->left != nullptr )
-        ptr = ptr->left;
+//BinaryNode<SharedSegment>* Bundle::FindMin( )
+//{
+//    if( is_empty( ) )
+//        return nullptr;
+//    BinaryNode<SharedSegment> *ptr = root_;
+//    while( ptr->left != nullptr )
+//        ptr = ptr->left;
 
-    Splay( ptr->element, root_ );
-    return root_;
-}
+//    Splay( ptr->element, root_ );
+//    return root_;
+//}
 
 //=============================================================================
 // Implementation: BundleTree
 //=============================================================================
 
-void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
+void BundleTree::Splay( Bundle* x, BinaryNode<Bundle*>* t)
 {
     BinaryNode<Bundle*> N, *L, *R, *y;
     if(t == nullptr) return;
@@ -490,10 +490,10 @@ void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
     if((t->left == nullptr) && (t->right == nullptr)) return;
 
     while(true){
-        if(t->element->bottom_segment_->IsAbove(*(x.top_segment_)))
+        if(t->element->bottom_segment_->IsAbove(*(x->top_segment_)))
         {
             if(t->left == nullptr) break;
-            if(t->left->element->bottom_segment_->IsAbove(*(x.top_segment_)))
+            if(t->left->element->bottom_segment_->IsAbove(*(x->top_segment_)))
             {
                 y = t->left;
                 t->left = y->right;
@@ -505,10 +505,10 @@ void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
             R = t;
             t = t->left;
         }
-        else if(x.bottom_segment_->IsAbove(*(t->element->top_segment_)))
+        else if(x->bottom_segment_->IsAbove(*(t->element->top_segment_)))
         {
             if(t->right == nullptr) break;
-            if(x.bottom_segment_->IsAbove(*(t->right->element->top_segment_)))
+            if(x->bottom_segment_->IsAbove(*(t->right->element->top_segment_)))
             {
                 y = t->right;
                 t->right = y->left;
@@ -531,8 +531,8 @@ void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
 
 //     Rotate right if we don't yet satisfy the output conditions
     if(root_->left != nullptr){
-        if(root_->element->bottom_segment_->IsAbove(*(x.top_segment_)) &&
-            (x.bottom_segment_->IsAbove(*(root_->left->element->top_segment_))))
+        if(root_->element->bottom_segment_->IsAbove(*(x->top_segment_)) &&
+            (x->bottom_segment_->IsAbove(*(root_->left->element->top_segment_))))
         {
             t = root_->left;
             root_->left = t->right;
@@ -542,7 +542,7 @@ void BundleTree::Splay(const Bundle& x, BinaryNode<Bundle*>* t)
     }
 }
 
-void BundleTree::Splay(const Point_2r &x, BinaryNode<Bundle*> *t)
+void BundleTree::Splay(Point_2r &x, BinaryNode<Bundle*> *t)
 {
 
     BinaryNode<Bundle*> N, *L, *R, *y;
@@ -620,8 +620,7 @@ void BundleTree::Insert(Bundle* new_bundle)
     {
         BinaryNode<Bundle*> *tmp_root = root_;
         while(tmp_root != nullptr){
-            if(Predicate::AIsRightOfB(new_bundle->top_segment_->p(),
-                                      tmp_root->element->bottom_segment_->support()))
+            if(tmp_root->element->bottom_segment_->IsAbove(*(new_bundle->top_segment_)))
             {
                 if(tmp_root->left == nullptr){
                     tmp_root->left = newNode;
@@ -629,8 +628,7 @@ void BundleTree::Insert(Bundle* new_bundle)
                                            }
                 tmp_root = tmp_root->left;
             }
-            else if(Predicate::AIsLeftOfB(new_bundle->bottom_segment_->p(),
-                                          tmp_root->element->top_segment_->support()))
+            else if(new_bundle->bottom_segment_->IsAbove(*(tmp_root->element->top_segment_)))
             {
                 if(tmp_root->right == nullptr){
                     tmp_root->right = newNode;
@@ -640,7 +638,7 @@ void BundleTree::Insert(Bundle* new_bundle)
             }
             else return; // No duplicates
         }
-        Splay(*new_bundle, root_);
+        Splay(new_bundle, root_);
     }
 }
 
@@ -652,8 +650,7 @@ bool BundleTree::Remove(Bundle* remove_this)
     if( !ContainsValue(remove_this) )
         return false;   // Item not found; do nothing
         // If x is found, it will be at the root
-    const Bundle const_copy = *remove_this;
-    Splay( const_copy, root_ );
+    Splay( remove_this, root_ );
 //    assert(root_->left == nullptr);
     if( root_->left == nullptr )
         new_node = root_->right;
@@ -663,7 +660,7 @@ bool BundleTree::Remove(Bundle* remove_this)
         BundleTree* new_tree = new BundleTree();
         new_tree->root_ = root_->left;
 //        SplayTree<Bundle*>* new_tree = new SplayTree<Bundle*>(root_->left);
-        new_tree->Splay(const_copy, new_tree->root_);
+        new_tree->Splay(remove_this, new_tree->root_);
         new_node = new_tree->root_;
         new_node->right = root_->right;
         delete new_tree;
@@ -698,31 +695,31 @@ bool BundleTree::ContainsValue(Bundle * const &x)
 }
 
 
-BinaryNode<Bundle*>* BundleTree::FindMax()
-{
-    if( is_empty( ) )
-        return nullptr;
+//BinaryNode<Bundle*>* BundleTree::FindMax()
+//{
+//    if( is_empty( ) )
+//        return nullptr;
 
-    BinaryNode<Bundle*>* ptr = root_;
+//    BinaryNode<Bundle*>* ptr = root_;
 
-    while( ptr->right != nullptr )
-        ptr = ptr->right;
+//    while( ptr->right != nullptr )
+//        ptr = ptr->right;
 
-    Splay( *(ptr->element), root_ );
-    return root_;
-}
+//    Splay( (ptr->element), root_ );
+//    return root_;
+//}
 
-BinaryNode<Bundle*>* BundleTree::FindMin( )
-{
-    if( is_empty( ) )
-        return nullptr;
-    BinaryNode<Bundle*> *ptr = root_;
-    while( ptr->left != nullptr )
-        ptr = ptr->left;
+//BinaryNode<Bundle*>* BundleTree::FindMin( )
+//{
+//    if( is_empty( ) )
+//        return nullptr;
+//    BinaryNode<Bundle*> *ptr = root_;
+//    while( ptr->left != nullptr )
+//        ptr = ptr->left;
 
-    Splay( *(ptr->element), root_ );
-    return root_;
-}
+//    Splay( (ptr->element), root_ );
+//    return root_;
+//}
 
 
 //=============================================================================
@@ -991,7 +988,7 @@ void BundleList::InsertLeftEndpoint(ArrangementVertex_2r& input_vertex,
     SharedSegment new_segment =
             std::make_shared<Segment_2r_colored>(current_segment);
     new_bundle->Insert(new_segment);
-    bdt.Splay(new_segment, bdt.root_);
+    bdt.Splay(new_bundle, bdt.root_);
     Bundle* tmp = bdt.root_->element->next_bundle_;
     while(tmp->bottom_segment_->IsAbove(*new_segment))
         tmp = tmp->prev_bundle_;

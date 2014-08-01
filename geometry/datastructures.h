@@ -76,7 +76,7 @@ class SplayTree
      * @param x : The target item to Splay around
      * @param t : the root of the subtree to Splay
      */
-    void Splay(const T & x, BinaryNode<T> *t );
+    virtual void Splay( T x, BinaryNode<T> *t ) { }
 
     /**
      * @brief Find item x in the tree and splay it to the root.
@@ -212,64 +212,6 @@ SplayTree<T>::~SplayTree( )
     MakeEmpty( );
 }
 
-template <class T>
-void SplayTree<T>::Splay( const T & x,
-                          BinaryNode<T> * t )
-{
-
-    BinaryNode<T> N, *L, *R, *y;
-    if(t == nullptr) return;
-    N.left = N.right = nullptr;
-    L = R = &N;
-
-    if((t->left == nullptr) && (t->right == nullptr)) return;
-
-    while(true){
-        if(x < t->element){
-            if(t->left == nullptr) break;
-            if(x < t->left->element){
-                y = t->left;
-                t->left = y->right;
-                y->right = t;
-                t = y;
-                if(t->left == nullptr) break;
-            }
-            R->left = t;
-            R = t;
-            t = t->left;
-        }
-        else if(x > t->element){
-            if(t->right == nullptr) break;
-            if(x > t->right->element){
-                y = t->right;
-                t->right = y->left;
-                y->left = t;
-                t = y;
-                if(t->right == nullptr) break;
-            }
-            L->right = t;
-            L = t;
-            t = t->right;
-        }
-        else break;
-    }
-
-    L->right = t->left;
-    R->left = t->right;
-    t->left = N.right;
-    t->right = N.left;
-    root_ = t;
-
-//     Rotate right if we don't yet satisfy the output conditions
-    if(root_->left != nullptr){
-        if(x < root_->element && root_->left->element < x){
-            t = root_->left;
-            root_->left = t->right;
-            t->right = root_;
-            root_ = t;
-        }
-    }
-}
 
 template <class T>
 void SplayTree<T>::Find( const T & x )
@@ -473,6 +415,72 @@ SplayTree<T>::Clone( BinaryNode<T> * t ) const
         return new BinaryNode<T>( t->element, Clone( t->left ),
                                            Clone( t->right ) );
 }
+
+/**
+ * @brief Integer splay tree class used for testing splay tree methods
+ */
+class SplayTree_int : public SplayTree<int>
+{
+
+    void SplayTree_int::Splay(  int x,
+                              BinaryNode<int> * t ) override
+    {
+
+        BinaryNode<int> N, *L, *R, *y;
+        if(t == nullptr) return;
+        N.left = N.right = nullptr;
+        L = R = &N;
+
+        if((t->left == nullptr) && (t->right == nullptr)) return;
+
+        while(true){
+            if(x < t->element){
+                if(t->left == nullptr) break;
+                if(x < t->left->element){
+                    y = t->left;
+                    t->left = y->right;
+                    y->right = t;
+                    t = y;
+                    if(t->left == nullptr) break;
+                }
+                R->left = t;
+                R = t;
+                t = t->left;
+            }
+            else if(x > t->element){
+                if(t->right == nullptr) break;
+                if(x > t->right->element){
+                    y = t->right;
+                    t->right = y->left;
+                    y->left = t;
+                    t = y;
+                    if(t->right == nullptr) break;
+                }
+                L->right = t;
+                L = t;
+                t = t->right;
+            }
+            else break;
+        }
+
+        L->right = t->left;
+        R->left = t->right;
+        t->left = N.right;
+        t->right = N.left;
+        root_ = t;
+
+    //     Rotate right if we don't yet satisfy the output conditions
+        if(root_->left != nullptr){
+            if(x < root_->element && root_->left->element < x){
+                t = root_->left;
+                root_->left = t->right;
+                t->right = root_;
+                root_ = t;
+            }
+        }
+    }
+};
+
 } // namespace DDAD
 
 
