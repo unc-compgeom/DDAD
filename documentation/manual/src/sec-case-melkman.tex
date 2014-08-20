@@ -6,12 +6,19 @@
 \FloatBarrier
 \section{Case Study: Melkman's Algorithm}
 
-This section examines using our workbench to animate Melkman's convex hull
-algorithm~\cite{melkman1987line}. 
+The DDAD workbench makes it easy for presenters and implementers to quickly
+visualize new geometric objects and algorithms. In this section, we overview
+using the workbench to implement and visualize Melkman's convex hull
+algorithm~\cite{melkman1987line}. First, we implement the basic data
+structures used by the algorithm and augment their methods with visualization
+code. Second, we use these data structures to implement Melkman's algorithm. 
+By visualizing the data structures in an object oriented way, we arrive at a
+clean implementation of the algorithm.
 
-% By providing a concrete example we hope to illuminate the major steps
-% required to animate algorithms in general. Before we get started, let us briefly
-% examine the algorithm in question.
+% This section examines using our workbench to animate Melkman's convex hull
+% algorithm~\cite{melkman1987line}. 
+
+%==============================================================================
 
 \subsection{Algorithm Overview}
 
@@ -27,15 +34,10 @@ starting and ending with the most recent vertex added to the hull. The algorithm
 establishes the invariant initially by forming the deque with $p_2, p_1, p_2$ to
 represent the convex hull of the first two points. 
 
-% Figure 1.16 shows the first
-% three deques for the convex hulls $CH(P_2), CH(P_3)$, and $CH(P_4)$.
-
 Now, suppose we wish to add $p_i$ to the hull. Let $v, w$ be the vertices at the
 tail of the deque and $u, v$ be the vertices at the head. Thus, $v$ is the most
 recent vertex added to the hull, and we can speak of edges $uv$ and $vw$ as
 being at the head and tail of the deque, respectively. 
-
-%See Figure 1.17.
 
 If $p_i$ is not left of $uv$ or inside $uv$, then remove edge $uv$ from the
 convex hull by popping the head of the deque; continue until $p_i$ is left of
@@ -44,14 +46,60 @@ then remove edge $vw$ from the convex hull by popping the tail of the deque;
 continue until $p_i$ is left of the edge at the tail. Finally, push $p_i$ onto
 both the head and tail of the deque to restore the invariant.
 
-%Two vertices will be popped in Figure 1.17.
-
 On the other hand, if $p_i$ is left or inside both $uv$ and $vw$, then we can 
 observe that $p_i$ is not on the convex hull: because the polyline from $v$ to
 $p_i$ does not cross the polyline from $u$ to $v$ or from $v$ to $w$, $p_i$ can
 leave the hull $CH(P_{i-1})$ only by crossing $uv$ or $vw$. Hull $CH(P_{i-1})$
 is identical with $CH(P_i)$, and the invariant already holds.
 
+%==============================================================================
+
+\subsection{Data Structure Implementation}
+
+The \texttt{Polyline\_2r} class uses a deque to store its vertices. The
+\texttt{push\_back} and \texttt{pop\_back} methods are responsible for
+visualizing how those operations affect the visual state of the object.
+
+\lstinputlisting{code-samples/polyline.cpp}
+
+\lstinputlisting{code-samples/polyline-push-back.cpp}
+
+The \texttt{Polygon\_2r} class is composed of a \text{Polyline\_2r} boundary
+that is responsible for visualizing vertices and edges. It can optionally
+visualize the polygon interior by triangulating it into a fan.  
+
+\lstinputlisting{code-samples/polygon.cpp}  
+ 
+%==============================================================================
+
+\subsection{Algorithm Implementation}
+
+The code listed below shows the \texttt{Melkman} function which is our C++
+implementation of Melkman's algorithm. The function takes as input a
+\texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
+a \texttt{Polygon\_2r} object. All branching tests make use of the
+\texttt{RIsLeftOrInsidePQ} predicate, which encapsulates the logic described in
+the previous section. We will describe each of these in the paragraphs that
+follow.
+ 
+\lstinputlisting{code-samples/melkman.cpp} 
+
+%==============================================================================
+ 
+\subsection{Generating Input Data} 
+
+
+
+%==============================================================================
+
+% \begin{figure}[h]
+% 	\centering
+% 	\includegraphics[width=\textwidth]{figures/melkman-input-1}
+% 	\caption{Example polyline input.}
+% 	\label{fig:melkman-input}
+% \end{figure}
+
+ 
 %As in Figure 1.18,
 
 % Figure 1.19 continues the execution begun in Figure 1.16. It shows all of the
@@ -132,53 +180,6 @@ is identical with $CH(P_i)$, and the invariant already holds.
 % polychain\_2r
 % 
 % polygon\_2r
-
-\subsection{Algorithm Implementation}
-
-The code listed below shows the \texttt{Melkman} function which is our C++
-implementation of Melkman's algorithm. The function takes as input a
-\texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
-a \texttt{Polygon\_2r} object. All branching tests make use of the
-\texttt{RIsLeftOrInsidePQ} predicate, which encapsulates the logic described in
-the previous section. We will describe each of these in the paragraphs that
-follow.
- 
-\lstinputlisting{code-samples/melkman.cpp} 
-
-The \texttt{Polyline\_2r} class uses a deque to store its vertices. The
-\texttt{push\_back} and \texttt{pop\_back} methods are responsible for
-visualizing how those operations affect the visual state of the object.
-
-\lstinputlisting{code-samples/polyline.cpp}
-
-\lstinputlisting{code-samples/polyline-push-back.cpp}
-
-The \texttt{Polygon\_2r} class is composed of a \text{Polyline\_2r} boundary
-that is responsible for visualizing vertices and edges. It can optionally
-visualize the polygon interior by triangulating it into a fan.  
-
-\lstinputlisting{code-samples/polygon.cpp}  
- 
-\subsection{Generating Input Data} 
-
-Create button and implement click handler. buttongroup to model mutually
-exclusive input states.
-
-define input states. configmanager singleton. 
-
-
-Handle ortho widget mouse clicks
-forward signals from ortho to scene observer
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth]{figures/melkman-input-1}
-	\caption{Example polyline input.}
-	\label{fig:melkman-input}
-\end{figure}
-
-
-
 
 % Animating any algorithm begins with generating the appropriate input. In the
 % case of Melkman's algorithm, we begin by creating a simple polyline. This is

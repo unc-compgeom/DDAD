@@ -1,0 +1,24 @@
+
+\section{Appendix}
+
+signals and slots
+configuration manager and input state
+
+\subsection{Polyline2r}
+
+Inside \texttt{qt\_window\_main.cpp}, we create a ``Create Polyline'' button and
+connect its triggered signal to the \texttt{onCreatePolylineTriggered} slot. We
+add this to the toolbar inside of a buttongroup with other buttons that are
+mutually exclusive (e.g. creating a polytope). The
+\texttt{onCreatePolylineTriggered} slot simply sets the input state to
+\texttt{CREATE\_POLYLINE}.
+
+
+
+Handle ortho widget mouse clicks
+forward signals from ortho to scene observer
+
+user must right-click in perspective to begin controlling camera. uses W S A D
+keys to move around.
+
+
