@@ -40,16 +40,39 @@ system.
 
 \subsection{Taxonomy} 
 
-Geometric workbench systems are a type of software visualization system. Our
-taxonomy synthesizes the specific elements of Dobkin's workbench
-taxonomy~\cite{hausner1999animation} with the broad categories of Price et.
-al.'s software visualization taxonomy~\cite{price1993principled}. It is composed
-of five categories: scope, content, form, method, and interaction.
+% Geometric workbench systems are a type of software visualization system. Our
+% taxonomy synthesizes the specific elements of Dobkin's workbench
+% taxonomy~\cite{hausner1999animation} with the broad categories of Price et.
+% al.'s software visualization taxonomy~\cite{price1993principled}. It is composed
+% of five categories: scope, content, form, method, and interaction.
 
-\paragraph{Scope.} What range of programs can the system visualize? All
-geometric workbench systems specialize in visualizing geometric algorithms, but
-each system makes different choices with regards to scalability. Scalability
-refers to both input data and algorithm complexity.
+% Geometric workbench systems are a type of software visualization (SV) system.
+% While the SV literature proposes several taxonomies for SV systems in general,
+% there is not an explicit taxonomy for workbench systems in particular. However,
+% in his review of geometric algorithm animation~\cite{hausner1999animation},
+% Dobkin outlines a number of design parameters relevant to workbench systems.
+% Below, we synthesize Dobkin's specific design parameters with Price et. al.'s SV
+% taxonomy~\cite{price1993principled}. Our new taxonomy comprises five categories:
+% scope, content, form, method, and interaction.
+
+Geometric workbench systems are a type of software visualization (SV) system.
+While the SV literature proposes several taxonomies for SV systems in general,
+there is not an explicit taxonomy for workbench systems in particular. However,
+in his review of geometric algorithm animation~\cite{hausner1999animation},
+Dobkin outlines a number of design parameters that can directly inform a
+taxonomy for workbench systems. Below, we synthesize Dobkin's specific design
+parameters with Price et. al.'s SV taxonomy~\cite{price1993principled} to form
+an explicit taxonomy for workbench systems. Our new taxonomy comprises five
+categories: scope, content, form, method, and interaction.
+
+\paragraph{Scope.} What range of algorithms can the system visualize? Scope can
+be described in terms of dimension (2, 3, \ldots, $d$), scale of input/output
+data, and algorithm complexity.
+
+% All
+% geometric workbench systems specialize in visualizing geometric algorithms, but
+% each system makes different choices with regards to scalability. Scalability
+% refers to both input data and algorithm complexity.
 
 % \begin{enumerate}
 %     \item Generality. Can the system handle a generalized range of programs or
@@ -78,7 +101,7 @@ refers to both input data and algorithm complexity.
 %     \end{enumerate}
 %   \end{enumerate}
 
-\paragraph{Content.} What information about the software can the SV system
+\paragraph{Content.} What information about the algorithm can the system
 visualize? In particular, systems may focus on visualizing the actual
 implementation or the high level algorithm description. Often, these will
 overlap, but sometimes visualizing implementation details clutters the
@@ -134,9 +157,9 @@ presentation of the high level algorithm.
 %     \end{enumerate}
 %   \end{enumerate}
 
-\paragraph{Form.} What are the characteristics of the output of the system (the
-visualization)? This category encompasses graphical vocabulary, granularity and
-elision, and whether the system can present multiple views of the same data.
+\paragraph{Form.} What are the characteristics of the visualization? This
+category encompasses graphical vocabulary, granularity and elision, and whether
+the system can present multiple views of the same data.
 %   Oftentimes systems are structured around the model-view-controller
 %   design pattern.
 
@@ -172,9 +195,9 @@ elision, and whether the system can present multiple views of the same data.
 %   \end{enumerate}
 
 \paragraph{Method.} How is the visualization specified? Automatic visualization
-of algorithms is a difficult if not impossible task, so there is often a degree
-of invasiveness. Systems may require users to annotate their code at visually
-important points of execution.
+of algorithms is a difficult if not impossible task, so there must be some
+degree of invasiveness. Systems may require users to annotate their code at
+visually important points of execution.
 
 % \begin{enumerate}
 %     \item Visualization Specification Style. What style of specification is
@@ -200,11 +223,11 @@ important points of execution.
 %     \end{enumerate}
 %   \end{enumerate}
 
-\paragraph{Interaction.} How does the user of the SV system interact with and
-  control it? For geometric algorithm visualization, the user may need different
-  camera types for 2 and 3 dimensions. For algorithm visualization in general,
-  the user may want controls for speeding up, slowing down, pausing, resuming,
-  and restarting algorithm execution. 
+\paragraph{Interaction.} How does the user interact with and control the system?
+For geometric algorithm visualization, the user may need different camera types
+for 2 and 3 dimensions. For algorithm visualization in general, the user may
+want controls for speeding up, slowing down, pausing, resuming, and restarting
+algorithm execution.
 
 % \begin{enumerate}
 %     \item Style. What method does the user employ to give instructions to the
