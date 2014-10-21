@@ -1,31 +1,51 @@
 \FloatBarrier
 \section{Case Study: Incremental Delaunay Triangulation}
 
-This section reviews animating an incremental Delaunay triangulation algorithm.
-The algorithm is covered extensively in \cite{de2000computational}.  
+% The DDAD workbench makes it easy for presenters and implementers to quickly
+% visualize new geometric objects and algorithms. In this section, we overview
+% using the workbench to implement a bare-bones visualization of Melkman's convex
+% hull algorithm~\cite{melkman1987line}. First, we implement the basic data
+% types used by the algorithm and augment their methods with visualization
+% code. Second, we use these data types to implement Melkman's algorithm. 
+% By visualizing the data types in an object-oriented way, we arrive at a
+% clean implementation of the algorithm.
 
-\subsection{Algorithm Overview}
+The DDAD workbench can quickly visualize three-dimensional algorithms. In this
+section, we use the workbench to visualize an implementation of incremental
+delaunay triangulation. The presentation follows the same format as our previous
+case study. First, we review the basic data types used by the algorithm and
+show how to augment their methods with visualization code. Second, we use these
+data types to implement the algorithm.
 
-The algorithm uses the quadedge data structure~\cite{guibas1985primitives}.
+\subsection{Data Type Design and Implementation}
 
-\begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
-Delaunay}] \begin{algorithmic}[1]
-    \Require A set $P$ of $n+1$ points in the plane.
-    \Ensure A Delaunay triangulation of $P$.
-    \vspace{0.75em}
-    \Procedure{Delaunay}{$P$}
-    \State Let $p_0$ be the lexicographically highest point of $P$.
-    \State Let $p_{-1}, p_{-2}$ be two points far away such that $P$ is
-    contained in the triangle $p_0p_{-1}p_{-2}$.
-    \State Initialize $\mathcal{T}$ as the triangulation consisting of the
-    single triangle $p_0p_{-1}p_{-2}$.
-    \State Compute a random permutation $p_1, p_2, \ldots, p_n$ of $P /
-    \{p_0\}$.
-    \For{$r = 1 \ldots n$}
-   \State derp
-    \EndFor \EndProcedure
-\end{algorithmic}
-\end{mdframed} 
+
+
+% This section reviews animating an incremental Delaunay triangulation algorithm.
+% The algorithm is covered extensively in \cite{de2000computational}.  
+
+%\subsection{Algorithm Overview}
+
+% The algorithm uses the quadedge data structure~\cite{guibas1985primitives}.
+% 
+% \begin{mdframed}[linecolor=white, backgroundcolor=algback, frametitle={Algorithm
+% Delaunay}] \begin{algorithmic}[1]
+%     \Require A set $P$ of $n+1$ points in the plane.
+%     \Ensure A Delaunay triangulation of $P$.
+%     \vspace{0.75em}
+%     \Procedure{Delaunay}{$P$}
+%     \State Let $p_0$ be the lexicographically highest point of $P$.
+%     \State Let $p_{-1}, p_{-2}$ be two points far away such that $P$ is
+%     contained in the triangle $p_0p_{-1}p_{-2}$.
+%     \State Initialize $\mathcal{T}$ as the triangulation consisting of the
+%     single triangle $p_0p_{-1}p_{-2}$.
+%     \State Compute a random permutation $p_1, p_2, \ldots, p_n$ of $P /
+%     \{p_0\}$.
+%     \For{$r = 1 \ldots n$}
+%    \State derp
+%     \EndFor \EndProcedure
+% \end{algorithmic}
+% \end{mdframed} 
 
 \subsection{Code Listing}
 
