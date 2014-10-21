@@ -333,11 +333,11 @@ interchangable arithmetic and software simulation of parameterized floating
 point numbers. In particular, algorithm implementations make reference to an
 abstract 2D point class that does not specify a particular number system for the
 coordinates. The abstract point class is extended to form concrete point types
-for single-precision (realPoint), long integer (longIntPoint), and parameterized
-floating point (floatPoint) coordinate types. Counterinuitively, the
-parameterized floating point arithmetic was not used to ameliorate robustness
-problems by increasing precision, rather it was used to simulate low precision
-floating point to make the robustness problems more pronounced.
+for single-precision, long integer, and parameterized floating point coordinate
+types. Counterinuitively, the parameterized floating point arithmetic was not
+used to ameliorate robustness problems by increasing precision, rather it was
+used to simulate low precision floating point to make the robustness problems
+more pronounced.
 
 % The GeoBench had three major goals or desiderata. First was to be a programming
 % environment. Provide the implementor of geometric algorithms with the necessary
@@ -359,12 +359,12 @@ floating point to make the robustness problems more pronounced.
 Workbench is a system similar to XYZ GeoBench that focused on implementing
 complex geometric algorithms instead of robustness issues. The system is built
 in Smalltalk and composed of three main components: a library, visualization
-GUI, and tools for extending each. It focused heavily on empirical comparisons of different
-algorithms and using animations for teaching and demonstration. They define the
-minimum criteria for a geometric workbench as a system with: representations of
-geometric objects, geometric data types, non-geometric data types, algorithmic
-implementations that adhere to specification, different arithmetic types, and a
-GUI that provides animation and debugging facilities.
+GUI, and tools for extending each. It focused heavily on empirical comparisons
+of different algorithms and using animations for teaching and demonstration.
+They define the minimum criteria for a geometric workbench as a system with:
+representations of geometric objects, geometric data types, non-geometric data
+types, algorithmic implementations that adhere to specification, different
+arithmetic types, and a GUI that provides animation and debugging facilities.
 
 % they identify two other projects (LEDA and GeoBench): LEDA had a large number of
 % graph algorithms and well designed data types but was just then starting to move
@@ -403,7 +403,7 @@ and customize algorithm animations. Although the system is implemented in
 object-oriented C++, algorithms are not necessarily member functions of the
 classes upon which they operate -- they may be free functions. This echoes
 Meyer's advice that minimal use of member functions can often increase
-encapsulation.
+encapsulation~\cite{meyers2005effective}.
 
 % software
 % development:
@@ -511,32 +511,72 @@ types.
 
 \subsection{DDAD Desiderata}
 
-Geometric objects on a digital computer are composed of two types of data:
-numerical and combinatorial. Examples of numerical data include the
-Cartesian coordinates of a point in 3-space, the length of a line segment
-connecting two such points, or the angle between two such line segments.
-Examples of combinatorial information include grouping two points as an
-edge, grouping a collection of edges as a face, or grouping a collection of
-faces as a surface.
+Geometric objects are composed of two types of data: numerical and
+combinatorial. Examples of numerical data include the Cartesian coordinates of a
+point in 3-space, the length of a line segment connecting two such points, or
+the angle between two such line segments. Examples of combinatorial information
+include grouping two points as an edge, grouping a collection of edges as a
+face, or grouping a collection of faces as a surface.
 
 Geometric algorithms that operate on geometric objects are best thought of as
-two types of operations: predicates and constructions. Predicates determine
-relationships between objects. A predicate might determine if a point is to
-the left, right, or is collinear with a line segment, determine if a point is
-inside, outside, or on a circle, or determine if a line intersects a plane in
+having two types of operations: predicates and constructions. Predicates
+determine relationships between objects. A predicate might determine if a point
+is to the left, right, or is collinear with a line segment, determine if a point
+is inside, outside, or on a circle, or determine if a line intersects a plane in
 one, none, or infinitely many points. Constructions produce new geometric
 objects from existing geometric objects. A construction might produce the
-rotation of a point around an origin, produce the point of intersection
-between two line segments, or produce an offset of an algebraic curve.
+rotation of a point around an origin, produce the point of intersection between
+two line segments, or produce an offset of an algebraic curve.
+
+Geometric algorithms are typically designed and analyzed using the Real-RAM
+model of computation, which provides arbitrary precision arithmetic operations
+at unit cost. Geometric nonrobustness results from the unfortunate disconnect
+between continuous theoretical formulations and the reality of discrete machine
+implementation. In most instances, the numerical data composing geometric
+objects is an approximation of a real value. Predicates that assume exact values
+but are fed approximate values are liable to make incorrect determinations.
+Constructions compound the situation by producing even coarser approximations.
+
+In 1999 Liotta, Preparata and Tamassia proposed that in addition to considering
+the resources of time and space, an algorithm designer should also consider the
+arithmetic precision necessary to guarantee a correct implementation. They
+called this design technique degree-driven algorithm design. Designers who
+consider the time, space, and precision for a problem up-front arrive at new
+solutions, gain further insight, and find simpler representations.
+
+
+% 
+% 
+% 
+%  In short, geometric nonrobustness is a problem wherein branching
+% decisions in geometric algorithms are predicated on approximate numerical
+% computations, leading to various forms of unreliability including ill-formed
+% output and software failure through crashing or infinite loops.
+
+% Correct implementation of published geometric algorithms is surprisingly
+% difficult. Geometric algorithms are often designed for Real-RAM, a computational
+% model that provides arbitrary precision arithmetic operations at unit cost.
+% Actual commodity hardware provides only finite precision and may result in
+% arithmetic errors. While the errors may seem small, if ignored, they may cause
+% incorrect branching, which may cause an implementation to reach an undefined
+% state, produce erroneous output, or crash. In 1999 Liotta, Preparata and
+% Tamassia proposed that in addition to considering the resources of time and
+% space, an algorithm designer should also consider the arithmetic precision
+% necessary to guarantee a correct implementation. They called this design
+% technique degree-driven algorithm design. Designers who consider the time,
+% space, and precision for a problem up-front arrive at new solutions, gain
+% further insight, and find simpler representations.
+
+
+
 
 \paragraph{Scope.} First, the system should visualize geometric algorithms
-implemented with primitives and predicates from the degree-driven algorithm
-design library (DDAD). Second, the system should provide example implementations
-and visualizations of algorithms that solve textbook computational geometry
-problems. Third, the system should be flexible enough to visualize new geometric
-algorithms from the facilities used in example visualizations. Fourth, the
-system should run well given inputs large enough to verify the correctness of a
-particular implementation.
+implemented with primitives and predicates from the DDAD library. Second, the
+system should provide example implementations and visualizations of algorithms
+that solve textbook computational geometry problems. Third, the system should be
+flexible enough to visualize new geometric algorithms from the facilities used
+in example visualizations. Fourth, the system should run well given inputs large
+enough to verify the correctness of a particular implementation.
 
 \paragraph{Content.} For algorithm implementers, the system should
 visualize information about the concrete implementation of the algorithm. This
@@ -546,21 +586,22 @@ system should visualize information about the high-level algorithm description.
 This entails mechanisms for displaying visualizations that do not necessarily
 correspond to the underlying implementation details.
 
-\paragraph{Form.} First, the output medium should be an interactive computer
-program. This is sufficient for implementers, but presenters may want to produce
-a digital recording of an algorithm animation. Fortunately, screen capture
-programs can facilitate producing this type of output. Second, the output should
-have a rich graphical vocabulary, displaying standard graphics primitives
-(points, lines, polygons), each with a variety of attributes (color,
-transparency, pattern, texture). Presenters in particular desire highly
-expressive output. Third, the output should contain both 2D and 3D elements.
-The third dimension can be used both for visualizing inherently 3D algorithms
-and to effectively display non-dimensional information. Fourth, the output
-should have multiple levels of information granularity, with the ability to
-elide and reveal specific levels as needed. Fifth, users should be able to view
-the same data in multiple ways. This capability is particularly pertinent in
-geometry where insight into a problem may be gained from viewing a dual
-formulation (\emph{e.g.} viewing points as lines).
+\paragraph{Form.} First, the output should have a rich graphical vocabulary,
+displaying standard graphics primitives (points, lines, polygons), each with a
+variety of attributes (color, transparency, pattern, texture). Presenters in
+particular desire highly expressive output. Second, the output should contain
+both 2D and 3D elements. The third dimension can be used both for visualizing
+inherently 3D algorithms and to effectively display non-dimensional information.
+Third, the output should have multiple levels of information granularity, with
+the ability to elide and reveal specific levels as needed. Fourth, users should
+be able to view the same data in multiple ways. This capability is particularly
+pertinent in geometry where insight into a problem may be gained from viewing a
+dual formulation (\emph{e.g.} viewing points as lines).
+
+% First, the output medium should be an interactive computer
+% program. This is sufficient for implementers, but presenters may want to produce
+% a digital recording of an algorithm animation. Fortunately, screen capture
+% programs can facilitate producing this type of output.
 
 \paragraph{Method.} Implementers desire highly automated specifications that
 minimally invade implementation source code. Increased automation increases the
