@@ -510,13 +510,11 @@ with the scene. The data type integrates directly with LEDA and CGAL while
 custom libraries must implement the interfaces, entailing a dependency on LEDA
 types.
 
-\subsection{DDAD Workbench Desiderata}
+\subsection{Degree-driven Algorithm Design and the DDAD Library}
 
-The DDAD workbench extends Millman's DDAD library to make it easier for
-implementers and presenters to visualize degree-driven geometric
-algorithms. Momentarily, we explain the desiderata of the DDAD workbench in
-terms of the taxonomy defined in section~\ref{sec:taxonomy}. First, we explain
-what degree-driven algorithm design is by examining the nature of geometric
+Momentarily, we explain the desiderata of the DDAD workbench in terms of the
+taxonomy defined in section~\ref{sec:taxonomy}. First, we explain what
+degree-driven algorithm design is by examining the nature of geometric
 algorithms and the geometric objects upon which they operate.
 
 % and how the DDAD library supports implementing algorithms with
@@ -559,6 +557,12 @@ design}. Designers who consider the time, space, and precision for a problem
 up-front arrive at new solutions, gain further insight, and find simpler
 representations.
 
+Millman produced a C++ library (DDAD) specifically designed for implementing
+degree-driven geometric algorithms. In contrast to monolithic libraries
+like CGAL, DDAD is lightweight and easy to pick up. It emphasizes the
+distinction between predicates and constructions, and provides reliable
+implementations of common predicates. 
+
 % 
 % 
 % In most instances, the numerical data composing geometric
@@ -598,6 +602,12 @@ representations.
 
 
 
+\subsection{DDAD Workbench Desiderata}
+
+The DDAD workbench extends the DDAD library to make it easier for
+implementers and presenters to visualize degree-driven geometric
+algorithms. The desiderata are influenced by DDAD's emphasis on encouraging
+robust geometric computing.
 
 \paragraph{Scope.} First, the system should visualize geometric algorithms
 implemented with primitives and predicates from the DDAD library. Second, the
