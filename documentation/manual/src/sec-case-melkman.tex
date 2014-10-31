@@ -7,14 +7,20 @@
 \section{Case Study: Melkman's Algorithm}
 \label{sec:case-melkman}
 
-The DDAD workbench makes it easy for presenters and implementers to quickly
-visualize new geometric objects and algorithms. In this section, we overview
-using the workbench to implement a bare-bones visualization of Melkman's convex
-hull algorithm~\cite{melkman1987line}. First, we implement the basic data
-types used by the algorithm and augment their methods with visualization
-code. Second, we use these data types to implement Melkman's algorithm. 
-By visualizing the data types in an object-oriented way, we arrive at a
-clean implementation of the algorithm.
+In this section, we use the workbench to implement and visualize Melkman's
+convex hull algorithm~\cite{melkman1987line}. The algorithm takes as input a
+simple polyline and produces as output a convex polygon (represented as a
+deque). Our workbench already has these types implemented, complete with
+visualization code for each basic operation. After explaining how the algorithm
+works, we introduce the \texttt{Polyline\_2r} and \texttt{Polygon\_2r} types and
+use them to arrive at a correct implementation. We conclude by using the GUI to
+generate an input polyline, run the algorithm, and save the output polygon.
+
+% First, we implement the basic data
+% types used by the algorithm and augment their methods with visualization
+% code. Second, we use these data types to implement Melkman's algorithm. 
+% By visualizing the data types in an object-oriented way, we arrive at a
+% clean implementation of the algorithm.
 
 % This section examines using our workbench to animate Melkman's convex hull
 % algorithm~\cite{melkman1987line}. 
@@ -24,8 +30,8 @@ clean implementation of the algorithm.
 \subsection{Algorithm Overview}
 
 A \emph{polyline} $P$ is a polygonal chain of vertices $p_1, p_2, \ldots, p_n$
-connected by line segments $p_ip_{i+1}$ for $1 \leq i < n$. $P$ is \emph{simple}
-if the only intersection between segments is at their shared endpoints.
+connected by line segments $\seg{p_ip_{i+1}}$ for $1 \leq i < n$. $P$ is
+\emph{simple} if the only intersection between segments is at their shared endpoints.
 Melkman's algorithm incrementally computes the convex hull of a simple polyline
 in $O(n)$ time. 
 
@@ -37,54 +43,59 @@ represent the convex hull of the first two points.
 
 Now, suppose we wish to add $p_i$ to the hull. Let $v, w$ be the vertices at the
 tail of the deque and $u, v$ be the vertices at the head. Thus, $v$ is the most
-recent vertex added to the hull, and we can speak of edges $uv$ and $vw$ as
-being at the head and tail of the deque, respectively. 
+recent vertex added to the hull, and we can speak of edges $\seg{uv}$ and
+$\seg{vw}$ as being at the head and tail of the deque, respectively. 
 
-If $p_i$ is not left of $uv$ or inside $uv$, then remove edge $uv$ from the
-convex hull by popping the head of the deque; continue until $p_i$ is left of
-the edge at the head. Similarly, if $p_i$ is not left of $vw$ or inside $vw$,
-then remove edge $vw$ from the convex hull by popping the tail of the deque;
-continue until $p_i$ is left of the edge at the tail. Finally, push $p_i$ onto
-both the head and tail of the deque to restore the invariant.
+If $p_i$ is not left of $\seg{uv}$ or inside $\seg{uv}$, then remove edge
+$\seg{uv}$ from the convex hull by popping the head of the deque; continue until
+$p_i$ is left of the edge at the head. Similarly, if $p_i$ is not left of
+$\seg{vw}$ or inside $\seg{vw}$, then remove edge $\seg{vw}$ from the convex
+hull by popping the tail of the deque; continue until $p_i$ is left of the edge
+at the tail. Finally, push $p_i$ onto both the head and tail of the deque to
+restore the invariant.
 
-On the other hand, if $p_i$ is left or inside both $uv$ and $vw$, then we can 
-observe that $p_i$ is not on the convex hull: because the polyline from $v$ to
-$p_i$ does not cross the polyline from $u$ to $v$ or from $v$ to $w$, $p_i$ can
-leave the hull $CH(P_{i-1})$ only by crossing $uv$ or $vw$. Hull $CH(P_{i-1})$
-is identical with $CH(P_i)$, and the invariant already holds.
+On the other hand, if $p_i$ is left or inside both $\seg{uv}$ and $\seg{vw}$,
+then we can observe that $p_i$ is not on the convex hull: because the polyline
+from $v$ to $p_i$ does not cross the polyline from $u$ to $v$ or from $v$ to
+$w$, $p_i$ can leave the hull $CH(P_{i-1})$ only by crossing $\seg{uv}$ or
+$\seg{vw}$. Hull $CH(P_{i-1})$ is identical with $CH(P_i)$, and the invariant
+already holds.
 
 %==============================================================================
 
-\subsection{Data Type Design and Implementation}
-
-The real work of implementing Melkman's algorithm is designing the data types
-upon which it operates. In particular, we require data types for two geometric
-objects: input polylines and output polygons. Beyond the standard concerns of
-efficiency and ease of use, both data types must support visualization and our
-polygon type must support deque semantics.
-
-Our workbench provides an abstract data type, \texttt{Visual::Geometry}, that
-geometric data types can inherit to become \emph{visual geometry} types and gain
-access to the visualization system. We provide an in-depth discussion of how
-\texttt{Visual::Geometry} works in Section~\ref{sec:workbench-architecture}, but
-for now it is sufficient to know that uses the observer
-pattern~\cite{gamma1994design} to generate and recieve visual events. In
-particular, visual geometry objects are able to both observe visual geometry
-objects and to be observed by visual geometry objects. A visual geometry object
-may \emph{signal} to its observers that a visual event has occurred, and can
-optionally implement a \emph{slot} that handles signals from the objects that it
-observes. By default, visual geometry objects simply forward signals they
-recieve up to their observers, forming an event propagation chain.
+\FloatBarrier
+\subsection{Available Polyline and Polygon Types}
 
 
-A major benefit of visual geometry types is their ability to offload
-visualization work through composition. Our polygon type must support deque
-operations, but we only require sequential access to the polyline's vertices. In
-our case, we can think of the polygon as being composed of a polyline boundary.
-This suggests using a deque as a backing store for the polyline's vertices so
-that the polygon type may simply delegate deque operations to its boundary. This
-choice is consistent with our need for constant sequential access to the
-polyline's vertices.
+
+% The real work of implementing Melkman's algorithm is designing the data types
+% upon which it operates. In particular, we require data types for two geometric
+% objects: input polylines and output polygons. Beyond the standard concerns of
+% efficiency and ease of use, both data types must support visualization and our
+% polygon type must support deque semantics.
+% 
+% Our workbench provides an abstract data type, \texttt{Visual::Geometry}, that
+% geometric data types can inherit to become \emph{visual geometry} types and gain
+% access to the visualization system. We provide an in-depth discussion of how
+% \texttt{Visual::Geometry} works in Section~\ref{sec:workbench-architecture}, but
+% for now it is sufficient to know that uses the observer
+% pattern~\cite{gamma1994design} to generate and recieve visual events. In
+% particular, visual geometry objects are able to both observe visual geometry
+% objects and to be observed by visual geometry objects. A visual geometry object
+% may \emph{signal} to its observers that a visual event has occurred, and can
+% optionally implement a \emph{slot} that handles signals from the objects that it
+% observes. By default, visual geometry objects simply forward signals they
+% recieve up to their observers, forming an event propagation chain.
+% 
+% 
+% A major benefit of visual geometry types is their ability to offload
+% visualization work through composition. Our polygon type must support deque
+% operations, but we only require sequential access to the polyline's vertices. In
+% our case, we can think of the polygon as being composed of a polyline boundary.
+% This suggests using a deque as a backing store for the polyline's vertices so
+% that the polygon type may simply delegate deque operations to its boundary. This
+% choice is consistent with our need for constant sequential access to the
+% polyline's vertices.
 
 
 
@@ -110,9 +121,9 @@ class declaration,label=polyline-class]{code-samples/polyline.cpp}
 \lstinputlisting[float,caption=Polygon\_2r
 class declaration,label=polygon-class]{code-samples/polygon.cpp}
 
-\lstinputlisting[float,caption=Polyline\_2r
-push back
-implementation,label=polyline-push-back]{code-samples/polyline-push-back.cpp}
+% \lstinputlisting[float,caption=Polyline\_2r
+% push back
+% implementation,label=polyline-push-back]{code-samples/polyline-push-back.cpp}
   
 %==============================================================================
 
