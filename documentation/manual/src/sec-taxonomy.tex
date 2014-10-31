@@ -40,6 +40,7 @@ system.
 % quite easy because we may simply answer each of these questions in turn.
 
 \subsection{Taxonomy} 
+\label{sec:taxonomy}
 
 % Geometric workbench systems are a type of software visualization system. Our
 % taxonomy synthesizes the specific elements of Dobkin's workbench
@@ -511,12 +512,12 @@ types.
 
 \subsection{DDAD Workbench Desiderata}
 
-Our workbench aims to augment Millman's DDAD library by making it easier for
-implementers and presenters to visualize degree-driven geometric algorithms.
-Momentarily, we explain the desiderata of the DDAD workbench in terms of the
-taxonomy defined in section 2.1. First, we explain what degree-driven algorithm
-design is by examining the nature of geometric algorithms and the geometric
-objects upon which they operate.
+The DDAD workbench extends Millman's DDAD library to make it easier for
+implementers and presenters to visualize degree-driven geometric
+algorithms. Momentarily, we explain the desiderata of the DDAD workbench in
+terms of the taxonomy defined in section~\ref{sec:taxonomy}. First, we explain
+what degree-driven algorithm design is by examining the nature of geometric
+algorithms and the geometric objects upon which they operate.
 
 % and how the DDAD library supports implementing algorithms with
 % low-degree predicates.
@@ -538,24 +539,39 @@ objects from existing geometric objects. A construction might produce the
 rotation of a point around an origin, produce the point of intersection between
 two line segments, or produce an offset of an algebraic curve.
 
+In order for an algorithm implementation to perform correctly, the implementor
+must ensure that all predicates evaluate correctly. Geometric predicates are
+often phrased as the sign of a polynomial expression over input coordinates. The
+degree of these predicates may be defined as the degree of the corresponding
+polynomial. In turn, the degree of an algorithm may be defined as the largest
+degree of any predicate used. A degree $d$ predicate operating on $b$-bit
+integer input coordinates requires roughly $db$ bits to evaluate correctly.
+Thus, the degree of an algorithm captures an important aspect of the resources
+required to perform correctly: arithmetic precision.
+
 Geometric algorithms are typically designed and analyzed using the Real-RAM
 model of computation, which provides arbitrary precision arithmetic operations
-at unit cost. In most instances, the numerical data composing geometric
-objects is an approximation of a real value. Predicates that assume exact values
-but are fed approximate values are liable to make incorrect determinations.
-Constructions compound the situation by producing even coarser approximations.
+at unit cost. In 1999 Liotta, Preparata and Tamassia proposed that in addition
+to considering the resources of time and space, an algorithm designer should
+also consider the arithmetic precision necessary to guarantee a correct
+implementation. They called this design technique \emph{degree-driven algorithm
+design}. Designers who consider the time, space, and precision for a problem
+up-front arrive at new solutions, gain further insight, and find simpler
+representations.
+
+% 
+% 
+% In most instances, the numerical data composing geometric
+% objects is an approximation of a real value. Predicates that assume exact values
+% but are fed approximate values are liable to make incorrect determinations.
+% Constructions compound the situation by producing even coarser approximations.
 
 % Predicates are often the sign of a polynomial and can be made correct by
 % ensuring that the sign is evaluated with enough precision
 
 
 
-In 1999 Liotta, Preparata and Tamassia proposed that in addition to considering
-the resources of time and space, an algorithm designer should also consider the
-arithmetic precision necessary to guarantee a correct implementation. They
-called this design technique degree-driven algorithm design. Designers who
-consider the time, space, and precision for a problem up-front arrive at new
-solutions, gain further insight, and find simpler representations.
+
 
 
 % 
