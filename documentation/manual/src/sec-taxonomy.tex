@@ -509,7 +509,17 @@ with the scene. The data type integrates directly with LEDA and CGAL while
 custom libraries must implement the interfaces, entailing a dependency on LEDA
 types.
 
-\subsection{DDAD Desiderata}
+\subsection{DDAD Workbench Desiderata}
+
+Our workbench aims to augment Millman's DDAD library by making it easier for
+implementers and presenters to visualize degree-driven geometric algorithms.
+Momentarily, we explain the desiderata of the DDAD workbench in terms of the
+taxonomy defined in section 2.1. First, we explain what degree-driven algorithm
+design is by examining the nature of geometric algorithms and the geometric
+objects upon which they operate.
+
+% and how the DDAD library supports implementing algorithms with
+% low-degree predicates.
 
 Geometric objects are composed of two types of data: numerical and
 combinatorial. Examples of numerical data include the Cartesian coordinates of a
@@ -530,12 +540,15 @@ two line segments, or produce an offset of an algebraic curve.
 
 Geometric algorithms are typically designed and analyzed using the Real-RAM
 model of computation, which provides arbitrary precision arithmetic operations
-at unit cost. Geometric nonrobustness results from the unfortunate disconnect
-between continuous theoretical formulations and the reality of discrete machine
-implementation. In most instances, the numerical data composing geometric
+at unit cost. In most instances, the numerical data composing geometric
 objects is an approximation of a real value. Predicates that assume exact values
 but are fed approximate values are liable to make incorrect determinations.
 Constructions compound the situation by producing even coarser approximations.
+
+% Predicates are often the sign of a polynomial and can be made correct by
+% ensuring that the sign is evaluated with enough precision
+
+
 
 In 1999 Liotta, Preparata and Tamassia proposed that in addition to considering
 the resources of time and space, an algorithm designer should also consider the
