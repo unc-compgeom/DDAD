@@ -538,12 +538,12 @@ rotation of a point around an origin, produce the point of intersection between
 two line segments, or produce an offset of an algebraic curve.
 
 In order for an algorithm implementation to perform correctly, the implementor
-must ensure that all predicates evaluate correctly. Geometric predicates are
-often phrased as the sign of a polynomial expression over input coordinates. The
-degree of these predicates may be defined as the degree of the corresponding
-polynomial. In turn, the degree of an algorithm may be defined as the largest
-degree of any predicate used. A degree $d$ predicate operating on $b$-bit
-integer input coordinates requires roughly $db$ bits to evaluate correctly.
+must ensure that all predicates evaluate correctly. Predicates are often phrased
+as the sign of a polynomial expression over input coordinates. The degree of
+these predicates may be defined as the degree of the corresponding polynomial.
+In turn, the degree of an algorithm may be defined as the largest degree of any
+predicate used. A degree $d$ predicate operating on $b$-bit integer input
+coordinates requires roughly $db$ bits to evaluate correctly.
 Thus, the degree of an algorithm captures an important aspect of the resources
 required to perform correctly: arithmetic precision.
 
@@ -561,7 +561,8 @@ Millman produced a C++ library (DDAD) specifically designed for implementing
 degree-driven geometric algorithms. In contrast to monolithic libraries
 like CGAL, DDAD is lightweight and easy to pick up. It emphasizes the
 distinction between predicates and constructions, and provides reliable
-implementations of common predicates. 
+implementations of common predicates, constructions, and geometric objects in
+two dimensions.
 
 % 
 % 
@@ -609,13 +610,21 @@ implementers and presenters to visualize degree-driven geometric
 algorithms. The desiderata are influenced by DDAD's emphasis on encouraging
 robust geometric computing.
 
-\paragraph{Scope.} First, the system should visualize geometric algorithms
-implemented with primitives and predicates from the DDAD library. Second, the
-system should provide example implementations and visualizations of algorithms
-that solve textbook computational geometry problems. Third, the system should be
-flexible enough to visualize new geometric algorithms from the facilities used
-in example visualizations. Fourth, the system should run well given inputs large
-enough to verify the correctness of a particular implementation.
+\paragraph{Scope.} First, the system should focus on visualizing 2D algorithms,
+with an eye toward visualizing 3D algorithms in the future. Second, the system
+should provide example visualizations of textbook geometric algorithms. Third,
+the system should be flexible enough to visualize new geometric algorithms from
+the facilities used in example visualizations. Fourth, the system should run
+well given inputs large enough to verify the correctness of a particular
+implementation.
+
+% First, the system should visualize geometric algorithms
+% implemented with primitives and predicates from the DDAD library. Second, the
+% system should provide example implementations and visualizations of algorithms
+% that solve textbook computational geometry problems. Third, the system should be
+% flexible enough to visualize new geometric algorithms from the facilities used
+% in example visualizations. Fourth, the system should run well given inputs large
+% enough to verify the correctness of a particular implementation.
 
 \paragraph{Content.} For algorithm implementers, the system should
 visualize information about the concrete implementation of the algorithm. This
