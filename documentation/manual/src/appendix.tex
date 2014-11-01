@@ -22,3 +22,53 @@
 % keys to move around.
 % 
 % 
+
+\subsection{Design and Implementation of Polyline and Polygon Types}
+\label{sec:polyline-polygon}
+
+The real work of implementing Melkman's algorithm is designing the data types
+upon which it operates. In particular, we require data types for two geometric
+objects: input polylines and output polygons. Beyond the standard concerns of
+efficiency and ease of use, both data types must support visualization and our
+polygon type must support deque semantics.
+
+Our workbench provides an abstract data type, \texttt{Visual::Geometry}, that
+geometric data types can inherit to become \emph{visual geometry} types and gain
+access to the visualization system. We provide an in-depth discussion of how
+\texttt{Visual::Geometry} works in Section~\ref{sec:workbench-architecture}, but
+for now it is sufficient to know that uses the observer
+pattern~\cite{gamma1994design} to generate and recieve visual events. In
+particular, visual geometry objects are able to both observe visual geometry
+objects and to be observed by visual geometry objects. A visual geometry object
+may \emph{signal} to its observers that a visual event has occurred, and can
+optionally implement a \emph{slot} that handles signals from the objects that it
+observes. By default, visual geometry objects simply forward signals they
+recieve up to their observers, forming an event propagation chain.
+
+
+A major benefit of visual geometry types is their ability to offload
+visualization work through composition. Our polygon type must support deque
+operations, but we only require sequential access to the polyline's vertices. In
+our case, we can think of the polygon as being composed of a polyline boundary.
+This suggests using a deque as a backing store for the polyline's vertices so
+that the polygon type may simply delegate deque operations to its boundary. This
+choice is consistent with our need for constant sequential access to the
+polyline's vertices.
+
+
+
+The \texttt{Polygon\_2r} class is composed of a \texttt{Polyline\_2r} boundary
+that is responsible for visualizing vertices and edges. It can optionally
+visualize the polygon interior by triangulating it into a fan.
+
+ We know from the algorithm description that these should support deque
+semantics, so it makes sense to use this as a backing store for the polygon's
+vertices. In many regards, a polygon will act like a polyline, e.g. we can add
+and remove vertices to both. In order to avoid duplicating functionality, it
+makes sense to compose our polygon with a polyline boundary and forward common
+events to it. We want to visualize both objects, so each will inherit from the
+Visual::Geometry class.
+
+The \texttt{Polyline\_2r} class uses a deque to store its vertices. The
+\texttt{push\_back} and \texttt{pop\_back} methods are responsible for
+visualizing how those operations affect the visual state of the object.

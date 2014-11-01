@@ -282,7 +282,8 @@
 }
 
 \DeclareCaptionFont{white}{\color{white}}
-\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{8pt}#1#2#3}}}
+\DeclareCaptionFormat{listing}{\colorbox[rgb]{0.4, 0.4,
+0.4}{\parbox{\textwidth}{\hspace{8pt}#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={sf,bf,footnotesize}}
 
 \def\tomath#1{\relax\ifmmode#1\else$#1$\fi}
