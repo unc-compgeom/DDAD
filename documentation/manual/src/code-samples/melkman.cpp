@@ -1,5 +1,10 @@
 Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer) {
     Polygon_2r hull;
+
+    Visual::Material hull_mat;
+    hull_mat.set_ambient(Visual::Color::MAGENTA);
+    hull.set_mat_vertex(hull_mat); hull.set_mat_edge(hull_mat);
+    hull.set_z_order(1);
     hull.AddObserver(observer);
 
     // initialize hull
@@ -7,11 +12,11 @@ Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer) {
 
     for (size_t i = 2; i < P.size(); ++i) {
         if (!RIsLeftOrInsidePQ(*hull.back(1), *hull.back(0), *P[i]) ||
-            !RIsLeftOrInsidePQ(*P[i], *hull.front(1), *hull.front(0))) {
+            !RIsLeftOrInsidePQ(*hull.front(0), *hull.front(1), *P[i])) {
             while (!RIsLeftOrInsidePQ(*hull.back(1), *hull.back(0), *P[i])) {
                 hull.pop_back();
             }
-            while (!RIsLeftOrInsidePQ(*P[i], *hull.front(0), *hull.front(1))) {
+            while (!RIsLeftOrInsidePQ(*hull.front(0), *hull.front(1), *P[i])) {
                 hull.pop_front();
             }
             hull.push_back(*P[i]);

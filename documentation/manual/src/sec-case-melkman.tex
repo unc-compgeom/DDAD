@@ -65,8 +65,9 @@ already holds.
 
 %==============================================================================
 
-\FloatBarrier
-\subsection{Building Blocks Provided by the Workbench}
+%\subsection{Building Blocks Provided by the Workbench}
+
+\subsection{Algorithm Implementation}
 
 Melkman's algorithm involves two geometric objects (polylines and polygons), and
 requires only a single degree-two predicate to check whether a point is to the
@@ -82,11 +83,21 @@ The final type we must use is \texttt{IGeometryObserver}. All DDAD geometric
 types are built to be observed by other types that implement the
 \texttt{IGeometryObserver} interface. Geometric algorithm implementations that
 wish to be visualized will usually be a free function with an
-\texttt{IGeometryObserver} as the last input argument; in our case, the function
-signature will be \texttt{Polygon\_2r Melkman(const Polyline\_2r\& P,
-IGeometryObserver* observer)}. The only thing we need to do with the
-\texttt{observer} is to have it observe the input polyline and output polygon
-before we perform any operations on them.
+\texttt{IGeometryObserver} as the last input argument. The only thing we need to
+do with the \texttt{observer} is to have it observe the input polyline and
+output polygon before we perform any operations on them.
+
+Code listing~\ref{melkman-function} shows \texttt{Melkman}, the final 
+implementation of Melkman's algorithm. The function takes as input a 
+\texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
+a \texttt{Polygon\_2r} object. All branching tests make use of the
+\texttt{RIsLeftOrInsidePQ} predicate.
+ 
+\lstinputlisting[float,caption=Melkman
+function implementation,label=melkman-function]{code-samples/melkman.cpp}
+
+% \lstinputlisting[float,caption=Polyline\_2r
+% class declaration,label=polyline-class]{code-samples/polyline.cpp}
 
 % The real work of implementing Melkman's algorithm is designing the data types
 % upon which it operates. In particular, we require data types for two geometric
@@ -135,8 +146,7 @@ before we perform any operations on them.
 % \texttt{push\_back} and \texttt{pop\_back} methods are responsible for
 % visualizing how those operations affect the visual state of the object.
 
-\lstinputlisting[float,caption=Polyline\_2r
-class declaration,label=polyline-class]{code-samples/polyline.cpp}
+
 
 % \lstinputlisting[float,caption=Polygon\_2r
 % class declaration,label=polygon-class]{code-samples/polygon.cpp}
@@ -147,22 +157,8 @@ class declaration,label=polyline-class]{code-samples/polyline.cpp}
   
 %==============================================================================
 
-\FloatBarrier
-\subsection{Algorithm Implementation}
-
-Code listing~\ref{melkman-function} shows \texttt{Melkman}, the final C++
-implementation of Melkman's algorithm. The function takes as input a
-\texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
-a \texttt{Polygon\_2r} object. All branching tests make use of the
-\texttt{RIsLeftOrInsidePQ} predicate, which encapsulates the logic described in
-the previous section.
- 
-\lstinputlisting[float,caption=Melkman
-function implementation,label=melkman-function]{code-samples/melkman.cpp}
-
 %==============================================================================
- 
-\FloatBarrier
+
 \subsection{Generating Input Data and Executing the Implementation} 
 
 The workbench GUI is composed of a toolbar and two views: orthographic and
