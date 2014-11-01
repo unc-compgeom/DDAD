@@ -73,9 +73,20 @@ requires only a single degree-two predicate to check whether a point is to the
 left or inside of a directed line segment. The DDAD workbench provides both
 geometric types (\texttt{Polyline\_2r} and \texttt{Polygon\_2r}), and the
 predicate \texttt{RIsLeftOfOrInsidePQ}. Both geometric types are built using a
-deque as an underlying data store.
+deque as an underlying data store, so we will have the push and pop
+capabilities we need. All two dimensional geometric types are given methods to
+set the $z$ coordinate (or \emph{z-order}) of all its vertices so that users can
+draw some objects above or below others. 
 
-
+The final type we must use is \texttt{IGeometryObserver}. All DDAD geometric
+types are built to be observed by other types that implement the
+\texttt{IGeometryObserver} interface. Geometric algorithm implementations that
+wish to be visualized will usually be a free function with an
+\texttt{IGeometryObserver} as the last input argument; in our case, the function
+signature will be \texttt{Polygon\_2r Melkman(const Polyline\_2r\& P,
+IGeometryObserver* observer)}. The only thing we need to do with the
+\texttt{observer} is to have it observe the input polyline and output polygon
+before we perform any operations on them.
 
 % The real work of implementing Melkman's algorithm is designing the data types
 % upon which it operates. In particular, we require data types for two geometric
@@ -127,8 +138,8 @@ deque as an underlying data store.
 \lstinputlisting[float,caption=Polyline\_2r
 class declaration,label=polyline-class]{code-samples/polyline.cpp}
 
-\lstinputlisting[float,caption=Polygon\_2r
-class declaration,label=polygon-class]{code-samples/polygon.cpp}
+% \lstinputlisting[float,caption=Polygon\_2r
+% class declaration,label=polygon-class]{code-samples/polygon.cpp}
 
 % \lstinputlisting[float,caption=Polyline\_2r
 % push back
