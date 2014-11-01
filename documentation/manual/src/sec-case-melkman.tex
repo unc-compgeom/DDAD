@@ -84,17 +84,19 @@ types are built to be observed by other types that implement the
 \texttt{IGeometryObserver} interface. Geometric algorithm implementations that
 wish to be visualized will usually be a free function with an
 \texttt{IGeometryObserver} as the last input argument. The only thing we need to
-do with the \texttt{observer} is to have it observe the input polyline and
-output polygon before we perform any operations on them.
+do with the \texttt{observer} is to have it observe the output polygon before we
+perform any operations it.
 
 Code listing~\ref{melkman-function} shows \texttt{Melkman}, the final 
 implementation of Melkman's algorithm. The function takes as input a 
 \texttt{Polyline\_2r} and an \texttt{IGeometryObserver}, and produces as output
 a \texttt{Polygon\_2r} object. All branching tests make use of the
-\texttt{RIsLeftOrInsidePQ} predicate.
+\texttt{RIsLeftOrInsidePQ} predicate. Aside from a few lines setting up colors,
+z-order, and observing the output hull, the implementation is a straightforward
+transcription of the algorithm, uncluttered by visualization code. 
  
 \lstinputlisting[float,caption=Melkman
-function implementation,label=melkman-function]{code-samples/melkman.cpp}
+implementation,label=melkman-function]{code-samples/melkman.cpp}
 
 % \lstinputlisting[float,caption=Polyline\_2r
 % class declaration,label=polyline-class]{code-samples/polyline.cpp}
@@ -168,7 +170,7 @@ the user to zoom and pan the camera. The perspective view renders the scene in
 3D and allows the user to move and rotate the camera.
 
 The orthographic view provides a simple CAD interface, and the input buttons
-control what objects are created when the user clicks inside the view. One
+control which objects are created when the user clicks inside the view. One
 button allows the user to create polylines. The snapping toggle button
 determines whether the points created are integral. 
 
