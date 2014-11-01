@@ -14,7 +14,9 @@ deque). Our workbench already has these types implemented, complete with
 visualization code for each basic operation. After explaining how the algorithm
 works, we introduce the \texttt{Polyline\_2r} and \texttt{Polygon\_2r} types and
 use them to arrive at a correct implementation. We conclude by using the GUI to
-generate an input polyline, run the algorithm, and save the output polygon.
+generate an input polyline and run the algorithm.
+
+%, and save the output polygon.
 
 % First, we implement the basic data
 % types used by the algorithm and augment their methods with visualization
@@ -64,7 +66,14 @@ already holds.
 %==============================================================================
 
 \FloatBarrier
-\subsection{Available Polyline and Polygon Types}
+\subsection{Building Blocks Provided by the Workbench}
+
+Melkman's algorithm involves two geometric objects (polylines and polygons), and
+requires only a single degree-two predicate to check whether a point is to the
+left or inside of a directed line segment. The DDAD workbench provides both
+geometric types (\texttt{Polyline\_2r} and \texttt{Polygon\_2r}), and the
+predicate \texttt{RIsLeftOfOrInsidePQ}. Both geometric types are built using a
+deque as an underlying data store.
 
 
 
@@ -143,10 +152,27 @@ function implementation,label=melkman-function]{code-samples/melkman.cpp}
 %==============================================================================
  
 \FloatBarrier
-\subsection{Generating Input Data} 
+\subsection{Generating Input Data and Executing the Implementation} 
+
+The workbench GUI is composed of a toolbar and two views: orthographic and
+perspective. The toolbar contains input buttons and a button for turning
+snapping on and off. The orthographic view contains an integer grid and allows
+the user to zoom and pan the camera. The perspective view renders the scene in
+3D and allows the user to move and rotate the camera.
+
+The orthographic view provides a simple CAD interface, and the input buttons
+control what objects are created when the user clicks inside the view. One
+button allows the user to create polylines. The snapping toggle button
+determines whether the points created are integral. 
+
+After clicking a few times to create a polyline, the user completes the object
+by right-clicking, and the polyline remains selected. Right-clicking again
+reveals a menu with various algorithms listed. With a few lines of code, we can 
+add Melkman to the list and specify that our new function should execute on
+the currently selected object when we click on it. 
 
 
-
+ 
 %==============================================================================
 
 % \begin{figure}[h]
