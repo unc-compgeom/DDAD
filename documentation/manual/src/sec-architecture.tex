@@ -3,13 +3,6 @@
 \section{Workbench Architecture}
 \label{sec:workbench-architecture}
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=\textwidth]{figures/components-uml-4} 
-\caption{An abstract overview of the workbench architecture.}
-\label{fig:components} 
-\end{figure}
-
 The workbench comprises two major components: a geometric algorithm library and
 a geometric algorithm visualizer. The \emph{geometry library} implements
 geometric algorithms. It defines types for arithmetic, linear algebra, and
@@ -20,10 +13,16 @@ algorithms. The \emph{visualizer} displays the execution of geometric
 algorithms. It is structured using the model-view-controller (MVC) design
 pattern. In particular, it maintains a visual model, several views of the visual
 model, and a user interface that functions as the controller. In this section,
-we are concerned with explaining how the kernel and visualizer work together to
+we are concerned with explaining how the library and visualizer work together to
 produce algorithm visualizations.
 
-\FloatBarrier
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{figures/components-uml-5} 
+\caption{An abstract overview of the workbench architecture.}
+\label{fig:components} 
+\end{figure}
+
 \subsection{The Geometry Library}
 
 The \emph{arithmetic} and \emph{linear algebra} components are orthogonal to our
@@ -66,7 +65,7 @@ arriving at the scene observer in the visualizer.
 \begin{figure}[htb]
 \centering
 \includegraphics[width=\textwidth]{figures/visual-uml-6} 
-\caption{The visual event system embedded in the geometry kernel.}
+\caption{The visual event system embedded in the geometry library.}
 \label{fig:visual} 
 \end{figure} 
 

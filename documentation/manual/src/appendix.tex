@@ -26,6 +26,9 @@
 \subsection{Design and Implementation of Polyline and Polygon Types}
 \label{sec:polyline-polygon}
 
+[todo - rework to be about design of a general polyline and polygon not
+specific to melkman]
+
 The real work of implementing Melkman's algorithm is designing the data types
 upon which it operates. In particular, we require data types for two geometric
 objects: input polylines and output polygons. Beyond the standard concerns of
@@ -55,20 +58,17 @@ that the polygon type may simply delegate deque operations to its boundary. This
 choice is consistent with our need for constant sequential access to the
 polyline's vertices.
 
-
-
 The \texttt{Polygon\_2r} class is composed of a \texttt{Polyline\_2r} boundary
 that is responsible for visualizing vertices and edges. It can optionally
-visualize the polygon interior by triangulating it into a fan.
-
- We know from the algorithm description that these should support deque
-semantics, so it makes sense to use this as a backing store for the polygon's
-vertices. In many regards, a polygon will act like a polyline, e.g. we can add
-and remove vertices to both. In order to avoid duplicating functionality, it
-makes sense to compose our polygon with a polyline boundary and forward common
-events to it. We want to visualize both objects, so each will inherit from the
-Visual::Geometry class.
-
-The \texttt{Polyline\_2r} class uses a deque to store its vertices. The
+visualize the polygon interior by triangulating it into a fan. The
+\texttt{Polyline\_2r} class uses a deque to store its vertices. The
 \texttt{push\_back} and \texttt{pop\_back} methods are responsible for
 visualizing how those operations affect the visual state of the object.
+
+%  We know from the algorithm description that these should support deque
+% semantics, so it makes sense to use this as a backing store for the polygon's
+% vertices. In many regards, a polygon will act like a polyline, e.g. we can add
+% and remove vertices to both. In order to avoid duplicating functionality, it
+% makes sense to compose our polygon with a polyline boundary and forward common
+% events to it. We want to visualize both objects, so each will inherit from the
+% Visual::Geometry class.
