@@ -1,6 +1,13 @@
 \section{Introduction}
 
-Geometric algorithms are often difficult to implement and convey to others.
+The executions of algorithms on geometric data would seem to be presented most
+naturally as animations. But what should be animated? When one looks closely
+at a geometric algorithm, one finds different interpretations of what is being
+done: points and lines may be compared by computing vector dot and cross
+products, which involve arithmetic computation on the coordinate values of
+points. An implementer or a presenter of an algorithm may be interested in
+different levels of abstraction.
+
 Algorithm \emph{implementers} must correct programming errors and handle
 degenerate situations correctly. Traditional debuggers provide only textual or
 numerical representations of geometric data structures, and generating
@@ -44,6 +51,7 @@ algorithm. The inner workings of these types are revealed in
 section~\ref{sec:workbench-architecture}. We conclude by studying incremental
 Delaunay triangulation to show how to implement a complex 3-dimensional
 algorithm.
+
 % This paper provides a guided introduction to the inner workings of the DDAD
 % workbench. It is intended for people interested in degree-driven algorithm
 % design and who would like to use the DDAD library to get started implementing
@@ -58,3 +66,5 @@ algorithm.
 % hull algorithm. Section 7 concludes by explaining how current workbench
 % architecture supports our desiderata and identifies areas in which it can
 % improve.
+
+ 
