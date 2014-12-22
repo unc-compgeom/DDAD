@@ -1,7 +1,16 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-06-03
- * @brief Manager type responsible for altering OpenGL states and data.
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef RC_OPENGL_H
@@ -12,10 +21,10 @@
 #include <QOpenGLDebugLogger>
 #include <QOpenGLDebugMessage>
 
-// Workbench
+// DDAD
 #include "common.h"
 
-// geometry
+// kernel
 #include "../geometry/point.h"
 #include "../geometry/vector.h"
 #include "../geometry/visual.h"
@@ -132,18 +141,18 @@ struct ElementArray {
 
 namespace Primitive {
     enum Type {
-        ePOINTS,
-        eLINES,
-        eTRIANGLES,
-        eMAX
+        E_POINTS,
+        E_LINES,
+        E_TRIANGLES,
+        E_MAX
     };
 }
 
 namespace Context {
     enum Name {
-        eORTHOGRAPHIC,
-        ePERSPECTIVE,
-        eMAX
+        E_ORTHOGRAPHIC,
+        E_PERSPECTIVE,
+        E_MAX
     };
 }
 
@@ -208,7 +217,7 @@ public:
 
     QOpenGLBuffer vbo_;
     quint32 num_vertices_;
-    QOpenGLVertexArrayObject vao_[Context::eMAX];
+    QOpenGLVertexArrayObject vao_[Context::E_MAX];
 };
 
 //=============================================================================
@@ -224,7 +233,7 @@ public:
         vertex_attributes_ = attributes;
         vpath_ = vpath;
         fpath_ = fpath;
-        for (int i = 0; i < Primitive::eMAX; ++i) {
+        for (int i = 0; i < Primitive::E_MAX; ++i) {
             vertex_cache_[i].UploadVertices(QVector<Vertex>());
         }
     }
@@ -244,7 +253,7 @@ public:
             qDebug() << "rendergroup failed";
         }
         program_[cname].bind();
-        for (int i = 0; i < Primitive::eMAX; ++i) {
+        for (int i = 0; i < Primitive::E_MAX; ++i) {
             vertex_cache_[i].InitContext(cname, program_[cname], vertex_attributes_);
         }
         program_[cname].release();
@@ -273,9 +282,9 @@ public:
 
     QString vpath_;
     QString fpath_;
-    QOpenGLShaderProgram program_[Context::eMAX];
+    QOpenGLShaderProgram program_[Context::E_MAX];
     QVector<AttributeMeta> vertex_attributes_;
-    VertexCache vertex_cache_[Primitive::eMAX];
+    VertexCache vertex_cache_[Primitive::E_MAX];
 };
 
 } // namespace GL
@@ -296,27 +305,27 @@ public:
         QVector<GL::AttributeMeta> attributes;
         attributes.push_back(GL::Vertex::kPositionMeta);
         attributes.push_back(GL::Vertex::kMatAmbientMeta);
-        render_groups_[Visual::Coverage::eOPAQUE]
-                      [Visual::Lighting::eUNLIT].InitCommon(
+        render_groups_[Visual::Coverage::E_OPAQUE]
+                      [Visual::Lighting::E_UNLIT].InitCommon(
             ":shaders/mat_unlit_opaque.vsh",
             ":shaders/mat_unlit_opaque.fsh",
             attributes
         );
-        render_groups_[Visual::Coverage::eTRANSPARENT]
-                      [Visual::Lighting::eUNLIT].InitCommon(
+        render_groups_[Visual::Coverage::E_TRANSPARENT]
+                      [Visual::Lighting::E_UNLIT].InitCommon(
             ":shaders/mat_unlit_transparent.vsh",
             ":shaders/mat_unlit_transparent.fsh",
             attributes
         );
         attributes.push_back(GL::Vertex::kNormalMeta);
-        render_groups_[Visual::Coverage::eOPAQUE]
-                      [Visual::Lighting::eFLAT].InitCommon(
+        render_groups_[Visual::Coverage::E_OPAQUE]
+                      [Visual::Lighting::E_FLAT].InitCommon(
             ":shaders/mat_flat_opaque.vsh",
             ":shaders/mat_flat_opaque.fsh",
             attributes
         );
-        render_groups_[Visual::Coverage::eTRANSPARENT]
-                      [Visual::Lighting::eFLAT].InitCommon(
+        render_groups_[Visual::Coverage::E_TRANSPARENT]
+                      [Visual::Lighting::E_FLAT].InitCommon(
             ":shaders/mat_flat_transparent.vsh",
             ":shaders/mat_flat_transparent.fsh",
             attributes
@@ -329,22 +338,22 @@ public:
 
     void InitContext(GL::Context::Name cname) {
         switch (cname) {
-        case GL::Context::eORTHOGRAPHIC:
+        case GL::Context::E_ORTHOGRAPHIC:
             qDebug() << "Renderer: initializing orthographic settings.";
             break;
-        case GL::Context::ePERSPECTIVE:
+        case GL::Context::E_PERSPECTIVE:
             qDebug() << "Renderer: initializing perspective settings.";
             break;
         }
 
-        render_groups_[Visual::Coverage::eOPAQUE]
-                      [Visual::Lighting::eUNLIT].InitContext(cname);
-        render_groups_[Visual::Coverage::eTRANSPARENT]
-                      [Visual::Lighting::eUNLIT].InitContext(cname);
-        render_groups_[Visual::Coverage::eOPAQUE]
-                      [Visual::Lighting::eFLAT].InitContext(cname);
-        render_groups_[Visual::Coverage::eTRANSPARENT]
-                      [Visual::Lighting::eFLAT].InitContext(cname);
+        render_groups_[Visual::Coverage::E_OPAQUE]
+                      [Visual::Lighting::E_UNLIT].InitContext(cname);
+        render_groups_[Visual::Coverage::E_TRANSPARENT]
+                      [Visual::Lighting::E_UNLIT].InitContext(cname);
+        render_groups_[Visual::Coverage::E_OPAQUE]
+                      [Visual::Lighting::E_FLAT].InitContext(cname);
+        render_groups_[Visual::Coverage::E_TRANSPARENT]
+                      [Visual::Lighting::E_FLAT].InitContext(cname);
     }
 
     void UpdateRenderGroup(Visual::Coverage::Type ctype,
@@ -354,8 +363,8 @@ public:
         render_groups_[ctype][ltype].UploadVertices(ptype, vertices);
     }
 
-    GL::RenderGroup render_groups_[Visual::Coverage::eMAX]
-                                  [Visual::Lighting::eMAX];
+    GL::RenderGroup render_groups_[Visual::Coverage::E_MAX]
+                                  [Visual::Lighting::E_MAX];
 };
 
 } // namespace DDAD

@@ -1,31 +1,34 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-08-16
- * @brief Manager type responsible for global configuration settings.
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RC_CONFIG_H
-#define RC_CONFIG_H
+#ifndef WB_CONFIG_H
+#define WB_CONFIG_H
 
-// Workbench
+// DDAD
 #include "common.h"
 
 namespace DDAD {
 
-enum InputState {
+enum class InputState {
     SELECT,
-    CREATE_POLYLINE,
-    UPDATE_POLYLINE,
-    CREATE_ARRANGEMENT,
-    CREATE_SEGMENT,
-    UPDATE_ARRANGEMENT,
+    TRANSLATE,
+    ROTATE,
     CREATE_POLYTOPE,
-    UPDATE_POLYTOPE
-};
-
-enum InputColor {
-    RED,
-    BLUE
+    UPDATE_POLYTOPE,
+    CREATE_POLYLINE,
+    UPDATE_POLYLINE
 };
 
 class ConfigManager {
@@ -43,8 +46,6 @@ public:
     void Initialize();
 
     const InputState& input_state() const;
-    const InputColor& input_color() const;
-    void switch_input_color();
     void set_input_state(const InputState& input_state);
     bool snap_to_grid() const;
     void set_snap_to_grid(bool snap_to_grid);
@@ -55,7 +56,6 @@ public:
 
 private:
     InputState input_state_;
-    InputColor input_color_;
     bool snap_to_grid_;
     QColor grid_minor_color_;
     QColor grid_major_color_;
@@ -63,4 +63,4 @@ private:
 
 } // namespace DDAD
 
-#endif // RC_CONFIG_H
+#endif // WB_CONFIG_H

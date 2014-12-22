@@ -1,16 +1,26 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-01-29
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Workbench
+// DDAD
 #include "common.h"
 #include "qt_window_main.h"
 #include "qt_widget_orthographic.h"
 #include "grid.h"
 #include "config.h"
 
-// geometry
+// kernel
 #include "../geometry/point.h"
 #include "../geometry/vector.h"
 
@@ -39,7 +49,7 @@ OrthographicWidget::OrthographicWidget(OrthoOrientation orientation,
 //=============================================================================
 
 void OrthographicWidget::initialize(Renderer* renderer,
-    SceneManager* scene_manager) {
+                                    SceneManager* scene_manager) {
     renderer_ = renderer;
     scene_manager_ = scene_manager;
 
@@ -53,43 +63,25 @@ void OrthographicWidget::initialize(Renderer* renderer,
     connect(this,
             SIGNAL(SelectObject(QVector2D)),
             &scene_manager_->scene_observer_,
-            SLOT(onSelectObject(QVector2D)));
+            SLOT(onSelectObjectFromOrtho(QVector2D)));
 
     // polyline
     connect(this,
-            SIGNAL(BeginCreatePolyLine(QVector2D)),
+            SIGNAL(BeginCreatePolyline(QVector2D)),
             &scene_manager_->scene_observer_,
-            SLOT(onBeginCreatePolyLine(QVector2D)));
+            SLOT(onBeginCreatePolyline(QVector2D)));
     connect(this,
-            SIGNAL(UpdateNewPolyLine(QVector2D)),
+            SIGNAL(UpdateNewPolyline(QVector2D)),
             &scene_manager_->scene_observer_,
-            SLOT(onUpdateNewPolyLine(QVector2D)));
+            SLOT(onUpdateNewPolyline(QVector2D)));
     connect(this,
-            SIGNAL(EndCreatePolyLine()),
+            SIGNAL(EndCreatePolyline()),
             &scene_manager_->scene_observer_,
-            SLOT(onEndCreatePolyLine()));
-
-    // arrangement
+            SLOT(onEndCreatePolyline()));
     connect(this,
-            SIGNAL(BeginCreateArrangement(QVector2D)),
+            SIGNAL(ExecuteMelkman()),
             &scene_manager_->scene_observer_,
-            SLOT(onBeginCreateArrangement(QVector2D)));
-    connect(this,
-            SIGNAL(BeginCreateSegment(QVector2D)),
-            &scene_manager_->scene_observer_,
-            SLOT(onBeginCreateSegment(QVector2D)));
-    connect(this,
-            SIGNAL(EndCreateSegment(QVector2D)),
-            &scene_manager_->scene_observer_,
-            SLOT(onEndCreateSegment(QVector2D)));
-    connect(this,
-            SIGNAL(EndCreateArrangement()),
-            &scene_manager_->scene_observer_,
-            SLOT(onEndCreateArrangement()));
-    connect(this,
-            SIGNAL(SwitchInputColor()),
-            &scene_manager_->scene_observer_,
-            SLOT(onSwitchInputColor()));
+            SLOT(onExecuteMelkman()));
 
     // polytope
     connect(this,
@@ -125,12 +117,12 @@ void OrthographicWidget::initializeGL() {
         ":shaders/mat_unlit_opaque.fsh",
         attributes
     );
-    i_grid_rg_.InitContext(GL::Context::eORTHOGRAPHIC);
+    i_grid_rg_.InitContext(GL::Context::E_ORTHOGRAPHIC);
     QVector<GL::Vertex> grid_verts;
     i_grid_.InitializeGrid(8, 8, 16, 16, grid_verts);
-    i_grid_rg_.UploadVertices(GL::Primitive::eLINES, grid_verts);
+    i_grid_rg_.UploadVertices(GL::Primitive::E_LINES, grid_verts);
 
-    renderer_->InitContext(GL::Context::eORTHOGRAPHIC);
+    renderer_->InitContext(GL::Context::E_ORTHOGRAPHIC);
 
     timer_.setTimerType(Qt::PreciseTimer);
     connect(&timer_, SIGNAL(timeout()), this, SLOT(update()));
@@ -150,6 +142,9 @@ void OrthographicWidget::paintEvent(QPaintEvent *event) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     drawGrid();
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
     drawScene();
 
     draw2DOverlay();
@@ -161,18 +156,18 @@ void OrthographicWidget::drawGrid() {
     mv.scale(i_grid_.local_scale());
     mv.translate(-i_grid_.local_pos().x(), -i_grid_.local_pos().y());
 
-    i_grid_rg_.BindContextPrimitive(GL::Context::eORTHOGRAPHIC,
-                                    GL::Primitive::eLINES);
-    i_grid_rg_.program_[GL::Context::eORTHOGRAPHIC].setUniformValue("m_modelview", mv);
-    glDrawArrays(GL_LINES, 0, i_grid_rg_.NumVertices(GL::Primitive::eLINES));
-    i_grid_rg_.ReleaseContextPrimitive(GL::Context::eORTHOGRAPHIC,
-                                       GL::Primitive::eLINES);
+    i_grid_rg_.BindContextPrimitive(GL::Context::E_ORTHOGRAPHIC,
+                                    GL::Primitive::E_LINES);
+    i_grid_rg_.program_[GL::Context::E_ORTHOGRAPHIC].setUniformValue("m_modelview", mv);
+    glDrawArrays(GL_LINES, 0, i_grid_rg_.NumVertices(GL::Primitive::E_LINES));
+    i_grid_rg_.ReleaseContextPrimitive(GL::Context::E_ORTHOGRAPHIC,
+                                       GL::Primitive::E_LINES);
 }
 
 void OrthographicWidget::drawScene() {
     // restore gl state
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SWB_ALPHA, GL_ONE_MINUS_SWB_ALPHA);
 
     // setup modelview
     modelview_.setToIdentity();
@@ -194,14 +189,14 @@ void OrthographicWidget::drawScene() {
     modelview_.scale(i_grid_.global_scale());
     modelview_.translate(position);
 
-    auto& rg = renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eUNLIT];
-    rg.BindContextPrimitive(GL::Context::eORTHOGRAPHIC, GL::Primitive::ePOINTS);
-    rg.program_[GL::Context::eORTHOGRAPHIC].setUniformValue("m_modelview", modelview_);
-    glDrawArrays(GL_POINTS, 0, rg.NumVertices(GL::Primitive::ePOINTS));
-    rg.ReleaseContextPrimitive(GL::Context::eORTHOGRAPHIC, GL::Primitive::ePOINTS);
-    rg.BindContextPrimitive(GL::Context::eORTHOGRAPHIC, GL::Primitive::eLINES);
-    glDrawArrays(GL_LINES, 0, rg.NumVertices(GL::Primitive::eLINES));
-    rg.ReleaseContextPrimitive(GL::Context::eORTHOGRAPHIC, GL::Primitive::eLINES);
+    auto& rg = renderer_->render_groups_[Coverage::E_OPAQUE][Lighting::E_UNLIT];
+    rg.BindContextPrimitive(GL::Context::E_ORTHOGRAPHIC, GL::Primitive::E_POINTS);
+    rg.program_[GL::Context::E_ORTHOGRAPHIC].setUniformValue("m_modelview", modelview_);
+    glDrawArrays(GL_POINTS, 0, rg.NumVertices(GL::Primitive::E_POINTS));
+    rg.ReleaseContextPrimitive(GL::Context::E_ORTHOGRAPHIC, GL::Primitive::E_POINTS);
+    rg.BindContextPrimitive(GL::Context::E_ORTHOGRAPHIC, GL::Primitive::E_LINES);
+    glDrawArrays(GL_LINES, 0, rg.NumVertices(GL::Primitive::E_LINES));
+    rg.ReleaseContextPrimitive(GL::Context::E_ORTHOGRAPHIC, GL::Primitive::E_LINES);
 }
 
 void OrthographicWidget::draw2DOverlay() {
@@ -239,13 +234,13 @@ void OrthographicWidget::resizeGL(int width, int height) {
     projection_.ortho(-halfWidth, halfWidth, -halfHeight, halfHeight,
                       -8192.0f*8, 8192.0f*8);
 
-    i_grid_rg_.program_[GL::Context::eORTHOGRAPHIC].bind();
-    i_grid_rg_.program_[GL::Context::eORTHOGRAPHIC].setUniformValue("m_projection", projection_);
-    i_grid_rg_.program_[GL::Context::eORTHOGRAPHIC].release();
-    auto rg = &renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eUNLIT];
-    rg->program_[GL::Context::eORTHOGRAPHIC].bind();
-    rg->program_[GL::Context::eORTHOGRAPHIC].setUniformValue("m_projection", projection_);
-    rg->program_[GL::Context::eORTHOGRAPHIC].release();
+    i_grid_rg_.program_[GL::Context::E_ORTHOGRAPHIC].bind();
+    i_grid_rg_.program_[GL::Context::E_ORTHOGRAPHIC].setUniformValue("m_projection", projection_);
+    i_grid_rg_.program_[GL::Context::E_ORTHOGRAPHIC].release();
+    auto rg = &renderer_->render_groups_[Coverage::E_OPAQUE][Lighting::E_UNLIT];
+    rg->program_[GL::Context::E_ORTHOGRAPHIC].bind();
+    rg->program_[GL::Context::E_ORTHOGRAPHIC].setUniformValue("m_projection", projection_);
+    rg->program_[GL::Context::E_ORTHOGRAPHIC].release();
 }
 
 //=============================================================================
@@ -271,10 +266,18 @@ QVector2D OrthographicWidget::mousePressToWorld(const QPoint& pos) const {
 void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
     int convertedY = height()-event->y();
     QVector2D world_coords = mousePressToWorld(event->pos());
+    QVector2D world_snapped(i_grid_.RoundToNearestMinor(world_coords.x()),
+                            i_grid_.RoundToNearestMinor(world_coords.y()));
+
+    QVector2D input_world_coords = ConfigManager::get().snap_to_grid() ?
+        world_snapped : world_coords;
 
     if (event->buttons() & Qt::LeftButton) {
         switch (ConfigManager::get().input_state()) {
-        case CREATE_POLYTOPE:
+        case InputState::SELECT:
+            emit SelectObject(world_coords);
+            break;
+        case InputState::CREATE_POLYTOPE:
             /* need to save initial click position to determine where to begin
              * creating the polytope. there are two cases:
              *
@@ -294,22 +297,11 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
             create_polytope_pos = event->pos();
 
             break;
-        case CREATE_POLYLINE:
-            emit BeginCreatePolyLine(world_coords);
+        case InputState::CREATE_POLYLINE:
+            emit BeginCreatePolyline(input_world_coords);
             break;
-        case UPDATE_POLYLINE:
-            emit UpdateNewPolyLine(world_coords);
-            break;
-        case CREATE_ARRANGEMENT:
-            qDebug() << "Creating arrangement";
-            emit BeginCreateArrangement(world_coords);
-            break;
-        case CREATE_SEGMENT:
-            qDebug() << "Creating segment";
-            emit BeginCreateSegment(world_coords);
-            break;
-        case UPDATE_ARRANGEMENT:
-            emit EndCreateSegment(world_coords);
+        case InputState::UPDATE_POLYLINE:
+            emit UpdateNewPolyline(input_world_coords);
             break;
         default:
             break;
@@ -317,32 +309,34 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
     }
 
     if (event->buttons() & Qt::MiddleButton) {
-        switch (ConfigManager::get().input_state()) {
-        case CREATE_SEGMENT:
-            qDebug() << "Ending the arrangement";
-            emit EndCreateArrangement();
-            break;
-        }
-
         setCursor(Qt::ClosedHandCursor);
         last_click_pos.setX(event->x());
         last_click_pos.setY(convertedY);
     }
 
+    // for most widgets
+    QPoint globalPos = this->mapToGlobal(event->pos());
+
+    QMenu myMenu;
+    myMenu.addAction("Melkman");
+    // ...
+
+    QAction* selectedItem = nullptr;
+
     if (event->buttons() & Qt::RightButton) {
         switch (ConfigManager::get().input_state()) {
-        case UPDATE_POLYLINE:
-            emit EndCreatePolyLine();
-            break;
-        case CREATE_ARRANGEMENT:
-            qDebug() << "Switching input color!";
-            emit SwitchInputColor();
-            break;
-        case CREATE_SEGMENT:
-            qDebug() << "Switching input color!";
-            emit SwitchInputColor();
+        case InputState::UPDATE_POLYLINE:
+            emit EndCreatePolyline();
             break;
         default:
+            /*
+            selectedItem = myMenu.exec(globalPos);
+            if (selectedItem->text() == "Melkman") {
+                emit ExecuteMelkman();
+            } else {
+                qDebug() << "click off";
+            }
+            */
             break;
         }
     }
@@ -355,9 +349,9 @@ void OrthographicWidget::mouseReleaseEvent(QMouseEvent *event) {
 
     if (!(event->buttons() & Qt::LeftButton)) {
         switch (ConfigManager::get().input_state()) {
-        case UPDATE_POLYTOPE:
+        case InputState::UPDATE_POLYTOPE:
             emit EndCreatePolytope();
-            ConfigManager::get().set_input_state(CREATE_POLYTOPE);
+            ConfigManager::get().set_input_state(InputState::CREATE_POLYTOPE);
             break;
         default:
             break;
@@ -381,19 +375,19 @@ void OrthographicWidget::mouseMoveEvent(QMouseEvent *event) {
 
     if (event->buttons() & Qt::LeftButton) {
         switch (ConfigManager::get().input_state()) {
-        case CREATE_POLYTOPE:
+        case InputState::CREATE_POLYTOPE:
             if (ConfigManager::get().snap_to_grid()) {
                 if (cur_world_snapped.x() != cpoly_world_snapped.x() &&
                     cur_world_snapped.y() != cpoly_world_snapped.y()) {
                     emit BeginCreatePolytope(cpoly_world_snapped,
                                              cur_world_snapped);
-                    ConfigManager::get().set_input_state(UPDATE_POLYTOPE);
+                    ConfigManager::get().set_input_state(InputState::UPDATE_POLYTOPE);
                 }
             } else {
 
             }
             break;
-        case UPDATE_POLYTOPE:
+        case InputState::UPDATE_POLYTOPE:
             if (ConfigManager::get().snap_to_grid()) {
                 emit UpdateNewPolytope(cur_world_snapped);
             } else {
@@ -423,18 +417,23 @@ void OrthographicWidget::wheelEvent(QWheelEvent *event) {
 }
 
 void OrthographicWidget::ShowContextMenu(const QPoint &p) {
-    /*
-    if(g_config.input_state_ != SELECT)  {
+
+    switch (ConfigManager::get().input_state()) {
+    case InputState::UPDATE_POLYLINE:
+    case InputState::UPDATE_POLYTOPE:
         return;
+    default:
+        break;
     }
 
     QPoint gp = mapToGlobal(p);
 
     QMenu ctxt_menu;
-    ctxt_menu.addAction("Import mesh here...");
+    ctxt_menu.addAction("Melkman");
 
     QAction* selected_item = ctxt_menu.exec(gp);
-    if(selected_item) {
+    if (selected_item) {
+        /*
         QString selected_file = QFileDialog::getOpenFileName(
                     this, "Import Mesh", "./",
                     "3ds Max 3DS (*.3ds);;"
@@ -451,25 +450,24 @@ void OrthographicWidget::ShowContextMenu(const QPoint &p) {
         if(!scene) {
             rDebug("error");
         }
+        */
+
+        if (selected_item->text() == "Melkman") {
+            emit ExecuteMelkman();
+            return;
+        }
     } else {
 
     }
-    */
 }
 
 void OrthographicWidget::keyPressEvent(QKeyEvent *event) {
     key_states_[event->key()] = true;
 }
 
-
-
-
 void OrthographicWidget::keyReleaseEvent(QKeyEvent *event) {
     key_states_[event->key()] = false;
-
 }
-
-
 
 //=============================================================================
 // Misc overrides / OpenGL support routines

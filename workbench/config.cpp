@@ -1,12 +1,22 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-04-22
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 // Qt
 #include <QSysInfo>
 
-// Workbench
+// DDAD
 #include "common.h"
 #include "config.h"
 
@@ -31,10 +41,7 @@ void ConfigManager::Initialize() {
     glf.setSwapInterval(1);
     QGLFormat::setDefaultFormat(glf);
 
-    //rInfo("Setting default GL format.");
-
-    input_state_ = CREATE_POLYTOPE;
-    input_color_ = RED;
+    input_state_ = InputState::SELECT;
     snap_to_grid_ = true;
     grid_minor_color_ = QColor(175, 175, 175);
     grid_major_color_ = QColor(75, 75, 75);
@@ -43,15 +50,8 @@ void ConfigManager::Initialize() {
 const InputState& ConfigManager::input_state() const {
     return input_state_;
 }
-const InputColor& ConfigManager::input_color() const {
-    return input_color_;
-}
 void ConfigManager::set_input_state(const InputState& input_state) {
     input_state_ = input_state;
-}
-void ConfigManager::switch_input_color() {
-    if(input_color_ == RED) {input_color_ = BLUE; qDebug() << "color is now " << input_color_;}
-    else {input_color_ = RED; qDebug() << "color is now " << input_color_;}
 }
 bool ConfigManager::snap_to_grid() const {
     return snap_to_grid_;

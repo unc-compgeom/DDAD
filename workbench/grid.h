@@ -1,13 +1,26 @@
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-01-13
  * @brief Customizable grid type to support precise placement of objects.
  */
 
-#ifndef RC_GRID_H
-#define RC_GRID_H
+#ifndef WB_GRID_H
+#define WB_GRID_H
 
-// Workbench
+// DDAD
 #include "common.h"
 
 namespace DDAD {
@@ -82,4 +95,4 @@ private:
 
 } // namespace DDAD
 
-#endif // RC_GRID_H
+#endif // WB_GRID_H

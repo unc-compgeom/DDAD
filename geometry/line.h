@@ -1,7 +1,16 @@
-/*!
- * @author {David L. Millman <dave@cs.unc.edu>,
- *          Clinton Freeman <freeman@cs.unc.edu>
- * @date 06/19/2013
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GE_LINE_H
@@ -125,9 +134,6 @@ namespace Predicate {
 Orientation OrientationPQR(const Ray_2r& pq, const Point_2r& r);
 bool AIsLeftOfB(const Point_2r& a, const Ray_2r& b);
 bool AIsRightOfB(const Point_2r& a, const Ray_2r& b);
-bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b);
-bool AIsRightOrAheadOfB(const Point_2r& a, const Ray_2r& b);
-bool AIsLeftOrAheadOfB(const Point_2r& a, const Ray_2r& b);
 bool AreParallel(const Ray_2r& a, const Ray_2r& b);
 bool AreParallel(const Line_2r& l, const Ray_2r& r);
 bool AreParallel(const Ray_2r& r, const Line_2r& l);
@@ -145,57 +151,18 @@ public:
     const Point_2r& p() const;
     const Point_2r& q() const;
     const Line_2r& support() const;
-    const Ray_2r support_ray() const;
 
     SharedPoint_2r p_sptr();
     SharedPoint_2r q_sptr();
-    const SharedPoint_2r p_sptr() const;
-    const SharedPoint_2r q_sptr() const;
 
     void set_p(SharedPoint_2r p);
     void set_q(SharedPoint_2r q);
 
-protected:
+private:
     SharedPoint_2r p_;
     SharedPoint_2r q_;
     Line_2r support_;
 };
-
-//=============================================================================
-// Interface: Segment_2r_colored
-//=============================================================================
-class Segment_2r_colored : public Segment_2r {
-public:
-    Segment_2r_colored();
-    Segment_2r_colored(const Segment_2r_colored &rhs);
-    Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color);
-    Segment_2r_colored(Point_2r& p, Point_2r& q, bool color);
-    bool IsAbove(const Segment_2r_colored to_compare) const;
-
-    const bool get_color() const {
-        return isRed_;
-    }
-
-    void set_color(bool isRed){
-        isRed_ = isRed;
-    }
-//    friend bool operator<(const Segment_2r_colored &lhs,
-//                          const Segment_2r_colored &rhs);
-
-
-private:
-    bool isRed_;
-};
-bool operator<(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator>(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator==(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator!=(const Segment_2r_colored &lhs, const Segment_2r_colored &rhs);
-bool operator<(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator>(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator<=(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator>=(const Point_2r &lhs, const Segment_2r_colored &rhs);
-bool operator==(const Point_2r &lhs, const Segment_2r_colored &rhs);
-
 
 //=============================================================================
 // Line_3 Interface
@@ -284,51 +251,6 @@ private:
     SharedPoint_3r q_;
     Line_3r support_;
 };
-
-inline bool operator<(const Segment_2r_colored &lhs,
-                      const Segment_2r_colored &rhs)
-{
-    // Only works for non-intersecting segments!
-//    return Predicate::AIsRightOfB(lhs.p(), rhs.support());
-    return rhs.IsAbove(lhs);
-}
-inline bool operator>(const Segment_2r_colored &lhs,
-                      const Segment_2r_colored &rhs)
-{
-    // Only works for non-intersecting segments!
-//    return Predicate::AIsLeftOfB(lhs.p(), rhs.support());
-    return lhs.IsAbove(rhs);
-}
-inline bool operator==(const Segment_2r_colored &lhs,
-                       const Segment_2r_colored &rhs)
-{
-    return (lhs.p() == rhs.p() && lhs.q() == rhs.q() && lhs.get_color() == rhs.get_color());
-}
-inline bool operator!=(const Segment_2r_colored &lhs,
-                       const Segment_2r_colored &rhs)
-{
-    return !(lhs == rhs);
-}
-inline bool operator<(const Point_2r& lhs, const Segment_2r_colored& rhs)
-{
-    return Predicate::AIsRightOfB(lhs, rhs.support());
-}
-inline bool operator>(const Point_2r& lhs, const Segment_2r_colored& rhs)
-{
-    return Predicate::AIsLeftOfB(lhs, rhs.support());
-}
-inline bool operator<=(const Point_2r& lhs, const Segment_2r_colored& rhs)
-{
-    return Predicate::AIsRightOrAheadOfB(lhs, rhs.support_ray());
-}
-inline bool operator>=(const Point_2r& lhs, const Segment_2r_colored& rhs)
-{
-    return Predicate::AIsLeftOrAheadOfB(lhs, rhs.support_ray());
-}
-inline bool operator==(const Point_2r& lhs, const Segment_2r_colored& rhs)
-{
-    return (lhs >= rhs && lhs <= rhs);
-}
 
 } // namespace DDAD
 

@@ -1,7 +1,20 @@
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*!
  * @brief Integer, floating-point, and rational point types for 2D and 3D.
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 12/27/2012
  */
 
 #ifndef GE_POINT_H
@@ -145,7 +158,6 @@ private:
 
 bool operator==(const Point_2r& lhs, const Point_2r& rhs);
 bool operator!=(const Point_2r& lhs, const Point_2r& rhs);
-bool operator<(const Point_2r& lhs, const Point_2r& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_2r& p);
 std::string to_string(const Point_2r& p);
 
@@ -158,6 +170,9 @@ bool AIsLeftOfB(const Point_2r& a, const Point_2r& b);
 bool AIsBelowB(const Point_2r& a, const Point_2r& b);
 Orientation OrientationPQR(const Point_2r& p, const Point_2r& q,
                            const Point_2r& r);
+
+bool RIsLeftOrInsidePQ(const Point_2r& p, const Point_2r& q, const Point_2r& r);
+
 }
 
 //=============================================================================
@@ -413,12 +428,6 @@ inline bool operator!=(const Point_2r& lhs, const Point_2r& rhs) {
     return lhs.elements() != rhs.elements();
 }
 
-inline bool operator<(const Point_2r& lhs, const Point_2r& rhs) {
-    if(lhs.x() < rhs.x()) return true;
-    if(lhs.x() > rhs.x()) return false;
-    return lhs.y() < rhs.y();
-}
-
 inline std::ostream& operator<<(std::ostream& o, const Point_2r& p) {
     return o << to_string(p);
 }
@@ -590,6 +599,15 @@ bool operator==(const Point_3r& lhs, const Point_3r& rhs);
 bool operator!=(const Point_3r& lhs, const Point_3r& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_3r& p);
 std::string to_string(const Point_3r& p);
+
+namespace Predicate {
+/*
+rational InCircle(const Point_3r& a, const Point_3r& b, const Point_3r& c,
+                  const Point_3r& d);
+rational Orient2D(const Point_3r& a, const Point_3r& b, const Point_3r& c);
+*/
+
+}
 
 //=============================================================================
 // Implementation: Point_3i
