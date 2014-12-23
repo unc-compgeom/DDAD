@@ -18,7 +18,7 @@
     <normaloff>:/icons/appicon.png</normaloff>:/icons/appicon.png</iconset>
   </property>
   <widget class="QWidget" name="widget_main">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="gridLayout_3">
     <property name="leftMargin">
      <number>2</number>
     </property>
@@ -39,9 +39,15 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
+      <property name="handleWidth">
+       <number>4</number>
+      </property>
       <widget class="QSplitter" name="splitter_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="handleWidth">
+        <number>4</number>
        </property>
        <widget class="QGroupBox" name="group_top">
         <property name="title">
@@ -75,6 +81,9 @@
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
+        <property name="handleWidth">
+         <number>4</number>
+        </property>
         <widget class="QGroupBox" name="group_perspective">
          <property name="title">
           <string/>
@@ -98,6 +107,222 @@
           <property name="spacing">
            <number>2</number>
           </property>
+         </layout>
+        </widget>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
+           <number>2</number>
+          </property>
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QTabWidget" name="tabWidget">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="create">
+             <attribute name="title">
+              <string>Create</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QGroupBox" name="object_type">
+                <property name="title">
+                 <string>Object Type</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <property name="leftMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>2</number>
+                 </property>
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
+                 <item row="0" column="2">
+                  <widget class="QPushButton" name="create_polytope">
+                   <property name="text">
+                    <string>Polytope</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/resources.qrc">
+                     <normaloff>:/icons/create_polytope.png</normaloff>:/icons/create_polytope.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <attribute name="buttonGroup">
+                    <string notr="true">buttonGroup</string>
+                   </attribute>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <spacer name="horizontalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="create_polyline">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>Polyline</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/resources.qrc">
+                     <normaloff>:/icons/create_polyline.png</normaloff>:/icons/create_polyline.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>16</width>
+                     <height>16</height>
+                    </size>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="buttonGroup">
+                    <string notr="true">buttonGroup</string>
+                   </attribute>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="create_point_set">
+                   <property name="toolTip">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>Point Set</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/resources.qrc">
+                     <normaloff>:/icons/create_pointset.png</normaloff>:/icons/create_pointset.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <attribute name="buttonGroup">
+                    <string notr="true">buttonGroup</string>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <spacer name="create_tab_spacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="modify">
+             <attribute name="title">
+              <string>Modify</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="compute">
+             <attribute name="title">
+              <string>Compute</string>
+             </attribute>
+             <layout class="QGridLayout" name="compute_grid_layout">
+              <property name="leftMargin">
+               <number>2</number>
+              </property>
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="rightMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLineEdit" name="selection_description"/>
+              </item>
+              <item row="1" column="0">
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
          </layout>
         </widget>
        </widget>
@@ -162,7 +387,6 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionUser_Manual"/>
     <addaction name="action_about"/>
    </widget>
    <widget class="QMenu" name="menu_edit">
@@ -195,7 +419,7 @@
   </widget>
   <action name="action_about">
    <property name="text">
-    <string>About Workbench</string>
+    <string>About DDAD Workbench</string>
    </property>
   </action>
   <action name="action_preferences">
@@ -203,51 +427,7 @@
     <string>Preferences...</string>
    </property>
   </action>
-  <action name="action_toggle_snaps">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Snap To Grid</string>
-   </property>
-   <property name="toolTip">
-    <string>Toggle vertex snapping</string>
-   </property>
-  </action>
-  <action name="action_select_object">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/select_object.png</normaloff>:/icons/select_object.png</iconset>
-   </property>
-   <property name="text">
-    <string>Select</string>
-   </property>
-   <property name="toolTip">
-    <string>Select objects</string>
-   </property>
-  </action>
-  <action name="action_create_polytope">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/create_polytope.png</normaloff>:/icons/create_polytope.png</iconset>
-   </property>
-   <property name="text">
-    <string>Polytope</string>
-   </property>
-   <property name="toolTip">
-    <string>Create polytope</string>
-   </property>
-  </action>
-  <action name="actionUser_Manual">
+  <action name="action_user_manual">
    <property name="text">
     <string>User Manual</string>
    </property>
@@ -258,4 +438,7 @@
   <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

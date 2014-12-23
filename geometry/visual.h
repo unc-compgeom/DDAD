@@ -1,7 +1,16 @@
-/*!
- * @brief Visual interface.
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2014-04-10
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GE_VISUAL_H
@@ -22,6 +31,16 @@ namespace Visual {
 
 class Color {
 public:
+    static const Color RED;
+    static const Color GREEN;
+    static const Color BLUE;
+    static const Color BLACK;
+    static const Color WHITE;
+    static const Color CYAN;
+    static const Color YELLOW;
+    static const Color MAGENTA;
+    static const Color SKYBLUE;
+
     Color();
     Color(const unsigned char r, const unsigned char g,
           const unsigned char b, const unsigned char a);
@@ -47,28 +66,19 @@ private:
 
 namespace Coverage {
     enum Type {
-        eOPAQUE,
-        eTRANSPARENT,
-        eMAX
+        E_OPAQUE,
+        E_TRANSPARENT,
+        E_MAX
     };
 }
 
 namespace Lighting {
     enum Type {
-        eUNLIT,
-        eFLAT,
-        eMAX
+        E_UNLIT,
+        E_FLAT,
+        E_MAX
     };
 }
-
-/*
- * I would like to say:
- *
- * for (auto i = begin(CoverageTypes); i != end(CoverageTypes); ++i) {
- *
- * }
- *
- */
 
 class Material {
 public:
@@ -105,14 +115,17 @@ private:
 class Point {
 public:
     Point();
-    Point(const Material& material);
+    Point(const Material& material, const int32_t z_order = 0);
 
     const Material& material() const;
     void set_material(const Material& material);
+    const int32_t z_order() const { return z_order_; }
+    void set_z_order(const int32_t z_order) { z_order_ = z_order; }
 
 private:
     Material material_;
     std::string sprite_;
+    int32_t z_order_;
 };
 
 //=============================================================================
@@ -207,6 +220,7 @@ struct IGeometryObserver {
 
 struct IObservableGeometry {
     virtual void AddObserver(IGeometryObserver* geom_observer) = 0;
+    virtual void RemoveObserver(IGeometryObserver* geom_observer) = 0;
 
     virtual void SigRegisterPoint_2r(Point_2r& p) = 0;
 
@@ -316,6 +330,7 @@ public:
     /* Observable */
 
     void AddObserver(IGeometryObserver* geom_observer) override;
+    void RemoveObserver(IGeometryObserver* geom_observer) override;
 
     void SigRegisterPoint_2r(Point_2r& p) override;
 
@@ -340,26 +355,27 @@ public:
     void SigRegisterPoint_3r(Point_3r& p) override;
 
     void SigPushVisualPoint_3r(const Point_3r& p, const Visual::Point& vp,
-                            const uint32_t msec_delay = 0) const override;
+                               const uint32_t msec_delay = 0) const override;
 
     void SigPushVisualSegment_3r(const Segment_3r& s, const Visual::Segment& vs,
-                              const uint32_t msec_delay = 0) const override;
+                                 const uint32_t msec_delay = 0) const override;
 
-    void SigPushVisualTriangle_3r(const Triangle_3r& t, const Visual::Triangle& vt,
-                               const uint32_t msec_delay = 0) const override;
+    void SigPushVisualTriangle_3r(const Triangle_3r& t,
+                                  const Visual::Triangle& vt,
+                                  const uint32_t msec_delay = 0) const override;
 
     void SigPopVisualPoint_3r(const Point_3r& p,
                            const uint32_t msec_delay = 0) const override;
 
     void SigPopVisualSegment_3r(const Segment_3r& s,
-                             const uint32_t msec_delay = 0) const override;
+                                const uint32_t msec_delay = 0) const override;
 
     void SigPopVisualTriangle_3r(const Triangle_3r& t,
-                             const uint32_t msec_delay = 0) const override;
+                                 const uint32_t msec_delay = 0) const override;
 
     void SigUpdate() const override;
 
-private:
+protected:
     std::vector<IGeometryObserver*> observers_;
 };
 

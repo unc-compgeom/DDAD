@@ -1,20 +1,15 @@
-#==============================================================================
-# @author Clinton Freeman
-# @date 2014-03-18
-#==============================================================================
-
 add_library(geometry
     arithmetic.cpp
-    arrangement.cpp
     common.cpp
-    datastructures.cpp
     intersection.cpp
     line.cpp
     matrix.cpp
     point.cpp
+    pointset.cpp
     polygon.cpp
     polytope.cpp
     quadedge.cpp
+    sphere.cpp
     triangle.cpp
     triangulation.cpp
     vector.h

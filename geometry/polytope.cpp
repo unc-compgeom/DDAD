@@ -1,6 +1,16 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-07-21
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "common.h"
@@ -67,7 +77,7 @@ void Polytope_3r::Initialize(const Point_3f& start, const Point_3f& cur) {
 
     // register vertices
     Visual::Material vMat;
-    vMat.set_ambient(Visual::Color(0, 151, 255, 255));
+    vMat.set_ambient(Visual::Color::BLACK);
     Visual::Point vPoint(vMat);
 
     QuadEdge::CellVertexIterator cellVerts(cell_);
@@ -106,11 +116,11 @@ void Polytope_3r::Initialize(const Point_3f& start, const Point_3f& cur) {
 
     // register faces
     Visual::Material eMat;
-    eMat.set_ambient(Visual::Color(0, 151, 255, 255));
+    eMat.set_ambient(Visual::Color::BLACK);
     Visual::Segment vSegment(eMat);
 
     Visual::Material fMat;
-    fMat.set_ambient(Visual::Color(0, 151, 255, 255));
+    fMat.set_ambient(Visual::Color(175, 175, 175, 255));
     Visual::Triangle vTriangle(fMat);
 
     QuadEdge::CellFaceIterator cellFaces(cell_);
@@ -361,7 +371,7 @@ Polytope_3r ConvexHull(const std::vector<SharedPoint_3r>& P) {
     //
 
 
-    return Polytope_3r();
+    return hull;
 }
 
 }

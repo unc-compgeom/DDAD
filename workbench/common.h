@@ -1,10 +1,20 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-08-13
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RC_COMMON_H
-#define RC_COMMON_H
+#ifndef WB_COMMON_H
+#define WB_COMMON_H
 
 #define BEGIN_NAMESPACE(x) namespace x {
 #define END_NAMESPACE(x) }
@@ -39,13 +49,7 @@
 #include <cstdlib>
 
 // logging
-#include "../logging/easylogging++.h"
-/*
-#include "rlog.h"
-#include "rloglocation.h"
-#include "RLogChannel.h"
-#include "RLogTime.h"
-#include "StdioNode.h"
-*/
+#define NOMINMAX
+#include "../utility/easylogging++.h"
 
-#endif // RC_COMMON_H
+#endif // WB_COMMON_H

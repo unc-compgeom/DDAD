@@ -1,9 +1,19 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-01-29
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Workbench
+// DDAD
 #include "common.h"
 #include "qt_widget_perspective.h"
 #include "scene.h"
@@ -33,10 +43,15 @@ PerspectiveWidget::PerspectiveWidget(QWidget *parent,
 //=============================================================================
 
 void PerspectiveWidget::initialize(Renderer* renderer,
-    SceneManager* scene_manager) {
+                                   SceneManager* scene_manager) {
     renderer_ = renderer;
     scene_manager_ = scene_manager;
     setAutoFillBackground(false);
+
+    connect(this,
+            SIGNAL(SelectObject(QVector3D, QVector3D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onSelectObjectFromPerspective(QVector3D, QVector3D)));
 }
 
 void PerspectiveWidget::initializeGL() {
@@ -51,7 +66,7 @@ void PerspectiveWidget::initializeGL() {
     glEnable(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    renderer_->InitContext(GL::Context::ePERSPECTIVE);
+    renderer_->InitContext(GL::Context::E_PERSPECTIVE);
 
     modelview_.setToIdentity();
     //! @todo magic numbers
@@ -159,22 +174,25 @@ void PerspectiveWidget::drawScene() {
 
     // restore gl state
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SWB_ALPHA, GL_ONE_MINUS_SWB_ALPHA);
 
-    auto rg = &renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eUNLIT];
-    rg->BindContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::ePOINTS);
-    rg->program_[GL::Context::ePERSPECTIVE].setUniformValue("m_modelview", modelview_);
-    glDrawArrays(GL_POINTS, 0, rg->NumVertices(GL::Primitive::ePOINTS));
-    rg->ReleaseContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::ePOINTS);
-    rg->BindContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::eLINES);
-    glDrawArrays(GL_LINES, 0, rg->NumVertices(GL::Primitive::eLINES));
-    rg->ReleaseContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::eLINES);
+    auto drawPrimitives = [&](Coverage::Type ctype, Lighting::Type ltype,
+                              GL::Primitive::Type gl_primitive, int gl_type) {
+        auto rg = &renderer_->render_groups_[ctype][ltype];
+        auto gl_context = GL::Context::E_PERSPECTIVE;
+        rg->BindContextPrimitive(gl_context, gl_primitive);
+        rg->program_[gl_context].setUniformValue("m_modelview", modelview_);
+        glDrawArrays(gl_type, 0, rg->NumVertices(gl_primitive));
+        rg->ReleaseContextPrimitive(gl_context, gl_primitive);
+    };
 
-    rg = &renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eFLAT];
-    rg->BindContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::eTRIANGLES);
-    rg->program_[GL::Context::ePERSPECTIVE].setUniformValue("m_modelview", modelview_);
-    glDrawArrays(GL_TRIANGLES, 0, rg->NumVertices(GL::Primitive::eTRIANGLES));
-    rg->ReleaseContextPrimitive(GL::Context::ePERSPECTIVE, GL::Primitive::eTRIANGLES);
+    drawPrimitives(Coverage::E_OPAQUE, Lighting::E_UNLIT,
+                   GL::Primitive::E_POINTS, GL_POINTS);
+    drawPrimitives(Coverage::E_OPAQUE, Lighting::E_UNLIT,
+                   GL::Primitive::E_LINES, GL_LINES);
+    drawPrimitives(Coverage::E_OPAQUE, Lighting::E_FLAT,
+                   GL::Primitive::E_TRIANGLES, GL_TRIANGLES);
+
 }
 
 void PerspectiveWidget::draw2DOverlay() {
@@ -187,15 +205,15 @@ void PerspectiveWidget::resizeGL(int width, int height) {
     projection_.setToIdentity();
     projection_.perspective(80.0f, (float)width/height, 0.125f, 1024.0f);
 
-    auto rg = &renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eUNLIT];
-    rg->program_[GL::Context::ePERSPECTIVE].bind();
-    rg->program_[GL::Context::ePERSPECTIVE].setUniformValue("m_projection", projection_);
-    rg->program_[GL::Context::ePERSPECTIVE].release();
+    auto rg = &renderer_->render_groups_[Coverage::E_OPAQUE][Lighting::E_UNLIT];
+    rg->program_[GL::Context::E_PERSPECTIVE].bind();
+    rg->program_[GL::Context::E_PERSPECTIVE].setUniformValue("m_projection", projection_);
+    rg->program_[GL::Context::E_PERSPECTIVE].release();
 
-    rg = &renderer_->render_groups_[Coverage::eOPAQUE][Lighting::eFLAT];
-    rg->program_[GL::Context::ePERSPECTIVE].bind();
-    rg->program_[GL::Context::ePERSPECTIVE].setUniformValue("m_projection", projection_);
-    rg->program_[GL::Context::ePERSPECTIVE].release();
+    rg = &renderer_->render_groups_[Coverage::E_OPAQUE][Lighting::E_FLAT];
+    rg->program_[GL::Context::E_PERSPECTIVE].bind();
+    rg->program_[GL::Context::E_PERSPECTIVE].setUniformValue("m_projection", projection_);
+    rg->program_[GL::Context::E_PERSPECTIVE].release();
 }
 
 //=============================================================================
@@ -212,6 +230,23 @@ void PerspectiveWidget::timerEvent(QTimerEvent *event) {
 void PerspectiveWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() & Qt::RightButton) {
         camera_active_ = !camera_active_;
+    }
+
+    float sinx = sin(camera_rot_.x()*pi180);
+    float cosx = cos(camera_rot_.x()*pi180);
+    float sinz = sin(-camera_rot_.z()*pi180);
+    float cosz = cos(-camera_rot_.z()*pi180);
+    QVector3D forward(sinz*cosx, -cosz*cosx, sinx);
+    forward.normalize();
+
+    if (event->button() & Qt::LeftButton) {
+        switch (ConfigManager::get().input_state()) {
+        case InputState::SELECT:
+            emit SelectObject(camera_pos_, forward);
+            break;
+        default:
+            break;
+        }
     }
 
     if (camera_active_) {

@@ -1,6 +1,16 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2012-05-23
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 // Qt
@@ -8,19 +18,15 @@
 #include <QSplashScreen>
 #include <QtDebug>
 
-// Workbench
+// DDAD
 #include "common.h"
 #include "qt_window_main.h"
-
- //test
-#include "../geometry/polygon.h"
-#include "../geometry/arrangement.h"
-
 
 #define _ELPP_THREAD_SAFE
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
+
     LOG(INFO) << "===========================================================";
 
     QApplication a(argc, argv);
@@ -34,10 +40,10 @@ int main(int argc, char *argv[]) {
     qRegisterMetaType<QVector<QVector3D>>("QVector<QVector3D>");
 
     LOG(INFO) << "displaying splash screen";
-    QPixmap splash_image(":/splash3.png");
+    QPixmap splash_image(":/splash.png");
     QSplashScreen splash(splash_image);
     splash.show();
-    splash.showMessage("Initializing...");
+    //splash.showMessage("Initializing...");
     a.processEvents();
 
     LOG(INFO) << "displaying main window";

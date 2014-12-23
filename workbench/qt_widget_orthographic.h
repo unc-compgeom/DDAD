@@ -1,17 +1,30 @@
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-01-29
  * @brief OpenGL widget that displays an orthogonal view of the current scene.
  */
 
-#ifndef DDAD_RC_QT_WIDGET_ORTHOGRAPHIC_H
-#define DDAD_RC_QT_WIDGET_ORTHOGRAPHIC_H
+#ifndef WB_QT_WIDGET_ORTHOGRAPHIC_H
+#define WB_QT_WIDGET_ORTHOGRAPHIC_H
 
 // Qt
 #include <QtOpenGL/QGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 
-// Workbench
+// DDAD
 #include "common.h"
 #include "grid.h"
 #include "scene.h"
@@ -55,16 +68,10 @@ signals:
     void SelectObject(const QVector2D& coords);
 
     // polyline
-    void BeginCreatePolyLine(const QVector2D& start);
-    void UpdateNewPolyLine(const QVector2D& cur);
-    void EndCreatePolyLine();
-    void SwitchInputColor();
-
-    // arrangement
-    void BeginCreateArrangement(const QVector2D& start);
-    void BeginCreateSegment(const QVector2D& start);
-    void EndCreateSegment(const QVector2D& cur);
-    void EndCreateArrangement();
+    void BeginCreatePolyline(const QVector2D& start);
+    void UpdateNewPolyline(const QVector2D& cur);
+    void EndCreatePolyline();
+    void ExecuteMelkman();
 
     // polytope
     void BeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
@@ -108,4 +115,4 @@ protected:
     OrthoOrientation orientation_;
 };
 
-#endif // DDAD_RC_QT_WIDGET_ORTHOGRAPHIC_H
+#endif // WB_QT_WIDGET_ORTHOGRAPHIC_H

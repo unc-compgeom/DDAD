@@ -1,1 +1,0 @@
-mpn/x86_64/core2/penryn/gmp-mparam.h

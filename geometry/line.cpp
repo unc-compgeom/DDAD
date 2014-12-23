@@ -1,6 +1,16 @@
-/*!
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 2013-07-24
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "common.h"
@@ -25,20 +35,20 @@ Line_2r::Line_2r(SlopeType slope_type, const rational& c) :
     slope_type_(slope_type) {
     switch(slope_type_) {
     case SLOPE_PINFINITY:
-        p_ = std::shared_ptr<Point_2r>(new Point_2r(c, 0));
-        q_ = std::shared_ptr<Point_2r>(new Point_2r(c, 1));
+        p_ = std::make_shared<Point_2r>(c, 0);
+        q_ = std::make_shared<Point_2r>(c, 1);
         break;
     case SLOPE_NINFINITY:
-        p_ = std::shared_ptr<Point_2r>(new Point_2r(c, 0));
-        q_ = std::shared_ptr<Point_2r>(new Point_2r(c, -1));
+        p_ = std::make_shared<Point_2r>(c, 0);
+        q_ = std::make_shared<Point_2r>(c, -1);
         break;
     case SLOPE_PZERO:
-        p_ = std::shared_ptr<Point_2r>(new Point_2r(0, c));
-        q_ = std::shared_ptr<Point_2r>(new Point_2r(1, c));
+        p_ = std::make_shared<Point_2r>(0, c);
+        q_ = std::make_shared<Point_2r>(1, c);
         break;
     case SLOPE_NZERO:
-        p_ = std::shared_ptr<Point_2r>(new Point_2r(0, c));
-        q_ = std::shared_ptr<Point_2r>(new Point_2r(-1, c));
+        p_ = std::make_shared<Point_2r>(0, c);
+        q_ = std::make_shared<Point_2r>(-1, c);
         break;
     default:
         slope_type_ = SLOPE_DEGENERATE;
@@ -84,73 +94,45 @@ void Line_2r::Update() {
 
 namespace Predicate {
 
-Orientation OrientationPQR(const Line_2r& pq, const Point_2r& r)
-{
+Orientation OrientationPQR(const Line_2r& pq, const Point_2r& r) {
     return OrientationPQR(pq.p(), pq.q(), r);
 }
 
-Orientation OrientationPQR(const Line_2r& pq, const Vector_2r& r)
-{
+Orientation OrientationPQR(const Line_2r& pq, const Vector_2r& r) {
     return OrientationPQR(pq.p(), pq.q(), Point_2r(r.x(), r.y()));
 }
 
-bool AIsLeftOfB(const Point_2r& a, const Line_2r& b)
-{
+bool AIsLeftOfB(const Point_2r& a, const Line_2r& b) {
     return OrientationPQR(b, a) == ORIENTATION_LEFT;
 }
 
-bool AIsRightOfB(const Point_2r& a, const Line_2r& b)
-{
+bool AIsRightOfB(const Point_2r& a, const Line_2r& b) {
     return OrientationPQR(b, a) == ORIENTATION_RIGHT;
 }
 
-bool AIsAheadOfB(const Point_2r& a, const Ray_2r& b)
-{
-    Point_2r orig = b.origin();
-    Vector_2r dir = b.direction();
-    return OrientationPQR(b,a) == ORIENTATION_COLINEAR &&
-            ((a.x()-orig.x())*dir.x() + (a.y()-orig.y())*dir.y() > 0);
-}
-
-bool AIsRightOrAheadOfB(const Point_2r &a, const Ray_2r &b)
-{
-    return (AIsRightOfB(a, b.support()) || AIsAheadOfB(a, b));
-}
-
-bool AIsLeftOrAheadOfB(const Point_2r &a, const Ray_2r& b)
-{
-    return (AIsLeftOfB(a, b.support()) || AIsAheadOfB(a, b));
-}
-
-bool IsVertical(const Line_2r& l)
-{
+bool IsVertical(const Line_2r& l) {
     return (l.slope_type() == SLOPE_PINFINITY ||
             l.slope_type() == SLOPE_NINFINITY);
 }
 
-bool IsHorizontal(const Line_2r& l)
-{
+bool IsHorizontal(const Line_2r& l) {
     return (l.slope_type() == SLOPE_PZERO || l.slope_type() == SLOPE_NZERO);
 }
 
-bool IsDegenerate(const Line_2r& l)
-{
+bool IsDegenerate(const Line_2r& l) {
     return l.slope_type() == SLOPE_DEGENERATE;
 }
 
-bool IsGeneral(const Line_2r& l)
-{
+bool IsGeneral(const Line_2r& l) {
     return l.slope_type() == SLOPE_GENERAL;
 }
 
-bool AreParallel(const Line_2r& a, const Line_2r& b)
-{
+bool AreParallel(const Line_2r& a, const Line_2r& b) {
     assert(!IsDegenerate(a) && !IsDegenerate(b));
     return a.N() == b.N();
 }
 
-bool AreDisjoint(const Line_2r& a, const Line_2r& b)
-{
+bool AreDisjoint(const Line_2r& a, const Line_2r& b) {
     assert(!IsDegenerate(a) && !IsDegenerate(b));
     return (a.N() == b.N()) && !(a.d() == b.d());
 }
@@ -198,7 +180,7 @@ Ray_2r::Ray_2r() {}
 Ray_2r::Ray_2r(SharedPoint_2r origin, const Vector_2r& direction) :
     origin_(origin),
     direction_(direction),
-    support_(origin, std::shared_ptr<Point_2r>(new Point_2r(*origin+direction))) {}
+    support_(origin, std::make_shared<Point_2r>(*origin+direction)) {}
 
 Ray_2r::Ray_2r(SharedPoint_2r origin, SharedPoint_2r to) :
     origin_(origin),
@@ -275,6 +257,7 @@ Segment_2r::Segment_2r(SharedPoint_2r p,
     p_(p),
     q_(q),
     support_(p, q) {}
+
 // Accessors/Mutators =========================================================
 
 const Point_2r& Segment_2r::p() const {
@@ -286,19 +269,10 @@ const Point_2r& Segment_2r::q() const {
 const Line_2r& Segment_2r::support() const {
     return support_;
 }
-const Ray_2r Segment_2r::support_ray() const {
-    return Ray_2r(p_, q_);
-}
 SharedPoint_2r Segment_2r::p_sptr() {
     return p_;
 }
 SharedPoint_2r Segment_2r::q_sptr() {
-    return q_;
-}
-const SharedPoint_2r Segment_2r::p_sptr() const {
-    return p_;
-}
-const SharedPoint_2r Segment_2r::q_sptr() const {
     return q_;
 }
 void Segment_2r::set_p(SharedPoint_2r p) {
@@ -307,50 +281,6 @@ void Segment_2r::set_p(SharedPoint_2r p) {
 void Segment_2r::set_q(SharedPoint_2r q) {
     q_ = q;
 }
-
-
-//=============================================================================
-// Segment_2r_colored Implementation
-//=============================================================================
-Segment_2r_colored::Segment_2r_colored() {}
-Segment_2r_colored::Segment_2r_colored(const Segment_2r_colored &rhs){
-    p_ = rhs.p_sptr();
-    q_ = rhs.q_sptr();
-    isRed_ = rhs.get_color();
-    support_ = rhs.support();
-}
-
-Segment_2r_colored::Segment_2r_colored(Point_2r &p, Point_2r &q, bool color){
-    p_ = std::make_shared<Point_2r>(p);
-    q_ = std::make_shared<Point_2r>(q);
-    isRed_ = color;
-    support_ = Line_2r(p_,q_);
-}
-Segment_2r_colored::Segment_2r_colored(SharedPoint_2r p, SharedPoint_2r q, bool color){
-    p_ = p;
-    q_ = q;
-    isRed_ = color;
-    support_ = Line_2r(p,q);
-}
-bool Segment_2r_colored::IsAbove(const Segment_2r_colored to_compare) const{
-    Point_2r my_l_endpoint, other_l_endpoint;
-    if(p() < q()) my_l_endpoint = p();
-    else my_l_endpoint = q();
-    if(to_compare.p() < to_compare.q()) other_l_endpoint = to_compare.p();
-    else other_l_endpoint = to_compare.q();
-    if(my_l_endpoint < other_l_endpoint){
-        return Predicate::AIsRightOrAheadOfB(other_l_endpoint, support_ray());
-    }
-    else{
-        return Predicate::AIsLeftOfB(my_l_endpoint,
-                                            to_compare.support());
-    }
-
-}
-
-//Segment_2r_colored Segment_2r_colored::operator=(const Segment_2r_colored &rhs){
-//    return Segment_2r_colored(rhs);
-//}
 
 //=============================================================================
 // Line_3r Implementation
@@ -430,7 +360,7 @@ Ray_3r::Ray_3r() {}
 Ray_3r::Ray_3r(SharedPoint_3r origin, const Vector_3r& direction) :
     origin_(origin),
     direction_(direction),
-    support_(origin, std::shared_ptr<Point_3r>(new Point_3r(*origin+direction))) {}
+    support_(origin, std::make_shared<Point_3r>(*origin+direction)) {}
 
 Ray_3r::Ray_3r(SharedPoint_3r origin, SharedPoint_3r to) :
     origin_(origin),

@@ -1,7 +1,20 @@
+/*
+ * This file is part of DDAD.
+ *
+ * DDAD is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * DDAD is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details. You should have received a copy of the GNU General Public
+ * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*!
- * @brief 2-dimensional polygonal chain and polygon types.
- * @author Clinton Freeman <freeman@cs.unc.edu>
- * @date 02/12/2013
+ * @brief 2-dimensional polyline and polygon types.
  */
 
 #ifndef GE_POLYGON_H
@@ -16,66 +29,44 @@
 namespace DDAD {
 
 //=============================================================================
-// Interface: PolyChainVertex_2r
+// Interface: Polyline_2r
 //=============================================================================
 
-class PolyChainVertex_2r {
+class Polyline_2r : public Visual::Geometry {
 public:
-    PolyChainVertex_2r();
-    explicit PolyChainVertex_2r(const Point_2r& vertex);
-    explicit PolyChainVertex_2r(SharedPoint_2r vertex);
+    Polyline_2r();
+    ~Polyline_2r();
 
-    const Point_2r& vertex() const;
-    Point_2r& vertex();
-    const Segment_2r& edge_prev() const;
-    const Segment_2r& edge_next() const;
-    SharedPoint_2r vertex_sptr();
-
-    void set_vertex(const Point_2r& v);
-    void set_edge_prev(const Segment_2r& e);
-    void set_edge_next(const Segment_2r& e);
-    void set_vertex_sptr(SharedPoint_2r v);
-
-private:
-    SharedPoint_2r vertex_;
-    Segment_2r edge_prev_;
-    Segment_2r edge_next_;
-};
-
-namespace Predicate {
-    bool AIsLeftOfB(const PolyChainVertex_2r& a, const PolyChainVertex_2r& b);
-    bool AIsBelowB(const PolyChainVertex_2r& a, const PolyChainVertex_2r& b);
-}
-
-//=============================================================================
-// Interface: PolyChain_2r
-//=============================================================================
-
-class PolyChain_2r : public Visual::Geometry {
-public:
-    PolyChain_2r();
-    ~PolyChain_2r();
-
-    void AppendVertex(const Point_2r& v);
-    void AppendVertex(SharedPoint_2r v);
-    void RemoveFront();
     void Close();
+    void Open();
     void RotateToMaxX();
-    PolyChainVertex_2r& back();
-    PolyChainVertex_2r& front();
 
-    const std::list<PolyChainVertex_2r>& vertices() const;
-    std::list<PolyChainVertex_2r>& vertices();
+    void push_back(const Point_2r& v);
+    void push_back(SharedPoint_2r v);
+    void pop_back();
+    SharedPoint_2r back(const size_t i = 0) const;
+
+    void push_front(const Point_2r& v);
+    void push_front(SharedPoint_2r v);
+    void pop_front();
+    SharedPoint_2r front(const size_t i = 0) const;
+
+    SharedPoint_2r operator[](const size_t i) const;
+    const size_t size() const;
+
+    const std::deque<SharedPoint_2r>& vertices() const;
+    const int32_t z_order() const { return z_order_; }
+    void set_vertices(const std::deque<SharedPoint_2r>& vertices);
     const bool closed() const;
-    void set_vertices(const std::list<PolyChainVertex_2r>& vertices);
-    void set_closed(const bool closed);
-
-    typedef std::list<PolyChainVertex_2r>::const_iterator const_iterator;
-
-    friend class Polygon_2r;
+    void set_mat_vertex(const Visual::Material mat_vertex) { mat_vertex_ = mat_vertex; }
+    void set_mat_edge(const Visual::Material mat_edge) { mat_edge_ = mat_edge; }
+    void set_z_order(const int32_t z_order) { z_order_ = z_order; }
 
 private:
-    std::list<PolyChainVertex_2r> vertices_;
+    std::deque<SharedPoint_2r> vertices_;
+    Visual::Material mat_vertex_;
+    Visual::Material mat_edge_;
+    int32_t z_order_;
     bool closed_;
 };
 
@@ -88,63 +79,36 @@ public:
     Polygon_2r();
     ~Polygon_2r();
 
-    void AppendVertexToBoundary(const Point_2r& v);
-    void AppendVertexToBoundary(SharedPoint_2r v);
+    void push_back(const Point_2r& v);
+    void push_back(SharedPoint_2r v);
+    void pop_back();
+    SharedPoint_2r back(const size_t i = 0) const;
+
+    void push_front(const Point_2r& v);
+    void push_front(SharedPoint_2r v);
+    void pop_front();
+    SharedPoint_2r front(const size_t i = 0) const;
+
+    SharedPoint_2r operator[](const size_t i) const;
+    const size_t size() const;
+
     void CloseBoundary();
-    void ComputeIntegerHull();
 
-    const size_t NumVertices() const;
+    const Polyline_2r& boundary() const;
 
-    const PolyChain_2r& boundary() const;
-
-    const Visual::Color& diffuse() const { return diffuse_; }
-    void set_diffuse(const Visual::Color& diffuse) { diffuse_ = diffuse; }
-
-
+    void set_mat_vertex(const Visual::Material mat_vertex) { boundary_.set_mat_vertex(mat_vertex); }
+    void set_mat_edge(const Visual::Material mat_edge) { boundary_.set_mat_edge(mat_edge); }
+    void set_mat_face(const Visual::Material mat_face) { mat_face_ = mat_face; }
+    void set_z_order(const uint32_t z_order) { z_order_ = z_order; boundary_.set_z_order(z_order); }
 
 private:
-    PolyChain_2r boundary_;
-    std::vector<Triangle_2r> triangulation_;
-    Visual::Color diffuse_;
+    Polyline_2r boundary_;
+    Visual::Material mat_face_;
+    uint32_t z_order_;
 };
 
-
-//=============================================================================
-// Interface: Polygon_2rDq
-//=============================================================================
-
-class Polygon_2rDq : public Visual::Geometry {
-public:
-    Polygon_2rDq();
-    ~Polygon_2rDq();
-
-    void PushFront(PolyChainVertex_2r v);
-    void PushBack(PolyChainVertex_2r v);
-
-    PolyChainVertex_2r PopFront();
-    PolyChainVertex_2r PopBack();
-    PolyChainVertex_2r front();
-    PolyChainVertex_2r back();
-    const size_t NumVertices() const;
-
-    const std::deque<PolyChainVertex_2r> boundary() const;
-
-    PolyChainVertex_2r operator[](int index);
-
-    //const Visual::Color& diffuse() const { return diffuse_; }
-    //void set_diffuse(const Visual::Color& diffuse) { diffuse_ = diffuse; }
-
-
-private:
-    std::deque<PolyChainVertex_2r> boundary_;
-//    std::vector<Triangle_2r> triangulation_;
-//    Visual::Color diffuse_;
-};
-
-Polygon_2rDq Melkman(const PolyChain_2r& P,
-                   Visual::IGeometryObserver* observer = nullptr);
-
-//Polygon_2r IntegerHull(const Polygon_2r& P, IGeometryObserver* observer = nullptr);
+Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer = nullptr);
+Polygon_2r IntegerHull(const Polygon_2r& P, Visual::IGeometryObserver* observer = nullptr);
 
 } // namespace DDAD
 
