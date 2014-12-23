@@ -13,8 +13,8 @@
  * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RC_OPENGL_H
-#define RC_OPENGL_H
+#ifndef WB_OPENGL_H
+#define WB_OPENGL_H
 
 // Qt
 #include <QOpenGLFunctions_3_3_Core>
@@ -369,4 +369,4 @@ public:
 
 } // namespace DDAD
 
-#endif // RC_OPENGL_H
+#endif // WB_OPENGL_H

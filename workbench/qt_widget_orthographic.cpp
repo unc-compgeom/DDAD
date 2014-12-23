@@ -167,7 +167,7 @@ void OrthographicWidget::drawGrid() {
 void OrthographicWidget::drawScene() {
     // restore gl state
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SWB_ALPHA, GL_ONE_MINUS_SWB_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // setup modelview
     modelview_.setToIdentity();
