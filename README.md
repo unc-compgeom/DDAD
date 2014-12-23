@@ -16,7 +16,7 @@ todo
 We provide a user manual on the [wiki](https://github.com/unc-compgeom/DDAD/wiki/). 
 Here are some of the more important pages:
 
-* [Compiling](https://github.com/unc-compgeom/DDAD/wiki/Compiling).
-* [Coding Guidelines](https://github.com/unc-compgeom/DDAD/wiki/Coding-Guidelines).
+* [Compiling](https://github.com/unc-compgeom/DDAD/wiki/Compiling)
+* [Coding Guidelines](https://github.com/unc-compgeom/DDAD/wiki/Coding-Guidelines)
 
 
