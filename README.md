@@ -9,7 +9,7 @@ Geometric Algorithm Design project at UNC Chapel Hill.
 
 #### Workbench Binaries
 
-todo
+You can download the latest workbench binaries on the [releases](https://github.com/unc-compgeom/DDAD/releases) page.
 
 #### Documentation
 
