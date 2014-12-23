@@ -9,8 +9,8 @@ Geometric Algorithm Design project at UNC Chapel Hill.
 
 You probably want to...
 
-  * [Get the source code and build it on your machine](./wiki/).
-  * [View the source documentation to understand implementation details](.#source-documentation).
+  * [Get the source code and build it on your machine](https://github.com/unc-compgeom/DDAD/wiki/Compiling).
+  * [Read the coding conventions for contributing code](https://github.com/unc-compgeom/DDAD/wiki/Coding-Guidelines).
   * [View the user documentation to learn how to use one of the applications](.#user-documentation).
 
 
