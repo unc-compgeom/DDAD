@@ -7,10 +7,16 @@ degree of polynomials used in the geometric tests or predicates that are
 applied. This repository contains all code built as part of the Degree Driven
 Geometric Algorithm Design project at UNC Chapel Hill.
 
-You probably want to...
+#### Workbench Binaries
 
-  * [Get the source code and build it on your machine](https://github.com/unc-compgeom/DDAD/wiki/Compiling).
-  * [Read the coding conventions for contributing code](https://github.com/unc-compgeom/DDAD/wiki/Coding-Guidelines).
-  * [View the user documentation to learn how to use one of the applications](.#user-documentation).
+todo
+
+#### Documentation
+
+We provide a user manual on the [wiki](https://github.com/unc-compgeom/DDAD/wiki/). 
+Here are some of the more important pages:
+
+* [Compiling](https://github.com/unc-compgeom/DDAD/wiki/Compiling).
+* [Coding Guidelines](https://github.com/unc-compgeom/DDAD/wiki/Coding-Guidelines).
 
 
