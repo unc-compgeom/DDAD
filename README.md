@@ -9,14 +9,8 @@ Geometric Algorithm Design project at UNC Chapel Hill.
 
 You probably want to...
 
-  * [Get the source code and build it on your machine](.#clone-compile-and-run).
+  * [Get the source code and build it on your machine](./wiki/).
   * [View the source documentation to understand implementation details](.#source-documentation).
   * [View the user documentation to learn how to use one of the applications](.#user-documentation).
-
-#### Clone, Compile and Run
-
-#### Source Documentation
-
-#### User Documentation
 
 
