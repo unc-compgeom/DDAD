@@ -21,6 +21,8 @@ the GUI to generate an input point set and run the algorithm.
 
 \subsection{Algorithm Overview}
 
+[note this is mostly from lischinski\ldots will change in future drafts]
+
 The algorithm starts with a triangle large enough to contain all input points,
 and adds points into the triangulation one by one, maintaining the invariant
 that the triangulation is Delaunay. Figure 2 illustrates the point insertion
@@ -98,25 +100,25 @@ outside the circle defined by three points. The DDAD workbench provides the
 geometric type (\texttt{Subdivision\_2r}) and the predicate
 (\texttt{InCircle\_2r}). 
 
-The quad-edge data structure (Guibas and Stolfi 1985) was designed for
-representing general subdivisions of orientable manifolds. It is similar to the
-winged-edge data structure (Baumgart 1975), but it simultaneously represents
-both the subdivision and its dual. Each quad-edge record groups together four
-directed edges corresponding to a single undirected edge in the subdivision and
-to its dual edge (Figure 1a). Each directed edge has two pointers: a next
-pointer to the next counterclockwise edge around its origin, and a data pointer
-to geometrical and other nontopological information (such as the coordinates of
-its origin.) 
-
-Figures 1b and 1c illustrate how three edges incident on the same
-vertex are represented using the quad-edge data structure: the vertex itself
-corresponds to the inner cycle of pointers in Figure 1c. The remaining three
-cycles correspond to the three faces meeting at the vertex.
-
-Aside from a primitive to create an edge (MakeEdge), a single topological
-operator Splice is defined that can be used to link disjoint edges together as
-well as to break two linked edges apart. This operator is its own inverse and
-together with MakeEdge it can be used to construct any subdivision.
+% The quad-edge data structure (Guibas and Stolfi 1985) was designed for
+% representing general subdivisions of orientable manifolds. It is similar to the
+% winged-edge data structure (Baumgart 1975), but it simultaneously represents
+% both the subdivision and its dual. Each quad-edge record groups together four
+% directed edges corresponding to a single undirected edge in the subdivision and
+% to its dual edge (Figure 1a). Each directed edge has two pointers: a next
+% pointer to the next counterclockwise edge around its origin, and a data pointer
+% to geometrical and other nontopological information (such as the coordinates of
+% its origin.) 
+% 
+% Figures 1b and 1c illustrate how three edges incident on the same
+% vertex are represented using the quad-edge data structure: the vertex itself
+% corresponds to the inner cycle of pointers in Figure 1c. The remaining three
+% cycles correspond to the three faces meeting at the vertex.
+% 
+% Aside from a primitive to create an edge (MakeEdge), a single topological
+% operator Splice is defined that can be used to link disjoint edges together as
+% well as to break two linked edges apart. This operator is its own inverse and
+% together with MakeEdge it can be used to construct any subdivision.
 
 % Melkman's algorithm involves two geometric objects (polylines and polygons), and
 % requires only a single degree-two predicate to check whether a point is to the
