@@ -64,13 +64,6 @@ private:
 // Interface: ISceneObject
 //=============================================================================
 
-enum class SceneObjectType {
-    POLYLINE_2,
-    POINTSET_3,
-    POLYTOPE_3,
-    TERRAINMESH_3
-};
-
 namespace Intersection {
 
 class Ray_3rSceneObject {
@@ -105,7 +98,7 @@ struct ISceneObject {
     virtual void UpdateColor(const QColor& color) = 0;
     virtual const QString& name() const = 0;
     virtual void set_name(const QString& name) = 0;
-    virtual SceneObjectType scene_object_type() const = 0;
+    virtual QString scene_object_type() const = 0;
     virtual Intersection::Ray_3rSceneObject intersect(const Ray_3r& ray) = 0;
 };
 
@@ -177,8 +170,8 @@ public:
 
     void UpdateColor(const QColor &color) override {}
 
-    SceneObjectType scene_object_type() const override {
-        return SceneObjectType::POLYLINE_2;
+    QString scene_object_type() const override {
+        return "Polyline";
     }
 
     const QString& name() const override {
@@ -270,8 +263,8 @@ public:
 
     void UpdateColor(const QColor &color) override {}
 
-    SceneObjectType scene_object_type() const override {
-        return SceneObjectType::POLYTOPE_3;
+    QString scene_object_type() const override {
+        return "Polytope";
     }
 
     const QString& name() const override {
@@ -332,8 +325,8 @@ public:
 
     void UpdateColor(const QColor &color) override {}
 
-    SceneObjectType scene_object_type() const override {
-        return SceneObjectType::POINTSET_3;
+    QString scene_object_type() const override {
+        return "PointSet";
     }
 
     const QString& name() const override {
@@ -371,8 +364,8 @@ public:
 
     void UpdateColor(const QColor &color) override {}
 
-    SceneObjectType scene_object_type() const override {
-        return SceneObjectType::TERRAINMESH_3;
+    QString scene_object_type() const override {
+        return "TerrainMesh";
     }
 
     const QString& name() const override {
@@ -450,12 +443,14 @@ public slots:
     void onCreatePointSet(const QVector<QVector3D>& data);
     void onUpdateNewPointSet(const QVector2D& cur);
     void onEndCreatePointSet();
+    void onComputeTerrainMeshForSelectedPointSet();
 
     // polyline
     void onBeginCreatePolyline(const QVector2D& cur);
     void onUpdateNewPolyline(const QVector2D& cur);
     void onEndCreatePolyline();
     void onExecuteMelkman();
+    void onComputeMelkmanForSelectedPolyline();
 
     // polytope
     void onBeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
@@ -479,7 +474,8 @@ signals:
                             const quint32 primtype_idx,
                             QVector<GL::Vertex> verts);
 
-    void UpdateContextSensitiveMenus(const QString& selected_obj_type);
+    void UpdateContextSensitiveMenus(const QString& selected_obj_type,
+                                     const QString& selected_obj_name);
 
 private:
     void GenerateVboPoints();

@@ -14,7 +14,7 @@
    <string>DDAD Workbench</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/resources.qrc">
+   <iconset>
     <normaloff>:/icons/appicon.png</normaloff>:/icons/appicon.png</iconset>
   </property>
   <widget class="QWidget" name="widget_main">
@@ -181,7 +181,7 @@
                     <string>Polytope</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="../resources/resources.qrc">
+                    <iconset>
                      <normaloff>:/icons/create_polytope.png</normaloff>:/icons/create_polytope.png</iconset>
                    </property>
                    <property name="checkable">
@@ -220,7 +220,7 @@
                     <string>Polyline</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="../resources/resources.qrc">
+                    <iconset>
                      <normaloff>:/icons/create_polyline.png</normaloff>:/icons/create_polyline.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -249,7 +249,7 @@
                     <string>Point Set</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="../resources/resources.qrc">
+                    <iconset>
                      <normaloff>:/icons/create_pointset.png</normaloff>:/icons/create_pointset.png</iconset>
                    </property>
                    <property name="checkable">
@@ -304,10 +304,17 @@
                <number>2</number>
               </property>
               <item row="0" column="0">
-               <widget class="QLineEdit" name="selection_description"/>
+               <widget class="QLineEdit" name="object_name">
+                <property name="text">
+                 <string>No object selected</string>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item row="1" column="0">
-               <spacer name="verticalSpacer">
+               <spacer name="compute_tab_spacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -434,9 +441,7 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
  <buttongroups>
   <buttongroup name="buttonGroup"/>

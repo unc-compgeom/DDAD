@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>99</width>
-    <height>43</height>
+    <width>204</width>
+    <height>86</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,6 +39,16 @@
        <string>Click</string>
       </property>
      </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Left-click to begin creating the polyline. Keep left-clicking to add more segments. Right-click to end creation.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

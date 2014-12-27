@@ -56,10 +56,13 @@ void OrthographicWidget::initialize(Renderer* renderer,
     setAutoFillBackground(false);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
+    /*
     connect(this,
             SIGNAL(customContextMenuRequested(const QPoint&)),
             this,
             SLOT(ShowContextMenu(const QPoint&)));
+            */
+
     connect(this,
             SIGNAL(SelectObject(QVector2D)),
             &scene_manager_->scene_observer_,

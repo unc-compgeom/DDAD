@@ -35,6 +35,7 @@ namespace DDAD {
 class Polyline_2r : public Visual::Geometry {
 public:
     Polyline_2r();
+    Polyline_2r(const Polyline_2r& copy);
     ~Polyline_2r();
 
     void Close();
@@ -56,10 +57,12 @@ public:
 
     const std::deque<SharedPoint_2r>& vertices() const;
     const int32_t z_order() const { return z_order_; }
+    const Visual::Material& mat_vertex() const { return mat_vertex_; }
+    const Visual::Material& mat_edge() const { return mat_vertex_; }
     void set_vertices(const std::deque<SharedPoint_2r>& vertices);
     const bool closed() const;
-    void set_mat_vertex(const Visual::Material mat_vertex) { mat_vertex_ = mat_vertex; }
-    void set_mat_edge(const Visual::Material mat_edge) { mat_edge_ = mat_edge; }
+    void set_mat_vertex(const Visual::Material& mat_vertex) { mat_vertex_ = mat_vertex; }
+    void set_mat_edge(const Visual::Material& mat_edge) { mat_edge_ = mat_edge; }
     void set_z_order(const int32_t z_order) { z_order_ = z_order; }
 
 private:

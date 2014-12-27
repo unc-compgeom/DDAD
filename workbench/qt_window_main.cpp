@@ -25,6 +25,9 @@
 #include "qt_point_set_creation_method.h"
 #include "qt_polyline_creation_method.h"
 #include "qt_polytope_creation_method.h"
+#include "qt_point_set_algorithms.h"
+#include "qt_polyline_algorithms.h"
+#include "qt_polytope_algorithms.h"
 
 #include "../geometry/point.h"
 
@@ -115,9 +118,9 @@ MainWindow::MainWindow(QWidget *parent) :
     scene_manager_ = new SceneManager(renderer_);
 
     connect(&scene_manager_->scene_observer_,
-            SIGNAL(UpdateContextSensitiveMenus(QString)),
+            SIGNAL(UpdateContextSensitiveMenus(QString, QString)),
             this,
-            SLOT(onUpdateContextSensitiveMenus(QString)));
+            SLOT(onUpdateContextSensitiveMenus(QString, QString)));
 
     // initialize widgets
     qDebug() << "Initializing ortho.";
@@ -330,7 +333,44 @@ void MainWindow::on_action_user_manual_triggered() {
     QDesktopServices::openUrl(QUrl("file:///C:/DDADUserManual.pdf"));
 }
 
-void MainWindow::onUpdateContextSensitiveMenus(const QString &selected_object_type) {
-    LOG(DEBUG) << selected_object_type.toStdString();
+void MainWindow::onUpdateContextSensitiveMenus(const QString &selected_object_type,
+                                               const QString &selected_object_name) {
+    LOG(DEBUG) << "updating context sensitive menus for object type " << selected_object_type.toStdString();
 
+    static QWidget* algorithms = nullptr;
+    QLayoutItem *spacer = ui->compute_tab_spacer;
+
+    if (algorithms) {
+        LOG(DEBUG) << "deleting algorithms menu";
+        ui->compute->layout()->removeWidget(algorithms);
+        delete algorithms;
+        algorithms = nullptr;
+    }
+
+    if (selected_object_type == "") {
+        ui->object_name->setText("No object selected");
+        return;
+    }
+
+    ui->object_name->setText(selected_object_name);
+
+    if (selected_object_type == "PointSet") {
+        algorithms = new PointSetAlgorithms();
+        connect(algorithms,
+                SIGNAL(ComputeTerrainMeshForSelectedPointSet()),
+                &scene_manager_->scene_observer_,
+                SLOT(onComputeTerrainMeshForSelectedPointSet()));
+    } else if (selected_object_type == "Polyline") {
+        algorithms = new PolylineAlgorithms();
+        connect(algorithms,
+                SIGNAL(ComputeMelkmanForSelectedPolyline()),
+                &scene_manager_->scene_observer_,
+                SLOT(onComputeMelkmanForSelectedPolyline()));
+    } else if (selected_object_type == "Polytope") {
+        algorithms = new PolytopeAlgorithms();
+    }
+
+    ui->compute->layout()->removeItem(spacer);
+    ui->compute->layout()->addWidget(algorithms);
+    ui->compute->layout()->addItem(spacer);
 }

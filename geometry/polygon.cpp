@@ -147,12 +147,6 @@ Polygon_2r::Polygon_2r() :
 
 Polygon_2r::~Polygon_2r() {
     LOG(DEBUG) << "destroying polygon_2r...";
-    // this may not be necessary. basically if you make a copy of the polygon,
-    // this will get called twice and blow up
-    boundary_.RemoveObserver(this);
-    for (auto observer : observers_) {
-        boundary_.AddObserver(observer);
-    }
 }
 
 void Polygon_2r::push_back(const Point_2r& v) {
@@ -240,6 +234,16 @@ const Polyline_2r& Polygon_2r::boundary() const {
 Polyline_2r::Polyline_2r() :
     closed_(false),
     z_order_(0) {}
+
+Polyline_2r::Polyline_2r(const Polyline_2r &copy) :
+    closed_(copy.closed()),
+    z_order_(copy.z_order()),
+    mat_vertex_(copy.mat_vertex()),
+    mat_edge_(copy.mat_edge()) {
+    for (auto vertex : copy.vertices()) {
+        push_back(vertex);
+    }
+}
 
 Polyline_2r::~Polyline_2r() {
     LOG(DEBUG) << "destroying polyline...";
