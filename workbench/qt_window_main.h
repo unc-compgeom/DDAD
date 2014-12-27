@@ -88,6 +88,10 @@ private:
     void uncheckCreateButtons();
     void uncheckInputModeButtons();
 
+    //void resetToDefaultCreationMode();
+    //void addDefaultPointSetCreationMode();
+
+
     QActionGroup *toolbar_buttons_;
     QAction* select_button_;
     QAction* translate_button_;

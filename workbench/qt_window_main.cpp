@@ -21,8 +21,10 @@
 #include "ui_window_main.h"
 #include "qt_widget_orthographic.h"
 #include "qt_widget_perspective.h"
-#include "qt_point_set_creation_method.h"
 #include "scene.h"
+#include "qt_point_set_creation_method.h"
+#include "qt_polyline_creation_method.h"
+#include "qt_polytope_creation_method.h"
 
 #include "../geometry/point.h"
 
@@ -193,36 +195,75 @@ void MainWindow::on_rotate_toggled(bool checked) {
 
 void MainWindow::on_create_point_set_toggled(bool checked) {
     qDebug() << "on_create_point_set_toggled: " << checked;
+
+    static PointSetCreationMethod *creation_method = nullptr;
+
     if (checked) {
         uncheckInputModeButtons();
 
-        PointSetCreationMethod *creation_method = new PointSetCreationMethod();
+        creation_method = new PointSetCreationMethod();
 
         QLayoutItem *spacer = ui->create_tab_spacer;
         ui->create->layout()->removeItem(spacer);
         ui->create->layout()->addWidget(creation_method);
         ui->create->layout()->addItem(spacer);
 
-        connect(creation_method,
+        /*
+        connect(creation_file,
                 SIGNAL(CreatePointSet(const QVector<QVector3D>&)),
                 &scene_manager_->scene_observer_,
                 SLOT(onCreatePointSet(const QVector<QVector3D>&)));
+                */
+    } else if (creation_method) {
+        ui->create->layout()->removeWidget(creation_method);
+        delete creation_method;
+        creation_method = nullptr;
     }
 }
 
 void MainWindow::on_create_polyline_toggled(bool checked) {
     qDebug() << "on_create_polyline_toggled: " << checked;
+
+    static PolylineCreationMethod *creation_method = nullptr;
+
     if (checked) {
         ConfigManager::get().set_input_state(InputState::CREATE_POLYLINE);
         uncheckInputModeButtons();
+
+        creation_method = new PolylineCreationMethod();
+
+        QLayoutItem *spacer = ui->create_tab_spacer;
+        ui->create->layout()->removeItem(spacer);
+        ui->create->layout()->addWidget(creation_method);
+        ui->create->layout()->addItem(spacer);
+
+    } else if (creation_method) {
+        ui->create->layout()->removeWidget(creation_method);
+        delete creation_method;
+        creation_method = nullptr;
     }
 }
 
 void MainWindow::on_create_polytope_toggled(bool checked) {
     qDebug() << "on_create_polytope_toggled: " << checked;
+
+    static PolytopeCreationMethod *creation_method = nullptr;
+
     if (checked) {
         ConfigManager::get().set_input_state(InputState::CREATE_POLYTOPE);
         uncheckInputModeButtons();
+
+        creation_method = new PolytopeCreationMethod();
+
+        QLayoutItem *spacer = ui->create_tab_spacer;
+        ui->create->layout()->removeItem(spacer);
+        ui->create->layout()->addWidget(creation_method);
+        ui->create->layout()->addItem(spacer);
+
+    } else if (creation_method) {
+        ui->create->layout()->removeWidget(creation_method);
+        delete creation_method;
+        creation_method = nullptr;
     }
 }
 
