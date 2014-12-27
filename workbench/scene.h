@@ -295,6 +295,14 @@ public:
         model_point_set_.AddObserver(this);
     }
 
+    void Initialize(const QVector2D& point) {
+        model_point_set_.add(Point_3r(point.x(), point.y(), 0));
+    }
+
+    void Update(const QVector2D& point) {
+        model_point_set_.add(Point_3r(point.x(), point.y(), 0));
+    }
+
     void Initialize(const QVector<QVector3D>& data) {
         for (auto point : data) {
             model_point_set_.add(Point_3r(point.x(), point.y(), point.z()));
@@ -436,25 +444,33 @@ public:
     const QString& selected_name() const;
 
 public slots:
+    // point set
+    void onBeginCreatePointSet(const QVector2D& cur);
+    void onCreatePointSet(const QVector<QVector3D>& data);
+    void onUpdateNewPointSet(const QVector2D& cur);
+    void onEndCreatePointSet();
+
+    // polyline
     void onBeginCreatePolyline(const QVector2D& cur);
     void onUpdateNewPolyline(const QVector2D& cur);
     void onEndCreatePolyline();
     void onExecuteMelkman();
 
+    // polytope
     void onBeginCreatePolytope(const QVector2D& start, const QVector2D& cur);
     void onUpdateNewPolytope(const QVector2D& cur);
     void onEndCreatePolytope();
 
     void onCreateTerrainMesh(const QVector<QVector3D>& data);
-    void onCreatePointSet(const QVector<QVector3D>& data);
 
+    // picking and selection
     void onUpdateSelectedObjectName(const QString& name);
     void onUpdateSelectedObjectColor(const QColor& color);
     void onDeleteSelectedObject();
+    void onDeselect();
     void onSelectObjectFromOrtho(const QVector2D& coords);
     void onSelectObjectFromPerspective(const QVector3D& origin,
                                        const QVector3D& dir);
-    void onDeselect();
 
 signals:
     void UpdateVertexBuffer(const quint32 coverage_idx,

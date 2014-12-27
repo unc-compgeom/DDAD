@@ -65,6 +65,20 @@ void OrthographicWidget::initialize(Renderer* renderer,
             &scene_manager_->scene_observer_,
             SLOT(onSelectObjectFromOrtho(QVector2D)));
 
+    // pointset
+    connect(this,
+            SIGNAL(BeginCreatePointSet(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onBeginCreatePointSet(QVector2D)));
+    connect(this,
+            SIGNAL(UpdateNewPointSet(QVector2D)),
+            &scene_manager_->scene_observer_,
+            SLOT(onUpdateNewPointSet(QVector2D)));
+    connect(this,
+            SIGNAL(EndCreatePointSet()),
+            &scene_manager_->scene_observer_,
+            SLOT(onEndCreatePointSet()));
+
     // polyline
     connect(this,
             SIGNAL(BeginCreatePolyline(QVector2D)),
@@ -297,6 +311,12 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
             create_polytope_pos = event->pos();
 
             break;
+        case InputState::CREATE_POINTSET:
+            emit BeginCreatePointSet(input_world_coords);
+            break;
+        case InputState::UPDATE_POINTSET:
+            emit UpdateNewPointSet(input_world_coords);
+            break;
         case InputState::CREATE_POLYLINE:
             emit BeginCreatePolyline(input_world_coords);
             break;
@@ -327,6 +347,9 @@ void OrthographicWidget::mousePressEvent(QMouseEvent *event) {
         switch (ConfigManager::get().input_state()) {
         case InputState::UPDATE_POLYLINE:
             emit EndCreatePolyline();
+            break;
+        case InputState::UPDATE_POINTSET:
+            emit EndCreatePointSet();
             break;
         default:
             /*

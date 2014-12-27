@@ -199,6 +199,7 @@ void MainWindow::on_create_point_set_toggled(bool checked) {
     static PointSetCreationMethod *creation_method = nullptr;
 
     if (checked) {
+        ConfigManager::get().set_input_state(InputState::CREATE_POINTSET);
         uncheckInputModeButtons();
 
         creation_method = new PointSetCreationMethod();

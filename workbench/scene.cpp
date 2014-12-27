@@ -361,6 +361,33 @@ void SceneObserver::onEndCreatePolytope() {
 // PointSet_3 management
 //=============================================================================
 
+void SceneObserver::onBeginCreatePointSet(const QVector2D &cur) {
+    LOG(DEBUG) << "scene observer creating new point set";
+
+    onDeselect();
+
+    static int numPointSets = 0;
+
+    auto name = QString("pointset3_%1").arg(numPointSets++);
+    auto pointset = QSharedPointer<ISceneObject>(new ScenePointSet_3());
+    pointset->set_name(name);
+    scene_objects_.insert(name, pointset);
+    selected_objects_.push_back(pointset);
+    SelectedPointSet_3()->AddObserver(this);
+    SelectedPointSet_3()->Initialize(cur);
+    ConfigManager::get().set_input_state(InputState::UPDATE_POINTSET);
+}
+
+void SceneObserver::onUpdateNewPointSet(const QVector2D &cur) {
+    SelectedPointSet_3()->Update(cur);
+}
+
+void SceneObserver::onEndCreatePointSet() {
+    SelectedPointSet_3()->Select();
+    ConfigManager::get().set_input_state(InputState::CREATE_POINTSET);
+    emit UpdateContextSensitiveMenus("pointset_3");
+}
+
 void SceneObserver::onCreatePointSet(const QVector<QVector3D>& data) {
     LOG(DEBUG) << "onCreatePointSet";
 
