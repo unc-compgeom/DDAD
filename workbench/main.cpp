@@ -27,6 +27,11 @@ _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
 
+    el::Configurations defaultConf;
+    defaultConf.setToDefault();
+    defaultConf.setGlobally(el::ConfigurationType::Format, "%datetime %msg");
+    el::Loggers::reconfigureLogger("default", defaultConf);
+
     LOG(INFO) << "===========================================================";
 
     QApplication a(argc, argv);
