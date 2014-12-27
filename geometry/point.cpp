@@ -15,77 +15,8 @@
 
 #include "common.h"
 #include "point.h"
-#include "matrix.h"
 
 namespace DDAD {
-
-namespace Predicate {
-
-Orientation OrientationPQR(const Point_2i &p, const Point_2i &q,
-                           const Point_2i &r) {
-    rational det = Determinant(Matrix_2x2r(q.x()-p.x(), q.y()-p.y(),
-                                           r.x()-p.x(), r.y()-p.y()));
-
-    if (det > 0) {
-        return ORIENTATION_LEFT;
-    } else if (det < 0) {
-        return ORIENTATION_RIGHT;
-    } else {
-        return ORIENTATION_COLINEAR;
-    }
-}
-
-Orientation OrientationPQR(const Point_2r &p, const Point_2r &q,
-                           const Point_2r &r) {
-    rational det = Determinant(Matrix_2x2r(q.x()-p.x(), q.y()-p.y(),
-                                           r.x()-p.x(), r.y()-p.y()));
-
-    if (det > 0) {
-        return ORIENTATION_LEFT;
-    } else if (det < 0) {
-        return ORIENTATION_RIGHT;
-    } else {
-        return ORIENTATION_COLINEAR;
-    }
-}
-
-Orientation OrientationPQR(const Point_2f &p, const Point_2f &q,
-                           const Point_2f &r) {
-    rational det = Determinant(Matrix_2x2r(q.x()-p.x(), q.y()-p.y(),
-                                           r.x()-p.x(), r.y()-p.y()));
-
-    if (det > 0) {
-        return ORIENTATION_LEFT;
-    } else if (det < 0) {
-        return ORIENTATION_RIGHT;
-    } else {
-        return ORIENTATION_COLINEAR;
-    }
-}
-
-bool RIsLeftOrInsidePQ(const Point_2r &p, const Point_2r &q,
-                       const Point_2r &r) {
-    Orientation orientation = OrientationPQR(p, q, r);
-
-    bool is_left = orientation == ORIENTATION_LEFT;
-
-    auto v0 = q-p;
-    auto v1 = r-p;
-    auto dist = Dot(v0, v1);
-    //LOG(INFO) << v0 << v1 << dist;
-
-    bool is_inside = orientation == ORIENTATION_COLINEAR && dist >= 0 && dist <= Dot(v0, v0);
-
-    return is_left || is_inside;
-}
-
-/*
-rational Orient2D(const Point_3r &a, const Point_3r &b, const Point_3r &c) {
-    return Determinant(Matrix_2x2r());
-}
-*/
-
-} // namespace Predicate
 
 } // namespace DDAD
 

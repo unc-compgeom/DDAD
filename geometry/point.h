@@ -76,13 +76,6 @@ bool operator!=(const Point_2i& lhs, const Point_2i& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_2i& p);
 std::string to_string(const Point_2i& p);
 
-namespace Predicate {
-bool AIsLeftOfB(const Point_2i& a, const Point_2i& b);
-bool AIsBelowB(const Point_2i& a, const Point_2i& b);
-Orientation OrientationPQR(const Point_2i& p, const Point_2i& q,
-                           const Point_2i& r);
-}
-
 //=============================================================================
 // Interface: Point_2f
 //=============================================================================
@@ -114,13 +107,6 @@ bool operator==(const Point_2f& lhs, const Point_2f& rhs);
 bool operator!=(const Point_2f& lhs, const Point_2f& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_2f& p);
 std::string to_string(const Point_2f& v);
-
-namespace Predicate {
-bool AIsLeftOfB(const Point_2f& a, const Point_2f& b);
-bool AIsBelowB(const Point_2f& a, const Point_2f& b);
-Orientation OrientationPQR(const Point_2f& p, const Point_2f& q,
-                           const Point_2f& r);
-}
 
 //=============================================================================
 // Interface: Point_2r
@@ -163,16 +149,6 @@ std::string to_string(const Point_2r& p);
 
 namespace Construction {
 Point_2r Z2Neighbor(const Point_2r& p, Quadrant quad);
-}
-
-namespace Predicate {
-bool AIsLeftOfB(const Point_2r& a, const Point_2r& b);
-bool AIsBelowB(const Point_2r& a, const Point_2r& b);
-Orientation OrientationPQR(const Point_2r& p, const Point_2r& q,
-                           const Point_2r& r);
-
-bool RIsLeftOrInsidePQ(const Point_2r& p, const Point_2r& q, const Point_2r& r);
-
 }
 
 //=============================================================================
@@ -227,16 +203,6 @@ inline std::string to_string(const Point_2i& p) {
     std::stringstream ss;
     ss << "(" << p.x() << ", " << p.y() << ")";
     return ss.str();
-}
-
-// Predicates =================================================================
-
-inline bool Predicate::AIsLeftOfB(const Point_2i& a, const Point_2i& b) {
-    return a.x() < b.x() || (a.x() == b.x() && a.y() < b.y());
-}
-
-inline bool Predicate::AIsBelowB(const Point_2i& a, const Point_2i& b) {
-    return a.y() < b.y() || (a.y() == b.y() && a.x() < b.x());
 }
 
 // Accessors/Mutators =========================================================
@@ -318,16 +284,6 @@ inline std::string to_string(const Point_2f& p) {
     std::stringstream ss;
     ss << "(" << p.x() << ", " << p.y() << ")";
     return ss.str();
-}
-
-// Predicates =================================================================
-
-inline bool Predicate::AIsLeftOfB(const Point_2f& a, const Point_2f& b) {
-    return a.x() < b.x() || (a.x() == b.x() && a.y() < b.y());
-}
-
-inline bool Predicate::AIsBelowB(const Point_2f& a, const Point_2f& b) {
-    return a.y() < b.y() || (a.y() == b.y() && a.x() < b.x());
 }
 
 // Accessors/Mutators =========================================================
@@ -449,16 +405,6 @@ inline Point_2r Construction::Z2Neighbor(const Point_2r& p, Quadrant quad) {
     case QUADRANT_SOUTHWEST: return Point_2r(Floor(p.x()), Floor(p.y()));
     default: return p;
     }
-}
-
-// Predicates =================================================================
-
-inline bool Predicate::AIsLeftOfB(const Point_2r& a, const Point_2r& b) {
-    return a.x() < b.x() || (a.x() == b.x() && a.y() < b.y());
-}
-
-inline bool Predicate::AIsBelowB(const Point_2r& a, const Point_2r& b) {
-    return a.y() < b.y() || (a.y() == b.y() && a.x() < b.x());
 }
 
 // Accessors/Mutators =========================================================
@@ -599,15 +545,6 @@ bool operator==(const Point_3r& lhs, const Point_3r& rhs);
 bool operator!=(const Point_3r& lhs, const Point_3r& rhs);
 std::ostream& operator<<(std::ostream& o, const Point_3r& p);
 std::string to_string(const Point_3r& p);
-
-namespace Predicate {
-/*
-rational InCircle(const Point_3r& a, const Point_3r& b, const Point_3r& c,
-                  const Point_3r& d);
-rational Orient2D(const Point_3r& a, const Point_3r& b, const Point_3r& c);
-*/
-
-}
 
 //=============================================================================
 // Implementation: Point_3i
