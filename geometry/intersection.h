@@ -26,6 +26,8 @@
 #include "polygon.h"
 #include "sphere.h"
 #include "pointset.h"
+#include "polytope.h"
+#include "quadedge.h"
 
 namespace DDAD {
 
@@ -393,6 +395,59 @@ public:
 protected:
     const Ray_3r *ray_;
     const PointSet_3r *pointset_;
+    Type type_;
+    rational time_;
+};
+
+class Ray_3rPolytope_3r {
+public:
+    enum Type {
+        INTERSECTION_EMPTY,
+        INTERSECTION_POINT
+    };
+
+    Ray_3rPolytope_3r() :
+        ray_(nullptr),
+        polytope_(nullptr),
+        type_(Type::INTERSECTION_EMPTY) {}
+
+    Ray_3rPolytope_3r(const Ray_3r *ray, const Polytope_3r *polytope) :
+        ray_(ray),
+        polytope_(polytope) {
+
+        type_ = Type::INTERSECTION_EMPTY;
+
+        rational earliest_time = 99999999; // FIXME
+        QuadEdge::CellVertexIterator cellVerts(polytope_->cell());
+        QuadEdge::Vertex *v;
+        while ((v = cellVerts.next()) != 0) {
+            Sphere_3r tol_point(*v->pos, 8.0);
+            Ray_3rSphere_3r isect(ray, &tol_point);
+            if (isect.type() != Ray_3rSphere_3r::IntersectionType::EMPTY) {
+                type_ = Type::INTERSECTION_POINT; // FIXME
+                if (isect.time_enter() < earliest_time) {
+                    earliest_time = isect.time_enter();
+                }
+            }
+        }
+
+        if (type_ != Type::INTERSECTION_EMPTY) {
+            time_ = earliest_time;
+        }
+
+    }
+
+    const Type type() const {
+        return type_;
+    }
+    const rational& time() const {
+        return time_;
+    }
+
+
+protected:
+    const Ray_3r *ray_;
+    const Polytope_3r *polytope_;
     Type type_;
     rational time_;
 };
