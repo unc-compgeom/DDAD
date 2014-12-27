@@ -18,6 +18,7 @@
 
 #include "common.h"
 #include "point.h"
+#include "matrix.h"
 
 namespace DDAD {
 

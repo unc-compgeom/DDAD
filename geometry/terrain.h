@@ -22,6 +22,7 @@
 #include "matrix.h"
 #include "point.h"
 #include "pointset.h"
+#include "predicate.h"
 
 using namespace DDAD::Visual;
 
@@ -32,15 +33,15 @@ public:
     AABB_2r() {}
 
     AABB_2r(const PointSet_3r& pointset) {
-        rational maxx, maxy, maxz, minx;
-        minx = maxx = samples.at(0).x();
-        miny = maxy = samples.at(0).y();
+        rational minx, miny, maxx, maxy;
+        minx = maxx = pointset.points()[0]->x();
+        miny = maxy = pointset.points()[0]->y();
 
         for (auto point : pointset.points()) {
-            minx = std::min(point.x(), minx);
-            miny = std::min(point.y(), miny);
-            maxx = std::max(point.x(), maxx);
-            maxy = std::max(point.y(), maxy);
+            minx = std::min(point->x(), minx);
+            miny = std::min(point->y(), miny);
+            maxx = std::max(point->x(), maxx);
+            maxy = std::max(point->y(), maxy);
         }
 
         min_.set_x(minx);
@@ -106,8 +107,12 @@ public:
     void AddSample(const Point_3r& sample);
 
 private:
-    QuadEdge::Cell terrain_;
+    QuadEdge::Cell* terrain_;
     AABB_2r region_;
+
+    Material mat_vertex_;
+    Material mat_edge_;
+    Material mat_face_;
 };
 
 RegionalTerrain_3r DelaunayTerrain(const PointSet_3r&, IGeometryObserver* obs);
@@ -124,7 +129,7 @@ inline RegionalTerrain_3r DelaunayTerrain(const PointSet_3r& samples,
     terrain.Initialize(AABB_2r(samples));
 
     for (auto sample : samples.points()) {
-        terrain.AddSample(sample);
+        terrain.AddSample(*sample);
     }
 
     return terrain;
@@ -147,35 +152,38 @@ inline void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
 
     region_ = region;
 
-    // setup bounding triangle topology
+    // setup bbox topology
     terrain_ = QuadEdge::Cell::make();
 
+    // grab the initial vertex
     QuadEdge::CellVertexIterator iter(terrain_);
     QuadEdge::Vertex *v1 = iter.next();
 
-    QuadEdge::Edge *a = v1->getEdge();
-    QuadEdge::Face *left = a->Left();
-    QuadEdge::Face *right = a->Right();
+    // grab left face (inside) and right face (outside)
+    QuadEdge::Face *left = v1->getEdge()->Left();
+    QuadEdge::Face *right = v1->getEdge()->Right();
 
+    // create 3 new vertices along the initial edge
     QuadEdge::Vertex *v2 = terrain_->makeVertexEdge(v1, left, right)->Dest();
     QuadEdge::Vertex *v3 = terrain_->makeVertexEdge(v2, left, right)->Dest();
+    QuadEdge::Vertex *v4 = terrain_->makeVertexEdge(v3, left, right)->Dest();
 
-    // compute the max variance along a cardinal axis
-    float dx = maxx - minx;
-    float dy = maxy - miny;
-    float dmax = std::max(dx, dy);
-    dmax = std::max(dmax, 10.0f);   // in case of a single point
-    float cx = dx * 0.5f;
-    float cy = dy * 0.5f;
-
-    // set triangle vertex positions
-    v1->pos = std::make_shared<Point_3r>(cx - 20.0f * dmax, cy - dmax, 0);
+    // set bbox vertex positions ccw
+    v1->pos = std::make_shared<Point_3r>(region.min().x(), region.min().y(), 0);
     SigRegisterPoint_3r(*v1->pos);
-    v2->pos = std::make_shared<Point_3r>(cx + 20.0f * dmax, cy - dmax, 0);
-    SigRegisterPoint_3r(*v2->pos);
-    v3->pos = std::make_shared<Point_3r>(cx, cy + 20.0f * dmax, 0);
-    SigRegisterPoint_3r(*v3->pos);
+    SigPushVisualPoint_3r(*v1->pos, Visual::Point(mat_vertex_));
 
+    v2->pos = std::make_shared<Point_3r>(region.max().x(), region.min().y(), 0);
+    SigRegisterPoint_3r(*v2->pos);
+    SigPushVisualPoint_3r(*v2->pos, Visual::Point(mat_vertex_));
+
+    v3->pos = std::make_shared<Point_3r>(region.max().x(), region.max().y(), 0);
+    SigRegisterPoint_3r(*v3->pos);
+    SigPushVisualPoint_3r(*v3->pos, Visual::Point(mat_vertex_));
+
+    v4->pos = std::make_shared<Point_3r>(region.min().x(), region.max().y(), 0);
+    SigRegisterPoint_3r(*v4->pos);
+    SigPushVisualPoint_3r(*v4->pos, Visual::Point(mat_vertex_));
 }
 
 inline void RegionalTerrain_3r::AddSample(const Point_3r& sample) {

@@ -419,6 +419,8 @@ void SceneObserver::onCreatePointSet(const QVector<QVector3D>& data) {
 
 void SceneObserver::onComputeTerrainMeshForSelectedPointSet() {
     LOG(DEBUG) << "computing terrain mesh for selected point set...";
+
+    DDAD::DelaunayTerrain(SelectedPointSet_3()->model_point_set(), this);
 }
 
 //=============================================================================
