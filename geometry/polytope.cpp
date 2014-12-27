@@ -28,6 +28,52 @@ namespace DDAD {
 
 Polytope_3r::Polytope_3r() {}
 
+Polytope_3r::~Polytope_3r() {
+    LOG(DEBUG) << "destroying polytope...";
+
+    // remove faces and edges
+    QuadEdge::CellFaceIterator cellFaces(cell_);
+    QuadEdge::Face *f;
+    while ((f = cellFaces.next()) != 0) {
+        QuadEdge::FaceEdgeIterator faceEdges(f);
+        QuadEdge::Edge *e;
+
+        e = faceEdges.next();
+        if (e->Org() < e->Dest()) {
+            SigPopVisualSegment_3r(Segment_3r(e->Org()->pos, e->Dest()->pos));
+        }
+        auto fan_pivot = e->Org()->pos;
+        e = faceEdges.next();
+        if (e->Org() < e->Dest()) {
+            SigPopVisualSegment_3r(Segment_3r(e->Org()->pos, e->Dest()->pos));
+        }
+        auto fan_middle = e->Org()->pos;
+        e = faceEdges.next();
+        if (e->Org() < e->Dest()) {
+            SigPopVisualSegment_3r(Segment_3r(e->Org()->pos, e->Dest()->pos));
+        }
+        auto fan_last = e->Org()->pos;
+        Triangle_3r tri0(fan_pivot, fan_middle, fan_last);
+        SigPopVisualTriangle_3r(tri0);
+        while ((e = faceEdges.next()) != 0) {
+            fan_middle = fan_last;
+            fan_last = e->Org()->pos;
+            Triangle_3r tri(fan_pivot, fan_middle, fan_last);
+            SigPopVisualTriangle_3r(tri);
+            if (e->Org() < e->Dest()) {
+                SigPopVisualSegment_3r(Segment_3r(e->Org()->pos, e->Dest()->pos));
+            }
+        }
+    }
+
+    // remove vertices
+    QuadEdge::CellVertexIterator cellVerts(cell_);
+    QuadEdge::Vertex *v;
+    while ((v = cellVerts.next()) != 0) {
+        SigPopVisualPoint_3r(*v->pos);
+    }
+}
+
 void Polytope_3r::Initialize(const Point_3f& start, const Point_3f& cur) {
     cell_ = QuadEdge::Cell::make();
     start_ = start;
