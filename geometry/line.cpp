@@ -15,6 +15,7 @@
 
 #include "common.h"
 #include "line.h"
+#include "predicate.h"
 
 namespace DDAD {
 

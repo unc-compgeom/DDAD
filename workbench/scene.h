@@ -35,6 +35,7 @@
 #include "../geometry/visual.h"
 #include "../geometry/triangle.h"
 #include "../geometry/intersection.h"
+#include "../geometry/terrain.h"
 
 bool operator<(const QVector<uint32_t>& a, const QVector<uint32_t>& b);
 
@@ -334,6 +335,10 @@ public:
     }
     void set_name(const QString &name) override {
         name_ = name;
+    }
+
+    const PointSet_3r& model_point_set() const {
+        return model_point_set_;
     }
 
 private:

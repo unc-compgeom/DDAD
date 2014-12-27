@@ -13,14 +13,20 @@
  * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*!
+ * @brief Implementations of Polyline/Polygon types and related algorithms.
+ */
+
 #include "common.h"
 #include "arithmetic.h"
 #include "line.h"
 #include "intersection.h"
 #include "polygon.h"
 #include "wedge.h"
+#include "predicate.h"
 
 using namespace DDAD::Predicate;
+using namespace DDAD::Visual;
 
 namespace DDAD {
 
@@ -28,16 +34,22 @@ namespace DDAD {
 // Algorithms
 //=============================================================================
 
-Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer) {
+/*!
+ * @brief Melkman computes the convex hull of a simple polyline P in O(n) time.
+ * @param P - simple polyline with n vertices.
+ * @param obs - observer to recieve visualization events.
+ * @return convex hull of P.
+ */
+Polygon_2r Melkman(const Polyline_2r& P, IGeometryObserver* obs) {
     Polygon_2r hull;
 
-    Visual::Material hull_mat;
-    hull_mat.set_ambient(Visual::Color::MAGENTA);
+    // initialize visualization settings
+    Material hull_mat;
+    hull_mat.set_ambient(Color::MAGENTA);
     hull.set_mat_vertex(hull_mat);
     hull.set_mat_edge(hull_mat);
     hull.set_z_order(1);
-
-    hull.AddObserver(observer);
+    hull.AddObserver(obs);
 
     // initialize hull
     hull.push_back(*P[1]);
@@ -61,9 +73,23 @@ Polygon_2r Melkman(const Polyline_2r& P, Visual::IGeometryObserver* observer) {
     return hull;
 }
 
-Polygon_2r IntegerHull(const Polygon_2r& P, Visual::IGeometryObserver *observer) {
+/*!
+ * @brief IntegerHull computes the m-vertex integer hull of a n-vertex convex
+ * polygon with diameter d in O(n + m log d) time.
+ * @param P - convex polygon with n vertices.
+ * @param obs - observer to recieve visualization events.
+ * @return integer hull of P.
+ */
+Polygon_2r IntegerHull(const Polygon_2r& P, IGeometryObserver *obs) {
     Polygon_2r ihull;
-    ihull.AddObserver(observer);
+
+    // initialize visualization settings
+    Material ihull_mat;
+    ihull_mat.set_ambient(Color::MAGENTA);
+    ihull.set_mat_vertex(ihull_mat);
+    ihull.set_mat_edge(ihull_mat);
+    ihull.set_z_order(1);
+    ihull.AddObserver(obs);
 
     /*
     // canonicalize the boundary chain
@@ -155,24 +181,9 @@ void Polygon_2r::push_back(const Point_2r& v) {
 
 void Polygon_2r::push_back(SharedPoint_2r v) {
     boundary_.push_back(v);
-
-    /*
-    if (size() > 3) {
-        LOG(INFO) << "push_back " << back(0)->unique_id() << ", " << back(1)->unique_id() << ", " << back(2)->unique_id();
-        SigPushVisualTriangle_2r(Triangle_2r(back(0), back(1), back(2)),
-                                 Visual::Triangle(mat_face_));
-    }
-    */
 }
 
 void Polygon_2r::pop_back() {
-    /*
-    if (size() > 3) {
-        LOG(INFO) << "pop_back " << back(0)->unique_id() << ", " << back(1)->unique_id() << ", " << back(2)->unique_id();
-        SigPopVisualTriangle_2r(Triangle_2r(back(0), back(1), back(2)));
-    }
-    */
-
     boundary_.pop_back();
 }
 
@@ -186,24 +197,9 @@ void Polygon_2r::push_front(const Point_2r& v) {
 
 void Polygon_2r::push_front(SharedPoint_2r v) {
     boundary_.push_front(v);
-
-    /*
-    if (size() > 3) {
-        LOG(INFO) << "push_front " << front(0)->unique_id() << ", " << front(2)->unique_id() << ", " << front(1)->unique_id();
-        SigPushVisualTriangle_2r(Triangle_2r(front(0), front(2), front(1)),
-                                 Visual::Triangle(mat_face_));
-    }
-    */
 }
 
 void Polygon_2r::pop_front() {
-    /*
-    if (size() > 3) {
-        LOG(INFO) << "pop_front " << front(0)->unique_id() << ", " << front(2)->unique_id() << ", " << front(1)->unique_id();
-        SigPopVisualTriangle_2r(Triangle_2r(front(0), front(2), front(1)));
-    }
-    */
-
     boundary_.pop_front();
 }
 

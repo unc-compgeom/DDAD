@@ -1,4 +1,5 @@
 add_library(geometry
+    aabb.cpp
     arithmetic.cpp
     common.cpp
     intersection.cpp
@@ -8,8 +9,10 @@ add_library(geometry
     pointset.cpp
     polygon.cpp
     polytope.cpp
+    predicate.cpp
     quadedge.cpp
     sphere.cpp
+    terrain.cpp
     triangle.cpp
     triangulation.cpp
     vector.h
