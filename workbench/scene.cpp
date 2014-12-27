@@ -320,10 +320,16 @@ void SceneObserver::onUpdateNewPolyline(const QVector2D& v) {
 void SceneObserver::onEndCreatePolyline() {
     SelectedPolyline_2()->Select();
     ConfigManager::get().set_input_state(InputState::CREATE_POLYLINE);
-    emit UpdateContextSensitiveMenus("polyline_2");
+    emit UpdateContextSensitiveMenus(SelectedObject()->scene_object_type(),
+                                     SelectedObject()->name());
 }
 
 void SceneObserver::onExecuteMelkman() {
+    // TODO: capture resulting polygon to create scene object
+    DDAD::Melkman(SelectedPolyline_2()->model_polyline(), this);
+}
+
+void SceneObserver::onComputeMelkmanForSelectedPolyline() {
     // TODO: capture resulting polygon to create scene object
     DDAD::Melkman(SelectedPolyline_2()->model_polyline(), this);
 }
@@ -354,12 +360,41 @@ void SceneObserver::onUpdateNewPolytope(const QVector2D& cur) {
 
 void SceneObserver::onEndCreatePolytope() {
     SelectedPolytope_3()->Select();
-    emit UpdateContextSensitiveMenus("polytope_3");
+    emit UpdateContextSensitiveMenus(SelectedObject()->scene_object_type(),
+                                     SelectedObject()->name());
 }
 
 //=============================================================================
 // PointSet_3 management
 //=============================================================================
+
+void SceneObserver::onBeginCreatePointSet(const QVector2D &cur) {
+    LOG(DEBUG) << "scene observer creating new point set";
+
+    onDeselect();
+
+    static int numPointSets = 0;
+
+    auto name = QString("pointset3_%1").arg(numPointSets++);
+    auto pointset = QSharedPointer<ISceneObject>(new ScenePointSet_3());
+    pointset->set_name(name);
+    scene_objects_.insert(name, pointset);
+    selected_objects_.push_back(pointset);
+    SelectedPointSet_3()->AddObserver(this);
+    SelectedPointSet_3()->Initialize(cur);
+    ConfigManager::get().set_input_state(InputState::UPDATE_POINTSET);
+}
+
+void SceneObserver::onUpdateNewPointSet(const QVector2D &cur) {
+    SelectedPointSet_3()->Update(cur);
+}
+
+void SceneObserver::onEndCreatePointSet() {
+    SelectedPointSet_3()->Select();
+    ConfigManager::get().set_input_state(InputState::CREATE_POINTSET);
+    emit UpdateContextSensitiveMenus(SelectedObject()->scene_object_type(),
+                                     SelectedObject()->name());
+}
 
 void SceneObserver::onCreatePointSet(const QVector<QVector3D>& data) {
     LOG(DEBUG) << "onCreatePointSet";
@@ -378,7 +413,12 @@ void SceneObserver::onCreatePointSet(const QVector<QVector3D>& data) {
     // TODO: should probably have "onEndCreatePointSet" to match others
     // for now just doing select call here
     SelectedPointSet_3()->Select();
-    emit UpdateContextSensitiveMenus("pointset_3");
+    emit UpdateContextSensitiveMenus(SelectedObject()->scene_object_type(),
+                                     SelectedObject()->name());
+}
+
+void SceneObserver::onComputeTerrainMeshForSelectedPointSet() {
+    LOG(DEBUG) << "computing terrain mesh for selected point set...";
 }
 
 //=============================================================================
@@ -456,6 +496,8 @@ void SceneObserver::onDeleteSelectedObject() {
         LOG(DEBUG) << "removed " << scene_objects_.remove(object->name()) << " objects...";
     }
     selected_objects_.clear();
+
+    emit UpdateContextSensitiveMenus("", "");
 }
 
 /*
@@ -496,31 +538,18 @@ void SceneObserver::onSelectObject(const Ray_3r& selection_ray) {
         }
     }
 
-    QString selected_object_type = "";
-
     if (selected_object) {
         LOG(DEBUG) << "selected object: " << selected_object->name().toStdString();
 
         selected_object->Select();
         selected_objects_.push_back(selected_object);
-        switch (selected_object->scene_object_type()) {
-        case SceneObjectType::POLYLINE_2:
-            selected_object_type = "polyline_2";
-            break;
-        case SceneObjectType::POINTSET_3:
-            selected_object_type = "pointset_3";
-            break;
-        case SceneObjectType::POLYTOPE_3:
-            selected_object_type = "polytope_3";
-            break;
-        default:
-            break;
-        }
+
+        emit UpdateContextSensitiveMenus(SelectedObject()->scene_object_type(),
+                                         SelectedObject()->name());
     } else {
         LOG(DEBUG) << "no object selected.";
+        emit UpdateContextSensitiveMenus("", "");
     }
-
-    emit UpdateContextSensitiveMenus(selected_object_type);
 }
 
 void SceneObserver::onSelectObjectFromOrtho(const QVector2D& coords) {
@@ -544,6 +573,8 @@ void SceneObserver::onDeselect() {
         object->Deselect();
     }
     selected_objects_.clear();
+
+    emit UpdateContextSensitiveMenus("", "");
 }
 
 int SceneObserver::NumObjects() const {

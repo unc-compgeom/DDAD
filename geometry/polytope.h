@@ -39,11 +39,12 @@ class Cell;
 class Polytope_3r : public Visual::Geometry {
 public:
     Polytope_3r();
+    ~Polytope_3r();
 
     void Initialize(const Point_3f& start, const Point_3f& cur);
     void Update(const Point_3f& cur);
 
-    QuadEdge::Cell* cell() {
+    QuadEdge::Cell* cell() const {
         return cell_;
     }
     

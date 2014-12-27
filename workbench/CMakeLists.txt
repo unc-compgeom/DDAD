@@ -18,8 +18,11 @@ qt5_wrap_ui(
     forms/dialog_preferences.ui
     forms/window_main.ui
     forms/point_set_creation_method.ui
+    forms/point_set_algorithms.ui
     forms/polyline_creation_method.ui
+    forms/polyline_algorithms.ui
     forms/polytope_creation_method.ui
+    forms/polytope_algorithms.ui
 )
 
 qt5_add_resources(
@@ -40,8 +43,11 @@ add_executable(
     qt_widget_perspective.cpp
     qt_window_main.cpp
     qt_point_set_creation_method.cpp
+    qt_point_set_algorithms.cpp
     qt_polyline_creation_method.cpp
+    qt_polyline_algorithms.cpp
     qt_polytope_creation_method.cpp
+    qt_polytope_algorithms.cpp
     scene.cpp
     common.h
     resources/icon.rc

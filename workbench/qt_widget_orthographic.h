@@ -67,6 +67,11 @@ signals:
     void ChangeMessage(const QString& msg);
     void SelectObject(const QVector2D& coords);
 
+    // pointset
+    void BeginCreatePointSet(const QVector2D& start);
+    void UpdateNewPointSet(const QVector2D& cur);
+    void EndCreatePointSet();
+
     // polyline
     void BeginCreatePolyline(const QVector2D& start);
     void UpdateNewPolyline(const QVector2D& cur);
