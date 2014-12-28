@@ -107,6 +107,31 @@ public:
     void AddSample(const Point_3r& sample);
 
 private:
+
+    // visualization helper functions
+    void SigPushEdge(QuadEdge::Edge* e);
+    void SigPopEdge(QuadEdge::Edge* e);
+    void SigPushFace(QuadEdge::Face* f);
+    void SigPopFace(QuadEdge::Face* f);
+
+    QuadEdge::Edge* MakeVertexEdge(QuadEdge::Vertex *v,
+                                   QuadEdge::Face *left,
+                                   QuadEdge::Face *right,
+                                   SharedPoint_3r vnew_pos);
+
+    QuadEdge::Edge* MakeFaceEdge(QuadEdge::Face *f,
+                                 QuadEdge::Vertex *org,
+                                 QuadEdge::Vertex *dest);
+
+    void KillVertexEdge(QuadEdge::Edge *e);
+    void KillFaceEdge(QuadEdge::Edge *e);
+
+    // delaunay triangulation subroutines
+    QuadEdge::Edge* LocalizePoint(const Point_3r& sample);
+    void TestAndSwapEdges(std::vector<QuadEdge::Edge*>& edges,
+                          const Point_3r& sample);
+
+
     QuadEdge::Cell* terrain_;
     AABB_2r region_;
 
@@ -139,13 +164,16 @@ inline RegionalTerrain_3r DelaunayTerrain(const PointSet_3r& samples,
 // Implementation: RegionalTerrain_3r
 //=============================================================================
 
-inline RegionalTerrain_3r::RegionalTerrain_3r() {
+inline RegionalTerrain_3r::RegionalTerrain_3r() :
+    mat_face_(Material(Color::GRAY, Color::GRAY, Color::GRAY)) {
     LOG(DEBUG) << "constructing terrain";
 }
 
 inline RegionalTerrain_3r::~RegionalTerrain_3r() {
     LOG(DEBUG) << "destroying terrain";
 }
+
+// Triangulation Methods ======================================================
 
 inline void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
     LOG(DEBUG) << "initializing terrain";
@@ -169,27 +197,236 @@ inline void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
     QuadEdge::Vertex *v4 = terrain_->makeVertexEdge(v3, left, right)->Dest();
 
     // set bbox vertex positions ccw
-    v1->pos = std::make_shared<Point_3r>(region.min().x(), region.min().y(), 0);
-    SigRegisterPoint_3r(*v1->pos);
-    SigPushVisualPoint_3r(*v1->pos, Visual::Point(mat_vertex_));
+    v1->pos = std::make_shared<Point_3r>(region.min().x()-1, region.min().y()-1, 0);
+    v2->pos = std::make_shared<Point_3r>(region.max().x()+1, region.min().y()-1, 0);
+    v3->pos = std::make_shared<Point_3r>(region.max().x()+1, region.max().y()+1, 0);
+    v4->pos = std::make_shared<Point_3r>(region.min().x()-1, region.max().y()+1, 0);
 
-    v2->pos = std::make_shared<Point_3r>(region.max().x(), region.min().y(), 0);
-    SigRegisterPoint_3r(*v2->pos);
-    SigPushVisualPoint_3r(*v2->pos, Visual::Point(mat_vertex_));
+    // draw vertices
+    QuadEdge::CellVertexIterator terrain_verts(terrain_);
+    QuadEdge::Vertex *v;
+    while ((v = terrain_verts.next()) != 0) {
+        SigRegisterPoint_3r(*v->pos);
+        SigPushVisualPoint_3r(*v->pos, Visual::Point(mat_vertex_));
+    }
 
-    v3->pos = std::make_shared<Point_3r>(region.max().x(), region.max().y(), 0);
-    SigRegisterPoint_3r(*v3->pos);
-    SigPushVisualPoint_3r(*v3->pos, Visual::Point(mat_vertex_));
+    // draw faces and edges
+    QuadEdge::CellFaceIterator terrain_faces(terrain_);
+    QuadEdge::Face *f;
+    while ((f = terrain_faces.next()) != 0) {
+        SigPushFace(f);
 
-    v4->pos = std::make_shared<Point_3r>(region.min().x(), region.max().y(), 0);
-    SigRegisterPoint_3r(*v4->pos);
-    SigPushVisualPoint_3r(*v4->pos, Visual::Point(mat_vertex_));
+        QuadEdge::FaceEdgeIterator face_edges(f);
+        QuadEdge::Edge *e;
+        while ((e = face_edges.next()) != 0) {
+            SigPushEdge(e);
+        }
+    }
+
+    // add edge across diagonal
+    MakeFaceEdge(left, v1, v3);
 }
 
 inline void RegionalTerrain_3r::AddSample(const Point_3r& sample) {
+    SharedPoint_3r sample_r = std::make_shared<Point_3r>(
+        sample.x(), sample.y(), sample.z()
+    );
+    SigRegisterPoint_3r(*sample_r);
 
+    // locate point
+    QuadEdge::Edge *e0;
+    QuadEdge::CellFaceIterator fitr(terrain_);
+    e0 = fitr.next()->getEdge();
+    QuadEdge::Edge *e1 = LocalizePoint(*sample_r);
+
+    QuadEdge::Vertex *v1 = e1->Org();
+    QuadEdge::Vertex *v2 = e1->Dest();
+    QuadEdge::Face *f = e1->Left();
+    QuadEdge::Edge *e2 = e1->Lnext();
+    QuadEdge::Edge *e3 = e1->Lprev();
+    QuadEdge::Vertex *v3 = e2->Dest();
+
+    QuadEdge::Edge *newEdge1 = MakeFaceEdge(f, v1, v2);
+    QuadEdge::Face *f2 = newEdge1->Right();
+
+    QuadEdge::Vertex *vnew = MakeVertexEdge(v2, f2, f, sample_r)->Dest();
+    MakeFaceEdge(f, vnew, v3);
+
+    std::vector<QuadEdge::Edge*> neighbors;
+    neighbors.push_back(e1->Sym());
+    neighbors.push_back(e2->Sym());
+    neighbors.push_back(e3->Sym());
+    TestAndSwapEdges(neighbors, *sample_r);
 }
 
+inline QuadEdge::Edge* RegionalTerrain_3r::LocalizePoint(const Point_3r& sample) {
+    QuadEdge::CellFaceIterator faces(terrain_);
+    QuadEdge::Face *f = nullptr;
+    while ((f = faces.next())) {
+        QuadEdge::Edge *e1 = f->getEdge();
+        QuadEdge::Edge *e2 = e1->Lnext();
+        QuadEdge::Vertex *v1 = e1->Org();
+        QuadEdge::Vertex *v2 = e1->Dest();
+        QuadEdge::Vertex *v3 = e2->Dest();
+        if (Predicate::Orient2D(*v1->pos, *v2->pos, sample) >= 0 &&
+            Predicate::Orient2D(*v2->pos, *v3->pos, sample) >= 0 &&
+            Predicate::Orient2D(*v3->pos, *v1->pos, sample) >= 0) {
+            return e1;
+        }
+    }
+
+    return nullptr;
+}
+
+inline void RegionalTerrain_3r::TestAndSwapEdges(std::vector<QuadEdge::Edge*>& edges,
+                                                 const Point_3r& sample) {
+    while (!edges.empty()) {
+        QuadEdge::Edge *e1 = edges.back();
+        edges.pop_back();
+        QuadEdge::Vertex *v1 = e1->Org(), *v2 = e1->Dest();
+        QuadEdge::Edge *e2 = e1->Lnext();
+        QuadEdge::Edge *e3 = e1->Lprev();
+        QuadEdge::Vertex *v3 = e2->Dest();
+        QuadEdge::Edge *e4 = e1->Rnext();
+        QuadEdge::Edge *e5 = e1->Rprev();
+
+        if (Predicate::InCircle(*v1->pos, *v2->pos, *v3->pos, sample) > 0) {
+            QuadEdge::Face *left = e1->Left();
+            KillFaceEdge(e1);
+            MakeFaceEdge(left, e2->Dest(), e5->Dest());
+            edges.push_back(e2->Sym());
+            edges.push_back(e3->Sym());
+        }
+    }
+}
+
+// Visualization Methods ======================================================
+
+inline void RegionalTerrain_3r::SigPushEdge(QuadEdge::Edge* e) {
+    Segment_3r s(e->Org()->pos, e->Dest()->pos);
+    SigPushVisualSegment_3r(s, Visual::Segment(mat_edge_), 1000);
+}
+
+inline void RegionalTerrain_3r::SigPopEdge(QuadEdge::Edge* e) {
+    Segment_3r s(e->Org()->pos, e->Dest()->pos);
+    SigPopVisualSegment_3r(s);
+}
+
+inline void RegionalTerrain_3r::SigPushFace(QuadEdge::Face* f) {
+    QuadEdge::FaceEdgeIterator faceEdges(f);
+    QuadEdge::Edge *e;
+
+    e = faceEdges.next();
+    auto fan_pivot = e->Org()->pos;
+    e = faceEdges.next();
+    auto fan_middle = e->Org()->pos;
+    e = faceEdges.next();
+    auto fan_last = e->Org()->pos;
+    Triangle_3r tri0(fan_pivot, fan_middle, fan_last);
+    SigPushVisualTriangle_3r(tri0, Visual::Triangle(mat_face_), 1000);
+    while ((e = faceEdges.next()) != 0) {
+        fan_middle = fan_last;
+        fan_last = e->Org()->pos;
+        Triangle_3r tri(fan_pivot, fan_middle, fan_last);
+        SigPushVisualTriangle_3r(tri, Visual::Triangle(mat_face_), 1000);
+    }
+}
+
+inline void RegionalTerrain_3r::SigPopFace(QuadEdge::Face* f) {
+    QuadEdge::FaceEdgeIterator faceEdges(f);
+    QuadEdge::Edge *e;
+
+    e = faceEdges.next();
+    auto fan_pivot = e->Org()->pos;
+    e = faceEdges.next();
+    auto fan_middle = e->Org()->pos;
+    e = faceEdges.next();
+    auto fan_last = e->Org()->pos;
+    Triangle_3r tri0(fan_pivot, fan_middle, fan_last);
+    SigPopVisualTriangle_3r(tri0);
+    while ((e = faceEdges.next()) != 0) {
+        fan_middle = fan_last;
+        fan_last = e->Org()->pos;
+        Triangle_3r tri(fan_pivot, fan_middle, fan_last);
+        SigPopVisualTriangle_3r(tri);
+    }
+}
+
+inline QuadEdge::Edge* RegionalTerrain_3r::MakeVertexEdge(QuadEdge::Vertex *v,
+                                                          QuadEdge::Face *left,
+                                                          QuadEdge::Face *right,
+                                                          SharedPoint_3r vnew_pos) {
+    SigPopFace(left);
+    SigPopFace(right);
+    QuadEdge::Edge* e = terrain_->makeVertexEdge(v, left, right);
+    QuadEdge::Vertex* vnew = e->Dest();
+    vnew->pos = vnew_pos;
+    // assume vpos is registered
+    SigPushVisualPoint_3r(*vnew->pos, Visual::Point(mat_vertex_));
+    SigPushEdge(e);
+    SigPushEdge(e->Sym());
+    return e;
+}
+
+inline QuadEdge::Edge* RegionalTerrain_3r::MakeFaceEdge(QuadEdge::Face *f,
+                                                        QuadEdge::Vertex *org,
+                                                        QuadEdge::Vertex *dest) {
+    SigPopFace(f);
+    QuadEdge::Edge* e = terrain_->makeFaceEdge(f, org, dest);
+    SigPushFace(e->Left());
+    SigPushFace(e->Right());
+    SigPushEdge(e);
+    SigPushEdge(e->Sym());
+    return e;
+}
+
+inline void RegionalTerrain_3r::KillVertexEdge(QuadEdge::Edge *e) {
+    QuadEdge::Face* left = e->Left();
+    QuadEdge::Face* right = e->Right();
+    SigPopFace(left);
+    SigPopFace(right);
+    SigPopEdge(e);
+    SigPopEdge(e->Sym());
+    SigPopVisualPoint_3r(*e->Dest()->pos);
+    terrain_->killVertexEdge(e);
+    SigPushFace(left);
+    SigPushFace(right);
+}
+
+inline void RegionalTerrain_3r::KillFaceEdge(QuadEdge::Edge *e) {
+    QuadEdge::Face* left = e->Left();
+    QuadEdge::Face* right = e->Right();
+    SigPopFace(left);
+    SigPopFace(right);
+    SigPopEdge(e);
+    SigPopEdge(e->Sym());
+    terrain_->killFaceEdge(e);
+    SigPushFace(left);
+}
+
+
+
+/*
+ * there is the question of whether to push only one directed edge or both
+ * directed edges. this is complicated by the fact that the edge iterator
+ * construction visits edges twice. it is easier to push both.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
 
 
