@@ -109,6 +109,8 @@ public:
 private:
 
     // visualization helper functions
+    void SigPushVertex(QuadEdge::Vertex* v);
+    void SigPopVertex(QuadEdge::Vertex* v);
     void SigPushEdge(QuadEdge::Edge* e);
     void SigPopEdge(QuadEdge::Edge* e);
     void SigPushFace(QuadEdge::Face* f);
@@ -125,6 +127,8 @@ private:
 
     void KillVertexEdge(QuadEdge::Edge *e);
     void KillFaceEdge(QuadEdge::Edge *e);
+
+    size_t EdgeCount(QuadEdge::Face *f);
 
     // delaunay triangulation subroutines
     QuadEdge::Edge* LocalizePoint(const Point_3r& sample);
@@ -202,12 +206,15 @@ inline void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
     v3->pos = std::make_shared<Point_3r>(region.max().x()+1, region.max().y()+1, 0);
     v4->pos = std::make_shared<Point_3r>(region.min().x()-1, region.max().y()+1, 0);
 
+    // add edge across diagonal
+    terrain_->makeFaceEdge(left, v1, v3);
+
     // draw vertices
     QuadEdge::CellVertexIterator terrain_verts(terrain_);
     QuadEdge::Vertex *v;
     while ((v = terrain_verts.next()) != 0) {
         SigRegisterPoint_3r(*v->pos);
-        SigPushVisualPoint_3r(*v->pos, Visual::Point(mat_vertex_));
+        SigPushVertex(v);
     }
 
     // draw faces and edges
@@ -222,9 +229,6 @@ inline void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
             SigPushEdge(e);
         }
     }
-
-    // add edge across diagonal
-    MakeFaceEdge(left, v1, v3);
 }
 
 inline void RegionalTerrain_3r::AddSample(const Point_3r& sample) {
@@ -233,24 +237,20 @@ inline void RegionalTerrain_3r::AddSample(const Point_3r& sample) {
     );
     SigRegisterPoint_3r(*sample_r);
 
-    // locate point
-    QuadEdge::Edge *e0;
-    QuadEdge::CellFaceIterator fitr(terrain_);
-    e0 = fitr.next()->getEdge();
+    // find the triangle containing the sample
     QuadEdge::Edge *e1 = LocalizePoint(*sample_r);
-
-    QuadEdge::Vertex *v1 = e1->Org();
-    QuadEdge::Vertex *v2 = e1->Dest();
-    QuadEdge::Face *f = e1->Left();
     QuadEdge::Edge *e2 = e1->Lnext();
     QuadEdge::Edge *e3 = e1->Lprev();
+    QuadEdge::Vertex *v1 = e1->Org();
+    QuadEdge::Vertex *v2 = e1->Dest();
     QuadEdge::Vertex *v3 = e2->Dest();
+    QuadEdge::Face *f = e1->Left();
 
-    QuadEdge::Edge *newEdge1 = MakeFaceEdge(f, v1, v2);
-    QuadEdge::Face *f2 = newEdge1->Right();
-
+    // stick the new sample into the containing triangle and update topology
+    QuadEdge::Edge *enew1 = MakeFaceEdge(f, v1, v2);
+    QuadEdge::Face *f2 = enew1->Right();
     QuadEdge::Vertex *vnew = MakeVertexEdge(v2, f2, f, sample_r)->Dest();
-    MakeFaceEdge(f, vnew, v3);
+    QuadEdge::Edge *enew2 = MakeFaceEdge(f, vnew, v3);
 
     std::vector<QuadEdge::Edge*> neighbors;
     neighbors.push_back(e1->Sym());
@@ -302,6 +302,14 @@ inline void RegionalTerrain_3r::TestAndSwapEdges(std::vector<QuadEdge::Edge*>& e
 
 // Visualization Methods ======================================================
 
+inline void RegionalTerrain_3r::SigPushVertex(QuadEdge::Vertex *v) {
+    SigPushVisualPoint_3r(*v->pos, Visual::Point(mat_vertex_));
+}
+
+inline void RegionalTerrain_3r::SigPopVertex(QuadEdge::Vertex *v) {
+    SigPopVisualPoint_3r(*v->pos);
+}
+
 inline void RegionalTerrain_3r::SigPushEdge(QuadEdge::Edge* e) {
     Segment_3r s(e->Org()->pos, e->Dest()->pos);
     SigPushVisualSegment_3r(s, Visual::Segment(mat_edge_), 1000);
@@ -313,6 +321,13 @@ inline void RegionalTerrain_3r::SigPopEdge(QuadEdge::Edge* e) {
 }
 
 inline void RegionalTerrain_3r::SigPushFace(QuadEdge::Face* f) {
+    auto face_edge_count = EdgeCount(f);
+
+    // sometimes we have loop or sliver topology, do not visualize these
+    if (face_edge_count < 3) {
+        return;
+    }
+
     QuadEdge::FaceEdgeIterator faceEdges(f);
     QuadEdge::Edge *e;
 
@@ -323,16 +338,23 @@ inline void RegionalTerrain_3r::SigPushFace(QuadEdge::Face* f) {
     e = faceEdges.next();
     auto fan_last = e->Org()->pos;
     Triangle_3r tri0(fan_pivot, fan_middle, fan_last);
-    SigPushVisualTriangle_3r(tri0, Visual::Triangle(mat_face_), 1000);
+    SigPushVisualTriangle_3r(tri0, Visual::Triangle(mat_face_));
     while ((e = faceEdges.next()) != 0) {
         fan_middle = fan_last;
         fan_last = e->Org()->pos;
         Triangle_3r tri(fan_pivot, fan_middle, fan_last);
-        SigPushVisualTriangle_3r(tri, Visual::Triangle(mat_face_), 1000);
+        SigPushVisualTriangle_3r(tri, Visual::Triangle(mat_face_));
     }
 }
 
 inline void RegionalTerrain_3r::SigPopFace(QuadEdge::Face* f) {
+    auto face_edge_count = EdgeCount(f);
+
+    // sometimes we have loop or sliver topology, do not visualize these
+    if (face_edge_count < 3) {
+        return;
+    }
+
     QuadEdge::FaceEdgeIterator faceEdges(f);
     QuadEdge::Edge *e;
 
@@ -356,16 +378,62 @@ inline QuadEdge::Edge* RegionalTerrain_3r::MakeVertexEdge(QuadEdge::Vertex *v,
                                                           QuadEdge::Face *left,
                                                           QuadEdge::Face *right,
                                                           SharedPoint_3r vnew_pos) {
-    SigPopFace(left);
-    SigPopFace(right);
-    QuadEdge::Edge* e = terrain_->makeVertexEdge(v, left, right);
-    QuadEdge::Vertex* vnew = e->Dest();
+
+    // we need to pop all faces and edges on the ccw traveral from the left
+    // face to the right face in v's orbit. the vertexedgeiterator will begin
+    // at a random edge in the orbit, and we have no way of determining whether
+    // we are inside or outside the left-to-right range on the first pass
+    // through the edges. the iterator will give us the edges back in ccw order
+    // however.
+
+    // the strategy is to place all edges in v's orbit into a list and rotate
+    // the list so that the leftmost edge to pop is the first element.
+    std::list<QuadEdge::Edge*> rotated_orbit;
+
+    // iterate through the orbit and track the leftmost edge insertion index.
+    size_t left_idx = 0;
+    size_t i = 0;
+    QuadEdge::VertexEdgeIterator orbit(v);
+    QuadEdge::Edge *e;
+    while ((e = orbit.next()) != 0) {
+        if (e->Left() == left) {
+            left_idx = i;
+        }
+        rotated_orbit.push_back(e);
+        ++i;
+    }
+
+    // move the left-right range to the beginning of list.
+    std::rotate(begin(rotated_orbit),
+                std::next(begin(rotated_orbit), left_idx),
+                end(rotated_orbit));
+
+    // pop faces and edges in left-right range.
+    for (auto edge : rotated_orbit) {
+        SigPopFace(edge->Left());
+        if (edge->Left() == right) {
+            break;
+        }
+        SigPopEdge(edge);
+    }
+
+    // make topological changes to QuadEdge cell, set new vertex position.
+    QuadEdge::Edge* enew = terrain_->makeVertexEdge(v, left, right);
+    QuadEdge::Vertex* vnew = enew->Dest();
     vnew->pos = vnew_pos;
-    // assume vpos is registered
-    SigPushVisualPoint_3r(*vnew->pos, Visual::Point(mat_vertex_));
-    SigPushEdge(e);
-    SigPushEdge(e->Sym());
-    return e;
+
+    // we assume vnew_pos is already registered, so just push the vertex.
+    SigPushVertex(vnew);
+
+    // push all new edges and faces.
+    QuadEdge::VertexEdgeIterator orbitnew(vnew);
+    while ((e = orbitnew.next()) != 0) {
+        SigPushEdge(e);
+        SigPushEdge(e->Sym());
+        SigPushFace(e->Left());
+    }
+
+    return enew;
 }
 
 inline QuadEdge::Edge* RegionalTerrain_3r::MakeFaceEdge(QuadEdge::Face *f,
@@ -387,7 +455,7 @@ inline void RegionalTerrain_3r::KillVertexEdge(QuadEdge::Edge *e) {
     SigPopFace(right);
     SigPopEdge(e);
     SigPopEdge(e->Sym());
-    SigPopVisualPoint_3r(*e->Dest()->pos);
+    SigPopVertex(e->Dest());
     terrain_->killVertexEdge(e);
     SigPushFace(left);
     SigPushFace(right);
@@ -402,6 +470,18 @@ inline void RegionalTerrain_3r::KillFaceEdge(QuadEdge::Edge *e) {
     SigPopEdge(e->Sym());
     terrain_->killFaceEdge(e);
     SigPushFace(left);
+}
+
+inline size_t RegionalTerrain_3r::EdgeCount(QuadEdge::Face *f) {
+    size_t count = 0;
+
+    QuadEdge::FaceEdgeIterator edges(f);
+    QuadEdge::Edge *e;
+    while ((e = edges.next()) != 0) {
+        ++count;
+    }
+
+    return count;
 }
 
 
