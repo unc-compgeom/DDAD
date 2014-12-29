@@ -312,7 +312,7 @@ inline void RegionalTerrain_3r::SigPopVertex(QuadEdge::Vertex *v) {
 
 inline void RegionalTerrain_3r::SigPushEdge(QuadEdge::Edge* e) {
     Segment_3r s(e->Org()->pos, e->Dest()->pos);
-    SigPushVisualSegment_3r(s, Visual::Segment(mat_edge_), 1000);
+    SigPushVisualSegment_3r(s, Visual::Segment(mat_edge_));
 }
 
 inline void RegionalTerrain_3r::SigPopEdge(QuadEdge::Edge* e) {
@@ -338,12 +338,12 @@ inline void RegionalTerrain_3r::SigPushFace(QuadEdge::Face* f) {
     e = faceEdges.next();
     auto fan_last = e->Org()->pos;
     Triangle_3r tri0(fan_pivot, fan_middle, fan_last);
-    SigPushVisualTriangle_3r(tri0, Visual::Triangle(mat_face_));
+    SigPushVisualTriangle_3r(tri0, Visual::Triangle(mat_face_), 500);
     while ((e = faceEdges.next()) != 0) {
         fan_middle = fan_last;
         fan_last = e->Org()->pos;
         Triangle_3r tri(fan_pivot, fan_middle, fan_last);
-        SigPushVisualTriangle_3r(tri, Visual::Triangle(mat_face_));
+        SigPushVisualTriangle_3r(tri, Visual::Triangle(mat_face_), 500);
     }
 }
 
@@ -391,13 +391,13 @@ inline QuadEdge::Edge* RegionalTerrain_3r::MakeVertexEdge(QuadEdge::Vertex *v,
     std::list<QuadEdge::Edge*> rotated_orbit;
 
     // iterate through the orbit and track the leftmost edge insertion index.
-    size_t left_idx = 0;
+    size_t right_idx = 0;
     size_t i = 0;
     QuadEdge::VertexEdgeIterator orbit(v);
     QuadEdge::Edge *e;
     while ((e = orbit.next()) != 0) {
-        if (e->Left() == left) {
-            left_idx = i;
+        if (e->Right() == right) {
+            right_idx = i;
         }
         rotated_orbit.push_back(e);
         ++i;
@@ -405,16 +405,17 @@ inline QuadEdge::Edge* RegionalTerrain_3r::MakeVertexEdge(QuadEdge::Vertex *v,
 
     // move the left-right range to the beginning of list.
     std::rotate(begin(rotated_orbit),
-                std::next(begin(rotated_orbit), left_idx),
+                std::next(begin(rotated_orbit), right_idx),
                 end(rotated_orbit));
 
     // pop faces and edges in left-right range.
     for (auto edge : rotated_orbit) {
-        SigPopFace(edge->Left());
-        if (edge->Left() == right) {
+        SigPopFace(edge->Right());
+        if (edge->Right() == left) {
             break;
         }
         SigPopEdge(edge);
+        SigPopEdge(edge->Sym());
     }
 
     // make topological changes to QuadEdge cell, set new vertex position.
@@ -449,16 +450,58 @@ inline QuadEdge::Edge* RegionalTerrain_3r::MakeFaceEdge(QuadEdge::Face *f,
 }
 
 inline void RegionalTerrain_3r::KillVertexEdge(QuadEdge::Edge *e) {
-    QuadEdge::Face* left = e->Left();
-    QuadEdge::Face* right = e->Right();
-    SigPopFace(left);
-    SigPopFace(right);
-    SigPopEdge(e);
-    SigPopEdge(e->Sym());
+    QuadEdge::Face *left = e->Left();
+    QuadEdge::Face *right = e->Right();
+    QuadEdge::Vertex *v = e->Org();
+
+    QuadEdge::VertexEdgeIterator orbit(e->Dest());
+    QuadEdge::Edge *eold;
+    while ((eold = orbit.next()) != 0) {
+        SigPopEdge(eold);
+        SigPopEdge(eold->Sym());
+        SigPopFace(eold->Left());
+    }
     SigPopVertex(e->Dest());
     terrain_->killVertexEdge(e);
-    SigPushFace(left);
-    SigPushFace(right);
+
+    // we need to pop all faces and edges on the ccw traveral from the left
+    // face to the right face in v's orbit. the vertexedgeiterator will begin
+    // at a random edge in the orbit, and we have no way of determining whether
+    // we are inside or outside the left-to-right range on the first pass
+    // through the edges. the iterator will give us the edges back in ccw order
+    // however.
+
+    // the strategy is to place all edges in v's orbit into a list and rotate
+    // the list so that the leftmost edge to pop is the first element.
+    std::list<QuadEdge::Edge*> rotated_orbit;
+
+    // iterate through the orbit and track the leftmost edge insertion index.
+    size_t right_idx = 0;
+    size_t i = 0;
+    QuadEdge::VertexEdgeIterator orbitnew(v);
+    QuadEdge::Edge *enew;
+    while ((enew = orbitnew.next()) != 0) {
+        if (enew->Right() == right) {
+            right_idx = i;
+        }
+        rotated_orbit.push_back(enew);
+        ++i;
+    }
+
+    // move the left-right range to the beginning of list.
+    std::rotate(begin(rotated_orbit),
+                std::next(begin(rotated_orbit), right_idx),
+                end(rotated_orbit));
+
+    // push faces and edges in left-right range.
+    for (auto edge : rotated_orbit) {
+        SigPushFace(edge->Right());
+        if (edge->Right() == left) {
+            break;
+        }
+        SigPushEdge(edge);
+        SigPushEdge(edge->Sym());
+    }
 }
 
 inline void RegionalTerrain_3r::KillFaceEdge(QuadEdge::Edge *e) {
