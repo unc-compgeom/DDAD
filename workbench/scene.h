@@ -353,11 +353,11 @@ private:
 class SceneTerrainMesh_3 : public ISceneObject, public Visual::Geometry {
 public:
     SceneTerrainMesh_3() {
-        model_terrain_mesh_.AddObserver(this);
+        //model_terrain_mesh_.AddObserver(this);
     }
 
     void Initialize(const std::vector<Point_3f>& data) {
-        model_terrain_mesh_.Initialize(data);
+        //model_terrain_mesh_.Initialize(data);
     }
 
     void Select() override {}
@@ -381,7 +381,7 @@ public:
     }
 
 private:
-    TerrainMesh_3r model_terrain_mesh_;
+    //TerrainMesh_3r model_terrain_mesh_;
     QString name_;
 };
 

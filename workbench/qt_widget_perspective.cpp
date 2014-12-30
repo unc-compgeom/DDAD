@@ -61,6 +61,7 @@ void PerspectiveWidget::initializeGL() {
 
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     //glDisable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_PROGRAM_POINT_SIZE);
     glEnable(GL_DEPTH_BUFFER_BIT);

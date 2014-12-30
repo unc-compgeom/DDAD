@@ -13,28 +13,25 @@
  * License along with DDAD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GE_AABB_H
-#define GE_AABB_H
+/*!
+ * @brief Short, high-level description of your file.
+ */
+
+#ifndef GE_MY_GEOMETRIC_TYPE_H
+#define GE_MY_GEOMETRIC_TYPE_H
 
 #include "common.h"
-#include "point.h"
-#include "pointset.h"
+#include "visual.h"
 
 namespace DDAD {
 
-class AABB_2r {
+class MyGeometricType_2r : public Visual::Geometry {
 public:
-    AABB_2r();
-    AABB_2r(const PointSet_3r& pointset);
-
-    const Point_2r& min() const;
-    const Point_2r& max() const;
-
-private:
-    Point_2r min_;
-    Point_2r max_;
-};
+    MyGeometricType_2r();
+    MyGeometricType_2r(const MyGeometricType_2r& copy);
+    ~MyGeometricType_2r();
+}
 
 } // namespace DDAD
 
-#endif // GE_AABB_H
+#endif // GE_MY_GEOMETRIC_TYPE_H

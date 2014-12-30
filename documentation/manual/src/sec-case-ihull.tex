@@ -1,0 +1,319 @@
+%==============================================================================
+% @author Clinton Freeman <freeman@cs.unc.edu>
+% @date 2014-12-28
+%==============================================================================
+
+\FloatBarrier
+\section{Case Study: Gift Wrapping the Integer Hull}
+\label{sec:case-ihull}
+
+In this section, we use the workbench to implement and visualize gift wrapping
+the integer hull of a convex polygon. The algorithm takes as input a
+convex polygon $P$ and produces as output the convex hull of integer points
+inside $P$. We conclude by using the GUI to generate an input polygon and run
+the algorithm.
+
+%==============================================================================
+
+\subsection{Algorithm Overview}
+
+In this section we first define invariants for identifying tangent ranges and
+vertices of the integer hull and derive correct but slow code for maintaining
+them. Next we derive the initialization and finalization.  Finally, we modify
+the invariants and the code to compute the same sequence of hull vertices
+faster, and analyze the running time.
+
+Our input is a convex polygon, which can be represented as a counter-clockwise,
+circular sequence of vertices and oriented supporting lines through the edges.
+Our algorithms keep track of a single {\it current edge} with its support line 
+$L$ that has the polygon to its left.  The current edge includes its ccw vertex,
+denoted the {\it current vertex} $P$, but does not include the cw vertex.  The
+operation $[P,L]=\op advance(P)$ advances to the next polygon vertex and line in
+ccw order.
+
+The output will be a ccw sequence of vertices of the integer hull, possibly with
+a prefix of some additional vertices outside the integer hull.  As we will see
+later, the precise statement is that the output is a sequence of vertices of the
+integer hull of the region to the left of all polygon lines seen thus far---by
+wrapping twice and discarding the prefix, we avoid specialized code for
+initialization. 
+
+% We begin with the invariants and body of a simple, but slow,
+% algorithm~\ref{alg:slow} that identifies the sequence of integer hull vertices
+% whose tangents lie in wedges on a stack.  It uses divide and conquer on wedges:
+% either it identifies the hull vertex $z$ whose tangent range includes the entire
+% wedge at the top of the stack, advancing to a new hull vertex if necessary,
+% or it splits the wedge and stacks the pieces.
+% 
+% The number of invariants is almost larger than the number of lines of the
+% algorithm, so let's start simply with the stack invariant.
+% \begin{lemma}\label{lem:stack}
+% The stack contains wedges defined by pairs of integer vectors $u$,$v$ that
+% form unit area parallelograms that are consecutive in ccw order top to
+% bottom, provided that this is true initially.
+% \end{lemma}
+% \begin{proof} 
+% Suppose that wedge $[u,v)$ is popped in line~\ref{a1:pop}; if nothing is pushed,
+% the invariant holds.  Parallelogram $uv$ has unit area, so $\determ{u.x&u.y\\
+% v.x&v.y}=1$.  By row operations $\determ{u.x&u.y\\ u.x+v.x&u.y+v.y}=1$, so
+% parallelogram $u,u{+}v$ also has unit area, as does $u{+}v,v$.  These are pushed
+% onto the stack (line~\ref{a1:push}) in an order that preserves the invariant.
+% \end{proof}
+%  
+% \begin{algorithm}[ht]
+%   \begin{minipage}{\algwidth}\hrule\medskip
+% Input: 
+% $S$, a stack of wedges defined by pairs of integer vectors $u$,$v$ that
+% form unit area parallelograms. From top to bottom the wedges are
+% consecutive in ccw order. \\
+% $P$,$L$ the current vertex and line of a convex polygon, and\\
+% $z$, a vertex of the integer hull with a supporting line direction in the top wedge
+% $u$,$v$ and with segment $\seg{z,u}$ crossing the current polygon edge.\\
+% Output: The sequence of integer hull vertices whose tangent ranges
+% cover the wedges on the stack. 
+%  \smallskip
+% \begin{alg}%
+% proc \op ProcessWedge(S,z, P,L)\+\\
+% \kw{while} stack $S$ is not empty\+\\
+% $[u,v)=\op pop(S)$;\label{a1:pop}\\
+% \kw{if} $L$ parallels or intersects \ray{z,v}\+\\
+% \kw{while} $P$ is right of \ray{z,v} \label{a1:advP}\+\\
+% $[P,L]=\op advance(P)$;\\
+% \kw{if} $z$ right of $L$, return $\emptyset$; \kw{endif} \label{a1:test}\-\\
+% \kw{endwhile}\\
+% $z=\op lastBefore(z,v,L)$;\label{a1:z}\-\\
+% \kw{else} split wedge\+\\
+% \op push([u+v,v),S);\label{a1:push}\\
+% \op push([u,u+v),S);\-\\
+% \kw{endif}\-\\
+% \kw{endwhile}\>\>\>\>\>\>\>\qquad\smash{\includegraphics[scale=.9]{figs/wedge}}\stepcounter{figure}
+% \end{alg}\medskip\hrule
+% \end{minipage}
+% \caption{We either find that the
+%   tangent range of $z$ covers the rest of the wedge, and possibly
+%   identifies the next integer hull vertex ccw,  or we split the wedge}
+% \label{alg:slow}
+% \end{algorithm}
+% 
+% 
+% Let $z$ be an integer point that satisfies three conditions with
+% respect to the wedge $[u,v)$ and current edge of the convex polygon defining the hull 
+% \begin{enumerate}[noitemsep]
+% \item $z$ has a supporting line direction $\tau$ that lies in wedge
+% $[u,v)$.
+% \item \seg{z,z{+}u} intersects the current polygon edge, and
+% \item $z$  lies on or to the left of all polygon lines seen so far.
+% \end{enumerate}
+% 
+% \begin{lemma}
+% Algorithm~\ref{alg:slow} maintains the conditions on $z$ and the
+% current polygon edge, or reveals that the polygon contains no grid
+% points. 
+% \end{lemma}
+% \begin{proof}
+% Suppose first that the algorithm reaches
+% line~\ref{a1:advP} because current polygon line $L$ intersects
+% \ray{z,v}.  The polygon boundary from $\ray{z,u}$ to $\ray{z,v}$
+% remains inside a sequence of unit parallelograms in direction
+% $v$,  as seen in the figure with Algorithm~\ref{alg:slow}.   We
+% advance $P$ until the current edge intersects \ray{z,v}.  
+% 
+% In the process of advancing, if we find $z$ to the right of the
+% current polygon line $L$, then the entire polygon must lie on and to
+% the left of $L$, support line $\tau$, and the boundary from $u$ to
+% $\ray{z,v}$.  Since this is entirely contained in the unit
+% parallelograms, the polygon contains no integer points, and we return
+% and report that.  
+% 
+% In the usual case, by line~\ref{a1:z} we will have verified that $z$ remains left or on all lines
+% that we advanced over, and we can find the last integer point on
+% \ray{z,v} inside the  polygon, and call it $z$.  Whether this is a new
+% $z$ or the old $z$, the current edge of the polygon intersects
+% $\seg{z,v}$, which will become $\seg{z,u}$ after the next pop, by the
+% stack invariant of Lemma~\ref{lem:stack}. Also, there will be a
+% support line just ccw of $v$ which will serve as~$\tau$.
+% 
+% On the other hand, if algorithm reaches
+% line~\ref{a1:push} then the only concern is if the  support line
+% $\tau$ does not lie in the top wedge $u,u{+}v$ because it lies in
+% $u{+}v,v$ instead.  But that can happen only if $z+u{+}v$ does not lie
+% inside the polygon, so the top wedge will be popped on the next
+% iteration.  (We could have handled this by pushing only if needed, but
+% that will happen in the next algorithm.)
+% 
+% Thus, the conditions on $z$, the current edge of the polygon, and top
+% wedge are invariant. 
+% \end{proof}
+% 
+% 
+% \subsection{Initialization and finalization}
+% To initialize Algorithm~\ref{alg:slow}, we 
+% push onto the stack six quadrants, in order II,I,IV,III,II,I, so I is
+% on top with $u=(1,0)$ and $v=(0,1)$.  We choose coordinates for $z$
+% as floor of the maximum $x$ and minimum $y$ coordinates of the
+% polygon, and let the current $P$ be the vertex with max $x$
+% coordinate and create an initial line $L$ parallel to the $y$ axis
+% through $P$.  These choices satisfy all the invariants. 
+% 
+% We claim that this algorithm does terminate; it cannot keep filling the stack without advancing $P$. 
+% Consider a wedge $[u,v)$ for which $L$ does not cross \ray{z,v}.  Note that this puts $P$ right of \ray{z,v}.  
+% Since $L$ does separate $z$ from $z+u$, $L$ and \ray{zP} define a non-empty angle range around $P$.
+% Split the wedge and consider whether $u+v$ lies cw, in, or ccw of this range: if cw, we continue in $[u,u{+}v)$, if ccw, we push and pop $[u,u{+}v)$  and continue in $[u{+}v, v)$.  In both cases this is the range containing $P$ in the interior.  Because the wedge narrows, we eventually  find $u+v$ in the range between $L$ and \ray{zP}, continuing in a wedge containing $P$ in the interior, so we advance $P$.   
+% 
+% Note from this argument that  rather than coarser parameters like 
+% It is tempting to try use $n$, the number of vertices of
+% the input polygon, and $d$, its diameter, to establish a coarse bound
+% of $O(n+d)$, but the argument shows that the number of times a wedge is split 
+% depends on the detailed geometry of the input, like the slope of polygon line $L$.
+% in fact, splitting can generate vectors that extend  far beyond the polygon if
+% the precision of the coordinates defining $L$ is sufficiently high.
+% This is one of the problems that we will solve in the next subsection.
+% 
+% We mentioned that this initialization can generate a prefix of integer
+% points 
+% that lie outside the final integer hull. Our initial $z$ certainly
+% does, since it is outside the polygon.  The next point may also,
+% because if we split the polygon into upper and lower chains at the
+% vertices that are extreme in $x$, then we advance $P$ on the upper
+% chain to cross \ray{z,v} and take the highest grid point below the
+% upper chain as our new $z$.  But this $z$ may also be below the lower chain; a
+% thin polygon 
+% may contain no integer points at this $x$ coordinate.  Our $z$ is
+% known to be inside only those lines that have been seen.  When we
+% complete quadrant II and pop III, however, we have seen all upper lines, and all
+% lower lines relevant to determining the integer hull vertex with minimum
+% $x$ coordinate, breaking ties by min $y$.  We can then discard all
+% preceding vertices and continue.  When we complete II for the second
+% time, we have returned to the same vertex and completed the integer
+% hull.   We summarize in the following theorem.
+% \begin{theorem}
+% Algorithm~\ref{alg:slow} computes the vertices of the integer hull
+% inside the given convex polygon.
+% \end{theorem}
+% 
+% \subsection{Wrapping the integer hull efficiently}
+% 
+% Algorithm~\ref{alg:slow} can be slow for two reasons.  The first is
+% subtle, but was already mentioned: since $L$'s
+% slope comes from the input polygon unnecessary refinement may be
+% needed to find a ray \ray{z,v} that intersects line $L$.  
+% The second is the reason
+% that Euclid's subtractive GCD computation can be slow:  If we
+% alternate between replacing $u$ or $v$ with $u+v$, then vector length
+% grows exponentially, but if we update just one, then length grows
+% linearly.  Just as we
+% would prefer to divide instead of performing repeated subtraction for GCD, we
+% would prefer to multiply instead of performing repeated addition to find the next wedge. 
+% 
+% 
+% Figure~\ref{fig:wedge2} copies the parallelogram $uv$ in both the $u$ and $v$ directions, and considers how the polygon boundary can next exit this {\it extended wedge}. Let $z'=z+u+v$.
+% \smallbreak\noindent{\bf A:\/} The polygon could reach segment \seg{z,v}, with $z$ continuing to be the integer hull vertex whose tangent range we are finding, as in Alg.~\ref{alg:slow}.
+% \smallbreak\noindent{\bf B:\/}   The polygon could reach ray
+% \ray{z,v}, completing the tangent range for $z$, and beginning one for new hull vertex $z$,
+% as in Alg.~\ref{alg:slow}.
+% \smallbreak\noindent{\bf C:\/}  The polygon could reach ray \ray{z',v}, which corresponds to repeating $[u,v)\to [u{+}v,v)$ by repeated
+% splits and pops in Alg.~\ref{alg:slow}.  We update $u=\op lastBefore(z',v,L)-z$, jumping straight to the outcome of the repeated splits and pops.
+% \smallbreak\noindent{\bf D:\/}  The polygon could reach ray \ray{z',u}, which corresponds to repeated splitting $[u,v)\to [u,u{+}v)$ in Alg.~\ref{alg:slow}.
+% We update $v=\op lastBefore(z',u,L)-z$, but need to change the  invariants since we don't want to push all the $[u{+}v,v)$ wedges that we skip over.  
+% 
+% \figbox[l]{\includegraphics[width=.5\textwidth]{figs/wedge2}}{figure}{fig:wedge2}{Exiting $uv$ parallelograms in Alg.~\ref{alg:fast}}
+% \smallbreak\noindent{\bf E:\/}  The polygon line could have $z$ to the right, in which case the polygon contains no grid points as in Alg.~\ref{alg:slow}.
+% 
+% 
+% Case D necessitates the following invariant changes.  Before updating
+% $v$, in line~\ref{a2:D} we push $[u,v)$ to represent all wedges
+%   $[iu+v,(i+1)u+v)$, which is just the area covered by copying the
+%     parallelogram $uv$ in direction $u$.  Thus, the stacked wedges may
+%     be nested or consecutive, but they will be in ccw order by $v$.
+%     Since popping a wedge may give a containing wedge, we no longer
+%     know that \seg{z,u} intersects the current polygon edge, but we do
+%     know that it intersected the polygon at the time it was pushed,
+%     and that the current edge has a point inside the wedge.  With
+%     these invariant changes, we can show that Alg.~\ref{alg:fast}
+%     identifies the same vertices as Alg.~\ref{alg:slow}, so with the
+%     same initialization and finalization it computes the integer hull.
+% 
+% \begin{theorem}
+%   Given an $n$-vertex convex polygon of diameter $d$ with single
+%   precision coordinates, Algorithm~\ref{alg:fast} computes the
+%   $m$-vertex integer hull in $O(n+m\log d)$ steps and double
+%   precision. Space required is $O(\log d)$.
+% \end{theorem}
+% \begin{proof}
+% Advancing $P$ takes $O(n)$ time, since we go around less than twice.
+% Cases C and D alternate until terminated by Case A, B, or E. Case E
+% can happen only once; B only $m$ times.  Since C takes $O(1)$ time and
+% does not increase stack height, we fold it into the case that follows.
+% Each string of C/D terminates with a case B, creating a new vertex of
+% the integer hull, or E; the vectors grow at least as large as the
+% Fibonacci numbers~\cite{davenport1999higher}, and so have at most
+% $\log_\phi d$ alternations for the new edge, where $\phi=(1+\sqrt
+% 5)/2$ is the golden ratio.  Since case D is the only case that pushes
+% more than one item onto the stack after initialization, the stack
+% depth is $\log_\phi d$, and the total number of wedges stacked is
+% $m\log_\phi d$.  This also bounds the number of wedges popped by
+% $A$.
+% \end{proof}
+% With a little more work and Jensen's inequality, we can express the
+% time bound as $O(n+m\log (d/m))$, but since $m=O(d^{2/3})$ (Har-Peled
+% has a short proof~\cite{har1998output}) this would not be an
+% asymptotic improvement.  The same worst-case time bound can be
+% achieved by a constant-space algorithm -- rather than stacking the
+% wedges, we could start from a quadrant and work forward each time.
+% Our preliminary experiments suggest that stacking is faster; we will
+% include a brief experimental section in the next version of the paper.
+% 
+% 
+% \begin{algorithm}[htp]
+%   \begin{minipage}{\algwidth}\hrule\medskip
+% Input: 
+% $S$, a stack of wedges defined by pairs of integer vectors $u$,$v$ that
+% form unit area parallelograms. From top to bottom the wedges are
+%  in ccw order by $v$ and consecutive wedges are either adjacent or nested. \\
+% $z$, an integer point, left or on all polygon lines seen so far, with a tangent in the top wedge
+% $u$,$v$, with segment $\seg{z,u}$ crossing the polygon.\\
+% $P$,$L$ the current vertex and line of a convex polygon, for which
+%  some point of the current edge is right of \ray{z,v} and \ray{z{+}v,u}.\\
+% Output: The sequence of integer hull vertices whose tangent ranges
+% cover the wedges on the stack. 
+%  \smallskip
+% \begin{alg}%
+% proc \op ProcessWedges(S,z,P,L)\+\\
+% \kw{while} stack $S$ is not empty\+\\
+% $[u,v)=\op pop(S)$;\label{a2:pop}\\
+% \kw{while} $P$ is right of \ray{z,v} and \ray{z{+}v,u}\+\\
+% $[P,L]=\op advance(P)$;\label{a2:advP}\\
+% \kw{if} $z$ right of $L$, return $\emptyset$; \kw{endif} \-\\
+% \kw{endwhile}\\
+% \kw{if} $z+u$ is not right of $L$ \label{a2:A}// if not Case A\+\\
+% \kw{if} $z+u+v$ is not right of $L$\+\\
+% \op push([u,v),S); \label{a2:D}// Case D: in $u$ direction\\
+% $v=\op lastBefore(z{+}v,u,L)-z$;\\
+% \op push([u,v),S);\-\\
+% \kw{else} // in $v$ direction\+\\
+% \kw{while} $P$ is right of \ray{z,v} and left of \ray{z{+}u,v}\label{a2:while2}\+\\
+% $[P,L]=\op advance(P)$;\label{a2:advP2}\\
+% \kw{if} $z$ right of $L$, return $\emptyset$; \kw{endif} \-\\
+% \kw{endwhile}\\
+% \kw{if} $P$ is not right of \ray{z,v}  // Case B (or A): end wedge\+\\
+% $z=\op lastBefore(z,v,L)$; \label{a2:B}// new (or same) vertex\-\\
+% \kw{else} // Case C:  \+\\
+% $u=\op lastBefore(z{+}u,v,L)-z$;\label{a2:C}\\
+% \op push([u,v),S);\-\\
+% \kw{endif}\-\\
+% \kw{endif}\-\\
+% \kw{endif}\-\\
+% \kw{endwhile}
+% \end{alg}\medskip\hrule
+% \end{minipage}
+% \caption{Faster processing for the same hull vertices}
+% \label{alg:fast}
+% \end{algorithm}
+
+%==============================================================================
+
+\subsection{Algorithm Implementation}
+
+%==============================================================================
+
+\subsection{Generating Input Data and Executing IHull} 
