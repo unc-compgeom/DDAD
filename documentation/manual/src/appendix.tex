@@ -1,5 +1,7 @@
-
+\FloatBarrier
 \section{Appendix}
+
+%==============================================================================
 
 \subsection{Adding New Geometric Types}\label{appdx:adding-new-geometric-types}
 
@@ -92,41 +94,9 @@ This section covers how to add new geometric types to the DDAD workbench.
   \end{itemize}
 \end{enumerate}
 
+%==============================================================================
 
-
-
-% 
-% 1. Implement the `toggle` event handler for the button. Right-click on the button in Qt Designer and choose `Go to slot...` then `toggled(bool)`. This will automatically add the appropriate member functions onto the main window class and navigate you to the implementation stub in `qt_window_main.cpp`. Below is the toggled handler for Polyline_2r objects. Some things to notice:
-% 
-%   * All creation buttons must call `uncheckInputModeButtons()` since creation and input mode buttons are mutually exclusive. 
-%   * Use a static function variable for the `creation_method` QWidget. The first time the button is `toggled(true)`, we create the widget and we destroy the widget when we are `toggled(false)`. _Be sure to delete the widget to avoid a memory leak._
-%   * We set the input mode so that click events in the Orthographic Widget will be handled appropriately.
-% 
-%   ```C++
-%   void MainWindow::on_create_polyline_toggled(bool checked) {
-%       qDebug() << "on_create_polyline_toggled: " << checked;
-% 
-%       static PolylineCreationMethod *creation_method = nullptr;
-% 
-%       if (checked) {
-%           ConfigManager::get().set_input_state(InputState::CREATE_POLYLINE);
-%           uncheckInputModeButtons();
-% 
-%           creation_method = new PolylineCreationMethod();
-% 
-%           QLayoutItem *spacer = ui->create_tab_spacer;
-%           ui->create->layout()->removeItem(spacer);
-%           ui->create->layout()->addWidget(creation_method);
-%           ui->create->layout()->addItem(spacer);
-% 
-%       } else if (creation_method) {
-%           ui->create->layout()->removeWidget(creation_method);
-%           delete creation_method;
-%           creation_method = nullptr;
-%       }
-%   }
-%   ```
-
+\FloatBarrier
 \subsection{Coding Guidelines}\label{appdx:coding-guidelines}
 
 Many organizations and individuals have taken the time to author style
@@ -162,10 +132,140 @@ Some important additions or exceptions:
     \item \texttt{r} = MPIR rational
   \end{itemize}
 \end{itemize}
-  
 
+%==============================================================================
+
+\FloatBarrier
+\subsection{Compiling}\label{appdx:compiling}
+
+\begin{enumerate}
+  \item Clone the repository. \texttt{git clone
+  https://github.com/unc-compgeom/ddad.git}
+  \item Install prerequisite software.
+  \begin{itemize}
+    \item
+    \href{http://www.visualstudio.com/en-us/products/free-developer-offers-vs}{Visual Studio Community 2013}
+    \item \href{http://www.cmake.org/download/}{CMake 2.8.12 or later}
+    \item \href{http://www.qt.io/download-open-source/}{Qt 5.3 32-bit (Desktop
+    OpenGL)}
+  \end{itemize}
+  \item Compile MPIR in \texttt{dependencies/mpir}.
+  \item Open DDAD in QtCreator.
+\end{enumerate}
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{Deploying}\label{appdx:deploying}
+
+Deploying refers to the process of bundling together the workbench executable
+with its dependencies for download by non-developers. Windows users should
+perform 4 steps to use the DDAD Workbench.
+
+\begin{enumerate}
+  \item Install the MSVC redistributable package.
+  \item Download a zip file from the website.
+  \item Extract the zip file.
+  \item Double-click the executable.
+\end{enumerate}
+
+This guide makes no assumptions about what is already installed. We could use an
+installer to remove the burden of installing the MSVC package, but keeping
+deployments to a simple zip file minimizes the barrier for new developers.
+
+\paragraph{Test Setup.} In order to properly test whether your deployment will
+work as expected, it is advisable to simulate the target user's machine and
+attempt to follow the installation directions listed below. In particular, since
+we assume a blank-slate installation, using VMWare to create a clean install of
+Windows 7 x64 Home Premium is an easy way to verify the build and instructions.
+
+Outside of advanced user analysis, assuming a blank slate install is about the
+best we can do. In practice, users will have a variety of other software
+installed that may cause conflicts with the software required to run the
+workbench. These sorts of problems should be logged and documented.
+
+\paragraph{Create the zip.} These instructions use absolute paths; please
+substitute your own as appropriate.
+
+\begin{itemize}
+  \item Create an empty folder that will house your executable and associated
+  DLL files.
+  \item Copy the release .exe into the folder. You do not need the manifest
+  file.
+  \item Go into \texttt{C:/Qt/Qt5.1.1/5.1.1/msvc2010\_opengl/bin}
+  \item Copy any required DLLs and paste them next to the .exe in your new
+  folder. (If you encounter problems, copy all of them to ensure this step is
+  not a source of problems. Once you get everything working, you can prune out
+  unnecessary DLLs using Dependency Walker. For the default test application, I
+  needed: Qt5Core.dll, Qt5Gui.dll, Qt5Widgets.dll, and all dll's prefixed with
+  ``icu.'')
+  \item Go into \texttt{C:/Qt/Qt5.1.1/5.1.1/msvc2010\_opengl/plugins/platforms}
+  \item Copy qwindows.dll and paste it in \texttt{<your new folder>/platforms}.
+  You have to perform this step for all applications, even if you don’t know
+  what plugins are or don’t think your application is using any.
+  \item Compress your new folder.
+\end{itemize}
+
+\paragraph{Find the right redistributable.} Qt packages an appropriate
+redistributable installer with itself. Instead of hunting around for it on the
+internet, we can provide users with Qt's to install.
+
+\begin{enumerate}
+  \item Go into \texttt{C:/Qt/Qt5.1.1/vcredist}
+  \item You should see something like \texttt{vcredist\_sp1\_x86.exe}.
+  \item Provide this file for users to install, as a separate download.
+\end{enumerate}
+
+\paragraph{Final process for end users.} After uploading the zipped installation
+folder and the corresponding redistributable provided by Qt, the installation
+process on the VMWare Windows 7 x64 machine looks like the following.
+
+\begin{enumerate}
+  \item Download \texttt{vcredist\_sp1\_x86.exe}.
+  \item Run the installer, using all default settings.
+  \item Download the zipped installation folder.
+  \item Unzip.
+  \item Double-click executable.
+\end{enumerate}
+
+\paragraph{Notes.} Getting this to work took me longer than expected due to two
+problems. First, I had multiple Qt installations on my development machine,
+which must have resulted in me copying the wrong dll’s or using the wrong
+version of Qt Creator, or something. Uninstalling all versions of Qt, deleting
+the corresponding folders, then installing only the version I wanted to use made
+debugging much easier. Second, I had difficulty finding the right version of the
+MSVC redistributable package on the web. Using the one provided by Qt helped
+tremendously; it worked the first time.
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Folder Structure}\label{appdx:folder-structure}
 
+Files are laid out according to the following hierarchy.
+
+\begin{itemize}
+  \item \texttt{/geometry} - geometry library, includes linear algebra,
+  arithmetic, geometric primitives, intersection tests, data structures and
+  algorithms.
+  \item \texttt{/workbench} - workbench system built using Qt. Contains two
+  subfolders:
+  \begin{itemize}
+    \item \texttt{/resources} - graphics such as application icon and splash
+    screen
+    \item \texttt{/forms} - Qt ui files for use with Qt Designer. These allow
+    the programmer to visually design various screens in the application.
+  \end{itemize}
+  \item \texttt{/utility} - contains useful code that may be used in any other
+  project. e.g. logging.
+  \item \texttt{/documentation} - \LaTeX~source files for various types of
+  documentation.
+  \item \texttt{/dependencies} - 3rd party libraries, e.g. MPIR.
+\end{itemize}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Predicates}\label{appdx:predicates}
  
 Given three points in the plane, $p$, $q$, and $r$, the 2D orientation predicate
@@ -201,7 +301,9 @@ is on. In particular, we have
 \right).
 \]
 
+%==============================================================================
 
+\FloatBarrier
 \subsection{Intersection Types}\label{appdx:intersection-types}
 
 The geometry library defines a number of intersection types that represent the
@@ -217,10 +319,16 @@ Intersection types are placed in the \texttt{Intersection} namespace and follow
 a naming convention: simply repeat the names of the two types being intersected.
 The \texttt{Line\_2rLine\_2r} type is a good example:
 
+\lstinputlisting[float, caption=Line\_2rLine\_2r Intersection Type,
+  label=intersection-line2rline2r]{code-samples/intersection-line2rline2r.cpp}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Picking}\label{appdx:picking}
 
 \paragraph{The Problem.} Picking is the process of selecting the foremost object
-in a view that lies under a user's mouse click. In our case, we are given an
+in a view that lies under a user's mouse click. In our case, we are given an 
 input mouse click from either the orthographic or perspective views, and must
 choose from among the scene objects.
 
@@ -239,11 +347,53 @@ to get working than 1 and probably more efficient. In particular, we take click
 events from the orthographic and perspective views and convert them into a 3D
 worldspace ray. We iterate over all scene objects (there is no hierarchical
 acceleration structure) and produce \texttt{Ray\_3rSceneObject} intersection
-objects. These objects are quite simple:
+objects. These objects are quite simple, see listing
+\ref{intersection-ray3rsceneobject}. We hill climb over the intersection times
+to determine which object intersected first.
 
+\lstinputlisting[float, caption=Ray\_3rSceneObject Intersection Type,
+  label=intersection-ray3rsceneobject]{code-samples/intersection-ray3rsceneobject.cpp}
+
+\paragraph{Selecting and Deselecting.} The \texttt{Select} method should usually
+just highlight the object's edges and vertices with the global selection color
+(for the moment, methods all just use \texttt{Visual::Color::SKYBLUE}, see
+[this](../issues/3) issue.) Listing \ref{intersection-select} shows an example
+\texttt{Select} implementation from \texttt{ScenePolyline\_2r}.
+
+\lstinputlisting[float, caption=Example Select Method,
+  label=intersection-select]{code-samples/intersection-select.cpp}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{License}\label{appdx:license}
 
+%==============================================================================
+
+\FloatBarrier
 \subsection{Scene Objects}\label{appdx:scene-objects}
+
+The scene is composed of a collection of \emph{scene objects}, all of which must
+implement the \texttt{ISceneObject} interface. This interface obligates scene
+objects to have a name, color, be able to intersect itself with a 3D ray for
+picking (\ref{appdx:picking}), and define what it means to be selected or
+deselected.
+
+\lstinputlisting[float, caption=ISceneObject Interface,
+  label=isceneobject-interface]{code-samples/isceneobject.cpp}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % signals and slots
 % configuration manager and input state
