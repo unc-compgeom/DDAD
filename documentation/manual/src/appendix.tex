@@ -240,6 +240,175 @@ tremendously; it worked the first time.
 %==============================================================================
 
 \FloatBarrier
+\subsection{Managing Dependencies}\label{appdx:dependencies}
+
+The DDAD library and workbench share two dependencies: [MPIR](http://mpir.org/)
+and [EasyLogging++](https://github.com/easylogging/easyloggingpp). MPIR is a
+wrapper around GMP and provides arbitrary precision integer, rational, and
+floating-point types. EasyLogging++ is a header-only logging library for C++.
+
+\paragraph{The problem.} Many languages have well-supported dependency
+management systems: Bower for JavaScript, npm for node.js, Maven and Gradle for
+Java. There is currently no standardized way to do dependency management in C++.
+This is due to a variety of reasons, some of which are outlined in
+\href{http://stackoverflow.com/questions/14263324/what-is-the-theoretical-reason-for-c-dependency-production-not-being-automated}{this}
+StackOverflow post. A sampling include:
+
+\begin{quote}
+	\begin{itemize}
+	  \item Implementation differences - C++ is a complicated language, and
+	  different implementations have historically varied in how well they support
+	  it (how well they can correctly handle various moderate to advanced C++
+	  code). So there's no guarantee that a library could be built in a particular
+	  implementation.
+	  \item Platform differences - Some platforms may not support exceptions. There
+	  are different implementations of the standard library, with various pros and
+	  cons. Unlike Java's standardized library, Windows and POSIX APIs can be quite
+	  different. The filesystem isn't even a part of Standard C++.
+	  \item Compilation differences - Static or shared? Debug or production build?
+	  Enable optional dependencies or not? Unlike Java, which has very stable
+	  bytecode, C++'s lack of a standard ABI means that code may not link properly,
+	  even if built for the same platform by the same compiler.
+	  \item Build system differences - Makefiles? (If so, GNU Make, or something
+	  else?) Autotools? CMake? Visual Studio project files? Something else?
+	  \item Historical concerns - Because of C's and C++'s age, popular libraries
+	  like zlib predate build systems like Maven by quite a bit. Why should zlib
+	  switch to some hypothetical C++ build system when what it's doing works? How
+	  can a newer, higher-level library switch to some hypothetical build system if
+	  it depends on libraries like zlib?
+	\end{itemize}
+\end{quote}
+
+\paragraph{Possible solutions.} Below, we discuss possible solutions to managing
+dependencies and give pros and cons of each approach.
+
+\begin{enumerate}
+  \item Since MPIR and EasyLogging++ both have officially maintained GitHub
+  repositories, we could use \texttt{git subtree} to bring the source code into
+  our repository. Git will maintain a direct link to each repository, and
+  updating each dependency can be accomplished with \texttt{git subtree pull}.
+  Atlassian has an in-depth article on how to use \texttt{git subtree}
+  \href{http://blogs.atlassian.com/2013/05/alternatives-to-git-submodule-git-subtree/}{here}.
+  
+  Pros: Makes updating dependencies easy. Does not require special
+  initialization after user clones DDAD repository. Cross-platform: user is
+  responsible for compiling on their machine.
+  
+  Cons: Requires user to compile dependencies before compiling DDAD. Increased
+  learning curve: developers must be adept at git in case things go awry.
+  
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Makes updating dependencies easy
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Cross-platform: user is responsible for compiling on their machine 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Requires user to compile dependencies before compiling DDAD
+% 	  \item Increased learning curve: developers must be adept at git in case
+% 	  things go awry
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table}  
+
+  \item Manually take a snapshot of each dependency and copy the source into our
+  repository. This does not involve unusual git commands and there will be no
+  link to the original dependency repository.
+  
+  Pros: Low learning curve: anyone can copy over files. Does not require special
+  initialization after user clones DDAD repository. Cross-platform: user is
+  responsible for compiling on their machine.
+  
+  Cons: Requires user to compile dependencies before compiling DDAD. Updating
+  dependencies is a manual process. Documenting dependency versions is a manual
+  process.
+
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Low learning curve: anyone can copy over files
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Cross-platform: user is responsible for compiling on their machine 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Requires user to compile dependencies before compiling DDAD
+% 	  \item Updating dependencies is a manual process
+% 	  \item Documenting dependency versions is a manual process
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table} 
+ 
+  \item Manually build a snapshot of each dependency and copy the binaries into
+  our repository. This does not involve unusual git commands and there will be
+  no link to the original dependency repository. If the user is on supported
+  OS's and compiler versions then they do not need to compile dependencies
+  themselves. 
+  
+  Pros: Low learning curve, anyone can copy over files. Does not
+  require special initialization after user clones DDAD. Users on supported
+  platforms do not need to compile dependencies before compiling DDAD. 
+  
+  Cons: Not cross-platform: binaries are tied to specific operating systems and
+  specific compiler versions. Updating dependencies is laborious: developers
+  must compile a new snapshot for all OS and compiler version combinations we
+  wish to support. Documenting dependency versions is a manual process.
+  
+% 	  compiling DDAD
+% 	  repository
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Low learning curve: anyone can copy over files
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Users on supported platforms do not need to compile dependencies before
+% 	  compiling DDAD 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Not cross-platform: binaries are tied to specific operating systems and
+% 	  specific compiler versions
+% 	  \item Updating dependencies is laborious: developers must compile a new
+% 	  snapshot for all OS and compiler version combinations we wish to support
+% 	  \item Documenting dependency versions is a manual process
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table}
+
+\end{enumerate}
+
+\paragraph{Our solution.} We chose 2. This way we strike a balance between
+remaining cross-platform withou  creating too high of a barrier to entry for new
+developers. This is justified as follows:
+
+\begin{itemize}
+  \item We wish to keep the number of dependencies low. Thus, we do not expect
+  to be adding many more beyond MPIR and EasyLogging++.
+  \item MPIR is a stable project that has existed for many years. Although there
+  is active development and GitHub repository, there are not major feature
+  changes that would significantly change the functionality as far as DDAD is
+  concerned.
+  \item EasyLogging++ is a single-header library, so updating this dependency is
+  just a matter of downloading one file and copying it into the project.
+\end{itemize}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Folder Structure}\label{appdx:folder-structure}
 
 Files are laid out according to the following hierarchy.
