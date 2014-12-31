@@ -22,7 +22,7 @@ This section covers how to add new geometric types to the DDAD workbench.
   Importantly, you must inherit from \texttt{Visual::Geometry}. Some things you
   should notice about the template:
   \begin{itemize}
-    \item All files start with the license (\ref{appdx:license}). 
+    \item All files start with the license.% (\ref{appdx:license}). 
     \item Next is a short one-liner describing the file that uses the
     \href{http://www.stack.nl/~dimitri/doxygen/}{Doxygen} tag \texttt{@brief}.
     \item All header files use
@@ -242,8 +242,9 @@ tremendously; it worked the first time.
 \FloatBarrier
 \subsection{Managing Dependencies}\label{appdx:dependencies}
 
-The DDAD library and workbench share two dependencies: [MPIR](http://mpir.org/)
-and [EasyLogging++](https://github.com/easylogging/easyloggingpp). MPIR is a
+The DDAD library and workbench share two dependencies:
+\href{http://mpir.org/}{MPIR} and
+\href{https://github.com/easylogging/easyloggingpp}{EasyLogging++}. MPIR is a
 wrapper around GMP and provides arbitrary precision integer, rational, and
 floating-point types. EasyLogging++ is a header-only logging library for C++.
 
@@ -435,6 +436,124 @@ Files are laid out according to the following hierarchy.
 %==============================================================================
 
 \FloatBarrier
+\subsection{GUI Overview}\label{appdx:gui-overview}
+
+The Graphical User Interface (GUI) comprises 7 components: the menubar, the
+toolbar, the orthographic widget, the perspective widget, the interactive panel,
+the statusbar, and the console.
+
+%![GUI Overview](http://cs.unc.edu/~freeman/DDAD/media/gui-overview.png)
+
+\paragraph{Menubar.} The menubar comprises 3 high-level menus: File, Edit, and
+Help. It exists primarily as a scaffold for future functionality.
+
+The File menu is currently empty but has an open
+\href{https://github.com/unc-compgeom/DDAD/issues/6}{issue} to implement
+saving and loading of files. To do this, we need a mechanism for serializing and
+deserializing the scene, which is a major undertaking.
+
+The Edit menu contains one element, Preferences (there are issues to add
+duplicating and copy/paste.) Clicking Preferences will open a dialog
+which is split into 3 major panels. On the left is a list of subsections. The
+list currently contains only Grid Settings. On the right is a detailed view of
+the selected subsection. This detail view is parameterized by the list on the
+left. Finally, the bottom contains 4 buttons: Default, Cancel, Apply, and Ok.
+The most interesting of these is Default, which requires the application to
+somehow define defaults.
+
+Settings \& Defaults bring up the notion of a configuration file (e.g. .ini.)
+While currently there are not many settings, the dialog sets forth a framework
+into which developers can add new configurations settings.
+
+The Help menu contains two simple elements. The first is a link to the user
+manual (the wiki). The second is an About dialog that provides information
+about the program version and a link to the project webpage.
+
+\paragraph{Toolbar.} The toolbar comprises 4 elements: 3 buttons to control
+input mode (Select, Translate, and Rotate), and 1 button to toggle snapping to
+grid.
+
+The three input mode buttons are mutually exclusive with one another and with
+the creation buttons in the interactive panel. The select mode is initially
+activated and allows the user to pick one object at a time via left-clicking in
+the orthographic and perspective views. See
+\href{https://github.com/unc-compgeom/DDAD/issues/8}{this} issue for plans to allow for multiple-object selection.
+\href{https://github.com/unc-compgeom/DDAD/issues/10}{Translate} and
+\href{https://github.com/unc-compgeom/DDAD/issues/9}{rotate} modes are also
+slated for future development.
+
+\paragraph{Orthographic widget.} (grid)
+
+\paragraph{Perspective widget.} (3D rendering w/ camera)
+
+\paragraph{Interactive panel.} The interactive panel comprises three tabs:
+Create, Modify, and Compute.
+
+The create tab is open by default. It initially has only a gallery of geometric
+objects. The buttons in the gallery are mutually exclusive with one another and
+with the input mode buttons in the toolbar. Once the user selects one of the
+geometric objects, an additional ``Creation Method'' panel will appear with
+additional options. The options are parameterized by the selected object type;
+often these methods will overlap (e.g. clicking inside the orthographic view to
+create a point set or polyline), but may be unique (e.g. a polytope may have a
+user-defined length, width, and height). Each method will be listed in a
+dropdown menu at the top of the panel. As the user changes between methods,
+method-specific controls will appear below the dropdown. For example, when
+``Click'' is selected, explanatory text appears; if you change the selection to
+``File,'' then the explanatory text will be replaced with a file chooser and
+``Generate'' button.
+
+The modify tab is meant to let the user choose the \emph{selection granularity},
+or the level at which operations are applied. For example, a polytope is
+composed of vertices, edges, and faces. Each of these, along with the whole polytope, are
+selectable levels of granularity. When ``edges'' is selected, picking operations
+will choose from only the object's edges, when ``vertices'' is selected, picking
+operations will choose from only the object's vertices, and so on. Most of this
+functionality is not yet implemented, see
+\href{https://github.com/unc-compgeom/DDAD/issues/7}{this} issue for more
+information.
+
+The compute tab is composed of the name of the selected object and a drop down
+menu of applicable algorithms. The dropdown of algorithms follows the same logic
+as the creation method dropdown, meaning that as you change your selection
+relevant parameters will appear below. Once the user is with the algorithm
+selection and any parameters, they would like to execute the algorithm. For
+this, we provide a set of media controls. In particular, they may click the
+``Run'' button which will begin algorithm execution. Once the algorithm is
+running, editing controls will be disabled.
+
+\paragraph{Statusbar.} The statusbar provides a way of sending messages to the
+user, depending on application context. For example, when the user is creating a
+polyline, the application cycles through 2 different states. First, the user
+needs to click in the orthographic view to position the initial vertex, so we
+might simply display: ``Left-click in the orthographic view to place first
+vertex.'' Second, the user can either place additional vertices in the same
+fashion, or terminate the polyline by right-clicking; the status bar should be
+updated to reflect the user's options: ``Left-click again to add more vertices,
+or right-click to terminate polyline.'' Finally, after the user right-clicks to
+terminate, we transition back to creating a new polyline, so the message should
+update as well.
+
+The main window defines a slot for updating the statusbar message (\texttt{void
+onUpdateStatusBarMsg(const QString\& status)}). To trigger the handler from
+another QObject, you must ensure that the instance is connected to the main
+window, then emit an appropriate signal. For more information, see Qt's
+documentation on
+\href{http://qt-project.org/doc/qt-4.8/signalsandslots.html}{signals and slots} and
+\href{http://qt-project.org/doc/qt-4.8/qstatusbar.html}{QStatusBar}.
+
+\paragraph{Console.}
+
+The console is designed to provide non-developers with useful information in
+case they experience unexpected (but non-terminal) behavior. By logging to the
+console, developers can ask these users to inspect the console to understand the
+application behavior. The console is not meant as a replacement of the IDE
+console. By default, the console is hidden from view, but may be expanded at any
+time.
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Predicates}\label{appdx:predicates}
  
 Given three points in the plane, $p$, $q$, and $r$, the 2D orientation predicate
@@ -535,7 +654,42 @@ just highlight the object's edges and vertices with the global selection color
 %==============================================================================
 
 \FloatBarrier
-\subsection{License}\label{appdx:license}
+\subsection{Order-independent Transparency}\label{appdx:oit}
+
+\paragraph{The problem.} Rendering transparent surfaces is not as easy as one
+might imagine. Most ways of compositing layers of translucent pixels on top of
+one another show \emph{order-dependency}, meaning that the order that surfaces
+are rendered can affect the final pixel color. This problem arises because the
+terms in the blending equation are not commutative, so different orders of
+compositing result in different pixel colors.
+
+\paragraph{Possible solutions.} There are a number of techniques to achieve
+\emph{order-independent transparency} (OIT), since a seminal paper in the 1980s;
+techniques include \href{http://dl.acm.org/citation.cfm?id=808585}{A buffers},
+\href{https://developer.nvidia.com/content/interactive-order-independent-transparency}{depth
+peeling},
+\href{http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf}{dual
+depth peeling}, and others. Hardware manufacturers are moving toward providing
+special hardware to solve OIT quickly for real-time rendering applications. OIT
+techniques may be categorized into exact and approximate methods. The ground
+truth is the industry-accepted OVER operator. Examples of approximate techniques
+include McGuire's \href{http://jcgt.org/published/0002/02/09/}{weighted, blended
+OIT}.
+
+\paragraph{Our solution.}
+
+The workbench does not currently have a full implementation of OIT available
+(see \href{../issues/4}{this} issue.) However, the main framework is in place.
+Most OIT techniques require a separation between opaque and transparent
+geometry. The visual interface supports transparent materials, and when we
+generate vertex buffers to send to OpenGL for rendering, opaque and transparent
+vertices are segregated into different buffers. This means that it is easy to
+render opaque objects before transparent ones.
+
+%==============================================================================
+
+% \FloatBarrier
+% \subsection{License}\label{appdx:license}
 
 %==============================================================================
 
