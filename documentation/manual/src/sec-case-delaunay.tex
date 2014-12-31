@@ -81,6 +81,83 @@ Guibas and Stolfi describe the quad-edge structure in great
 detail~\cite{guibas1985primitives}; for our purposes we can just familiarize
 ourselves with the high level API provided by Heckbert's C++ quad-edge library.
 
+In the quad-edge data structure, there are classes for vertices, edges, and
+faces, but edges play the leading role. The edges store complete topological
+information; all of the topological information stored by the faces and vertices
+is redundant with information in the edges. The \texttt{Edge} class represents a
+directed edge. Given \texttt{Edge *e}, you can find the immediately adjacent
+vertices, faces, and edges, and the ``symmetric'' edge that points in the
+opposite direction. These operators are all fast (just a few memory references).
+Because edges are oriented, we can speak of the origin and destination vertices
+and left and right faces of an edge. Figure \ref{fig:quadedge-edge-api}
+summarizes the \texttt{Edge} API.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{figures/quadedge-edge-api} 
+	\caption{derp}
+	\label{fig:quadedge-edge-api} 
+\end{figure}
+
+% \begin{itemize}
+%   \item \texttt{Vertex *e->Org()} - vertex at the origin of \texttt{e}
+%   \item \texttt{Vertex *e->Dest()} - vertex at the destination of \texttt{e}
+%   \item \texttt{Face *e->Left()} - face on the left of \texttt{e}
+%   \item \texttt{Face *e->Right()} - face on the right of \texttt{e}
+% \end{itemize}
+
+The \texttt{Vertex} and \texttt{Face} classes are simple. The information stored
+at a vertex consists of one piece of topological information (a pointer to one
+of the outgoing edges of the vertex), plus geometric information (the (x, y, z)
+position), and optional attribute information (color, normals, etc). Each face
+stores one piece of topological information, a pointer to one of the
+ccw-oriented edges of the face, plus optional attribute information (color, etc).
+
+The \texttt{Cell} class models a single subdivision, which includes sets of
+vertices, edges, and faces. The routines you will need most are those depicted
+in figure \ref{fig:quadedge-cell-api}. These are called Euler operators, since
+they maintain Euler's formula $V-E+F=2$ interrelating the number of vertices,
+edges, and faces of a planar graph. If the topology is a valid graph before the
+call, it will be valid after the call, as well.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{figures/quadedge-cell-api} 
+	\caption{derp}
+	\label{fig:quadedge-cell-api} 
+\end{figure}
+
+\begin{itemize}
+  \item \texttt{c->makeVertexEdge(v, left, right)} splits vertex \texttt{v},
+  creating a new edge and vertex that both lie between faces \texttt{left} and
+  \texttt{right}. The new edge has \texttt{left} on its left and \texttt{right}
+  on its right, \texttt{v} at its origin and the new vertex at its destination.
+  The new edge is returned; the new vertex is easily found by taking
+  \texttt{Dest()} of the return value. The new vertex and edge are stored in the
+  sets associated with cell \texttt{c}. If \texttt{left} and \texttt{right} are
+  not adjacent to \texttt{v} then an error message will be printed and core
+  dumped.
+  \item \texttt{c->makeFaceEdge(f, org, dest)} is the dual of this. It splits
+  face \texttt{f}, creating a new edge and face that both lie between vertices
+  \texttt{org} and \texttt{dest}. The new edge has \texttt{org} as its origin
+  and \texttt{dest} as its destination, \texttt{f} as its left face and the new
+  face as its right face. The new edge is returned; the new face is easily found
+  by taking \texttt{Right()} of the return value. The new face and edge are
+  stored in the sets associated with cell \texttt{c}. If \texttt{org} and
+  \texttt{dest} are not adjacent to \texttt{f} then an error message will be
+  printed and core dumped.
+  \item \texttt{c->killVertexEdge(e)} is the inverse of \texttt{makeVertexEdge}.
+  It removes edge \texttt{e} and vertex \texttt{e->Dest()}. Thus,
+  \texttt{c->killVertexEdge(c->makeVertexEdge(v, left, right))} is a no-op.
+  \item \texttt{c->killFaceEdge(e)} is the inverse of \texttt{makeFaceEdge}. It
+  removes edge \texttt{e} and face \texttt{e->Right()}. Thus,
+  \texttt{c->killFaceEdge(c->makeFaceEdge(f, org, dest))} is a no-op.
+\end{itemize}
+
+
+
+
+
 % but for our purposes we need only to understand the basic elements of the data
 % structure (vertices, edges, and faces), and a few key operations
 % (MakeVertexEdge, MakeFaceEdge, and their inverses.) 
