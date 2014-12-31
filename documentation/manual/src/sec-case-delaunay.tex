@@ -27,7 +27,7 @@ triangulation does not contain any input points in its interior.
 Our workbench already has a simple point set type
 (\texttt{PointSet\_3r}), but we will need to introduce a new type 
 (\texttt{Terrain\_3r}) and visualize its methods in order to animate the
-algorithm. The algorithm uses the QuadEdge data
+algorithm. The algorithm uses the quad-edge data
 structure~\cite{guibas1985primitives} to store and manipulate terrain topology.
 After explaining how the algorithm and data structure work, we use Heckbert's
 QuadEdge C++ library to implement \texttt{Terrain\_3r} and use it to arrive at a
@@ -70,7 +70,25 @@ This process continues recursively until the invariant is restored.
 %==============================================================================
 
 \FloatBarrier
-\subsection{The QuadEdge Data Structure}
+\subsection{The Quad-edge Data Structure}
+
+The algorithm operates on the quad-edge data structure, which can be used to
+represent planar subdivisions or manifold polytopes in 3D. The quad-edge is an
+easy to use alternative to the earlier winged-edge data structure by
+Baumgart~\cite{baumgart1975polyhedron} that has the added benefit of
+simulaneously representing a graph and its dual.
+Guibas and Stolfi describe the quad-edge structure in great
+detail~\cite{guibas1985primitives}; for our purposes we can just familiarize
+ourselves with the high level API provided by Heckbert's C++ quad-edge library.
+
+% but for our purposes we need only to understand the basic elements of the data
+% structure (vertices, edges, and faces), and a few key operations
+% (MakeVertexEdge, MakeFaceEdge, and their inverses.) 
+% 
+% Edges represent directed edges and are the most important element of the
+% quad-edge data structure. They store pointers to their source and destination
+% vertices, the faces to their left and to their right, symmetric edges, and
+% other information.
 
 \lstinputlisting[float, caption=Visualizing MakeVertexEdge,
 label=delaunay-makevertexedge]{code-samples/delaunay-makevertexedge.cpp}
