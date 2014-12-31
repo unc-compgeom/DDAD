@@ -68,7 +68,7 @@ This section covers how to add new geometric types to the DDAD workbench.
   figure~\ref{fig:creation-method}.
   \begin{figure}[htb]
 	\centering
-	\includegraphics[width=\textwidth]{figures/gui-creation-method-new-file}
+	\shadowimage[width=\textwidth]{figures/gui-creation-method-new-file}
 	\caption{Dialog for creating a new creation method widget.} 
 	\label{fig:creation-method}
   \end{figure}
@@ -165,6 +165,42 @@ Some important additions or exceptions:
   
 
 \subsection{Folder Structure}\label{appdx:folder-structure}
+
+\subsection{Predicates}
+
+Given three points in the plane, $p$, $q$, and $r$, the 2D orientation predicate
+$\textsc{Orient2D}(p, q, r)$ answers the question, ``is $r$ to the left, right,
+or on the oriented line $pq$?'' We may write it as the sign of a 2-by-2
+determinant, where negative is left, positive is right, and zero is on. In
+particular, we have 
+\[
+\textsc{Orient2D}(p, q, r) = \textsc{Sign}
+\left(
+	\begin{vmatrix} 
+		x_p-x_r & y_p-y_r \\ 
+		x_q-x_r & y_q-y_r 
+	\end{vmatrix} 
+\right).
+\]
+ 
+
+Given 4 points in the plane, $p, q, r$, and $s$, the predicate
+$\textsc{InCircle}(p, q, r, s)$ answers the question, ``is $s$ inside, outside,
+or on the oriented circle through $p, q$, and $r$?'' We may write it as the sign
+of a 4-by-4 determinant, where negative is inside, positive is outside, and zero
+is on. In particular, we have
+
+\[ 
+\textsc{InCircle}(p, q, r, s) = \textsc{Sign}\left(
+\begin{vmatrix}
+	x_p & y_p & x_p^2 + y_p^2 & 1 \\
+    x_q & y_q & x_q^2 + y_q^2 & 1\\
+    x_r & y_r & x_r^2 + y_r^2 & 1\\
+    x_s & y_s & x_s^2 + y_s^2 & 1\\
+\end{vmatrix}
+\right).
+\]
+
 
 \subsection{Intersection Types}\label{appdx:intersection-types}
 

@@ -43,7 +43,8 @@ RegionalTerrain_3r DelaunayTerrain(const PointSet_3r& samples,
 //=============================================================================
 
 RegionalTerrain_3r::RegionalTerrain_3r() :
-    mat_face_(Material(Color::GRAY, Color::GRAY, Color::GRAY)) {
+    mat_face_(Material(Color::GRAY, Color::GRAY, Color::GRAY,
+                       Coverage::E_OPAQUE, Lighting::E_FLAT)) {
     LOG(DEBUG) << "constructing terrain";
 }
 
@@ -76,13 +77,13 @@ void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
 
     // set bbox vertex positions ccw
     v1->pos = std::make_shared<Point_3r>(region.min().x() - 1,
-                                         region.min().y() - 1, 0);
+                                         region.min().y() - 1, -1);
     v2->pos = std::make_shared<Point_3r>(region.max().x() + 1,
-                                         region.min().y() - 1, 0);
+                                         region.min().y() - 1, -1);
     v3->pos = std::make_shared<Point_3r>(region.max().x() + 1,
-                                         region.max().y() + 1, 0);
+                                         region.max().y() + 1, -1);
     v4->pos = std::make_shared<Point_3r>(region.min().x() - 1,
-                                         region.max().y() + 1, 0);
+                                         region.max().y() + 1, -1);
 
     // add edge across diagonal
     terrain_->makeFaceEdge(left, v1, v3);
@@ -113,7 +114,7 @@ void RegionalTerrain_3r::Initialize(const AABB_2r& region) {
 
 void RegionalTerrain_3r::AddSample(const Point_3r& sample) {
     SharedPoint_3r sample_r = std::make_shared<Point_3r>(
-        sample.x(), sample.y(), sample.z()
+        sample.x(), sample.y(), sample.z()-1
     );
     SigRegisterPoint_3r(*sample_r);
 
@@ -194,7 +195,7 @@ void RegionalTerrain_3r::SigPushEdge(QuadEdge::Edge* e) {
     Segment_3r s1(e->Org()->pos, e->Dest()->pos);
     Segment_3r s2(e->Dest()->pos, e->Org()->pos);
     SigPushVisualSegment_3r(s1, Visual::Segment(mat_edge_));
-    SigPushVisualSegment_3r(s2, Visual::Segment(mat_edge_), 250);
+    SigPushVisualSegment_3r(s2, Visual::Segment(mat_edge_), 25);
 }
 
 void RegionalTerrain_3r::SigPopEdge(QuadEdge::Edge* e) {
@@ -205,51 +206,32 @@ void RegionalTerrain_3r::SigPopEdge(QuadEdge::Edge* e) {
 }
 
 void RegionalTerrain_3r::SigPushFace(QuadEdge::Face* f) {
-    auto face_edge_count = EdgeCount(f);
 
-    // ignore loop and sliver topology
-    if (face_edge_count < 3) {
+    // ignore loop, sliver, and quadrilateral topology
+    if (EdgeCount(f) != 3) {
         return;
     }
 
-    QuadEdge::FaceEdgeIterator faceEdges(f);
-    QuadEdge::Edge *e;
-
-    e = faceEdges.next(); auto pivot = e->Org()->pos;
-    e = faceEdges.next(); auto middle = e->Org()->pos;
-    e = faceEdges.next(); auto last = e->Org()->pos;
-    SigPushVisualTriangle_3r(Triangle_3r(pivot, middle, last),
+    QuadEdge::FaceEdgeIterator edges(f);
+    auto a = edges.next()->Org()->pos;
+    auto b = edges.next()->Org()->pos;
+    auto c = edges.next()->Org()->pos;
+    SigPushVisualTriangle_3r(Triangle_3r(c, a, b),
                              Visual::Triangle(mat_face_));
-
-    while ((e = faceEdges.next()) != 0) {
-        middle = last;
-        last = e->Org()->pos;
-        SigPushVisualTriangle_3r(Triangle_3r(pivot, middle, last),
-                                 Visual::Triangle(mat_face_));
-    }
 }
 
 void RegionalTerrain_3r::SigPopFace(QuadEdge::Face* f) {
-    auto face_edge_count = EdgeCount(f);
 
-    // ignore loop and sliver topology
-    if (face_edge_count < 3) {
+    // ignore loop, sliver, and quadrilateral topology
+    if (EdgeCount(f) != 3) {
         return;
     }
 
-    QuadEdge::FaceEdgeIterator faceEdges(f);
-    QuadEdge::Edge *e;
-
-    e = faceEdges.next(); auto pivot = e->Org()->pos;
-    e = faceEdges.next(); auto middle = e->Org()->pos;
-    e = faceEdges.next(); auto last = e->Org()->pos;
-    SigPopVisualTriangle_3r(Triangle_3r(pivot, middle, last));
-
-    while ((e = faceEdges.next()) != 0) {
-        middle = last;
-        last = e->Org()->pos;
-        SigPopVisualTriangle_3r(Triangle_3r(pivot, middle, last));
-    }
+    QuadEdge::FaceEdgeIterator edges(f);
+    auto a = edges.next()->Org()->pos;
+    auto b = edges.next()->Org()->pos;
+    auto c = edges.next()->Org()->pos;
+    SigPopVisualTriangle_3r(Triangle_3r(c, a, b));
 }
 
 QuadEdge::Edge* RegionalTerrain_3r::MakeVertexEdge(QuadEdge::Vertex *v,
