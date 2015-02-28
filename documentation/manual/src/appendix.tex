@@ -1,11 +1,13 @@
-
+\FloatBarrier
 \section{Appendix}
+
+%==============================================================================
 
 \subsection{Adding New Geometric Types}\label{appdx:adding-new-geometric-types}
 
 This section covers how to add new geometric types to the DDAD workbench.
 
-\begin{enumerate}
+\begin{enumerate} 
   \item Create a new header and implementation file under the geometry library
   folder. See folder structure (\ref{appdx:folder-structure}). File names are in
   lower case with underscores between words (e.g. \texttt{geometry/my\_geometric\_type.h}.)
@@ -20,7 +22,7 @@ This section covers how to add new geometric types to the DDAD workbench.
   Importantly, you must inherit from \texttt{Visual::Geometry}. Some things you
   should notice about the template:
   \begin{itemize}
-    \item All files start with the license (\ref{appdx:license}). 
+    \item All files start with the license.% (\ref{appdx:license}). 
     \item Next is a short one-liner describing the file that uses the
     \href{http://www.stack.nl/~dimitri/doxygen/}{Doxygen} tag \texttt{@brief}.
     \item All header files use
@@ -92,41 +94,9 @@ This section covers how to add new geometric types to the DDAD workbench.
   \end{itemize}
 \end{enumerate}
 
+%==============================================================================
 
-
-
-% 
-% 1. Implement the `toggle` event handler for the button. Right-click on the button in Qt Designer and choose `Go to slot...` then `toggled(bool)`. This will automatically add the appropriate member functions onto the main window class and navigate you to the implementation stub in `qt_window_main.cpp`. Below is the toggled handler for Polyline_2r objects. Some things to notice:
-% 
-%   * All creation buttons must call `uncheckInputModeButtons()` since creation and input mode buttons are mutually exclusive. 
-%   * Use a static function variable for the `creation_method` QWidget. The first time the button is `toggled(true)`, we create the widget and we destroy the widget when we are `toggled(false)`. _Be sure to delete the widget to avoid a memory leak._
-%   * We set the input mode so that click events in the Orthographic Widget will be handled appropriately.
-% 
-%   ```C++
-%   void MainWindow::on_create_polyline_toggled(bool checked) {
-%       qDebug() << "on_create_polyline_toggled: " << checked;
-% 
-%       static PolylineCreationMethod *creation_method = nullptr;
-% 
-%       if (checked) {
-%           ConfigManager::get().set_input_state(InputState::CREATE_POLYLINE);
-%           uncheckInputModeButtons();
-% 
-%           creation_method = new PolylineCreationMethod();
-% 
-%           QLayoutItem *spacer = ui->create_tab_spacer;
-%           ui->create->layout()->removeItem(spacer);
-%           ui->create->layout()->addWidget(creation_method);
-%           ui->create->layout()->addItem(spacer);
-% 
-%       } else if (creation_method) {
-%           ui->create->layout()->removeWidget(creation_method);
-%           delete creation_method;
-%           creation_method = nullptr;
-%       }
-%   }
-%   ```
-
+\FloatBarrier
 \subsection{Coding Guidelines}\label{appdx:coding-guidelines}
 
 Many organizations and individuals have taken the time to author style
@@ -162,12 +132,430 @@ Some important additions or exceptions:
     \item \texttt{r} = MPIR rational
   \end{itemize}
 \end{itemize}
-  
 
+%==============================================================================
+
+\FloatBarrier
+\subsection{Compiling}\label{appdx:compiling}
+
+\begin{enumerate}
+  \item Clone the repository. \texttt{git clone
+  https://github.com/unc-compgeom/ddad.git}
+  \item Install prerequisite software.
+  \begin{itemize}
+    \item
+    \href{http://www.visualstudio.com/en-us/products/free-developer-offers-vs}{Visual Studio Community 2013}
+    \item \href{http://www.cmake.org/download/}{CMake 2.8.12 or later}
+    \item \href{http://www.qt.io/download-open-source/}{Qt 5.3 32-bit (Desktop
+    OpenGL)}
+  \end{itemize}
+  \item Compile MPIR in \texttt{dependencies/mpir}.
+  \item Open DDAD in QtCreator.
+\end{enumerate}
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{Deploying}\label{appdx:deploying}
+
+Deploying refers to the process of bundling together the workbench executable
+with its dependencies for download by non-developers. Windows users should
+perform 4 steps to use the DDAD Workbench.
+
+\begin{enumerate}
+  \item Install the MSVC redistributable package.
+  \item Download a zip file from the website.
+  \item Extract the zip file.
+  \item Double-click the executable.
+\end{enumerate}
+
+This guide makes no assumptions about what is already installed. We could use an
+installer to remove the burden of installing the MSVC package, but keeping
+deployments to a simple zip file minimizes the barrier for new developers.
+
+\paragraph{Test Setup.} In order to properly test whether your deployment will
+work as expected, it is advisable to simulate the target user's machine and
+attempt to follow the installation directions listed below. In particular, since
+we assume a blank-slate installation, using VMWare to create a clean install of
+Windows 7 x64 Home Premium is an easy way to verify the build and instructions.
+
+Outside of advanced user analysis, assuming a blank slate install is about the
+best we can do. In practice, users will have a variety of other software
+installed that may cause conflicts with the software required to run the
+workbench. These sorts of problems should be logged and documented.
+
+\paragraph{Create the zip.} These instructions use absolute paths; please
+substitute your own as appropriate.
+
+\begin{itemize}
+  \item Create an empty folder that will house your executable and associated
+  DLL files.
+  \item Copy the release .exe into the folder. You do not need the manifest
+  file.
+  \item Go into \texttt{C:/Qt/Qt5.1.1/5.1.1/msvc2010\_opengl/bin}
+  \item Copy any required DLLs and paste them next to the .exe in your new
+  folder. (If you encounter problems, copy all of them to ensure this step is
+  not a source of problems. Once you get everything working, you can prune out
+  unnecessary DLLs using Dependency Walker. For the default test application, I
+  needed: Qt5Core.dll, Qt5Gui.dll, Qt5Widgets.dll, and all dll's prefixed with
+  ``icu.'')
+  \item Go into \texttt{C:/Qt/Qt5.1.1/5.1.1/msvc2010\_opengl/plugins/platforms}
+  \item Copy qwindows.dll and paste it in \texttt{<your new folder>/platforms}.
+  You have to perform this step for all applications, even if you don’t know
+  what plugins are or don’t think your application is using any.
+  \item Compress your new folder.
+\end{itemize}
+
+\paragraph{Find the right redistributable.} Qt packages an appropriate
+redistributable installer with itself. Instead of hunting around for it on the
+internet, we can provide users with Qt's to install.
+
+\begin{enumerate}
+  \item Go into \texttt{C:/Qt/Qt5.1.1/vcredist}
+  \item You should see something like \texttt{vcredist\_sp1\_x86.exe}.
+  \item Provide this file for users to install, as a separate download.
+\end{enumerate}
+
+\paragraph{Final process for end users.} After uploading the zipped installation
+folder and the corresponding redistributable provided by Qt, the installation
+process on the VMWare Windows 7 x64 machine looks like the following.
+
+\begin{enumerate}
+  \item Download \texttt{vcredist\_sp1\_x86.exe}.
+  \item Run the installer, using all default settings.
+  \item Download the zipped installation folder.
+  \item Unzip.
+  \item Double-click executable.
+\end{enumerate}
+
+\paragraph{Notes.} Getting this to work took me longer than expected due to two
+problems. First, I had multiple Qt installations on my development machine,
+which must have resulted in me copying the wrong dll’s or using the wrong
+version of Qt Creator, or something. Uninstalling all versions of Qt, deleting
+the corresponding folders, then installing only the version I wanted to use made
+debugging much easier. Second, I had difficulty finding the right version of the
+MSVC redistributable package on the web. Using the one provided by Qt helped
+tremendously; it worked the first time.
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{Managing Dependencies}\label{appdx:dependencies}
+
+The DDAD library and workbench share two dependencies:
+\href{http://mpir.org/}{MPIR} and
+\href{https://github.com/easylogging/easyloggingpp}{EasyLogging++}. MPIR is a
+wrapper around GMP and provides arbitrary precision integer, rational, and
+floating-point types. EasyLogging++ is a header-only logging library for C++.
+
+\paragraph{The problem.} Many languages have well-supported dependency
+management systems: Bower for JavaScript, npm for node.js, Maven and Gradle for
+Java. There is currently no standardized way to do dependency management in C++.
+This is due to a variety of reasons, some of which are outlined in
+\href{http://stackoverflow.com/questions/14263324/what-is-the-theoretical-reason-for-c-dependency-production-not-being-automated}{this}
+StackOverflow post. A sampling include:
+
+\begin{quote}
+	\begin{itemize}
+	  \item Implementation differences - C++ is a complicated language, and
+	  different implementations have historically varied in how well they support
+	  it (how well they can correctly handle various moderate to advanced C++
+	  code). So there's no guarantee that a library could be built in a particular
+	  implementation.
+	  \item Platform differences - Some platforms may not support exceptions. There
+	  are different implementations of the standard library, with various pros and
+	  cons. Unlike Java's standardized library, Windows and POSIX APIs can be quite
+	  different. The filesystem isn't even a part of Standard C++.
+	  \item Compilation differences - Static or shared? Debug or production build?
+	  Enable optional dependencies or not? Unlike Java, which has very stable
+	  bytecode, C++'s lack of a standard ABI means that code may not link properly,
+	  even if built for the same platform by the same compiler.
+	  \item Build system differences - Makefiles? (If so, GNU Make, or something
+	  else?) Autotools? CMake? Visual Studio project files? Something else?
+	  \item Historical concerns - Because of C's and C++'s age, popular libraries
+	  like zlib predate build systems like Maven by quite a bit. Why should zlib
+	  switch to some hypothetical C++ build system when what it's doing works? How
+	  can a newer, higher-level library switch to some hypothetical build system if
+	  it depends on libraries like zlib?
+	\end{itemize}
+\end{quote}
+
+\paragraph{Possible solutions.} Below, we discuss possible solutions to managing
+dependencies and give pros and cons of each approach.
+
+\begin{enumerate}
+  \item Since MPIR and EasyLogging++ both have officially maintained GitHub
+  repositories, we could use \texttt{git subtree} to bring the source code into
+  our repository. Git will maintain a direct link to each repository, and
+  updating each dependency can be accomplished with \texttt{git subtree pull}.
+  Atlassian has an in-depth article on how to use \texttt{git subtree}
+  \href{http://blogs.atlassian.com/2013/05/alternatives-to-git-submodule-git-subtree/}{here}.
+  
+  Pros: Makes updating dependencies easy. Does not require special
+  initialization after user clones DDAD repository. Cross-platform: user is
+  responsible for compiling on their machine.
+  
+  Cons: Requires user to compile dependencies before compiling DDAD. Increased
+  learning curve: developers must be adept at git in case things go awry.
+  
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Makes updating dependencies easy
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Cross-platform: user is responsible for compiling on their machine 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Requires user to compile dependencies before compiling DDAD
+% 	  \item Increased learning curve: developers must be adept at git in case
+% 	  things go awry
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table}  
+
+  \item Manually take a snapshot of each dependency and copy the source into our
+  repository. This does not involve unusual git commands and there will be no
+  link to the original dependency repository.
+  
+  Pros: Low learning curve: anyone can copy over files. Does not require special
+  initialization after user clones DDAD repository. Cross-platform: user is
+  responsible for compiling on their machine.
+  
+  Cons: Requires user to compile dependencies before compiling DDAD. Updating
+  dependencies is a manual process. Documenting dependency versions is a manual
+  process.
+
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Low learning curve: anyone can copy over files
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Cross-platform: user is responsible for compiling on their machine 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Requires user to compile dependencies before compiling DDAD
+% 	  \item Updating dependencies is a manual process
+% 	  \item Documenting dependency versions is a manual process
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table} 
+ 
+  \item Manually build a snapshot of each dependency and copy the binaries into
+  our repository. This does not involve unusual git commands and there will be
+  no link to the original dependency repository. If the user is on supported
+  OS's and compiler versions then they do not need to compile dependencies
+  themselves. 
+  
+  Pros: Low learning curve, anyone can copy over files. Does not
+  require special initialization after user clones DDAD. Users on supported
+  platforms do not need to compile dependencies before compiling DDAD. 
+  
+  Cons: Not cross-platform: binaries are tied to specific operating systems and
+  specific compiler versions. Updating dependencies is laborious: developers
+  must compile a new snapshot for all OS and compiler version combinations we
+  wish to support. Documenting dependency versions is a manual process.
+  
+% 	  compiling DDAD
+% 	  repository
+%   \begin{table}[h]
+%     \begin{tabularx}{\textwidth}{XX}
+% 	\toprule
+% 	Pros & Cons \\
+% 	\midrule
+% 	\begin{itemize}
+% 	  \item Low learning curve: anyone can copy over files
+% 	  \item Does not require special initialization after user clones DDAD
+% 	  repository
+% 	  \item Users on supported platforms do not need to compile dependencies before
+% 	  compiling DDAD 
+% 	\end{itemize} &
+% 	\begin{itemize}
+% 	  \item Not cross-platform: binaries are tied to specific operating systems and
+% 	  specific compiler versions
+% 	  \item Updating dependencies is laborious: developers must compile a new
+% 	  snapshot for all OS and compiler version combinations we wish to support
+% 	  \item Documenting dependency versions is a manual process
+% 	\end{itemize} \\
+%     \bottomrule    
+% 	\end{tabularx}
+%   \end{table}
+
+\end{enumerate}
+
+\paragraph{Our solution.} We chose 2. This way we strike a balance between
+remaining cross-platform withou  creating too high of a barrier to entry for new
+developers. This is justified as follows:
+
+\begin{itemize}
+  \item We wish to keep the number of dependencies low. Thus, we do not expect
+  to be adding many more beyond MPIR and EasyLogging++.
+  \item MPIR is a stable project that has existed for many years. Although there
+  is active development and GitHub repository, there are not major feature
+  changes that would significantly change the functionality as far as DDAD is
+  concerned.
+  \item EasyLogging++ is a single-header library, so updating this dependency is
+  just a matter of downloading one file and copying it into the project.
+\end{itemize}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Folder Structure}\label{appdx:folder-structure}
 
-\subsection{Predicates}
+Files are laid out according to the following hierarchy.
 
+\begin{itemize}
+  \item \texttt{/geometry} - geometry library, includes linear algebra,
+  arithmetic, geometric primitives, intersection tests, data structures and
+  algorithms.
+  \item \texttt{/workbench} - workbench system built using Qt. Contains two
+  subfolders:
+  \begin{itemize}
+    \item \texttt{/resources} - graphics such as application icon and splash
+    screen
+    \item \texttt{/forms} - Qt ui files for use with Qt Designer. These allow
+    the programmer to visually design various screens in the application.
+  \end{itemize}
+  \item \texttt{/utility} - contains useful code that may be used in any other
+  project. e.g. logging.
+  \item \texttt{/documentation} - \LaTeX~source files for various types of
+  documentation.
+  \item \texttt{/dependencies} - 3rd party libraries, e.g. MPIR.
+\end{itemize}
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{GUI Overview}\label{appdx:gui-overview}
+
+The Graphical User Interface (GUI) comprises 7 components: the menubar, the
+toolbar, the orthographic widget, the perspective widget, the interactive panel,
+the statusbar, and the console.
+
+%![GUI Overview](http://cs.unc.edu/~freeman/DDAD/media/gui-overview.png)
+
+\paragraph{Menubar.} The menubar comprises 3 high-level menus: File, Edit, and
+Help. It exists primarily as a scaffold for future functionality.
+
+The File menu is currently empty but has an open
+\href{https://github.com/unc-compgeom/DDAD/issues/6}{issue} to implement
+saving and loading of files. To do this, we need a mechanism for serializing and
+deserializing the scene, which is a major undertaking.
+
+The Edit menu contains one element, Preferences (there are issues to add
+duplicating and copy/paste.) Clicking Preferences will open a dialog
+which is split into 3 major panels. On the left is a list of subsections. The
+list currently contains only Grid Settings. On the right is a detailed view of
+the selected subsection. This detail view is parameterized by the list on the
+left. Finally, the bottom contains 4 buttons: Default, Cancel, Apply, and Ok.
+The most interesting of these is Default, which requires the application to
+somehow define defaults.
+
+Settings \& Defaults bring up the notion of a configuration file (e.g. .ini.)
+While currently there are not many settings, the dialog sets forth a framework
+into which developers can add new configurations settings.
+
+The Help menu contains two simple elements. The first is a link to the user
+manual (the wiki). The second is an About dialog that provides information
+about the program version and a link to the project webpage.
+
+\paragraph{Toolbar.} The toolbar comprises 4 elements: 3 buttons to control
+input mode (Select, Translate, and Rotate), and 1 button to toggle snapping to
+grid.
+
+The three input mode buttons are mutually exclusive with one another and with
+the creation buttons in the interactive panel. The select mode is initially
+activated and allows the user to pick one object at a time via left-clicking in
+the orthographic and perspective views. See
+\href{https://github.com/unc-compgeom/DDAD/issues/8}{this} issue for plans to allow for multiple-object selection.
+\href{https://github.com/unc-compgeom/DDAD/issues/10}{Translate} and
+\href{https://github.com/unc-compgeom/DDAD/issues/9}{rotate} modes are also
+slated for future development.
+
+\paragraph{Orthographic widget.} (grid)
+
+\paragraph{Perspective widget.} (3D rendering w/ camera)
+
+\paragraph{Interactive panel.} The interactive panel comprises three tabs:
+Create, Modify, and Compute.
+
+The create tab is open by default. It initially has only a gallery of geometric
+objects. The buttons in the gallery are mutually exclusive with one another and
+with the input mode buttons in the toolbar. Once the user selects one of the
+geometric objects, an additional ``Creation Method'' panel will appear with
+additional options. The options are parameterized by the selected object type;
+often these methods will overlap (e.g. clicking inside the orthographic view to
+create a point set or polyline), but may be unique (e.g. a polytope may have a
+user-defined length, width, and height). Each method will be listed in a
+dropdown menu at the top of the panel. As the user changes between methods,
+method-specific controls will appear below the dropdown. For example, when
+``Click'' is selected, explanatory text appears; if you change the selection to
+``File,'' then the explanatory text will be replaced with a file chooser and
+``Generate'' button.
+
+The modify tab is meant to let the user choose the \emph{selection granularity},
+or the level at which operations are applied. For example, a polytope is
+composed of vertices, edges, and faces. Each of these, along with the whole polytope, are
+selectable levels of granularity. When ``edges'' is selected, picking operations
+will choose from only the object's edges, when ``vertices'' is selected, picking
+operations will choose from only the object's vertices, and so on. Most of this
+functionality is not yet implemented, see
+\href{https://github.com/unc-compgeom/DDAD/issues/7}{this} issue for more
+information.
+
+The compute tab is composed of the name of the selected object and a drop down
+menu of applicable algorithms. The dropdown of algorithms follows the same logic
+as the creation method dropdown, meaning that as you change your selection
+relevant parameters will appear below. Once the user is with the algorithm
+selection and any parameters, they would like to execute the algorithm. For
+this, we provide a set of media controls. In particular, they may click the
+``Run'' button which will begin algorithm execution. Once the algorithm is
+running, editing controls will be disabled.
+
+\paragraph{Statusbar.} The statusbar provides a way of sending messages to the
+user, depending on application context. For example, when the user is creating a
+polyline, the application cycles through 2 different states. First, the user
+needs to click in the orthographic view to position the initial vertex, so we
+might simply display: ``Left-click in the orthographic view to place first
+vertex.'' Second, the user can either place additional vertices in the same
+fashion, or terminate the polyline by right-clicking; the status bar should be
+updated to reflect the user's options: ``Left-click again to add more vertices,
+or right-click to terminate polyline.'' Finally, after the user right-clicks to
+terminate, we transition back to creating a new polyline, so the message should
+update as well.
+
+The main window defines a slot for updating the statusbar message (\texttt{void
+onUpdateStatusBarMsg(const QString\& status)}). To trigger the handler from
+another QObject, you must ensure that the instance is connected to the main
+window, then emit an appropriate signal. For more information, see Qt's
+documentation on
+\href{http://qt-project.org/doc/qt-4.8/signalsandslots.html}{signals and slots} and
+\href{http://qt-project.org/doc/qt-4.8/qstatusbar.html}{QStatusBar}.
+
+\paragraph{Console.}
+
+The console is designed to provide non-developers with useful information in
+case they experience unexpected (but non-terminal) behavior. By logging to the
+console, developers can ask these users to inspect the console to understand the
+application behavior. The console is not meant as a replacement of the IDE
+console. By default, the console is hidden from view, but may be expanded at any
+time.
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{Predicates}\label{appdx:predicates}
+ 
 Given three points in the plane, $p$, $q$, and $r$, the 2D orientation predicate
 $\textsc{Orient2D}(p, q, r)$ answers the question, ``is $r$ to the left, right,
 or on the oriented line $pq$?'' We may write it as the sign of a 2-by-2
@@ -201,7 +589,9 @@ is on. In particular, we have
 \right).
 \]
 
+%==============================================================================
 
+\FloatBarrier
 \subsection{Intersection Types}\label{appdx:intersection-types}
 
 The geometry library defines a number of intersection types that represent the
@@ -217,10 +607,16 @@ Intersection types are placed in the \texttt{Intersection} namespace and follow
 a naming convention: simply repeat the names of the two types being intersected.
 The \texttt{Line\_2rLine\_2r} type is a good example:
 
+\lstinputlisting[float, caption=Line\_2rLine\_2r Intersection Type,
+  label=intersection-line2rline2r]{code-samples/intersection-line2rline2r.cpp}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Picking}\label{appdx:picking}
 
 \paragraph{The Problem.} Picking is the process of selecting the foremost object
-in a view that lies under a user's mouse click. In our case, we are given an
+in a view that lies under a user's mouse click. In our case, we are given an 
 input mouse click from either the orthographic or perspective views, and must
 choose from among the scene objects.
 
@@ -239,11 +635,88 @@ to get working than 1 and probably more efficient. In particular, we take click
 events from the orthographic and perspective views and convert them into a 3D
 worldspace ray. We iterate over all scene objects (there is no hierarchical
 acceleration structure) and produce \texttt{Ray\_3rSceneObject} intersection
-objects. These objects are quite simple:
+objects. These objects are quite simple, see listing
+\ref{intersection-ray3rsceneobject}. We hill climb over the intersection times
+to determine which object intersected first.
 
-\subsection{License}\label{appdx:license}
+\lstinputlisting[float, caption=Ray\_3rSceneObject Intersection Type,
+  label=intersection-ray3rsceneobject]{code-samples/intersection-ray3rsceneobject.cpp}
 
+\paragraph{Selecting and Deselecting.} The \texttt{Select} method should usually
+just highlight the object's edges and vertices with the global selection color
+(for the moment, methods all just use \texttt{Visual::Color::SKYBLUE}, see
+[this](../issues/3) issue.) Listing \ref{intersection-select} shows an example
+\texttt{Select} implementation from \texttt{ScenePolyline\_2r}.
+
+\lstinputlisting[float, caption=Example Select Method,
+  label=intersection-select]{code-samples/intersection-select.cpp}
+
+%==============================================================================
+
+\FloatBarrier
+\subsection{Order-independent Transparency}\label{appdx:oit}
+
+\paragraph{The problem.} Rendering transparent surfaces is not as easy as one
+might imagine. Most ways of compositing layers of translucent pixels on top of
+one another show \emph{order-dependency}, meaning that the order that surfaces
+are rendered can affect the final pixel color. This problem arises because the
+terms in the blending equation are not commutative, so different orders of
+compositing result in different pixel colors.
+
+\paragraph{Possible solutions.} There are a number of techniques to achieve
+\emph{order-independent transparency} (OIT), since a seminal paper in the 1980s;
+techniques include \href{http://dl.acm.org/citation.cfm?id=808585}{A buffers},
+\href{https://developer.nvidia.com/content/interactive-order-independent-transparency}{depth
+peeling},
+\href{http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf}{dual
+depth peeling}, and others. Hardware manufacturers are moving toward providing
+special hardware to solve OIT quickly for real-time rendering applications. OIT
+techniques may be categorized into exact and approximate methods. The ground
+truth is the industry-accepted OVER operator. Examples of approximate techniques
+include McGuire's \href{http://jcgt.org/published/0002/02/09/}{weighted, blended
+OIT}.
+
+\paragraph{Our solution.}
+
+The workbench does not currently have a full implementation of OIT available
+(see \href{../issues/4}{this} issue.) However, the main framework is in place.
+Most OIT techniques require a separation between opaque and transparent
+geometry. The visual interface supports transparent materials, and when we
+generate vertex buffers to send to OpenGL for rendering, opaque and transparent
+vertices are segregated into different buffers. This means that it is easy to
+render opaque objects before transparent ones.
+
+%==============================================================================
+
+% \FloatBarrier
+% \subsection{License}\label{appdx:license}
+
+%==============================================================================
+
+\FloatBarrier
 \subsection{Scene Objects}\label{appdx:scene-objects}
+
+The scene is composed of a collection of \emph{scene objects}, all of which must
+implement the \texttt{ISceneObject} interface. This interface obligates scene
+objects to have a name, color, be able to intersect itself with a 3D ray for
+picking (\ref{appdx:picking}), and define what it means to be selected or
+deselected.
+
+\lstinputlisting[float, caption=ISceneObject Interface,
+  label=isceneobject-interface]{code-samples/isceneobject.cpp}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % signals and slots
 % configuration manager and input state
