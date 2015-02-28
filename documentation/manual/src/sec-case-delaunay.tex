@@ -30,9 +30,9 @@ Our workbench already has a simple point set type
 algorithm. The algorithm uses the quad-edge data
 structure~\cite{guibas1985primitives} to store and manipulate terrain topology.
 After explaining how the algorithm and data structure work, we use Heckbert's
-QuadEdge C++ library to implement \texttt{Terrain\_3r} and use it to arrive at a
-correct implementation of incremental Delaunay. We conclude by using the GUI to
-generate an input point set and run the algorithm.
+QuadEdge C++ library~\cite{heckbert} to implement \texttt{Terrain\_3r} and use
+it to arrive at a correct implementation of incremental Delaunay. We conclude by
+using the GUI to generate an input point set and run the algorithm.
 
 %==============================================================================
 
@@ -95,7 +95,8 @@ summarizes the \texttt{Edge} API.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{figures/quadedge-edge-api} 
-	\caption{Pictoral summary of the \texttt{Edge} API.}
+	\caption{Pictoral summary of the \texttt{Edge} API. Redrawn
+	from~\cite{heckbert}.}
 	\label{fig:quadedge-edge-api} 
 \end{figure}
 
@@ -116,10 +117,11 @@ call, it will be valid after the call, as well.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{figures/quadedge-cell-api} 
-	\caption{Pictoral summary of the 4 major \texttt{Cell} operations.}
-	\label{fig:quadedge-cell-api} 
+	\caption{Pictoral summary of the 4 major \texttt{Cell} operations. Redrawn
+	from~\cite{heckbert}.}
+	\label{fig:quadedge-cell-api}  
 \end{figure}
-
+ 
 \begin{itemize}
   \item \texttt{c->makeVertexEdge(v, left, right)} splits vertex \texttt{v},
   creating a new edge and vertex that both lie between faces \texttt{left} and
