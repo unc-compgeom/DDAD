@@ -305,8 +305,6 @@ dependencies and give pros and cons of each approach.
   repositories, we could use \texttt{git subtree} to bring the source code into
   our repository. Git will maintain a direct link to each repository, and
   updating each dependency can be accomplished with \texttt{git subtree pull}.
-  Atlassian has an in-depth article on how to use \texttt{git subtree}
-  \href{http://blogs.atlassian.com/2013/05/alternatives-to-git-submodule-git-subtree/}{here}.
   
   Pros: Makes updating dependencies easy. Does not require special
   initialization after user clones DDAD repository. Cross-platform: user is
@@ -627,8 +625,8 @@ objects to have a name, color, be able to intersect itself with a 3D ray for
 picking (\ref{appdx:picking}), and define what it means to be selected or
 deselected.
 
-\lstinputlisting[caption=ISceneObject Interface,
-  label=isceneobject-interface]{code-samples/isceneobject.cpp}
+\lstinputlisting[caption=ISceneObject Interface, 
+  label=isceneobject-interface]{code-samples/isceneobject.cpp}  
  
 %==============================================================================
 
@@ -640,13 +638,12 @@ intersection between two objects. It makes sense to create full types for
 intersections because there is often quite a bit of information to capture (is
 the intersection empty, a point, a line segment, a ray? when did the
 intersection occur?). Perhaps more interestingly, intersection types nicely
-align the C++ concept of constructors with our geometric concept of a
+align the C++ concept of constructors with our geometric concept of a 
 construction. The design is inspired by David Eberly's
-\href{http://www.geometrictools.com/Source/Intersection2D.html}{geometric tools}.
-
-Intersection types are placed in the \texttt{Intersection} namespace and follow
-a naming convention: simply repeat the names of the two types being intersected.
-The \texttt{Line\_2rLine\_2r} type is a good example:
+\href{http://www.geometrictools.com/Source/Intersection2D.html}{geometric
+tools}. Intersection types are placed in the \texttt{Intersection} namespace and
+follow a naming convention: simply repeat the names of the two types being
+intersected. The \texttt{Line\_2rLine\_2r} type is a good example:
 
 \lstinputlisting[float, caption=Line\_2rLine\_2r Intersection Type,
   label=intersection-line2rline2r]{code-samples/intersection-line2rline2r.cpp}
