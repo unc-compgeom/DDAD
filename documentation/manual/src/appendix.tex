@@ -4,7 +4,10 @@
 This section contains two types of information. First, there is
 information about aspects of the workbench that should help users and
 contributors understand its inner workings. Second, there is information that
-can serve as background for some of the concepts found in the main paper.
+can serve as background for some of the concepts found in the main paper. Much
+of this section is mirrored on the DDAD wiki; areas for future work are captured
+in issues on Github. References to issues are labeled with a triangle
+($\triangle$) and the issue number.
 
 %==============================================================================
 
@@ -108,9 +111,6 @@ This section covers how to add new geometric types to the DDAD workbench.
 \lstinputlisting[float, caption=Scene Object Template,
   label=scene-object-template]{code-samples/scene-object-template.cpp}
   
-\lstinputlisting[float, caption=Scene Object Template,
-  label=scene-object-template]{code-samples/scene-object-template.cpp}
-  
 \lstinputlisting[float, caption=Creation Button Toggle Handler,
   label=creation-toggle-handler]{code-samples/creation-toggle-handler.cpp}
 %==============================================================================
@@ -122,14 +122,12 @@ Many organizations and individuals have taken the time to author style
 guidelines for the C++ language. A thorough style document is an undertaking in
 its own right; they may span many pages and include detailed rules, exceptions,
 and justifications for both. For this project, it made sense to leverage the
-work of others by adopting and customizing an existing set of guidelines.
+work of others by adopting and customizing an existing set of guidelines:
 \href{http://google-styleguide.googlecode.com/svn/trunk/cppguide.html}{Google's
-C++ style guide}.
+C++ style guide}. \emph{Contributors should pay attention to coding style so
+that we can keep the code uniform, clean, and easy to read.} 
 
-\emph{It is very important that contributors pay attention to coding style so
-that we can keep the code uniform, clean, and easy to read.}
-
-Some highlights:
+\paragraph{Highlights.}
 
 \begin{itemize}
   \item Strictly adhere to 80-char line widths.
@@ -139,7 +137,7 @@ Some highlights:
   \texttt{my\_member\_var\_}.
 \end{itemize}
 
-Some important additions or exceptions:
+\paragraph{Additions or Exceptions.}
 
 \begin{itemize}
   \item Geometric types are suffixed with their dimension and underlying
@@ -270,34 +268,34 @@ floating-point types. EasyLogging++ is a header-only logging library for C++.
 \paragraph{The problem.} Many languages have well-supported dependency
 management systems: Bower for JavaScript, npm for node.js, Maven and Gradle for
 Java. There is currently no standardized way to do dependency management in C++.
-This is due to a variety of reasons, some of which are outlined in
-\href{http://stackoverflow.com/questions/14263324/what-is-the-theoretical-reason-for-c-dependency-production-not-being-automated}{this}
-StackOverflow post. A sampling include:
-
-\begin{quote}
-	\begin{itemize}
-	  \item Implementation differences - C++ is a complicated language, and
-	  different implementations have historically varied in how well they support
-	  it (how well they can correctly handle various moderate to advanced C++
-	  code). So there's no guarantee that a library could be built in a particular
-	  implementation.
-	  \item Platform differences - Some platforms may not support exceptions. There
-	  are different implementations of the standard library, with various pros and
-	  cons. Unlike Java's standardized library, Windows and POSIX APIs can be quite
-	  different. The filesystem isn't even a part of Standard C++.
-	  \item Compilation differences - Static or shared? Debug or production build?
-	  Enable optional dependencies or not? Unlike Java, which has very stable
-	  bytecode, C++'s lack of a standard ABI means that code may not link properly,
-	  even if built for the same platform by the same compiler.
-	  \item Build system differences - Makefiles? (If so, GNU Make, or something
-	  else?) Autotools? CMake? Visual Studio project files? Something else?
-	  \item Historical concerns - Because of C's and C++'s age, popular libraries
-	  like zlib predate build systems like Maven by quite a bit. Why should zlib
-	  switch to some hypothetical C++ build system when what it's doing works? How
-	  can a newer, higher-level library switch to some hypothetical build system if
-	  it depends on libraries like zlib?
-	\end{itemize}
-\end{quote}
+This is due to a variety of reasons, including language implementation
+differences (mixed support for language features), platform differences (some
+platforms do not support exceptions), and compilation differences (static or
+shared? debug or production?).
+% \begin{quote}
+% 	\begin{itemize}
+% 	  \item Implementation differences - C++ is a complicated language, and
+% 	  different implementations have historically varied in how well they support
+% 	  it (how well they can correctly handle various moderate to advanced C++
+% 	  code). So there's no guarantee that a library could be built in a particular
+% 	  implementation.
+% 	  \item Platform differences - Some platforms may not support exceptions. There
+% 	  are different implementations of the standard library, with various pros and
+% 	  cons. Unlike Java's standardized library, Windows and POSIX APIs can be quite
+% 	  different. The filesystem isn't even a part of Standard C++.
+% 	  \item Compilation differences - Static or shared? Debug or production build?
+% 	  Enable optional dependencies or not? Unlike Java, which has very stable
+% 	  bytecode, C++'s lack of a standard ABI means that code may not link properly,
+% 	  even if built for the same platform by the same compiler.
+% % 	  \item Build system differences - Makefiles? (If so, GNU Make, or something
+% % 	  else?) Autotools? CMake? Visual Studio project files? Something else?
+% % 	  \item Historical concerns - Because of C's and C++'s age, popular libraries
+% % 	  like zlib predate build systems like Maven by quite a bit. Why should zlib
+% % 	  switch to some hypothetical C++ build system when what it's doing works? How
+% % 	  can a newer, higher-level library switch to some hypothetical build system if
+% % 	  it depends on libraries like zlib?
+% 	\end{itemize}
+% \end{quote}
 
 \paragraph{Possible solutions.} Below, we discuss possible solutions to managing
 dependencies and give pros and cons of each approach.
@@ -461,46 +459,43 @@ The Graphical User Interface (GUI) comprises 7 components: the menubar, the
 toolbar, the orthographic widget, the perspective widget, the interactive panel,
 the statusbar, and the console.
 
-%![GUI Overview](http://cs.unc.edu/~freeman/DDAD/media/gui-overview.png)
-
+% ![GUI Overview](http://cs.unc.edu/~freeman/DDAD/media/gui-overview.png)
 \paragraph{Menubar.} The menubar comprises 3 high-level menus: File, Edit, and
 Help. It exists primarily as a scaffold for future functionality.
 
-The File menu is currently empty but has an open
-\href{https://github.com/unc-compgeom/DDAD/issues/6}{issue} to implement
-saving and loading of files. To do this, we need a mechanism for serializing and
-deserializing the scene, which is a major undertaking.
-
-The Edit menu contains one element, Preferences (there are issues to add
-duplicating and copy/paste.) Clicking Preferences will open a dialog
-which is split into 3 major panels. On the left is a list of subsections. The
-list currently contains only Grid Settings. On the right is a detailed view of
-the selected subsection. This detail view is parameterized by the list on the
-left. Finally, the bottom contains 4 buttons: Default, Cancel, Apply, and Ok.
-The most interesting of these is Default, which requires the application to
-somehow define defaults.
-
-Settings \& Defaults bring up the notion of a configuration file (e.g. .ini.)
-While currently there are not many settings, the dialog sets forth a framework
-into which developers can add new configurations settings.
-
-The Help menu contains two simple elements. The first is a link to the user
-manual (the wiki). The second is an About dialog that provides information
-about the program version and a link to the project webpage.
+\begin{itemize}
+	\item File. The File menu is currently empty but
+	\href{https://github.com/unc-compgeom/DDAD/issues/6}{issue $\triangle$ 6}
+	specifies saving and loading of files. To do this, we need a mechanism for
+	serializing and deserializing the scene, which is a major undertaking.
+    \item Edit. The Edit menu contains one element, Preferences (there are
+    issues to add duplicating and copy/paste.) Clicking Preferences will open a
+    dialog which is split into 3 major panels. On the left is a list of
+    subsections. The list currently contains only Grid Settings. On the right is
+    a detailed view of the selected subsection. This detail view is
+    parameterized by the list on the left. Finally, the bottom contains 4
+    buttons: Default, Cancel, Apply, and Ok. The most interesting of these is
+    Default, which requires the application to somehow define defaults. Settings
+    \& Defaults bring up the notion of a configuration file (e.g. .ini). While
+    currently there are not many settings, the dialog sets forth a framework
+    into which developers can add new configurations settings.
+    \item Help. The Help menu contains two simple elements. The first is a link
+    to the user manual (the wiki). The second is an About dialog that provides
+    information about the program version and a link to the project webpage.
+\end{itemize}
 
 \paragraph{Toolbar.} The toolbar comprises 4 elements: 3 buttons to control
 input mode (Select, Translate, and Rotate), and 1 button to toggle snapping to
-grid.
-
-The three input mode buttons are mutually exclusive with one another and with
-the creation buttons in the interactive panel. The select mode is initially
+grid. The three input mode buttons are mutually exclusive with one another and
+with the creation buttons in the interactive panel. The select mode is initially
 activated and allows the user to pick one object at a time via left-clicking in
-the orthographic and perspective views. See
-\href{https://github.com/unc-compgeom/DDAD/issues/8}{this} issue for plans to
-allow for multiple-object selection.
-\href{https://github.com/unc-compgeom/DDAD/issues/10}{Translate} and
-\href{https://github.com/unc-compgeom/DDAD/issues/9}{rotate} modes are also
-slated for future development.
+the orthographic and perspective views.
+\href{https://github.com/unc-compgeom/DDAD/issues/8}{Issue $\triangle$ 8}
+specifies multiple-object selection,
+\href{https://github.com/unc-compgeom/DDAD/issues/9}{issue $\triangle$ 9}
+specifies the rotation mode, and
+\href{https://github.com/unc-compgeom/DDAD/issues/10}{issue $\triangle$ 10}
+specifies the translation mode.
 
 \paragraph{Orthographic widget.} The orthographic widget allows users to
 precisely create and manipulate objects against the backdrop of an integer grid.
@@ -542,9 +537,8 @@ composed of vertices, edges, and faces. Each of these, along with the whole
 polytope, are selectable levels of granularity. When ``edges'' is selected,
 picking operations will choose from only the object's edges, when ``vertices''
 is selected, picking operations will choose from only the object's vertices, and
-so on. Most of this functionality is not yet implemented, see
-\href{https://github.com/unc-compgeom/DDAD/issues/7}{this} issue for more
-information.
+so on. Most of this functionality is not yet implemented, but is specified in
+\href{https://github.com/unc-compgeom/DDAD/issues/7}{issue $\triangle$ 7}.
 
 The compute tab is composed of the name of the selected object and a drop down
 menu of applicable algorithms. The dropdown of algorithms follows the same logic
@@ -623,6 +617,20 @@ is on. In particular, we have
 \]
 
 %==============================================================================
+\clearpage
+\FloatBarrier
+\subsection{Scene Objects}\label{appdx:scene-objects}
+
+The scene is composed of a collection of \emph{scene objects}, all of which must
+implement the \texttt{ISceneObject} interface. This interface obligates scene
+objects to have a name, color, be able to intersect itself with a 3D ray for
+picking (\ref{appdx:picking}), and define what it means to be selected or
+deselected.
+
+\lstinputlisting[caption=ISceneObject Interface,
+  label=isceneobject-interface]{code-samples/isceneobject.cpp}
+ 
+%==============================================================================
 
 \FloatBarrier
 \subsection{Intersection Types}\label{appdx:intersection-types}
@@ -677,11 +685,12 @@ to determine which object intersected first.
 
 \paragraph{Selecting and Deselecting.} The \texttt{Select} method should usually
 just highlight the object's edges and vertices with the global selection color
-(for the moment, methods all just use \texttt{Visual::Color::SKYBLUE}, see
-[this](../issues/3) issue.) Listing \ref{intersection-select} shows an example
+(for the moment, methods all just use \texttt{Visual::Color::SKYBLUE},
+\href{https://github.com/unc-compgeom/DDAD/issues/3}{issue $\triangle$ 3}
+specifies a solution.) Listing \ref{intersection-select} shows an example
 \texttt{Select} implementation from \texttt{ScenePolyline\_2r}.
 
-\lstinputlisting[caption=Example Select Method,
+\lstinputlisting[float, caption=Example Select Method,
   label=intersection-select]{code-samples/intersection-select.cpp}
 
 %==============================================================================
@@ -697,128 +706,24 @@ terms in the blending equation are not commutative, so different orders of
 compositing result in different pixel colors.
 
 \paragraph{Possible solutions.} There are a number of techniques to achieve
-\emph{order-independent transparency} (OIT), since a seminal paper in the 1980s;
-techniques include \href{http://dl.acm.org/citation.cfm?id=808585}{A buffers},
-\href{https://developer.nvidia.com/content/interactive-order-independent-transparency}{depth
-peeling},
-\href{http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf}{dual
-depth peeling}, and others. Hardware manufacturers are moving toward providing
-special hardware to solve OIT quickly for real-time rendering applications. OIT
-techniques may be categorized into exact and approximate methods. The ground
-truth is the industry-accepted OVER operator. Examples of approximate techniques
-include McGuire's \href{http://jcgt.org/published/0002/02/09/}{weighted, blended
-OIT}.
+\emph{order-independent transparency} (OIT), including
+A-buffers~\cite{carpenter1984buffer}, depth
+peeling~\cite{everitt2001interactive}, dual depth
+peeling~\cite{bavoil2008order}, and others. Hardware manufacturers are moving
+toward providing special hardware to solve OIT quickly for real-time rendering
+applications. OIT techniques may be categorized into exact and approximate
+methods. The ground truth is the industry-accepted OVER operator. Examples of
+approximate techniques include McGuire's weighted, blended
+OIT~\cite{mcguire2013weighted}.
 
 \paragraph{Our solution.}
-
-The workbench does not currently have a full implementation of OIT available
-(see \href{../issues/4}{this} issue.) However, the main framework is in place.
-Most OIT techniques require a separation between opaque and transparent
-geometry. The visual interface supports transparent materials, and when we
-generate vertex buffers to send to OpenGL for rendering, opaque and transparent
-vertices are segregated into different buffers. This means that it is easy to
-render opaque objects before transparent ones.
-
-%==============================================================================
-
-% \FloatBarrier
-% \subsection{License}\label{appdx:license}
-
-%==============================================================================
-
-\FloatBarrier
-\subsection{Scene Objects}\label{appdx:scene-objects}
-
-The scene is composed of a collection of \emph{scene objects}, all of which must
-implement the \texttt{ISceneObject} interface. This interface obligates scene
-objects to have a name, color, be able to intersect itself with a 3D ray for
-picking (\ref{appdx:picking}), and define what it means to be selected or
-deselected.
-
-\lstinputlisting[caption=ISceneObject Interface,
-  label=isceneobject-interface]{code-samples/isceneobject.cpp}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% signals and slots
-% configuration manager and input state
-% 
-% \subsection{Polyline2r}
-% 
-% Inside \texttt{qt\_window\_main.cpp}, we create a ``Create Polyline'' button and
-% connect its triggered signal to the \texttt{onCreatePolylineTriggered} slot. We
-% add this to the toolbar inside of a buttongroup with other buttons that are
-% mutually exclusive (e.g. creating a polytope). The
-% \texttt{onCreatePolylineTriggered} slot simply sets the input state to
-% \texttt{CREATE\_POLYLINE}.
-% 
-% 
-% 
-% Handle ortho widget mouse clicks
-% forward signals from ortho to scene observer
-% 
-% user must right-click in perspective to begin controlling camera. uses W S A D
-% keys to move around.
-% 
-% 
-
-% \subsection{Design and Implementation of Polyline and Polygon Types}
-% \label{sec:polyline-polygon}
-% 
-% [todo - rework to be about design of a general polyline and polygon not
-% specific to melkman]
-% 
-% The real work of implementing Melkman's algorithm is designing the data types
-% upon which it operates. In particular, we require data types for two geometric
-% objects: input polylines and output polygons. Beyond the standard concerns of
-% efficiency and ease of use, both data types must support visualization and our
-% polygon type must support deque semantics.
-% 
-% Our workbench provides an abstract data type, \texttt{Visual::Geometry}, that
-% geometric data types can inherit to become \emph{visual geometry} types and gain
-% access to the visualization system. We provide an in-depth discussion of how
-% \texttt{Visual::Geometry} works in Section~\ref{sec:workbench-architecture}, but
-% for now it is sufficient to know that uses the observer
-% pattern~\cite{gamma1994design} to generate and recieve visual events. In
-% particular, visual geometry objects are able to both observe visual geometry
-% objects and to be observed by visual geometry objects. A visual geometry object
-% may \emph{signal} to its observers that a visual event has occurred, and can
-% optionally implement a \emph{slot} that handles signals from the objects that it
-% observes. By default, visual geometry objects simply forward signals they
-% recieve up to their observers, forming an event propagation chain.
-% 
-% 
-% A major benefit of visual geometry types is their ability to offload
-% visualization work through composition. Our polygon type must support deque
-% operations, but we only require sequential access to the polyline's vertices. In
-% our case, we can think of the polygon as being composed of a polyline boundary.
-% This suggests using a deque as a backing store for the polyline's vertices so
-% that the polygon type may simply delegate deque operations to its boundary. This
-% choice is consistent with our need for constant sequential access to the
-% polyline's vertices.
-% 
-% The \texttt{Polygon\_2r} class is composed of a \texttt{Polyline\_2r} boundary
-% that is responsible for visualizing vertices and edges. It can optionally
-% visualize the polygon interior by triangulating it into a fan. The
-% \texttt{Polyline\_2r} class uses a deque to store its vertices. The
-% \texttt{push\_back} and \texttt{pop\_back} methods are responsible for
-% visualizing how those operations affect the visual state of the object.
-
-%  We know from the algorithm description that these should support deque
-% semantics, so it makes sense to use this as a backing store for the polygon's
-% vertices. In many regards, a polygon will act like a polyline, e.g. we can add
-% and remove vertices to both. In order to avoid duplicating functionality, it
-% makes sense to compose our polygon with a polyline boundary and forward common
-% events to it. We want to visualize both objects, so each will inherit from the
-% Visual::Geometry class.
+ 
+The workbench does not currently have a full implementation of OIT available,
+but the functionality is specified in
+\href{https://github.com/unc-compgeom/DDAD/issues/4}{issue $\triangle$ 4}.
+However, the main framework is in place. Most OIT techniques require a
+separation between opaque and transparent geometry. The visual interface
+supports transparent materials, and when we generate vertex buffers to send to
+OpenGL for rendering, opaque and transparent vertices are segregated into
+different buffers. This means that it is easy to render opaque objects before
+transparent ones.
