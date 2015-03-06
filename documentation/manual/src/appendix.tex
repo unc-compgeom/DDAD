@@ -1,6 +1,11 @@
 \FloatBarrier
 \section{Appendix}
 
+This section contains two types of information. First, there is
+information about aspects of the workbench that should help users and
+contributors understand its inner workings. Second, there is information that
+can serve as background for some of the concepts found in the main paper.
+
 %==============================================================================
 
 \subsection{Adding New Geometric Types}\label{appdx:adding-new-geometric-types}
@@ -38,8 +43,8 @@ This section covers how to add new geometric types to the DDAD workbench.
     with single-precision floating-point coordinates. See the coding
     guidelines (\ref{appdx:coding-guidelines}) for a full suffix listing.
   \end{itemize}
-  \lstinputlisting[float, caption=Geometric Type Template,
-  label=geometric-type-template]{code-samples/geometric-type-template.cpp}
+%   \lstinputlisting[caption=Geometric Type Template,
+%   label=geometric-type-template]{code-samples/geometric-type-template.cpp}
   \item Provide implementations of the default constructor, copy constructor,
   and destructor. The copy constructor is important to implement if you plan on
   returning a copy of your type from functions, e.g. \texttt{Melkman} returns a
@@ -49,13 +54,13 @@ This section covers how to add new geometric types to the DDAD workbench.
   \item Augment the type's methods with visual signals to reflect the state of
   the object. For example, listing~\ref{polyline-push-back} shows that adding a
   point to a polyline also registers the point so it can be viewed.
-  \lstinputlisting[float, caption=Example of Augmented Method,
-  label=polyline-push-back]{code-samples/polyline-push-back.cpp}
+%   \lstinputlisting[caption=Example of Augmented Method,
+%   label=polyline-push-back]{code-samples/polyline-push-back.cpp}
   \item Define a scene object (\ref{appdx:scene-objects}) type in
   \texttt{workbench/scene.h} that corresponds to your geometric type. You may
   use the template in listing~\ref{scene-object-template}.
-  \lstinputlisting[float, caption=Scene Object Template,
-  label=scene-object-template]{code-samples/scene-object-template.cpp}
+%   \lstinputlisting[caption=Scene Object Template,
+%   label=scene-object-template]{code-samples/scene-object-template.cpp}
   \item Implement the \texttt{Select}, \texttt{Deselect}, and \texttt{Intersect}
   methods so that your object can be selected in the editor. Refer to
   picking (\ref{appdx:picking}) for more details.
@@ -68,7 +73,7 @@ This section covers how to add new geometric types to the DDAD workbench.
   \item  Create a custom \texttt{MyGeometricObjectCreationMethod} widget. Click
   on \texttt{File -> New File or Project}. You will see the dialog shown in
   figure~\ref{fig:creation-method}.
-  \begin{figure}[htb]
+  \begin{figure}[H]
 	\centering
 	\shadowimage[width=\textwidth]{figures/gui-creation-method-new-file}
 	\caption{Dialog for creating a new creation method widget.} 
@@ -80,8 +85,8 @@ This section covers how to add new geometric types to the DDAD workbench.
   functions onto the main window class and navigate you to the implementation
   stub in \texttt{qt\_window\_main.cpp}. Listing~\ref{creation-toggle-handler}
   shows the toggled handler for \texttt{Polyline\_2r} objects. Some things to notice:
-  \lstinputlisting[float, caption=Creation Button Toggle Handler,
-  label=creation-toggle-handler]{code-samples/creation-toggle-handler.cpp}
+%   \lstinputlisting[caption=Creation Button Toggle Handler,
+%   label=creation-toggle-handler]{code-samples/creation-toggle-handler.cpp}
   \begin{itemize}
     \item All creation buttons must call \texttt{uncheckInputModeButtons()}
     since creation and input mode buttons are mutually exclusive.
@@ -94,6 +99,20 @@ This section covers how to add new geometric types to the DDAD workbench.
   \end{itemize}
 \end{enumerate}
 
+\lstinputlisting[float, caption=Geometric Type Template,
+  label=geometric-type-template]{code-samples/geometric-type-template.cpp}
+
+\lstinputlisting[float, caption=Example of Augmented Method,
+  label=polyline-push-back]{code-samples/polyline-push-back.cpp}
+  
+\lstinputlisting[float, caption=Scene Object Template,
+  label=scene-object-template]{code-samples/scene-object-template.cpp}
+  
+\lstinputlisting[float, caption=Scene Object Template,
+  label=scene-object-template]{code-samples/scene-object-template.cpp}
+  
+\lstinputlisting[float, caption=Creation Button Toggle Handler,
+  label=creation-toggle-handler]{code-samples/creation-toggle-handler.cpp}
 %==============================================================================
 
 \FloatBarrier
@@ -477,14 +496,28 @@ The three input mode buttons are mutually exclusive with one another and with
 the creation buttons in the interactive panel. The select mode is initially
 activated and allows the user to pick one object at a time via left-clicking in
 the orthographic and perspective views. See
-\href{https://github.com/unc-compgeom/DDAD/issues/8}{this} issue for plans to allow for multiple-object selection.
+\href{https://github.com/unc-compgeom/DDAD/issues/8}{this} issue for plans to
+allow for multiple-object selection.
 \href{https://github.com/unc-compgeom/DDAD/issues/10}{Translate} and
 \href{https://github.com/unc-compgeom/DDAD/issues/9}{rotate} modes are also
 slated for future development.
 
-\paragraph{Orthographic widget.} (grid)
+\paragraph{Orthographic widget.} The orthographic widget allows users to
+precisely create and manipulate objects against the backdrop of an integer grid.
+The integer grid has minor and major grid lines. Minor lines are drawn in a
+lighter color. Major lines occur after a certain number of minor lines - the
+default is 8.
 
-\paragraph{Perspective widget.} (3D rendering w/ camera)
+Users are able to zoom in and out and pan around the grid. As the user zooms
+out, the grid adapts so that the lines are not drawn too close together. At the
+highest zoom level, minor lines are drawn 1 unit apart. After the user zooms out
+a ways, the grid adapts to draw minor lines 8 units apart. After more zooming,
+the grid adapts to draw minor lines 64 units apart, and so on.
+
+\paragraph{Perspective widget.} The perspective widget allows the user to
+control a 3D perspective camera that renders the current scene. Users may change
+the camera's orientation and move forward (W), backward (S), left (A), right (D)
+up (E), and down (C).
 
 \paragraph{Interactive panel.} The interactive panel comprises three tabs:
 Create, Modify, and Compute.
@@ -505,11 +538,11 @@ method-specific controls will appear below the dropdown. For example, when
 
 The modify tab is meant to let the user choose the \emph{selection granularity},
 or the level at which operations are applied. For example, a polytope is
-composed of vertices, edges, and faces. Each of these, along with the whole polytope, are
-selectable levels of granularity. When ``edges'' is selected, picking operations
-will choose from only the object's edges, when ``vertices'' is selected, picking
-operations will choose from only the object's vertices, and so on. Most of this
-functionality is not yet implemented, see
+composed of vertices, edges, and faces. Each of these, along with the whole
+polytope, are selectable levels of granularity. When ``edges'' is selected,
+picking operations will choose from only the object's edges, when ``vertices''
+is selected, picking operations will choose from only the object's vertices, and
+so on. Most of this functionality is not yet implemented, see
 \href{https://github.com/unc-compgeom/DDAD/issues/7}{this} issue for more
 information.
 
@@ -639,7 +672,7 @@ objects. These objects are quite simple, see listing
 \ref{intersection-ray3rsceneobject}. We hill climb over the intersection times
 to determine which object intersected first.
 
-\lstinputlisting[float, caption=Ray\_3rSceneObject Intersection Type,
+\lstinputlisting[caption=Ray\_3rSceneObject Intersection Type,
   label=intersection-ray3rsceneobject]{code-samples/intersection-ray3rsceneobject.cpp}
 
 \paragraph{Selecting and Deselecting.} The \texttt{Select} method should usually
@@ -648,7 +681,7 @@ just highlight the object's edges and vertices with the global selection color
 [this](../issues/3) issue.) Listing \ref{intersection-select} shows an example
 \texttt{Select} implementation from \texttt{ScenePolyline\_2r}.
 
-\lstinputlisting[float, caption=Example Select Method,
+\lstinputlisting[caption=Example Select Method,
   label=intersection-select]{code-samples/intersection-select.cpp}
 
 %==============================================================================
@@ -702,7 +735,7 @@ objects to have a name, color, be able to intersect itself with a 3D ray for
 picking (\ref{appdx:picking}), and define what it means to be selected or
 deselected.
 
-\lstinputlisting[float, caption=ISceneObject Interface,
+\lstinputlisting[caption=ISceneObject Interface,
   label=isceneobject-interface]{code-samples/isceneobject.cpp}
 
 
