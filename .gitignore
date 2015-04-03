@@ -2,4 +2,7 @@
 **/*.user*
 # Ignore autosaves
 **/*.autosave
-
+documentation/.metadata
+documentation/manual/build
+documentation/manual/out
+*.psd
