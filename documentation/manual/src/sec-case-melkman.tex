@@ -96,26 +96,10 @@ z-order, and observing the output hull, the implementation is a straightforward
 transcription of the algorithm, uncluttered by visualization code. Of course,
 the visualization code must exist somewhere; we cover the high level mechanics
 in section~\ref{sec:workbench-architecture} and the specific details of the
-polyline and polygon types in section~\ref{sec:polyline-polygon}.
+geometric types in section~\ref{appdx:adding-new-geometric-types}. 
  
 \lstinputlisting[float,caption=Melkman
 implementation,label=melkman-function]{code-samples/melkman.cpp}
-
-% \lstinputlisting[float,caption=Polyline\_2r
-% class declaration,label=polyline-class]{code-samples/polyline.cpp}
-
-
-
-
-
-% \lstinputlisting[float,caption=Polygon\_2r
-% class declaration,label=polygon-class]{code-samples/polygon.cpp}
-
-% \lstinputlisting[float,caption=Polyline\_2r
-% push back
-% implementation,label=polyline-push-back]{code-samples/polyline-push-back.cpp}
-  
-%==============================================================================
 
 %==============================================================================
 
@@ -125,32 +109,39 @@ The workbench GUI is composed of a toolbar and two views: orthographic and
 perspective. The toolbar contains input buttons and a button for turning
 snapping on and off. The orthographic view contains an integer grid and allows
 the user to zoom and pan the camera. The perspective view renders the scene in
-3D and allows the user to move and rotate the camera.
+3D and allows the user to move and rotate the camera. The GUI is covered in more
+detail in section~\ref{appdx:gui-overview}.
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/melkman-input-1}
 	\caption{Input polyline with Melkman listed in the context menu.} 
 	\label{fig:melkman-input}
 \end{figure}
-
-\begin{figure}[htb]
+ 
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/melkman-output-1}
 	\caption{Output polygon drawn on top of input polyline.} 
 	\label{fig:melkman-output}
-\end{figure}  
+\end{figure}
+
 
 The orthographic view provides a simple CAD interface, and the input buttons
 control which objects are created when the user clicks inside the view. One
 button allows the user to create polylines. The snapping toggle button
-determines whether the points created are integral. 
+determines whether the points created are integral. After clicking a few times
+to create a polyline, the user completes the object by right-clicking, and the
+polyline remains selected. Right-clicking again reveals a menu with various
+algorithms listed. With a few lines of code, we can add Melkman to the list and
+specify that our new function should execute on the currently selected object
+when we click on it.
 
-After clicking a few times to create a polyline, the user completes the object
-by right-clicking, and the polyline remains selected. Right-clicking again
-reveals a menu with various algorithms listed. With a few lines of code, we can 
-add Melkman to the list and specify that our new function should execute on
-the currently selected object when we click on it. 
+% After clicking a few times to create a polyline, the user completes the object
+% by right-clicking, and the polyline remains selected. Right-clicking again
+% reveals a menu with various algorithms listed. With a few lines of code, we can 
+% add Melkman to the list and specify that our new function should execute on
+% the currently selected object when we click on it. 
 
 
  

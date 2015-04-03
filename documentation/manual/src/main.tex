@@ -33,6 +33,7 @@
 \usepackage{placeins}
 \usepackage{xcolor}
 \usepackage{rotating}
+\usepackage[nocompress]{cite}
 
 \definecolor{algback}{rgb}{0.95, 0.95, 0.95}
 
@@ -348,7 +349,19 @@
 Millman built a C++ library (DDAD) to facilitate implementing algorithms with
 low-degree predicates. Our workbench extends DDAD with a visual event system and
 provides a standalone GUI that can generate input data and render algorithm
-execution.
+execution. The visual event system is built on the concept of observable
+geometry which we combine with a traditional MVC architecture to create a
+powerful API for visualizing geometric algorithms. We demonstrate the
+workbench's capabilities by showing how to visualize Melkman's algorithm and
+incremental Delaunay triangulation. We compare our work to a host of previous
+works by definining a taxonomy for workbench systems.
+% 
+% 
+% 
+% 
+%  We define a taxonomy for workbench systems which we apply to
+% classify existing systems and to outline what we needed from such a system. We
+% introduce the notion of observable geometry and explain how 
 \end{abstract}
 
 \input{sec-introduction}
@@ -368,6 +381,7 @@ execution.
 \bibliographystyle{abbrv}
 \bibliography{../../references}
 
+\clearpage
 \appendix
 \input{appendix}
 

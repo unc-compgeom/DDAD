@@ -63,10 +63,10 @@ there is not an explicit taxonomy for workbench systems in particular. However,
 in his review of geometric algorithm animation~\cite{hausner1999animation},
 Dobkin outlines a number of design parameters that can directly inform a
 taxonomy for workbench systems. Below, we synthesize Dobkin's specific design
-parameters with Price et. al.'s SV taxonomy~\cite{price1993principled} to form
+parameters with Price et al.'s SV taxonomy~\cite{price1993principled} to form
 an explicit taxonomy for workbench systems. 
 
-Our new taxonomy comprises five categories: scope, content, form, method, and
+Our taxonomy comprises five categories: scope, content, form, method, and
 interaction. Each category is defined in terms of a question about the system.
 By answering each question in turn, we can easily use the taxonomy to organize
 the properties of existing systems and to explain the desired properties of new
@@ -302,7 +302,7 @@ parsers for importing external input data.
 \subsection{Previous Works}
 
 A geometric workbench combines a geometric algorithm library with a geometric
-algorithm visualizer. \emph{Geometric algorithm libraries} provide a broad
+algorithm visualizer. \emph{Geo\-metric algorithm libraries} provide a broad
 selection of algorithms and the substrate of types upon which they are built.
 \emph{Geometric algorithm visualizers} provide a GUI capable of animating and
 visually debugging those algorithms implemented in the library. They borrow
@@ -319,15 +319,15 @@ wei2009geobuilder}. This review focuses on the latter two categories.
 \paragraph{XYZ GeoBench.}
 
 XYZ (eXperimental geometrY Zurich) GeoBench was a geometric workbench developed
-by Peter Schorn under the supervision of Jurg Nievergelt. Schorn's 1991 thesis
-focused on the question of how to produce good software for geometric
-computation, with a particular emphasis on geometric
-robustness~\cite{schorn1991robust}. Schorn describes the
-GeoBench as ``a programming environment, implemented in an object oriented
-language, for the rapid prototyping of geometric software and a testbed for
-experiments,'' noting that ``algorithm animation is used for demonstration
-purposes and debugging.'' The XYZ Library was built on top of the GeoBench and
-offered implementations of a large number of geometric algorithms. 
+by Peter Schorn under the supervision of Jurg
+Nievergelt~\cite{schorn1991robust}. Schorn's 1991 thesis focused on the question
+of how to produce good software for geometric computation, with a particular
+emphasis on geometric robustness. Schorn describes the GeoBench as ``a
+programming environment, implemented in an object oriented language, for the
+rapid prototyping of geometric software and a testbed for experiments,'' noting
+that ``algorithm animation is used for demonstration purposes and debugging.''
+The XYZ Library was built on top of the GeoBench and offered implementations of
+a large number of geometric algorithms.
 
 There are several notable features about the GeoBench. The first is the use of
 interchangable arithmetic and software simulation of parameterized floating
@@ -358,10 +358,11 @@ more pronounced.
 \paragraph{Workbench.}
 
 Workbench is a system similar to XYZ GeoBench that focused on implementing
-complex geometric algorithms instead of robustness issues. The system is built
-in Smalltalk and composed of three main components: a library, visualization
-GUI, and tools for extending each. It focused heavily on empirical comparisons
-of different algorithms and using animations for teaching and demonstration.
+complex geometric algorithms instead of robustness
+issues~\cite{epstein1994workbench}. The system is built in Smalltalk and
+composed of three main components: a library, visualization GUI, and tools for
+extending each. It focused heavily on empirical comparisons of different
+algorithms and using animations for teaching and demonstration.
 They define the minimum criteria for a geometric workbench as a system with:
 representations of geometric objects, geometric data types, non-geometric data
 types, algorithmic implementations that adhere to specification, different
@@ -512,9 +513,19 @@ types.
 
 \subsection{Degree-driven Algorithm Design and the DDAD Library}
 
+Geometric algorithms are typically designed and analyzed using the Real-RAM
+model of computation, which provides arbitrary precision arithmetic operations
+at unit cost. In 1999 Liotta, Preparata and Tamassia proposed that in addition
+to considering the resources of time and space, an algorithm designer should
+also consider the arithmetic precision necessary to guarantee a correct
+implementation~\cite{liotta1998robust}. They called this design technique
+\emph{degree-driven algorithm design}. Designers who consider the time, space,
+and precision for a problem up-front arrive at new solutions, gain further
+insight, and find simpler representations~\cite{millman2012degree}.
+
 Momentarily, we explain the desiderata of the DDAD workbench in terms of the
-taxonomy defined in section~\ref{sec:taxonomy}. First, we explain what
-degree-driven algorithm design is by examining the nature of geometric
+taxonomy defined in section~\ref{sec:taxonomy}. First, we elaborate on the
+concept of degree-driven algorithm design by examining the nature of geometric
 algorithms and the geometric objects upon which they operate.
 
 % and how the DDAD library supports implementing algorithms with
@@ -535,7 +546,7 @@ is inside, outside, or on a circle, or determine if a line intersects a plane in
 one, none, or infinitely many points. Constructions produce new geometric
 objects from existing geometric objects. A construction might produce the
 rotation of a point around an origin, produce the point of intersection between
-two line segments, or produce an offset of an algebraic curve.
+two line segments, or produce an offset of a polyhedral face.
 
 In order for an algorithm implementation to perform correctly, the implementor
 must ensure that all predicates evaluate correctly. Predicates are often phrased
@@ -547,18 +558,8 @@ coordinates requires roughly $db$ bits to evaluate correctly.
 Thus, the degree of an algorithm captures an important aspect of the resources
 required to perform correctly: arithmetic precision.
 
-Geometric algorithms are typically designed and analyzed using the Real-RAM
-model of computation, which provides arbitrary precision arithmetic operations
-at unit cost. In 1999 Liotta, Preparata and Tamassia proposed that in addition
-to considering the resources of time and space, an algorithm designer should
-also consider the arithmetic precision necessary to guarantee a correct
-implementation. They called this design technique \emph{degree-driven algorithm
-design}. Designers who consider the time, space, and precision for a problem
-up-front arrive at new solutions, gain further insight, and find simpler
-representations.
-
 Millman produced a C++ library (DDAD) specifically designed for implementing
-degree-driven geometric algorithms. In contrast to monolithic libraries
+degree-driven geometric algorithms. In contrast to comprehensive libraries
 like CGAL, DDAD is lightweight and easy to pick up. It emphasizes the
 distinction between predicates and constructions, and provides reliable
 implementations of common predicates, constructions, and geometric objects in
